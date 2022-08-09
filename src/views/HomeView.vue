@@ -78,12 +78,12 @@
     <div class="section">
       <div class="row">
         <div class="col s12 center">
-          <h4 style="margin-bottom: 40px">Znajdź nas na Facebooku</h4>
+          <h4 style="margin-bottom: 40px">Zobacz, kiedy zaczynamy następne Obozy</h4>
         </div>
       </div>
       <div class="row">
         <div class="col s12 center">
-          <div class="fb-page" data-href="https://www.facebook.com/ObozyGraTerenowa" data-tabs="messages" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/ObozyGraTerenowa/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/ObozyGraTerenowa/">Obozy - Gra terenowa</a></blockquote></div>
+          <iframe src='https://widgets.sociablekit.com/facebook-page-events/iframe/88019' frameborder='0' width='100%' height='1000'></iframe>
         </div>
       </div>
 
@@ -102,16 +102,28 @@
     <div class="parallax"><img src="@/assets/images/background3.jpg" alt="Tło 3" style="filter: brightness(60%)"></div>
   </div>
 
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col s12 center">
+          <h4 style="margin-bottom: 40px">Znajdź nas na Facebooku</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 center">
+          <div class='sk-ww-facebook-page-posts' data-embed-id='88023'></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 
 </template>
 
 <style scoped>
-  .post-container {
-    position: relative;
-    padding-bottom: 56.25%;
-    padding-top: 35px;
-    height: 0;
-    overflow: hidden;
-    width: 100%;
+  iframe {
+    width: 100% !important;
+    height: auto !important;
   }
 </style>

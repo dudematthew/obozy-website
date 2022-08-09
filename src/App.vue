@@ -33,7 +33,7 @@
 
   <Header />
 
-  <router-view :abilityPoints="abilityPoints" :chosenPoints="chosenPoints" :classList="classList" :spellList="spellList" :backgroundList="backgroundList" :other="other" />
+  <router-view />
 
   <Footer />
   
@@ -44,7 +44,8 @@
   @import 'materialize-css/sass/materialize.scss';
   @import 'material-icons/iconfont/material-icons.css';
 
-  .brand-logo {
+  .brand-logo,
+  .main-title {
     /* m-plus-rounded-1c-regular - latin */
     @font-face {
       font-family: 'M PLUS Rounded 1c' !important;
@@ -92,31 +93,36 @@
     line-height: 0;
     height: auto;
     color: rgba(255,255,255,.9);
+    display: flex;
   }
     
   .parallax-container .section {
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
   }
 
-  @media only screen and (max-width : 992px) {
-    .parallax-container .section {
-      position: absolute;
-      top: 40%;
-    }
-    #index-banner .section {
-      top: 10%;
-    }
-  }
+  // @media only screen and (max-width : 992px) {
+  //   .parallax-container .section {
+  //     position: absolute;
+  //     top: 40%;
+  //   }
+  //   .index-banner .section {
+  //     top: 10%;
+  //   }
+  // }
 
-  @media only screen and (max-width : 600px) {
-    .parallax-container {
-      height: 440px;
-    }
+  // @media only screen and (max-width : 600px) {
+  //   .parallax-container {
+  //     height: 440px;
+  //   }
 
-    #index-banner .section {
-      top: 0;
-    }
-  }
+  //   .index-banner .section {
+  //     top: 0;
+  //   }
+  // }
 
   .icon-block {
     padding: 0 15px;
@@ -132,6 +138,12 @@
   .title,
   .subtitle {
     text-shadow: 1px 1px 9px rgb(46, 46, 46);
+    margin-top: 30px;
+  }
+
+  .parallax-container .title,
+  .parallax-container .subtitle {
+    margin-top: 10px;
   }
 
   .justified {

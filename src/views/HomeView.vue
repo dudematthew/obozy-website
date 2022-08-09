@@ -1,16 +1,30 @@
 <script>
+  import iframeResize from 'iframe-resizer/js/iframeResizer'
+
   export default {
     name: 'HomeView',
+    computed: {
+      yearsFromStart () {
+        return new Date().getFullYear() - 2016;
+      }
+    },
+    methods: {
+      resizeSelf (e) {
+        console.log('resizing');
+        e.target.style.paddingBottom = "-50px";
+        // iframeResize({}, e.target);
+      }
+    }
   }
 </script>
 
 <template>
 
-  <div id="index-banner" class="parallax-container">
+  <div class="index-banner parallax-container">
     <div class="section no-pad-bot">
       <div class="container">
         <br><br>
-        <h1 class="center title" style="margin-bottom: 0px; padding-bottom: 0;">OBOZY</h1>
+        <h1 class="center title main-title" style="margin-bottom: 0px; padding-bottom: 0;">OBOZY</h1>
         <h3 class="center title">Gra Terenowa</h3>
         <div class="row center">
           <h5 class="header col s12 light subtitle">Spędź dwa dni na łonie natury tocząc wspólnie zaciekły bój o flagę</h5>
@@ -62,28 +76,36 @@
     </div>
   </div>
 
-
-  <div class="parallax-container valign-wrapper">
+  <div class="index-banner parallax-container">
     <div class="section no-pad-bot">
       <div class="container">
+        <br><br>
+        <h3 class="center title">Jak to wygląda?</h3>
         <div class="row center">
-          <h5 class="header col s12 light subtitle">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h5>
+          <h5 class="header col s12 light subtitle">Zobacz, dlaczego od {{yearsFromStart}} lat wciąż wracamy do gry</h5>
         </div>
+        <div class="row center">
+          <a href="#" class="btn-large waves-effect waves-light green lighten-1">Dowiedz się więcej</a>
+        </div>
+        <br><br>
+
       </div>
     </div>
-    <div class="parallax"><img src="@/assets/images/background2.png" alt="Tło 2" style="filter: brightness(60%)"></div>
+    <div class="parallax"><img src="@/assets/images/background2.png" alt="Tło 1" style="filter: brightness(60%)"></div>
   </div>
 
   <div class="container">
     <div class="section">
       <div class="row">
-        <div class="col s12 center">
-          <h4 style="margin-bottom: 40px">Zobacz, kiedy zaczynamy następne Obozy</h4>
+        <div class="col s12 center" style="margin-bottom: -20px;">
+          <h4>Dowiedz się kiedy zaczną się następne Obozy</h4>
         </div>
       </div>
       <div class="row">
         <div class="col s12 center">
-          <iframe src='https://widgets.sociablekit.com/facebook-page-events/iframe/88019' frameborder='0' width='100%' height='1000'></iframe>
+            <br><br>
+            <iframe id="live-preview" src="https://widgets.sociablekit.com/facebook-page-events/iframe/88019" frameborder="0" width="100%" height="440" style="height: 440px" allowfullscreen></iframe>
+            <br><br>
         </div>
       </div>
 
@@ -106,11 +128,11 @@
     <div class="section">
       <div class="row">
         <div class="col s12 center">
-          <h4 style="margin-bottom: 40px">Znajdź nas na Facebooku</h4>
+          <h4 style="margin-bottom: 40px">Zaobserwuj nas na Facebooku</h4>
         </div>
       </div>
       <div class="row">
-        <div class="col s12 center">
+        <div class="col s12">
           <div class='sk-ww-facebook-page-posts' data-embed-id='88023'></div>
         </div>
       </div>
@@ -120,10 +142,3 @@
 
 
 </template>
-
-<style scoped>
-  iframe {
-    width: 100% !important;
-    height: auto !important;
-  }
-</style>

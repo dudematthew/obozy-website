@@ -3,7 +3,4 @@ module.exports = defineConfig({
   assetsDir: 'assets',
   transpileDependencies: true,
   lintOnSave: false,
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/boost-rpg-tools'
-    : "/"
 })

@@ -2,7 +2,6 @@
   import Header from './components/Header.vue'
   import Footer from './components/Footer.vue'
   import 'materialize-css/dist/js/materialize.js'
-  import { nextTick } from '@vue/runtime-core'
 
   export default {
     components: {

@@ -1,7 +1,7 @@
 {
-  "name": "boost-rpg-tools",
+  "name": "obozy-website",
   "version": "0.1.0",
-  "description": "VueJS 3 App made for making it easy to play my simple RPG System.",
+  "description": "Web front page dedicated to Obozy Gra Terenowa event.",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

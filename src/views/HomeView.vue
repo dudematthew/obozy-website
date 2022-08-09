@@ -78,17 +78,12 @@
     <div class="section">
       <div class="row">
         <div class="col s12 center">
-          <h3><i class="mdi-content-send brown-text"></i></h3>
           <h4 style="margin-bottom: 40px">Znajdź nas na Facebooku</h4>
         </div>
       </div>
       <div class="row">
-        <div class="col s12 m7">
-          <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FObozyGraTerenowa%2Fposts%2Fpfbid022KmWfbEsRZQZMFxT2vkgYGFaSpZVAPd63fp9HSMWnX3S34Dd8upMyvdj6URd3oikl&show_text=true" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-        </div>
-        <div class="col s12 m5">
-          <!-- <p class="left-align light has-text-justified">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, adipisci. Neque cupiditate sit perferendis dicta inventore corrupti vitae aut, asperiores, natus iusto animi doloribus. Excepturi voluptas nam deleniti illum totam.</p> -->
-          <div class="fb-page" data-href="https://www.facebook.com/ObozyGraTerenowa/" data-tabs="messages" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/ObozyGraTerenowa/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/ObozyGraTerenowa/">Obozy - Gra terenowa</a></blockquote></div>
+        <div class="col s12 center">
+          <div class="fb-page" data-href="https://www.facebook.com/ObozyGraTerenowa" data-tabs="messages" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/ObozyGraTerenowa/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/ObozyGraTerenowa/">Obozy - Gra terenowa</a></blockquote></div>
         </div>
       </div>
 
@@ -109,3 +104,14 @@
 
 
 </template>
+
+<style scoped>
+  .post-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 35px;
+    height: 0;
+    overflow: hidden;
+    width: 100%;
+  }
+</style>

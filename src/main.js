@@ -4,19 +4,6 @@ import {
 import App from './App.vue'
 import router from './router'
 
-import 'materialize-css/dist/js/materialize.js'
-
-M.AutoInit();
-
-document.addEventListener('DOMContentLoaded', function() {
-    let parallaxElems = document.querySelectorAll('.parallax');
-    let sidenavElems = document.querySelectorAll('.sidenav');
-    M.Parallax.init(parallaxElems);
-    M.Sidenav.init(sidenavElems);
-
-    console.log("Loaded");
-});
-
 // Single Page Apps for GitHub Pages
 // MIT License
 // https://github.com/rafgraph/spa-github-pages

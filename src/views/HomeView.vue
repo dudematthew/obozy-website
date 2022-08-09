@@ -36,25 +36,25 @@
             <h2 class="center brown-text"><i class="material-icons">sports_kabaddi</i></h2>
             <h5 class="center">Walcz tak jak potrafisz</h5>
 
-            <p class="light">Czy to rekonesans albo walka podjazdowa, czy to manewrowanie liczebnością przeciwnika używając sprytu, czy to miażdżenie przeciwników czystą siłą. Stworzyliśmy zasady, które umożliwiają Tobie stanąć do prawdziwej walki w której pokażesz swoje wewnętrzne zwierzę nie robiąc nikomu krzywdy. </p>
+            <p class="light justified">Czy to rekonesans albo walka podjazdowa, czy to manewrowanie liczebnością przeciwnika używając sprytu, czy to miażdżenie oponentów czystą siłą. Stworzyliśmy zasady, które umożliwiają Ci stanięcie do prawdziwej walki w której pokażesz swoje wewnętrzne zwierzę nie robiąc nikomu krzywdy. </p>
           </div>
         </div>
 
         <div class="col s12 m4">
           <div class="icon-block">
             <h2 class="center brown-text"><i class="material-icons">construction</i></h2>
-            <h5 class="center">Zbuduj obóz i nie pozwól wejść przeciwnikom</h5>
+            <h5 class="center">Zbuduj  i obroń swój obóz</h5>
 
-            <p class="light">Lorem, ipsum dolor sit amet consectetur adipisicing elit. A quibusdam amet beatae, hic, sequi tempora aliquam eos consectetur velit fuga repudiandae unde. Explicabo fuga sit quia distinctio ducimus modi laboriosam.</p>
+            <p class="light justified">Jak sobie pościelesz, tak się wyśpisz. Korzystaj z przygotowanych materiałów by pomóc stworzyć mur, który pozwoli Wam bronić się przed wrogimi najazdami. Pracujcie razem, by odeprzeć ataki najeźdźców żądnych waszej flagi.</p>
           </div>
         </div>
 
         <div class="col s12 m4">
           <div class="icon-block">
             <h2 class="center brown-text"><i class="material-icons">flag</i></h2>
-            <h5 class="center">Zdobądź flagę przeciwnika i zwyciężaj</h5>
+            <h5 class="center">Zdobądź flagę i zwyciężaj</h5>
 
-            <p class="light">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse nostrum tempore, doloremque natus consequuntur ab dolores. Odit, saepe reiciendis quod perferendis ipsa quia distinctio quas iusto optio harum repellendus corporis?</p>
+            <p class="light justified">Dostań się do wrogiego obozu, złap flagę i nie puszczaj gdy będą Cię ścigać. Poczuj buzującą adrenalinę i świętuj z wszystkimi udaną operację.</p>
           </div>
         </div>
       </div>
@@ -67,7 +67,7 @@
     <div class="section no-pad-bot">
       <div class="container">
         <div class="row center">
-          <h5 class="header col s12 light subtitle">A modern responsive front-end framework based on Material Design</h5>
+          <h5 class="header col s12 light subtitle">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h5>
         </div>
       </div>
     </div>
@@ -80,8 +80,8 @@
       <div class="row">
         <div class="col s12 center">
           <h3><i class="mdi-content-send brown-text"></i></h3>
-          <h4>Contact Us</h4>
-          <p class="left-align light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque id nunc nec volutpat. Etiam pellentesque tristique arcu, non consequat magna fermentum ac. Cras ut ultricies eros. Maecenas eros justo, ullamcorper a sapien id, viverra ultrices eros. Morbi sem neque, posuere et pretium eget, bibendum sollicitudin lacus. Aliquam eleifend sollicitudin diam, eu mattis nisl maximus sed. Nulla imperdiet semper molestie. Morbi massa odio, condimentum sed ipsum ac, gravida ultrices erat. Nullam eget dignissim mauris, non tristique erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
+          <h4>Skontaktuj się z nami</h4>
+          <p class="left-align light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
         </div>
       </div>
 
@@ -93,7 +93,7 @@
     <div class="section no-pad-bot">
       <div class="container">
         <div class="row center">
-          <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+          <h5 class="header col s12 light">Lorem ipsum dolor sit amet consectetur adipisicing elit. </h5>
         </div>
       </div>
     </div>

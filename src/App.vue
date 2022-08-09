@@ -1,6 +1,7 @@
 <script>
   import Header from './components/Header.vue'
   import Footer from './components/Footer.vue'
+  import 'materialize-css/dist/js/materialize.js'
 
   export default {
     components: {
@@ -11,6 +12,18 @@
       return {
         
       }
+    },
+    setup () {
+      M.AutoInit();
+
+      document.addEventListener('DOMContentLoaded', function() {
+          let parallaxElems = document.querySelectorAll('.parallax');
+          let sidenavElems = document.querySelectorAll('.sidenav');
+          M.Parallax.init(parallaxElems);
+          M.Sidenav.init(sidenavElems);
+
+          console.log("Loaded");
+      });
     }
   }
 </script>
@@ -113,6 +126,10 @@
   .title,
   .subtitle {
     text-shadow: 1px 1px 9px rgb(46, 46, 46);
+  }
+
+  .justified {
+    text-align: justify !important;
   }
 
 

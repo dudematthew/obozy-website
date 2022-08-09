@@ -30,7 +30,7 @@
           <h5 class="header col s12 light subtitle">Spędź dwa dni na łonie natury tocząc wspólnie zaciekły bój o flagę</h5>
         </div>
         <div class="row center">
-          <a href="#" class="btn-large waves-effect waves-light green lighten-1">Dołącz do nas</a>
+          <a href="#" class="btn-large waves-effect waves-light green">Dołącz do nas</a>
         </div>
         <br><br>
 
@@ -85,7 +85,7 @@
           <h5 class="header col s12 light subtitle">Zobacz, dlaczego od {{yearsFromStart}} lat wciąż wracamy do gry</h5>
         </div>
         <div class="row center">
-          <a href="#" class="btn-large waves-effect waves-light green lighten-1">Dowiedz się więcej</a>
+          <a href="#" class="btn-large waves-effect waves-light green">Dowiedz się więcej</a>
         </div>
         <br><br>
 
@@ -116,13 +116,14 @@
   <div class="index-banner parallax-container">
     <div class="section no-pad-bot">
       <div class="container">
+        
         <br><br>
         <h3 class="center title">Masz pytania?</h3>
         <div class="row center">
           <h5 class="header col s12 light subtitle">Odpowiemy na każde!</h5>
         </div>
         <div class="row center">
-          <a href="https://www.messenger.com/t/105317307701584?fbclid=IwAR1kWyWl0I83qIfKwfy-p1Ca21bb6g9JvODzkiZq5016idUDqEcSipvmWm4" target="_blank" class="btn-large waves-effect waves-light green lighten-1">Skontaktuj się z nami</a>
+          <a href="https://www.messenger.com/t/105317307701584?fbclid=IwAR1kWyWl0I83qIfKwfy-p1Ca21bb6g9JvODzkiZq5016idUDqEcSipvmWm4" target="_blank" class="btn-large waves-effect waves-light green">Skontaktuj się z nami</a>
         </div>
         <br><br>
 

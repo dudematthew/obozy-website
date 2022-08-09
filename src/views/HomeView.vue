@@ -16,7 +16,7 @@
           <h5 class="header col s12 light subtitle">Spędź dwa dni na łonie natury tocząc wspólnie zaciekły bój o flagę</h5>
         </div>
         <div class="row center">
-          <a href="http://materializecss.com/getting-started.html" class="btn-large waves-effect waves-light green lighten-1">Dołącz do nas</a>
+          <a href="#" class="btn-large waves-effect waves-light green lighten-1">Dołącz do nas</a>
         </div>
         <br><br>
 
@@ -54,7 +54,7 @@
             <h2 class="center brown-text"><i class="material-icons">flag</i></h2>
             <h5 class="center">Zdobądź flagę i zwyciężaj</h5>
 
-            <p class="light justified">Dostań się do wrogiego obozu, złap flagę i nie puszczaj gdy będą Cię ścigać. Poczuj buzującą adrenalinę i świętuj z wszystkimi udaną operację.</p>
+            <p class="light has-text-justified">Dostań się do wrogiego obozu, złap flagę i nie puszczaj gdy będą Cię ścigać. Poczuj buzującą adrenalinę i świętuj z wszystkimi udaną operację.</p>
           </div>
         </div>
       </div>
@@ -81,7 +81,7 @@
         <div class="col s12 center">
           <h3><i class="mdi-content-send brown-text"></i></h3>
           <h4>Skontaktuj się z nami</h4>
-          <p class="left-align light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+          <p class="left-align light has-text-justified">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, adipisci. Neque cupiditate sit perferendis dicta inventore corrupti vitae aut, asperiores, natus iusto animi doloribus. Excepturi voluptas nam deleniti illum totam.</p>
         </div>
       </div>
 

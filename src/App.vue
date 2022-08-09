@@ -2,6 +2,7 @@
   import Header from './components/Header.vue'
   import Footer from './components/Footer.vue'
   import 'materialize-css/dist/js/materialize.js'
+  import { nextTick } from '@vue/runtime-core'
 
   export default {
     components: {
@@ -13,16 +14,16 @@
         
       }
     },
-    setup () {
+    mounted () {
       M.AutoInit();
 
       document.addEventListener('DOMContentLoaded', function() {
-          let parallaxElems = document.querySelectorAll('.parallax');
-          let sidenavElems = document.querySelectorAll('.sidenav');
-          M.Parallax.init(parallaxElems);
-          M.Sidenav.init(sidenavElems);
+        let parallaxElems = document.querySelectorAll('.parallax');
+        let sidenavElems = document.querySelectorAll('.sidenav');
+        M.Parallax.init(parallaxElems);
+        M.Sidenav.init(sidenavElems);
 
-          console.log("Loaded");
+        console.log("Loaded");
       });
     }
   }

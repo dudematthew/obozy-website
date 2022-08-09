@@ -124,9 +124,16 @@
   //   }
   // }
 
+  .inline-icon {
+    display: inline-flex;
+    vertical-align: bottom;
+    font-size: 18px !important;
+  }
+
   .icon-block {
     padding: 0 15px;
   }
+
   .icon-block .material-icons {
     font-size: inherit;
   }

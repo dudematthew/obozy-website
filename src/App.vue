@@ -144,13 +144,12 @@
 
   .title,
   .subtitle {
-    text-shadow: 1px 1px 9px rgb(46, 46, 46);
     margin-top: 30px;
   }
 
   .parallax-container .title,
   .parallax-container .subtitle {
-    margin-top: 10px;
+    text-shadow: 1px 1px 9px rgb(46, 46, 46);
   }
 
   .justified {

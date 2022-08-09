@@ -97,8 +97,8 @@
   <div class="container">
     <div class="section">
       <div class="row">
-        <div class="col s12 center" style="margin-bottom: -20px;">
-          <h4>Dowiedz się kiedy zaczną się następne Obozy</h4>
+        <div class="col s12 center" style="margin-bottom: -30px;">
+          <h4 class="subtitle">Dowiedz się kiedy zaczną się następne Obozy</h4>
         </div>
       </div>
       <div class="row">
@@ -113,12 +113,19 @@
   </div>
 
 
-  <div class="parallax-container valign-wrapper">
+  <div class="index-banner parallax-container">
     <div class="section no-pad-bot">
       <div class="container">
+        <br><br>
+        <h3 class="center title">Masz pytania?</h3>
         <div class="row center">
-          <h5 class="header col s12 light">Lorem ipsum dolor sit amet consectetur adipisicing elit. </h5>
+          <h5 class="header col s12 light subtitle">Odpowiemy na każde!</h5>
         </div>
+        <div class="row center">
+          <a href="https://www.messenger.com/t/105317307701584?fbclid=IwAR1kWyWl0I83qIfKwfy-p1Ca21bb6g9JvODzkiZq5016idUDqEcSipvmWm4" target="_blank" class="btn-large waves-effect waves-light green lighten-1">Skontaktuj się z nami</a>
+        </div>
+        <br><br>
+
       </div>
     </div>
     <div class="parallax"><img src="@/assets/images/background3.jpg" alt="Tło 3" style="filter: brightness(60%)"></div>
@@ -128,7 +135,7 @@
     <div class="section">
       <div class="row">
         <div class="col s12 center">
-          <h4 style="margin-bottom: 40px">Zaobserwuj nas na Facebooku</h4>
+          <h4 class="subtitle" style="margin-bottom: 20px">Zaobserwuj nas na Facebooku</h4>
         </div>
       </div>
       <div class="row">

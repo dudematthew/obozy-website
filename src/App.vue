@@ -1,0 +1,119 @@
+<script>
+  import Header from './components/Header.vue'
+  import Footer from './components/Footer.vue'
+
+  export default {
+    components: {
+      Header,
+      Footer
+    },
+    data() {
+      return {
+        
+      }
+    }
+  }
+</script>
+
+<template>
+
+  <Header />
+
+  <router-view :abilityPoints="abilityPoints" :chosenPoints="chosenPoints" :classList="classList" :spellList="spellList" :backgroundList="backgroundList" :other="other" />
+
+  <Footer />
+  
+</template>
+
+<style lang="scss">
+  // @import '@fortawesome/fontawesome-free/css/all.css';
+  @import 'materialize-css/sass/materialize.scss';
+  @import 'material-icons/iconfont/material-icons.css';
+
+  .brand-logo {
+    /* m-plus-rounded-1c-regular - latin */
+    @font-face {
+      font-family: 'M PLUS Rounded 1c' !important;
+      font-style: normal;
+      font-weight: 500 !important;
+      src: url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.eot'); /* IE9 Compat Modes */
+      src: local(''),
+          url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+          url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+          url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.woff') format('woff'), /* Modern Browsers */
+          url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+          url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.svg#MPLUSRounded1c') format('svg'); /* Legacy iOS */
+    }
+  }
+
+  button.is-fullwidth,
+  button.is-fullwidth span
+  {
+    display: block !important;
+    text-align: center !important;
+  }
+
+  // Fix Bulma Flex
+  // .field {
+  //   flex-grow: unset !important;
+  //   flex-shrink: unset !important;
+  //   flex: 1 1 0 !important;
+  // }
+
+  nav ul a,
+  nav .brand-logo {
+    color: #444;
+  }
+
+  p {
+    line-height: 2rem;
+  }
+
+  .sidenav-trigger {
+    color: #26a69a;
+  }
+
+  .parallax-container {
+    min-height: 380px;
+    line-height: 0;
+    height: auto;
+    color: rgba(255,255,255,.9);
+  }
+    .parallax-container .section {
+      width: 100%;
+    }
+
+  @media only screen and (max-width : 992px) {
+    .parallax-container .section {
+      position: absolute;
+      top: 40%;
+    }
+    #index-banner .section {
+      top: 10%;
+    }
+  }
+
+  @media only screen and (max-width : 600px) {
+    #index-banner .section {
+      top: 0;
+    }
+  }
+
+  .icon-block {
+    padding: 0 15px;
+  }
+  .icon-block .material-icons {
+    font-size: inherit;
+  }
+
+  footer.page-footer {
+    margin: 0;
+  }
+
+  .title,
+  .subtitle {
+    text-shadow: 1px 1px 9px rgb(46, 46, 46);
+  }
+
+
+</style>

@@ -88,14 +88,15 @@
   }
 
   .parallax-container {
-    min-height: 380px;
+    min-height: 420px;
     line-height: 0;
     height: auto;
     color: rgba(255,255,255,.9);
   }
-    .parallax-container .section {
-      width: 100%;
-    }
+    
+  .parallax-container .section {
+    width: 100%;
+  }
 
   @media only screen and (max-width : 992px) {
     .parallax-container .section {
@@ -108,6 +109,10 @@
   }
 
   @media only screen and (max-width : 600px) {
+    .parallax-container {
+      height: 440px;
+    }
+
     #index-banner .section {
       top: 0;
     }

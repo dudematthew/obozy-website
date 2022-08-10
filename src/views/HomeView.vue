@@ -12,6 +12,14 @@
         e.target.style.paddingBottom = "-50px";
         // iframeResize({}, e.target);
       }
+    },
+    mounted () {
+      M.AutoInit();
+
+      document.addEventListener('DOMContentLoaded', function() {
+        let parallaxElems = document.querySelectorAll('.parallax');
+        M.Parallax.init(parallaxElems);
+      });
     }
   }
 </script>

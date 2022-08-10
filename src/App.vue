@@ -8,22 +8,8 @@
       Header,
       Footer
     },
-    data() {
-      return {
-        
-      }
-    },
-    mounted () {
+    mounted() {
       M.AutoInit();
-
-      document.addEventListener('DOMContentLoaded', function() {
-        let parallaxElems = document.querySelectorAll('.parallax');
-        let sidenavElems = document.querySelectorAll('.sidenav');
-        M.Parallax.init(parallaxElems);
-        M.Sidenav.init(sidenavElems);
-
-        console.log("Loaded");
-      });
     }
   }
 </script>

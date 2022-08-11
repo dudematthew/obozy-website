@@ -35,18 +35,17 @@
 
       <ul class="right hide-on-med-and-down">
         <li>
-          <router-link to="/o-nas"><span class="valign-wrapper black-text"><i
-                class="grey-text material-icons">lightbulb_circle</i>&nbsp; O Obozach</span></router-link>
-        </li>
-      </ul>
-
-      <ul class="right hide-on-med-and-down">
-        <li>
           <router-link to="/dolacz-do-nas"><span class="valign-wrapper black-text"><i
                 class="grey-text material-icons">hand_gesture</i>&nbsp; Dołącz do nas</span></router-link>
         </li>
       </ul>
 
+          <ul class="right hide-on-med-and-down">
+            <li>
+              <router-link to="/o-nas"><span class="valign-wrapper black-text"><i
+                    class="grey-text material-icons">lightbulb_circle</i>&nbsp; O Obozach</span></router-link>
+            </li>
+          </ul>
 
       <ul id="nav-mobile" class="sidenav">
         <li><a href="#">O Obozach</a></li>

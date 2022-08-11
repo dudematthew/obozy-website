@@ -24,4 +24,4 @@ deploy.log
 *.sw?
 
 # Images
-./src/assets/images/gallery/old
+./src/assets/images/gallery/old/*

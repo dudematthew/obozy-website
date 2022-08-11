@@ -91,7 +91,7 @@
           <h5 class="header col s12 light subtitle">Zobacz, dlaczego od {{yearsFromStart}} lat wciąż wracamy do gry</h5>
         </div>
         <div class="row center">
-          <a href="#" class="btn-large waves-effect waves-light green">Dowiedz się więcej</a>
+          <router-link to="/o-nas" class="btn-large waves-effect waves-light green">Dowiedz się więcej</router-link>
         </div>
         <br><br>
 

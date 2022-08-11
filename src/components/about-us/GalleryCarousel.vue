@@ -1,6 +1,5 @@
 <script>
-    import 'swiper/css'
-    import 'swiper/css/bundle'
+    // import 'swiper/scss'
     import Swiper from 'swiper/bundle';
 
     export default {
@@ -14,8 +13,11 @@
                 ).keys();
 
                 fileNames.forEach((fileName, index) => {
-                    console.log(fileNames[index]);
                     fileNames[index] = fileNames[index].slice(2);
+                });
+
+                fileNames.sort(function(a, b) {
+                    return parseInt(a) - parseInt(b);
                 });
 
                 console.log(fileNames);
@@ -36,9 +38,14 @@
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev'
                 },
-                scrollbar: {
-                    el: '.swiper-scrollbar',
-                    draggable: true,
+                // scrollbar: {
+                //     el: '.swiper-scrollbar',
+                //     draggable: true,
+                // },
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                    
                 },
             });
         }
@@ -57,41 +64,42 @@
             </div>
             <!-- Pagination -->
             <div class="swiper-pagination"></div>
-    
+
             <!-- Navigation buttons -->
             <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
-    
+
             <!-- Scrollbar -->
-            <div class="swiper-scrollbar"></div>
+            <!-- <div class="swiper-scrollbar"></div> -->
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
+    :root {
+        --swiper-theme-color: #0abe13 !important;
+    }
 
     .swiper-container {
-      background: #eee;
-      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-      font-size: 14px;
-      color: #000;
-      margin: 0;
-      padding: 0;
+        background: #eee;
+        font-size: 14px;
+        color: #000;
+        margin: 0;
+        padding: 0;
     }
 
     .swiper {
-      width: 100%;
-      height: 100%;
+        width: 100%;
+        height: 100%;
     }
 
     .swiper-slide {
-      background-position: center;
-      background-size: cover;
+        background-position: center;
+        background-size: cover;
     }
 
     .swiper-slide img {
-      display: block;
-      width: 100%;
+        display: block;
+        width: 100%;
     }
-
 </style>

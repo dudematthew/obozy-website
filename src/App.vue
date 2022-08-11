@@ -28,6 +28,17 @@
   // @import '@fortawesome/fontawesome-free/css/all.css';
   @import 'materialize-css/sass/materialize.scss';
   @import 'material-icons/iconfont/material-icons.css';
+  @import 'swiper/css/bundle';
+
+
+  // Customize Swiper CSS
+  :root {
+    --swiper-theme-color: #aa5607;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: #aa5607 !important;
+  }
 
   .brand-logo,
   .main-title {

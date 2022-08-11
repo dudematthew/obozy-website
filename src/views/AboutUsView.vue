@@ -77,6 +77,24 @@ export default {
     </div>
   </div>
 
+  <!-- <div class="index-banner container center" style="margin: 0; width: 100%; max-width: 100%;">
+    <div class="section">
+      <div class="row">
+        <div class="col s12 center" style="margin-bottom: -30px;">
+          <h4 class="subtitle">Galeria</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 center">
+          <br><br>
+            <GalleryCarousel />
+          <br><br>
+        </div>
+      </div>
+
+    </div>
+  </div> -->
+
   <div class="container" id="zasady-gry">
     <div class="section">
       <div class="row">

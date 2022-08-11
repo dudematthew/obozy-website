@@ -65,7 +65,7 @@ export default {
     <div class="section">
       <div class="row">
         <div class="col s12 center" style="margin-bottom: -30px;">
-          <h4 class="subtitle">Zasady gry i załączniki</h4>
+          <h4 class="subtitle">Galeria</h4>
         </div>
       </div>
       <div class="row">
@@ -79,23 +79,24 @@ export default {
     </div>
   </div>
 
-  <!-- <div class="container">
+  <div class="container">
     <div class="section">
       <div class="row">
         <div class="col s12 center" style="margin-bottom: -30px;">
           <h4 class="subtitle">Zasady gry i załączniki</h4>
+          <h5 class="header col s12 light">Poznaj udoskonalaną od {{yearsFromStart}} lat grę Obozy</h5>
+          <h6 class="header col s12 light" style="font-style: italic;">Zalecamy uproszczoną wersję</h6>
         </div>
       </div>
       <div class="row">
         <div class="col s12 center">
             <br><br>
-
-            <iframe src="https://drive.google.com/embeddedfolderview?id=1efbbXoSKIeTn6bwUE1wRTNYmJVdIctG7#list" style="width:100%; height:600px; border:0;"></iframe>
+            <iframe src="https://drive.google.com/embeddedfolderview?id=13csMsz_7qZmU8rTouc3kgGcIshRWUNCw#list" style="width:100%; height:600px; border:0;" title="PDFs of SUBSTITUTE YOUR OWN FOLDER TOPIC HERE on Google Drive"></iframe>
             <br><br>
         </div>
       </div>
 
     </div>
-  </div> -->
+  </div>
 
 </template>

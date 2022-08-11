@@ -3,9 +3,9 @@
 
 export default {
   name: "HomeView",
-  props: [
-      "GalleryCarousel",
-  ],
+  components: {
+    GalleryCarousel
+  },
   computed: {
       yearsFromStart() {
           return new Date().getFullYear() - 2016;
@@ -35,10 +35,8 @@ export default {
       }
   },
   mounted() {
-      document.addEventListener("DOMContentLoaded", function () {
-          let parallaxElems = document.querySelectorAll(".parallax");
-          M.Parallax.init(parallaxElems);
-      });
+    let parallaxElems = document.querySelectorAll(".parallax");
+    M.Parallax.init(parallaxElems);
   },
 }
 </script>
@@ -61,7 +59,7 @@ export default {
   </div>
 
 
-  <div class="index-banner container center" style="margin: 0; width: 100%; max-width: 100%;">
+  <div class="index-banner container center">
     <div class="section">
       <div class="row">
         <div class="col s12 center" style="margin-bottom: -30px;">
@@ -71,7 +69,7 @@ export default {
       <div class="row">
         <div class="col s12 center">
           <br><br>
-            <GalleryCarousel></GalleryCarousel>
+            <GalleryCarousel />
           <br><br>
         </div>
       </div>
@@ -79,7 +77,7 @@ export default {
     </div>
   </div>
 
-  <div class="container">
+  <div class="container" id="zasady-gry">
     <div class="section">
       <div class="row">
         <div class="col s12 center" style="margin-bottom: -30px;">

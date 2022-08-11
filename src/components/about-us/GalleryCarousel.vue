@@ -1,7 +1,7 @@
 <script>
     import 'swiper/css'
     import 'swiper/css/bundle'
-    import 'swiper/bundle';
+    import Swiper from 'swiper/bundle';
 
     export default {
         name: 'GalleryCarousel',
@@ -25,40 +25,73 @@
         },
         methods: {},
         mounted() {
-            let materialboxedElems = document.querySelectorAll('.materialboxed');
-            M.Materialbox.init(materialboxedElems);
+            // let materialboxedElems = document.querySelectorAll('.materialboxed');
+            // M.Materialbox.init(materialboxedElems, {
+            //     inDuration: 0,
+            //     outDuration: 0
+            // });
 
-            this.swiper = new Swiper('.swiper', {});
-
-            console.log(this.imagesPaths);
+            this.swiper = new Swiper('.swiper', {
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev'
+                },
+                scrollbar: {
+                    el: '.swiper-scrollbar',
+                    draggable: true,
+                },
+            });
         }
     }
 </script>
 
 <template>
-dupa
-    <div class="carousel" style="width: 100%">
-        <!-- <a v-for="(imagePath, index) in imagesPaths" :key="index" class="carousel-item" :href="'#' + index"><img class="materialboxed responsive-img"
-                :src="require('@/assets/images/gallery/' + imagePath)"></a> -->
-        <a class="carousel-item" href="#"><img :src="require('@/assets/images/gallery/Obozy-84.jpg')" /></a>
-    </div>
-
-    <div class="swiper">
-        <!-- Additional required wrapper -->
-        <div class="swiper-wrapper">
-            <!-- Slides -->
-            <div class="swiper-slide" v-for="(imagePath, index) in imagesPaths" :key="index">
-                <img :src="require('@/assets/images/gallery/' + imagePath)">
+    <div class="swiper-container">
+        <div class="swiper">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                <div class="swiper-slide" v-for="(imagePath, index) in imagesPaths" :key="index">
+                    <img :src="require('@/assets/images/gallery/' + imagePath)">
+                </div>
             </div>
+            <!-- Pagination -->
+            <div class="swiper-pagination"></div>
+    
+            <!-- Navigation buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+    
+            <!-- Scrollbar -->
+            <div class="swiper-scrollbar"></div>
         </div>
-        <!-- Pagination -->
-        <div class="swiper-pagination"></div>
-
-        <!-- Navigation buttons -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-
-        <!-- Scrollbar -->
-        <div class="swiper-scrollbar"></div>
     </div>
 </template>
+
+<style lang="scss" scoped>
+
+    .swiper-container {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      background-position: center;
+      background-size: cover;
+    }
+
+    .swiper-slide img {
+      display: block;
+      width: 100%;
+    }
+
+</style>

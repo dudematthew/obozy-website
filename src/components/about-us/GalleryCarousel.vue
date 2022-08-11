@@ -45,8 +45,8 @@
                 pagination: {
                     el: ".swiper-pagination",
                     clickable: true,
-                    
                 },
+                zoom: true,
             });
         }
     }
@@ -59,7 +59,9 @@
             <div class="swiper-wrapper">
                 <!-- Slides -->
                 <div class="swiper-slide" v-for="(imagePath, index) in imagesPaths" :key="index">
-                    <img :src="require('@/assets/images/gallery/' + imagePath)">
+                    <div class="swiper-zoom-container">
+                        <img :src="require('@/assets/images/gallery/' + imagePath)" />
+                    </div>
                 </div>
             </div>
             <!-- Pagination -->

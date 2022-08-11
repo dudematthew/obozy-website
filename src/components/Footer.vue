@@ -12,8 +12,8 @@
           <h5 class="white-text">O nas</h5>
           <ul>
             <li><a href="#" class="white-text">Dołącz do nas</a></li>
-            <li><a href="#" class="white-text">Dowiedz się więcej</a></li>
-            <li><a href="#" class="white-text">Zasady gry</a></li>
+            <li><router-link to="/o-nas" class="white-text">Dowiedz się więcej</router-link></li>
+            <li><router-link to="/o-nas#zasady-gry" class="white-text">Zasady gry</router-link></li>
           </ul>
         </div>
         <div class="col l3 s12">

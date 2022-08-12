@@ -10,7 +10,7 @@
     },
     mounted() {
       M.AutoInit();
-    }
+    },
   }
 </script>
 

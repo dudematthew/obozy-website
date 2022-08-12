@@ -6,7 +6,6 @@ import router from './router';
 
 import 'publicalbum/embed-ui.min.js';
 
-
 // Single Page Apps for GitHub Pages
 // MIT License
 // https://github.com/rafgraph/spa-github-pages

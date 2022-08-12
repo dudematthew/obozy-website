@@ -152,7 +152,7 @@ export default {
       <div class="row">
         <div class="col s12 center">
             <br><br>
-            <iframe src="https://drive.google.com/embeddedfolderview?id=13csMsz_7qZmU8rTouc3kgGcIshRWUNCw#list" style="width:100%; height:600px; border:0;" title="PDFs of SUBSTITUTE YOUR OWN FOLDER TOPIC HERE on Google Drive"></iframe>
+            <iframe src="https://drive.google.com/embeddedfolderview?id=13csMsz_7qZmU8rTouc3kgGcIshRWUNCw#list" style="width:100%; height:500px; border:0;" title="PDFs of SUBSTITUTE YOUR OWN FOLDER TOPIC HERE on Google Drive"></iframe>
         </div>
       </div>
 
@@ -160,3 +160,9 @@ export default {
   </div>
 
 </template>
+
+<style lang="scss" scoped>
+  h4 {
+    margin-top: 70px;
+  }
+</style>

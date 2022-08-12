@@ -46,8 +46,8 @@
           </ul>
 
       <ul id="nav-mobile" class="sidenav">
-        <li><router-link to="/o-nas">O Obozach</router-link></li>
-        <li><a href="#">Dowiedz się więcej</a></li>
+        <li><router-link to="/o-nas" class="sidenav-close">O Obozach</router-link></li>
+        <li><router-link to="/dolacz-do-nas" class="sidenav-close">Dołącz do nas</router-link></li>
         <li><a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">Nasz Facebook</a></li>
         <li><a href="https://www.instagram.com/obozy_gra_terenowa" target="_blank">Nasz Instagram</a></li>
         <li><a href="https://patronite.pl/obozy" target="_blank">Zostań naszym Patronem</a></li>

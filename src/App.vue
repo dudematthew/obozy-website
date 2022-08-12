@@ -41,7 +41,8 @@
     width: 100%;
   }
 
-  .swiper-pagination-bullet-active {
+  .swiper-pagination-bullet-active,
+  .swiper-pagination-bullet {
     background: #64f023 !important;
   }
 

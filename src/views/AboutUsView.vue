@@ -152,10 +152,20 @@ export default {
       <div class="row">
         <div class="col s12 center">
             <br><br>
-            <iframe src="https://drive.google.com/embeddedfolderview?id=13csMsz_7qZmU8rTouc3kgGcIshRWUNCw#list" style="width:100%; height:500px; border:0;" title="PDFs of SUBSTITUTE YOUR OWN FOLDER TOPIC HERE on Google Drive"></iframe>
+            <iframe src="https://drive.google.com/embeddedfolderview?id=13csMsz_7qZmU8rTouc3kgGcIshRWUNCw#list" style="width:100%; height:500px; border:0; overflow: hidden;" title="PDFs of SUBSTITUTE YOUR OWN FOLDER TOPIC HERE on Google Drive"></iframe>
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="row center">
+          <router-link to="/dolacz-do-nas" class="btn-large waves-effect waves-light green">Dołącz do nas</router-link>
+        </div>
+      </div>
     </div>
   </div>
 

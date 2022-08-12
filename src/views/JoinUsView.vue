@@ -198,6 +198,16 @@
     </div>
   </div>
 
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="row center">
+          <router-link to="/o-nas" class="btn-large waves-effect waves-light green">Dowiedz się więcej</router-link>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 </template>
 

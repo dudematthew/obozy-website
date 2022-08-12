@@ -11,9 +11,9 @@
         <div class="col l3 s12">
           <h5 class="white-text">O nas</h5>
           <ul>
-            <li><a href="#" class="white-text">Dołącz do nas</a></li>
+            <li><router-link to="/" class="white-text">Strona główna</router-link></li>
+            <li><router-link to="/dolacz-do-nas" class="white-text">Dołącz do nas</router-link></li>
             <li><router-link to="/o-nas" class="white-text">Dowiedz się więcej</router-link></li>
-            <li><router-link to="/o-nas#zasady-gry" class="white-text">Zasady gry</router-link></li>
           </ul>
         </div>
         <div class="col l3 s12">

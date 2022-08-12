@@ -36,7 +36,7 @@
           <h5 class="header col s12 light subtitle">Spędź dwa dni na łonie natury tocząc wspólnie zaciekły bój o flagę</h5>
         </div>
         <div class="row center">
-          <a href="#" class="btn-large waves-effect waves-light green">Dołącz do nas</a>
+          <router-link to="/dolacz-do-nas" class="btn-large waves-effect waves-light green">Dołącz do nas</router-link>
         </div>
         <br><br>
 

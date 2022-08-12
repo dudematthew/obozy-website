@@ -28,6 +28,28 @@
             description: "Wyjątkowo usprawnia porządkowanie informacji. Od wielu lat pomaga we wszystkim zarówno fizycznie i mentalnie. Preferuje granie klasą Skauta.",
             imageName: "karol"
           },
+        ],
+        joinStepsData: [
+          {
+            title: "Napisz do nas",
+            content: '<a href="https://www.messenger.com/t/105317307701584?fbclid=IwAR1kWyWl0I83qIfKwfy-p1Ca21bb6g9JvODzkiZq5016idUDqEcSipvmWm4" target="_blank">Daj znać</a>, że chcesz dołączyć. Odpowiemy na pytania i upewnimy się że wszystko jest w należytym porządku. Nie ma również problemu jeśli zapragniesz zaprosić towarzystwo.',
+            color: "pink"
+          },
+          {
+            title: "Zajrzyj na Facebooka",
+            content: 'Kilka miesięcy przed Obozami, na <a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">stronie Obozów</a> na Facebooku pojawi się wydarzenie. Wyraź zainteresowanie lub zadeklaruj udział, żeby otrzymywać wszystkie niezbędne aktualizacje.',
+            color: "blue"
+          },
+          {
+            title: "Przygotuj się",
+            content: 'Tuż przed wydarzeniem udostępniamy listę rzeczy, które należy sobie przygotować na grę. Nie jest ona bardziej złożona od listy rzeczy na biwak. Jeśli chcesz możesz <router-link to="/o-nas">przejrzeć </router-link> na czym polega wydarzenie.',
+            color: "grey"
+          },
+          {
+            title: "Przyjedź na miejsce",
+            content: 'Obozy organizowane są zazwyczaj w okolicach miasta <a href="https://goo.gl/maps/iFRiGYe8CB5s8Tbm6" target="_blank">Opole</a>. Niekiedy w danym roku zmieniamy lokalizację, która będzie udostępniana na wydarzeniu. Zabierz się swoim bolidem lub poproś innych o podwózkę.',
+            color: "green"
+          },
         ]
       }
     },
@@ -158,70 +180,15 @@
         </div>
       </div>
       <div class="row">
-        <div class="col m12 l6">
+        <div class="col m12 l6" v-for="(step, index) in joinStepsData" :key="index">
           <div class="card-panel grey lighten-5 z-depth-1">
-            <div class="row valign-wrapper">
-              <div class="col s3 l5 xl3">
-                <h1><span class="pink circle-number">1</span></h1>
+            <div class="row center">
+              <div class="col s12 m4 l5 xl4">
+                <h1 style="margin: 0 0 10px 0;"><span class="circle-number" :class="step.color">{{++index}}</span></h1>
               </div>
-              <div class="col s10 left-align">
-                <h4>Napisz do nas</h4>
-                <span class="black-text">
-                  <a href="https://www.messenger.com/t/105317307701584?fbclid=IwAR1kWyWl0I83qIfKwfy-p1Ca21bb6g9JvODzkiZq5016idUDqEcSipvmWm4"
-                    target="_blank">Daj znać</a>, że chcesz dołączyć. Odpowiemy na pytania i upewnimy się że wszystko
-                  jest w należytym porządku. Nie ma również problemu jeśli zapragniesz zaprosić towarzystwo.
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col m12 l6">
-          <div class="card-panel grey lighten-5 z-depth-1">
-            <div class="row valign-wrapper">
-              <div class="col s3 l5 xl3">
-                <h1><span class="blue circle-number">2</span></h1>
-              </div>
-              <div class="col s10 left-align">
-                <h4>Zajrzyj na Facebooka</h4>
-                <span class="black-text">
-                  Kilka miesięcy przed Obozami, na <a href="https://www.facebook.com/ObozyGraTerenowa"
-                    target="_blank">stronie Obozów</a> na Facebooku pojawi się wydarzenie. Wyraź zainteresowanie lub
-                  zadeklaruj udział, żeby otrzymywać wszystkie niezbędne aktualizacje.
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col m12 l6">
-          <div class="card-panel grey lighten-5 z-depth-1">
-            <div class="row valign-wrapper">
-              <div class="col s3 l5 xl3">
-                <h1><span class="grey circle-number">3</span></h1>
-              </div>
-              <div class="col s10 left-align">
-                <h4>Przygotuj się</h4>
-                <span class="black-text">
-                  Tuż przed wydarzeniem udostępniamy listę rzeczy, które należy sobie przygotować na grę. Nie jest ona
-                  bardziej złożona od listy rzeczy na biwak. Jeśli chcesz możesz <router-link to="/o-nas">przejrzeć
-                  </router-link> na czym polega wydarzenie.
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col m12 l6">
-          <div class="card-panel grey lighten-5 z-depth-1">
-            <div class="row valign-wrapper">
-              <div class="col s3 l5 xl3">
-                <h1><span class="green circle-number">4</span></h1>
-              </div>
-              <div class="col s10 left-align">
-                <h4>Przyjedź na miejsce</h4>
-                <span class="black-text">
-                  Obozy organizowane są zazwyczaj w okolicach miasta <a href="https://goo.gl/maps/iFRiGYe8CB5s8Tbm6"
-                    target="_blank">Opole</a>. Niekiedy w danym roku zmieniamy lokalizację, która będzie udostępniana na
-                  wydarzeniu. Zabierz się swoim bolidem lub poproś innych o podwózkę.
-                </span>
+              <div class="col s12 m8 l7 xl8 left-align">
+                <h4>{{step.title}}</h4>
+                <span class="black-text" v-html="step.content"></span>
               </div>
             </div>
           </div>

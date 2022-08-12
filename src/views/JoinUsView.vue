@@ -94,14 +94,14 @@
       </div>
       <div class="row">
         <div class="col s12 center">
-          <div class="col m6 s12" v-for="(staff, index) in staffData" :key="index">
-            <div class="card-panel grey lighten-5 z-depth-1">
-              <div class="row valign-wrapper">
-                <div class="col s3">
+          <div class="col s12 m6" v-for="(staff, index) in staffData" :key="index">
+            <div class="card-panel staff-panel grey lighten-5 z-depth-1" style="height: auto">
+              <div class="row">
+                <div class="col s12 m12 l4">
                   <img :src="require('@/assets/images/profile-pictures/'+ staff.imageName + '.png')" :alt="staff.name"
-                    class="circle responsive-img"> <!-- notice the "circle" class -->
+                    class="circle responsive-img">
                 </div>
-                <div class="col s10 left-align">
+                <div class="col s12 m12 l8 left-align">
                   <h4>{{staff.name}}</h4>
                   <span class="black-text">
                     {{staff.description}}
@@ -110,16 +110,15 @@
               </div>
             </div>
           </div>
-          <div class="col m12">
-            <div class="card-panel grey lighten-5 z-depth-1">
-              <div class="row valign-wrapper">
-                <div class="col s3">
-                  <img src="@/assets/images/profile-pictures/all.png" alt="Reszta" class="circle responsive-img">
-                  <!-- notice the "circle" class -->
+          <div class="col s12">
+            <div class="card-panel grey lighten-5 z-depth-1" style="height: auto">
+              <div class="row">
+                <div class="col s12 m12 l4">
+                  <img src="@/assets/images/profile-pictures/all.png" class="circle responsive-img">
                 </div>
-                <div class="col s10 left-align">
+                <div class="col s12 m12 l8 left-align">
                   <h4>Uczestnicy</h4>
-                  <span class="black-text">
+                  <span class="black-text flow-text light">
                     Najważniejszy składnik Obozów, bez którego nie stworzylibyśmy tego wydarzenia.
                     Niesamowici ludzie którzy raz za razem pokazują co to znaczy dobra zabawa.
                     Dołącz do nich i sam daj się przekonać.
@@ -159,7 +158,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col l6 m12">
+        <div class="col m12 l6">
           <div class="card-panel grey lighten-5 z-depth-1">
             <div class="row valign-wrapper">
               <div class="col s3 l5 xl3">
@@ -168,7 +167,9 @@
               <div class="col s10 left-align">
                 <h4>Napisz do nas</h4>
                 <span class="black-text">
-                  <a href="https://www.messenger.com/t/105317307701584?fbclid=IwAR1kWyWl0I83qIfKwfy-p1Ca21bb6g9JvODzkiZq5016idUDqEcSipvmWm4" target="_blank">Daj znać</a>, że chcesz dołączyć. Odpowiemy na pytania i upewnimy się że wszystko jest w należytym porządku. Nie ma również problemu jeśli zapragniesz zaprosić towarzystwo.
+                  <a href="https://www.messenger.com/t/105317307701584?fbclid=IwAR1kWyWl0I83qIfKwfy-p1Ca21bb6g9JvODzkiZq5016idUDqEcSipvmWm4"
+                    target="_blank">Daj znać</a>, że chcesz dołączyć. Odpowiemy na pytania i upewnimy się że wszystko
+                  jest w należytym porządku. Nie ma również problemu jeśli zapragniesz zaprosić towarzystwo.
                 </span>
               </div>
             </div>
@@ -183,7 +184,9 @@
               <div class="col s10 left-align">
                 <h4>Zajrzyj na Facebooka</h4>
                 <span class="black-text">
-                  Kilka miesięcy przed Obozami, na <a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">stronie Obozów</a> na Facebooku pojawi się wydarzenie. Wyraź zainteresowanie lub zadeklaruj udział, żeby otrzymywać wszystkie niezbędne aktualizacje.
+                  Kilka miesięcy przed Obozami, na <a href="https://www.facebook.com/ObozyGraTerenowa"
+                    target="_blank">stronie Obozów</a> na Facebooku pojawi się wydarzenie. Wyraź zainteresowanie lub
+                  zadeklaruj udział, żeby otrzymywać wszystkie niezbędne aktualizacje.
                 </span>
               </div>
             </div>
@@ -198,7 +201,9 @@
               <div class="col s10 left-align">
                 <h4>Przygotuj się</h4>
                 <span class="black-text">
-                  Tuż przed wydarzeniem udostępniamy listę rzeczy, które należy sobie przygotować na grę. Nie jest ona bardziej złożona od listy rzeczy na biwak. Jeśli chcesz możesz <router-link to="/o-nas">przejrzeć</router-link> na czym polega wydarzenie.
+                  Tuż przed wydarzeniem udostępniamy listę rzeczy, które należy sobie przygotować na grę. Nie jest ona
+                  bardziej złożona od listy rzeczy na biwak. Jeśli chcesz możesz <router-link to="/o-nas">przejrzeć
+                  </router-link> na czym polega wydarzenie.
                 </span>
               </div>
             </div>
@@ -213,7 +218,9 @@
               <div class="col s10 left-align">
                 <h4>Przyjedź na miejsce</h4>
                 <span class="black-text">
-                  Obozy organizowane są zazwyczaj w okolicach miasta <a href="https://goo.gl/maps/iFRiGYe8CB5s8Tbm6" target="_blank">Opole</a>. Niekiedy w danym roku zmieniamy lokalizację, która będzie udostępniana na wydarzeniu. Zabierz się swoim bolidem lub poproś innych o podwózkę. 
+                  Obozy organizowane są zazwyczaj w okolicach miasta <a href="https://goo.gl/maps/iFRiGYe8CB5s8Tbm6"
+                    target="_blank">Opole</a>. Niekiedy w danym roku zmieniamy lokalizację, która będzie udostępniana na
+                  wydarzeniu. Zabierz się swoim bolidem lub poproś innych o podwózkę.
                 </span>
               </div>
             </div>
@@ -228,42 +235,64 @@
 </template>
 
 <style lang="scss" scoped>
+  .circle-number {
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.6em;
+    margin-right: 15px;
+    text-align: center;
+    width: 1.6em;
+  }
 
-.circle-number {
-   border-radius: 0.8em;
-  -moz-border-radius: 0.8em;
-  -webkit-border-radius: 0.8em;
-  color: #ffffff;
-  display: inline-block;
-  font-weight: bold;
-  line-height: 1.6em;
-  margin-right: 15px;
-  text-align: center;
-  width: 1.6em; 
-}
+  .circle-number.red {
+    background: red;
+  }
 
-.circle-number.red {
-  background: red;
-}
+  .circle.grey {
+    background: #cccccc;
+    color: #fff;
+  }
 
-.circle.grey {
-  background: #cccccc;
-  color: #fff;
-}
+  .circle.green {
+    background: #5EA226;
+    color: #ffffff;
+  }
 
-.circle.green {
-  background: #5EA226;
-  color: #ffffff;
-}
+  .circle.blue {
+    background: #5178D0;
+    color: #ffffff;
+  }
 
-.circle.blue {
-  background: #5178D0;
-  color: #ffffff;
-}
+  .circle.pink {
+    background: #EF0BD8;
+    color: #ffffff;
+  }
 
-.circle.pink {
-  background: #EF0BD8;
-  color: #ffffff;
-}
+  @media (min-width : 1250px) {
+    .card-panel.staff-panel {
+      min-height: 250px !important;
+    }
+  }
 
+  @media (max-width: 1250px) {
+    .card-panel.staff-panel {
+      min-height: 300px
+    }
+  }
+
+  @media (max-width: 991px) {
+    .card-panel.staff-panel {
+      min-height: 600px;
+    }
+  }
+
+  @media (max-width: 850px) {
+    .card-panel.staff-panel {
+      min-height: 530px;
+    }
+  }
 </style>

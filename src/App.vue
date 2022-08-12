@@ -36,6 +36,11 @@
     --swiper-theme-color: #aa5607;
   }
 
+  body,
+  html {
+    width: 100%;
+  }
+
   .swiper-pagination-bullet-active {
     background: #aa5607 !important;
   }

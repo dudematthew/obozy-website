@@ -123,7 +123,7 @@ export default {
     <div class="parallax"><img src="@/assets/images/background21.jpg" alt="Tło 1" style="filter: brightness(60%)"></div>
   </div>
 
-  <div class="index-banner container center">
+  <div class="index-banner container carousel-container center m12 s12">
     <div class="section">
       <div class="row">
         <div class="col s12 center" style="margin-bottom: -30px;">
@@ -164,5 +164,20 @@ export default {
 <style lang="scss" scoped>
   h4 {
     margin-top: 70px;
+  }
+
+  @media only screen and (max-width : 1200px) {
+    .carousel-container {
+      width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .col {
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
 </style>

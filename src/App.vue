@@ -33,7 +33,7 @@
 
   // Customize Swiper CSS
   :root {
-    --swiper-theme-color: #aa5607;
+    --swiper-theme-color: #64f023;
   }
 
   body,
@@ -42,7 +42,7 @@
   }
 
   .swiper-pagination-bullet-active {
-    background: #aa5607 !important;
+    background: #64f023 !important;
   }
 
   .brand-logo,

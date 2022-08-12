@@ -47,6 +47,9 @@
                     clickable: true,
                 },
                 zoom: true,
+                autoplay: {
+                    delay: 5000
+                },
             });
         }
     }

@@ -105,6 +105,10 @@
     padding: 40px 0;
   }
 
+  .parallax-container img {
+    background-color: #388E3C;
+  }
+
   // @media only screen and (max-width : 992px) {
   //   .parallax-container .section {
   //     position: absolute;

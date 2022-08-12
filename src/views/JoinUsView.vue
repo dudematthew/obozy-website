@@ -135,10 +135,10 @@
           <div class="col s12">
             <div class="card-panel grey lighten-5 z-depth-1" style="height: auto">
               <div class="row">
-                <div class="col s12 m12 l4">
+                <div class="col s12 m12 l4 xl3">
                   <img src="@/assets/images/profile-pictures/all.png" class="circle responsive-img">
                 </div>
-                <div class="col s12 m12 l8 left-align">
+                <div class="col s12 m12 l7 xl9 left-align">
                   <h4>Uczestnicy</h4>
                   <span class="black-text flow-text light">
                     Najważniejszy składnik Obozów, bez którego nie stworzylibyśmy tego wydarzenia.

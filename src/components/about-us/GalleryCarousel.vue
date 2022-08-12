@@ -50,6 +50,7 @@
                 autoplay: {
                     delay: 5000
                 },
+                loop: true,
             });
         }
     }

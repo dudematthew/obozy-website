@@ -184,7 +184,7 @@
         <div class="col s12">
           <div class="row">
             <div class="col s12 m6" v-for="album, key in googleAlbums" :key="key">
-              <div class="card">
+              <div class="card hoverable">
                 <a :href="album.link" target="_blank" class="card-image">
                   <img class="activator" :src="require('@/assets/images/backgrounds/' + album.image)">
                 </a>

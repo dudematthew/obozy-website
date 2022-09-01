@@ -104,7 +104,7 @@
 
       </div>
     </div>
-    <div class="parallax"><img src="@/assets/images/background30.jpg" alt="Tło 1" style="filter: brightness(60%)"></div>
+    <div class="parallax"><img src="@/assets/images/backgrounds/background30.jpg" alt="Tło 1" style="filter: brightness(60%)"></div>
   </div>
 
   <div class="container">
@@ -169,7 +169,7 @@
 
       </div>
     </div>
-    <div class="parallax"><img src="@/assets/images/background31.jpg" alt="Tło 1" style="filter: brightness(60%)"></div>
+    <div class="parallax"><img src="@/assets/images/backgrounds/background31.jpg" alt="Tło 1" style="filter: brightness(60%)"></div>
   </div>
 
   <div class="container">

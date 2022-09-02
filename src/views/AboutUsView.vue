@@ -215,7 +215,7 @@
           <br><br>
           <iframe src="https://drive.google.com/embeddedfolderview?id=13csMsz_7qZmU8rTouc3kgGcIshRWUNCw#list"
             style="width:100%; height:500px; border:0; overflow: hidden;"
-            title="PDFs of SUBSTITUTE YOUR OWN FOLDER TOPIC HERE on Google Drive"></iframe>
+            title="Zasady Gry"></iframe>
         </div>
       </div>
 

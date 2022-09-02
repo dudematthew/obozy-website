@@ -177,15 +177,15 @@
       </div>
 
       <!-- On large devices -->
-      <div class="row hide-on-med-and-down">
+      <div class="row l1 offset-l2 hide-on-med-and-down">
         <div class="col s12 m12 l4 xl3 center">
-          <a href="https://www.facebook.com/ObozyGraTerenowa">
+          <a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
             <img src="@/assets/images/logo.png" class="circle responsive-img pulse">
           </a>
         </div>
 
         <div class="col s12 m12 l7 xl9 light">
-          <a href="https://www.facebook.com/ObozyGraTerenowa">
+          <a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
             <h4>Obozy - Gra terenowa</h4>
           </a>
           <p class="black-text flow-text light" style="margin-bottom: 20px; margin-top: 0;">
@@ -202,13 +202,13 @@
       <!-- On medium devices -->
       <div class="row hide-on-large-only">
         <div class="col s12 m12 l4 xl3 center">
-          <a href="https://www.facebook.com/ObozyGraTerenowa">
+          <a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
             <img src="@/assets/images/logo.png" class="circle responsive-img pulse">
           </a>
         </div>
 
         <div class="col s12 m12 l7 xl9 light center">
-          <a href="https://www.facebook.com/ObozyGraTerenowa">
+          <a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
             <h4>Obozy - Gra terenowa</h4>
           </a>
           <p class="black-text flow-text light" style="margin-bottom: 30px">

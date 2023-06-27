@@ -14,7 +14,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/dudematthew/obozy-website">
-    <img src="src/assets/logo.png" alt="Logo" width="241" height="45">
+    <img src="src/assets/images/logo.png" alt="Logo" width="241" height="45">
   </a>
 
   <h3 align="center">OBOZY WEBSITE</h3>

@@ -22,6 +22,7 @@ deploy.log
 *.njsproj
 *.sln
 *.sw?
+.history
 
 # Images
 ./src/assets/images/gallery/old/*

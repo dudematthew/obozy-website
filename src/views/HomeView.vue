@@ -17,6 +17,19 @@
         return new Date().getFullYear() - 2016;
       }
     },
+    data () {
+      return {
+        event: {
+          date: '2023-08-11',
+          time: '15:00',
+          place: 'Park Pałacu w Turawie',
+          description: 'W tym roku zasady gry nie ulegną znaczącej zmianie - miast wprowadzania nowych zasad, organizatorzy skupią się na usprawnieniu przebiegu rozgrywki, przestrzeganiu zasad, umocnieniu obecnych mechanik i powolnym zbliżeniu się do finalnej wersji Obozów.',
+          bannerLink: 'https://i.imgur.com/VhHTZFt.png',
+          eventLink: 'https://www.facebook.com/events/740488294228050',
+          name: 'Obozy VII Edycja'
+        }
+      }
+    },
     mounted() {
       M.AutoInit();
 
@@ -36,7 +49,14 @@
         .catch(() => {
           console.error("Can't load Facebook script.");
         });
-    }
+    },
+    computed: {
+      eventPassed () {
+        let eventDate = new Date(this.event.date + ' ' + this.event.time);
+        let now = new Date();
+        return eventDate < now;
+      }
+    },
   }
 </script>
 
@@ -129,15 +149,29 @@
     <div class="section">
       <div class="row">
         <div class="col s12 center" style="margin-bottom: -30px;">
-          <h4 class="subtitle">Dowiedz się kiedy zaczną się następne Obozy</h4>
+          <h3 class="title" v-if="!eventPassed">Najbliższe Obozy</h3>
+          <h3 class="title" v-else>Ostatnie Obozy</h3>
+          <div class="col s1"></div> 
+          <div class="col s10 center-align">
+            <div class="card">
+              <div class="card-image">
+                <img :src="event.bannerLink">
+                <span class="card-title">{{ event.name }}</span>
+                <a class="btn-floating halfway-fab waves-effect waves-light green" :href="event.eventLink" target="_blank"><i class="material-icons">link</i></a>
+              </div>
+              <div class="card-content left-align">
+                <p><i class="material-icons green-text">explore</i> {{ event.place }}, {{ new Date(event.date).toLocaleDateString() }}</p>
+                <br>
+                <p class="flow-text"><i class="material-icons green-text">description</i> {{ event.description }}</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="col s12 center">
           <br><br>
-          <iframe id="live-preview" src="https://widgets.sociablekit.com/facebook-page-events/iframe/88019"
-            frameborder="0" width="100%" height="440" style="height: 440px" allowfullscreen></iframe>
-          <br><br>
+          
         </div>
       </div>
 

@@ -156,7 +156,7 @@
             <div class="card">
               <div class="card-image">
                 <img :src="event.bannerLink">
-                <span class="card-title">{{ event.name }}</span>
+                <span class="card-title hide-on-med-and-down">{{ event.name }}</span>
                 <a class="btn-floating halfway-fab waves-effect waves-light green" :href="event.eventLink" target="_blank"><i class="material-icons">link</i></a>
               </div>
               <div class="card-content left-align">

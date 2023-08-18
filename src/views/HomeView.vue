@@ -145,14 +145,14 @@
         style="filter: brightness(60%)"></div>
   </div>
 
-  <div class="container">
+  <div class="container is-fullwidth mx-0">
     <div class="section">
       <div class="row">
-        <div class="col s12 center" style="margin-bottom: -30px;">
+        <div class="col center" style="margin-bottom: -30px;">
           <h3 class="title" v-if="!eventPassed">Najbliższe Obozy</h3>
           <h3 class="title" v-else>Ostatnie Obozy</h3>
-          <div class="col s1"></div> 
-          <div class="col s10 center-align">
+          <div class="col m1 hide-on-small-and-down"></div> 
+          <div class="col m10 s12 center-align">
             <div class="card">
               <div class="card-image">
                 <img :src="event.bannerLink">

@@ -10,12 +10,16 @@
       return {
         googleAlbums: [
           {
-            link: "https://photos.app.goo.gl/cpVnRNrYRCok6BJeA",
-            image: "obozy-5.png"
+            link: "https://photos.app.goo.gl/ui2GPk5REdbqEvrB7",
+            image: "obozy-7.png"
           },
           {
             link: "https://photos.app.goo.gl/vSDwqxgKufh1es1JA",
             image: "obozy-6.png"
+          },
+          {
+            link: "https://photos.app.goo.gl/cpVnRNrYRCok6BJeA",
+            image: "obozy-5.png"
           },
         ]
       }
@@ -39,6 +43,13 @@
         console.log(fileNames);
 
         return fileNames;
+      },
+      groupedAlbums() {
+        let groups = [];
+        for (let i = 0; i < this.googleAlbums.length; i += 2) {
+          groups.push(this.googleAlbums.slice(i, i + 2));
+        }
+        return groups;
       }
     },
     mounted() {
@@ -176,14 +187,12 @@
     <div class="section">
       <div class="row">
         <div class="col s12 center">
-          <h4 class="subtitle">Więcej zdjęć?</h4>
-          <h5 class="header col s12 light">Zobacz albumy poprzednich Edycji Obozów!</h5>
+            <h4 class="subtitle">Więcej zdjęć?</h4>
+            <h5 class="header col s12 light">Zobacz albumy poprzednich Edycji Obozów!</h5>
         </div>
-      </div>
-      <div class="row">
         <div class="col s12">
-          <div class="row">
-            <div class="col s12 m6" v-for="album, key in googleAlbums" :key="key">
+          <div class="row" v-for="(albumGroup, index) in groupedAlbums" :key="index">
+            <div class="col s12 m6" v-for="album, key in albumGroup" :key="key" :class="{ 'offset-m3': albumGroup.length === 1 }">
               <div class="card hoverable">
                 <a :href="album.link" target="_blank" class="card-image">
                   <img class="activator" :src="require('@/assets/images/backgrounds/' + album.image)">
@@ -195,9 +204,7 @@
             </div>
           </div>
         </div>
-
       </div>
-
     </div>
   </div>
 

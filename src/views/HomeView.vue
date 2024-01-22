@@ -20,13 +20,13 @@
     data () {
       return {
         event: {
-          date: '2023-08-11',
+          date: '2024-08-09',
           time: '15:00',
-          place: 'Park Pałacu w Turawie',
-          description: 'W tym roku zasady gry nie ulegną znaczącej zmianie - miast wprowadzania nowych zasad, organizatorzy skupią się na usprawnieniu przebiegu rozgrywki, przestrzeganiu zasad, umocnieniu obecnych mechanik i powolnym zbliżeniu się do finalnej wersji Obozów.',
-          bannerLink: 'https://i.imgur.com/VhHTZFt.png',
-          eventLink: 'https://www.facebook.com/events/740488294228050',
-          name: 'Obozy VII Edycja'
+          place: 'Lokalizacja zostanie podana wkrótce',
+          description: 'W tym roku prawdopodobnie zostanie dodana klasa Medyka. Możemy się spodziewać również zmian w klasie Skauta.\nOczywiście jak zawsze obecne będą bardzo drobne poprawki w mechanice na podstawie poprzedniej edycji.',
+          bannerLink: 'https://i.imgur.com/OtOj6GW.png',
+          eventLink: 'https://www.facebook.com/events/927687392071879',
+          name: 'Obozy VIII Edycja'
         }
       }
     },
@@ -160,7 +160,7 @@
                 <a class="btn-floating halfway-fab waves-effect waves-light green" :href="event.eventLink" target="_blank"><i class="material-icons">link</i></a>
               </div>
               <div class="card-content left-align">
-                <p><i class="material-icons green-text">explore</i> {{ event.place }}, {{ new Date(event.date).toLocaleDateString() }}</p>
+                <p style="height: 33px;"><i class="material-icons green-text" style="height: 100%">explore</i> <span style="line-height: 100%;">{{ event.place }}, {{ new Date(event.date).toLocaleDateString() }}</span></p>
                 <br>
                 <p class="flow-text"><i class="material-icons green-text">description</i> {{ event.description }}</p>
               </div>

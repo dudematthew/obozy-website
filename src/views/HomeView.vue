@@ -18,14 +18,13 @@ export default {
 	data() {
 		return {
 			event: {
-				date: "2024-08-09",
-				time: "15:00",
-				place: "Turawa",
-				description:
-					"W tym roku nie udało się osiągnąć wystarczającej ilości wpłat w wyznaczonym terminie. Postanowiliśmy więc zrezygnować z organizowania 8 edycji Obozów, zamiast tego decydując się na mniejszą, spokojniejszą i przede wszystkim tańszą wersję na mniejszą skalę. Obozy Mini będą w zamyśle przypominać Obozy 3.5 - rozgrywka będzie krótsza, luźniejsza ale też można się spodziewać mniejszej ilości przygotowań i okraszonych zasad. Planujemy mieszać składy, organizować mini-gry takie jak flanki, przeciąganie liny czy Manczo.",
-				bannerLink: "https://i.imgur.com/rPXhyPj.png",
-				eventLink: "https://www.facebook.com/events/927687392071879",
-				name: "Obozy Mini 2024",
+				date: '2024-08-09',
+				time: '15:00',
+				place: 'Turawa',
+				description: 'W tym roku zostanie dodana klasa Goblina. Możemy się spodziewać również zmian w klasie Skauta.\nOczywiście jak zawsze obecne będą bardzo drobne poprawki w mechanice na podstawie poprzedniej edycji.',
+				bannerLink: 'https://i.imgur.com/OtOj6GW.png',
+				eventLink: 'https://www.facebook.com/events/927687392071879',
+				name: 'Obozy VIII Edycja'
 			},
 		};
 	},

@@ -513,9 +513,15 @@ h5 {
         cursor: pointer;
         transition: all 0.2s ease;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
         border: 1px solid transparent;
+        gap: 12px;
+
+        @media (max-width: 600px) {
+            flex-direction: column;
+            gap: 8px;
+        }
 
         &:hover {
             background-color: #f0f0f0;
@@ -536,13 +542,18 @@ h5 {
 
         .question-text {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 8px;
             font-weight: 500;
             flex: 1;
 
+            @media (max-width: 600px) {
+                width: 100%;
+            }
+
             i {
                 color: #666;
+                margin-top: 2px;
             }
         }
 
@@ -550,6 +561,13 @@ h5 {
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-shrink: 0;
+
+            @media (max-width: 600px) {
+                width: 100%;
+                justify-content: flex-end;
+                padding-left: 32px; // Align with question text
+            }
 
             i {
                 color: #999;

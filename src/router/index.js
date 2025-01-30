@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import AboutUsView from '../views/AboutUsView.vue';
 import JoinUsView from '../views/JoinUsView.vue';
+import QuizView from '../views/QuizView.vue';
 
 const routes = [
   {
@@ -19,12 +20,17 @@ const routes = [
     name: 'join-us',
     component: JoinUsView
   },
+  {
+    path: '/quiz',
+    name: 'quiz',
+    component: QuizView
+  },
   // {
   //   path: '/game-master-panel',
   //   name: 'game master panel',
   //   component: () => import('../views/GameMasterPanelView.vue')
   // },
-  
+
 ];
 
 const router = createRouter({

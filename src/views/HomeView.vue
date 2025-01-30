@@ -1,12 +1,12 @@
 <script>
 import { loadScript } from "vue-plugin-load-script";
-loadScript("https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY")
-	.then(() => {
-		// Script is loaded, do something
-	})
-	.catch(() => {
-		// Failed to fetch script
-	});
+// loadScript("https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY")
+// 	.then(() => {
+// 		// Script is loaded, do something
+// 	})
+// 	.catch(() => {
+// 		// Failed to fetch script
+// 	});
 
 export default {
 	name: "HomeView",
@@ -60,21 +60,21 @@ export default {
 
 <template>
 	<div class="index-banner parallax-container">
-		<div class="section no-pad-bot">
+		<div class="no-pad-bot section">
 			<div class="container">
 				<br /><br />
-				<h1 class="center title main-title" style="margin-bottom: 0px; padding-bottom: 0">
+				<h1 class="center main-title title" style="margin-bottom: 0px; padding-bottom: 0">
 					OBOZY
 				</h1>
 				<h3 class="center title">Gra Terenowa</h3>
-				<div class="row center">
-					<h5 class="header col s12 light subtitle">
+				<div class="center row">
+					<h5 class="col header light s12 subtitle">
 						Spędź dwa dni na łonie natury tocząc wspólnie zaciekły
 						bój o flagę
 					</h5>
 				</div>
-				<div class="row center">
-					<router-link to="/dolacz-do-nas" class="btn-large waves-effect waves-light green">Dołącz do
+				<div class="center row">
+					<router-link to="/dolacz-do-nas" class="btn-large green waves-effect waves-light">Dołącz do
 						nas</router-link>
 				</div>
 				<br /><br />
@@ -89,14 +89,14 @@ export default {
 		<div class="section">
 			<!--   Icon Section   -->
 			<div class="row">
-				<div class="col s12 m4">
+				<div class="col m4 s12">
 					<div class="icon-block">
-						<h2 class="center brown-text">
+						<h2 class="brown-text center">
 							<i class="material-icons">sports_kabaddi</i>
 						</h2>
 						<h5 class="center">Walcz tak jak potrafisz</h5>
 
-						<p class="light justified">
+						<p class="justified light">
 							Czy to rekonesans albo walka podjazdowa, czy to
 							manewrowanie liczebnością przeciwnika używając
 							sprytu, czy to miażdżenie oponentów czystą siłą.
@@ -107,14 +107,14 @@ export default {
 					</div>
 				</div>
 
-				<div class="col s12 m4">
+				<div class="col m4 s12">
 					<div class="icon-block">
-						<h2 class="center brown-text">
+						<h2 class="brown-text center">
 							<i class="material-icons">construction</i>
 						</h2>
 						<h5 class="center">Zbuduj i obroń swój obóz</h5>
 
-						<p class="light justified">
+						<p class="justified light">
 							Jak sobie pościelesz, tak się wyśpisz. Korzystaj z
 							przygotowanych materiałów by pomóc stworzyć mur,
 							który pozwoli Wam bronić się przed wrogimi
@@ -124,14 +124,14 @@ export default {
 					</div>
 				</div>
 
-				<div class="col s12 m4">
+				<div class="col m4 s12">
 					<div class="icon-block">
-						<h2 class="center brown-text">
+						<h2 class="brown-text center">
 							<i class="material-icons">flag</i>
 						</h2>
 						<h5 class="center">Zdobądź flagę i zwyciężaj</h5>
 
-						<p class="light justified">
+						<p class="justified light">
 							Dostań się do wrogiego obozu, złap flagę i nie
 							puszczaj gdy będą Cię ścigać. Poczuj buzującą
 							adrenalinę i świętuj z wszystkimi udaną operację.
@@ -143,18 +143,18 @@ export default {
 	</div>
 
 	<div class="index-banner parallax-container">
-		<div class="section no-pad-bot">
+		<div class="no-pad-bot section">
 			<div class="container">
 				<br /><br />
 				<h3 class="center title">Jak to wygląda?</h3>
-				<div class="row center">
-					<h5 class="header col s12 light subtitle">
+				<div class="center row">
+					<h5 class="col header light s12 subtitle">
 						Zobacz, dlaczego od {{ yearsFromStart }} lat wciąż
 						wracamy do gry
 					</h5>
 				</div>
-				<div class="row center">
-					<router-link to="/o-nas" class="btn-large waves-effect waves-light green">Dowiedz się
+				<div class="center row">
+					<router-link to="/o-nas" class="btn-large green waves-effect waves-light">Dowiedz się
 						więcej</router-link>
 				</div>
 				<br /><br />
@@ -165,31 +165,31 @@ export default {
 		</div>
 	</div>
 
-	<div class="container is-fullwidth mx-0">
+	<div class="mx-0 container is-fullwidth">
 		<div class="section">
 			<div class="row">
-				<div class="col center" style="margin-bottom: -30px">
+				<div class="center col" style="margin-bottom: -30px">
 					<h3 class="title" v-if="!eventPassed">Najbliższe Obozy</h3>
 					<h3 class="title" v-else>Ostatnie Obozy</h3>
-					<div class="col m1 hide-on-small-and-down"></div>
-					<div class="col m10 s12 center-align">
+					<div class="col hide-on-small-and-down m1"></div>
+					<div class="center-align col m10 s12">
 						<div class="card">
 							<div class="card-image">
 								<img :src="event.bannerLink" />
 								<span class="card-title hide-on-med-and-down">{{
 									event.name
 									}}</span>
-								<a class="btn-floating halfway-fab waves-effect waves-light green"
+								<a class="btn-floating green halfway-fab waves-effect waves-light"
 									:href="event.eventLink" target="_blank"><i class="material-icons">link</i></a>
 							</div>
-							<div class="card-content left-align">
+							<div class="left-align card-content">
 								<p style="
 										height: 33px;
 										display: flex;
 										align-items: center;
 										gap: 5px;
 									">
-									<i class="material-icons green-text">explore</i>
+									<i class="green-text material-icons">explore</i>
 									<span>{{ event.place }},
 										{{
 										new Date(
@@ -199,7 +199,7 @@ export default {
 								</p>
 								<br />
 								<p class="flow-text">
-									<i class="material-icons green-text">description</i>
+									<i class="green-text material-icons">description</i>
 									{{ event.description }}
 								</p>
 							</div>
@@ -208,24 +208,24 @@ export default {
 				</div>
 			</div>
 			<div class="row">
-				<div class="col s12 center"><br /><br /></div>
+				<div class="center col s12"><br /><br /></div>
 			</div>
 		</div>
 	</div>
 
 	<div class="index-banner parallax-container">
-		<div class="section no-pad-bot">
+		<div class="no-pad-bot section">
 			<div class="container">
 				<br /><br />
 				<h3 class="center title">Masz pytania?</h3>
-				<div class="row center">
-					<h5 class="header col s12 light subtitle">
+				<div class="center row">
+					<h5 class="col header light s12 subtitle">
 						Odpowiemy na każde!
 					</h5>
 				</div>
-				<div class="row center">
+				<div class="center row">
 					<a href="https://www.messenger.com/t/105317307701584?fbclid=IwAR1kWyWl0I83qIfKwfy-p1Ca21bb6g9JvODzkiZq5016idUDqEcSipvmWm4"
-						target="_blank" class="btn-large waves-effect waves-light green">Skontaktuj się z nami</a>
+						target="_blank" class="btn-large green waves-effect waves-light">Skontaktuj się z nami</a>
 				</div>
 				<br /><br />
 			</div>
@@ -238,33 +238,33 @@ export default {
 	<div class="container" style="margin-bottom: 40px">
 		<div class="section">
 			<div class="row">
-				<div class="col s12 center">
+				<div class="center col s12">
 					<h4 class="subtitle" style="margin-bottom: 20px">
 						Zaobserwuj nas na Facebooku
 					</h4>
-					<h5 class="header col s12 light" style="margin-bottom: 30px">
+					<h5 class="col header light s12" style="margin-bottom: 30px">
 						Wszystko o czym chcesz wiedzieć dzieje się właśnie tam!
 					</h5>
 				</div>
 			</div>
 
 			<!-- On large devices -->
-			<div class="row l1 offset-l2 hide-on-med-and-down">
-				<div class="col s12 m12 l4 xl3 center">
+			<div class="hide-on-med-and-down l1 offset-l2 row">
+				<div class="center col l4 m12 s12 xl3">
 					<a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
-						<img src="@/assets/images/logo.png" class="circle responsive-img pulse" />
+						<img src="@/assets/images/logo.png" class="circle pulse responsive-img" />
 					</a>
 				</div>
 
-				<div class="col s12 m12 l7 xl9 light">
+				<div class="col l7 light m12 s12 xl9">
 					<a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
 						<h4>Obozy - Gra terenowa</h4>
 					</a>
-					<p class="black-text flow-text light" style="margin-bottom: 20px; margin-top: 0">
+					<p class="flow-text black-text light" style="margin-bottom: 20px; margin-top: 0">
 						@ObozyGraTerenowa · Wydarzenie
 						<br />
 					</p>
-					<span class="black-text flow-text light">
+					<span class="flow-text black-text light">
 						<div class="fb-like" style="margin: 0; padding: 0"
 							data-href="https://www.facebook.com/ObozyGraTerenowa/" data-width=""
 							data-layout="button_count" data-action="like" data-size="large" data-share="true"></div>
@@ -273,23 +273,23 @@ export default {
 			</div>
 
 			<!-- On medium devices -->
-			<div class="row hide-on-large-only">
-				<div class="col s12 m12 l4 xl3 center">
+			<div class="hide-on-large-only row">
+				<div class="center col l4 m12 s12 xl3">
 					<a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
-						<img src="@/assets/images/logo.png" class="circle responsive-img pulse" />
+						<img src="@/assets/images/logo.png" class="circle pulse responsive-img" />
 					</a>
 				</div>
 
-				<div class="col s12 m12 l7 xl9 light center">
+				<div class="center col l7 light m12 s12 xl9">
 					<a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
 						<h4>Obozy - Gra terenowa</h4>
 					</a>
-					<p class="black-text flow-text light" style="margin-bottom: 30px">
+					<p class="flow-text black-text light" style="margin-bottom: 30px">
 						@ObozyGraTerenowa · Wydarzenie
 						<br />
 					</p>
 
-					<span class="black-text flow-text light">
+					<span class="flow-text black-text light">
 						<div class="fb-like" style="margin: 0" data-href="https://www.facebook.com/ObozyGraTerenowa/"
 							data-width="" data-layout="button_count" data-action="like" data-size="large"
 							data-share="true"></div>

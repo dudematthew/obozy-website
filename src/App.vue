@@ -1,17 +1,17 @@
 <script>
-  import Header from './components/Header.vue'
-  import Footer from './components/Footer.vue'
-  import 'materialize-css/dist/js/materialize.js'
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
+import 'materialize-css/dist/js/materialize.js'
 
-  export default {
-    components: {
-      Header,
-      Footer
-    },
-    mounted() {
-      M.AutoInit();
-    },
-  }
+export default {
+  components: {
+    Header,
+    Footer
+  },
+  mounted() {
+    M.AutoInit();
+  },
+}
 </script>
 
 <template>
@@ -21,146 +21,155 @@
   <router-view />
 
   <Footer />
-  
+
 </template>
 
 <style lang="scss">
-  // @import '@fortawesome/fontawesome-free/css/all.css';
-  @import 'materialize-css/sass/materialize.scss';
-  @import 'material-icons/iconfont/material-icons.css';
-  @import 'swiper/css/bundle';
+// @import '@fortawesome/fontawesome-free/css/all.css';
+@import 'materialize-css/sass/materialize.scss';
+@import 'material-icons/iconfont/material-icons.css';
+@import 'swiper/css/bundle';
 
 
-  // Customize Swiper CSS
-  :root {
-    --swiper-theme-color: #64f023;
+// Customize Swiper CSS
+:root {
+  --swiper-theme-color: #64f023;
+}
+
+body,
+html {
+  width: 100%;
+}
+
+.swiper-pagination-bullet-active,
+.swiper-pagination-bullet {
+  background: #64f023 !important;
+}
+
+.brand-logo,
+.main-title {
+
+  /* m-plus-rounded-1c-regular - latin */
+  @font-face {
+    font-family: 'M PLUS Rounded 1c' !important;
+    font-style: normal;
+    font-weight: 500 !important;
+    src: url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.eot');
+    /* IE9 Compat Modes */
+    src: local(''),
+      url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.eot?#iefix') format('embedded-opentype'),
+      /* IE6-IE8 */
+      url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.woff2') format('woff2'),
+      /* Super Modern Browsers */
+      url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.woff') format('woff'),
+      /* Modern Browsers */
+      url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.ttf') format('truetype'),
+      /* Safari, Android, iOS */
+      url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.svg#MPLUSRounded1c') format('svg');
+    /* Legacy iOS */
   }
+}
 
-  body,
-  html {
-    width: 100%;
-  }
+button.is-fullwidth,
+button.is-fullwidth span {
+  display: block !important;
+  text-align: center !important;
+}
 
-  .swiper-pagination-bullet-active,
-  .swiper-pagination-bullet {
-    background: #64f023 !important;
-  }
+// Fix Bulma Flex
+// .field {
+//   flex-grow: unset !important;
+//   flex-shrink: unset !important;
+//   flex: 1 1 0 !important;
+// }
 
-  .brand-logo,
-  .main-title {
-    /* m-plus-rounded-1c-regular - latin */
-    @font-face {
-      font-family: 'M PLUS Rounded 1c' !important;
-      font-style: normal;
-      font-weight: 500 !important;
-      src: url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.eot'); /* IE9 Compat Modes */
-      src: local(''),
-          url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-          url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-          url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.woff') format('woff'), /* Modern Browsers */
-          url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-          url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.svg#MPLUSRounded1c') format('svg'); /* Legacy iOS */
-    }
-  }
+// Fix index-banner not taking full width
+.index-banner {
+  width: 100vw !important;
+}
 
-  button.is-fullwidth,
-  button.is-fullwidth span
-  {
-    display: block !important;
-    text-align: center !important;
-  }
+nav ul a,
+nav .brand-logo {
+  color: #444;
+}
 
-  // Fix Bulma Flex
-  // .field {
-  //   flex-grow: unset !important;
-  //   flex-shrink: unset !important;
-  //   flex: 1 1 0 !important;
-  // }
+p {
+  line-height: 2rem;
+}
 
-  nav ul a,
-  nav .brand-logo {
-    color: #444;
-  }
+.sidenav-trigger {
+  color: #26a69a;
+}
 
-  p {
-    line-height: 2rem;
-  }
+.parallax-container {
+  min-height: 420px;
+  line-height: 0;
+  height: auto;
+  color: rgba(255, 255, 255, .9);
+  display: flex;
+}
 
-  .sidenav-trigger {
-    color: #26a69a;
-  }
+.parallax-container .section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
 
-  .parallax-container {
-    min-height: 420px;
-    line-height: 0;
-    height: auto;
-    color: rgba(255,255,255,.9);
-    display: flex;
-  }
-    
-  .parallax-container .section {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 0;
-  }
+.parallax-container img {
+  background-color: #388E3C;
+}
 
-  .parallax-container img {
-    background-color: #388E3C;
-  }
+// @media only screen and (max-width : 992px) {
+//   .parallax-container .section {
+//     position: absolute;
+//     top: 40%;
+//   }
+//   .index-banner .section {
+//     top: 10%;
+//   }
+// }
 
-  // @media only screen and (max-width : 992px) {
-  //   .parallax-container .section {
-  //     position: absolute;
-  //     top: 40%;
-  //   }
-  //   .index-banner .section {
-  //     top: 10%;
-  //   }
-  // }
+// @media only screen and (max-width : 600px) {
+//   .parallax-container {
+//     height: 440px;
+//   }
 
-  // @media only screen and (max-width : 600px) {
-  //   .parallax-container {
-  //     height: 440px;
-  //   }
+//   .index-banner .section {
+//     top: 0;
+//   }
+// }
 
-  //   .index-banner .section {
-  //     top: 0;
-  //   }
-  // }
+.inline-icon {
+  display: inline-flex;
+  vertical-align: bottom;
+  font-size: 18px !important;
+}
 
-  .inline-icon {
-    display: inline-flex;
-    vertical-align: bottom;
-    font-size: 18px !important;
-  }
+.icon-block {
+  padding: 0 15px;
+}
 
-  .icon-block {
-    padding: 0 15px;
-  }
+.icon-block .material-icons {
+  font-size: inherit;
+}
 
-  .icon-block .material-icons {
-    font-size: inherit;
-  }
+footer.page-footer {
+  margin: 0;
+}
 
-  footer.page-footer {
-    margin: 0;
-  }
+.title,
+.subtitle {
+  margin-top: 30px;
+}
 
-  .title,
-  .subtitle {
-    margin-top: 30px;
-  }
+.parallax-container .title,
+.parallax-container .subtitle {
+  text-shadow: 1px 1px 9px rgb(46, 46, 46);
+}
 
-  .parallax-container .title,
-  .parallax-container .subtitle {
-    text-shadow: 1px 1px 9px rgb(46, 46, 46);
-  }
-
-  .justified {
-    text-align: justify !important;
-  }
-
-
+.justified {
+  text-align: justify !important;
+}
 </style>

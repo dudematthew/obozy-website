@@ -1,0 +1,111 @@
+[
+    {
+        "id": 1,
+        "question": "Czy poprawnie zamrożony Mateusz może odezwać się do towarzyszy ze swojego Obozu?",
+        "imageUrl": "https://i.imgur.com/dcTFJ5M.jpeg",
+        "answers": [
+            {
+                "text": "Tak",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie",
+                "isCorrect": true
+            },
+            {
+                "text": "Tak, jeśli nie jest to związane z aktualną sytuacją",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Jeśli ktoś jest zamrożony nie może ruszać żadną częścią ciała ani wydawać z siebie dźwięku.",
+        "weight": 2
+    },
+    {
+        "id": 2,
+        "question": "Dwóch graczy poprawnie zamroziło się dokładnie w tej samej chwili - czy mogą wydawać dźwięki i się poruszać?",
+        "imageUrl": "https://i.imgur.com/ENOk1iO.jpeg",
+        "answers": [
+            {
+                "text": "Tak",
+                "isCorrect": true
+            },
+            {
+                "text": "Nie",
+                "isCorrect": false
+            },
+            {
+                "text": "Tak, jeśli nie jest to związane z aktualną sytuacją",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Jeżeli gracze zamrożą się w czasie dziesiątych sekundy na raz, wtedy odsuwają swoje laski od siebie na minimum 20cm i kontynuują walkę.",
+        "weight": 1
+    },
+    {
+        "id": 3,
+        "question": "Mateusz (środek) zamroził poprawnie Karusa (lewo) jako pierwszy. Następnie Janek spróbował zamrozić laską Mateusza. Czy Mateusz może się aktualnie odzywać?",
+        "imageUrl": "https://i.imgur.com/nDNzHmn.jpeg",
+        "answers": [
+            {
+                "text": "Tak",
+                "isCorrect": true
+            },
+            {
+                "text": "Nie",
+                "isCorrect": false
+            },
+            {
+                "text": "Zależy od Klasy Janka",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Nie można zamrażać zamrażających graczy. Mateusz nie jest zamrożony więc może normalnie się porozumiewać.",
+        "weight": 2
+    },
+    {
+        "id": 4,
+        "question": "Silny Karus zaskoczył biegnącego Mateusza poprawnym zamrożeniem. Mateusz usłyszał hasło *Freeze*, jednak z racji rozpędu będzie musiał oderwać się od Laski Karusa. Po oderwaniu się:",
+        "imageUrl": "https://i.imgur.com/0nNcFqW.jpeg",
+        "answers": [
+            {
+                "text": "Karus powinien dobiec do Mateusza który jak najszybciej się zatrzymać",
+                "isCorrect": false
+            },
+            {
+                "text": "Mateusz powinien jak najszybciej wytracić rozpęd i wrócić do miejsca w którym byłby zamrożony",
+                "isCorrect": true
+            },
+            {
+                "text": "Mateusza nie obowiązuje już zamrożenie ponieważ Laska Chochlika przestała go dotykać",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Jeśli gracz zostanie zamrożony a aktualnie jest w ruchu, powinien możliwie szybko ten ruch zatrzymać i więcej się już nie ruszać.",
+        "weight": 3
+    },
+    {
+        "id": 5,
+        "question": "Janek zamierza skoczyć prosto na Laskę Mateusza. W związku z wyskoczeniem nie będzie mógł wyhamować mimo że zostanie zamrożony i wpadnie na Mateusza. Po wpadnięciu:",
+        "imageUrl": "https://i.imgur.com/N8MaYcQ.jpeg",
+        "answers": [
+            {
+                "text": "Zamrożenie przestaje działać ponieważ przez wypad Mateusz jest dotknięty przez Janka lub Karusa",
+                "isCorrect": false
+            },
+            {
+                "text": "Janek odsuwa się i wraca do momentu w którym został dotknięty Laską",
+                "isCorrect": true
+            },
+            {
+                "text": "Janek zostaje w pozycji w której wytracił pęd, obłapując Mateusza",
+                "isCorrect": false
+            },
+            {
+                "text": "Nic się nie dzieje ponieważ Mateusz nie może zamrażać więcej niż jednej osoby",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Jeśli gracz zostanie zamrożony a aktualnie jest w ruchu, powinien możliwie szybko ten ruch zatrzymać i więcej się już nie ruszać.",
+        "weight": 3
+    }
+]

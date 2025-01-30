@@ -1,4 +1,7 @@
 <script>
+import MarkdownIt from 'markdown-it';
+const md = new MarkdownIt();
+
 export default {
     name: "QuizView",
     data() {
@@ -31,6 +34,9 @@ export default {
         }
     },
     methods: {
+        renderMarkdown(text) {
+            return md.render(text);
+        },
         shuffleArray(array) {
             const newArray = [...array];
             for (let i = newArray.length - 1; i > 0; i--) {
@@ -195,7 +201,8 @@ export default {
                             <div class="quiz-content-wrapper">
                                 <div class="quiz-image card-image" v-if="currentQuestion.imageUrl">
                                     <img :src="currentQuestion.imageUrl" :alt="'Pytanie ' + (currentQuestionIndex + 1)"
-                                        class="materialboxed responsive-img">
+                                        class="materialboxed responsive-img"
+                                        :data-caption="'Pytanie ' + (currentQuestionIndex + 1) + '/' + questions.length">
                                 </div>
                                 <div class="quiz-text card-content">
                                     <div class="question-header">
@@ -203,14 +210,14 @@ export default {
                                             questions.length }}</span>
                                         <span class="question-points">{{ currentQuestion.weight || 1 }} pkt</span>
                                     </div>
-                                    <h5>{{ currentQuestion.question }}</h5>
+                                    <h5 v-html="renderMarkdown(currentQuestion.question)"></h5>
                                     <div class="answers">
                                         <p v-for="(answer, index) in currentQuestion.answers" :key="index">
                                             <label>
-                                                <input name="quiz-answer" type="radio"
+                                                <input name="quiz-answer" type="radio" class="with-gap"
                                                     :checked="selectedAnswerIndex === index"
                                                     @change="selectAnswer(index)" />
-                                                <span class="black-text">{{ answer.text }}</span>
+                                                <span v-html="renderMarkdown(answer.text)"></span>
                                             </label>
                                         </p>
                                     </div>
@@ -254,7 +261,7 @@ export default {
                                     <div class="question-text">
                                         <i class="material-icons">{{ isQuestionExpanded(question.id) ? 'expand_less' :
                                             'expand_more' }}</i>
-                                        <span>{{ question.question }}</span>
+                                        <span v-html="renderMarkdown(question.question)"></span>
                                     </div>
                                     <div class="question-status">
                                         <i class="material-icons">{{ question.answers.find(a => a.isCorrect)?.text ===
@@ -266,7 +273,8 @@ export default {
                                 <div v-show="isQuestionExpanded(question.id)" class="question-review-content">
                                     <div class="question-image" v-if="question.imageUrl">
                                         <img :src="question.imageUrl" :alt="question.question"
-                                            class="materialboxed responsive-img">
+                                            class="materialboxed responsive-img"
+                                            :data-caption="'Pytanie ' + (currentQuestionIndex + 1) + '/' + questions.length">
                                     </div>
                                     <div class="answers-list">
                                         <div class="answer-review" v-for="answer in question.answers" :key="answer.text"
@@ -281,13 +289,13 @@ export default {
                                                     (answer.text === userAnswers[questions.indexOf(question)]?.text ?
                                                     'cancel' : 'radio_button_unchecked') }}
                                                 </i>
-                                                <span>{{ answer.text }}</span>
+                                                <span v-html="renderMarkdown(answer.text)"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="explanation">
                                         <i class="material-icons">lightbulb</i>
-                                        <p>{{ question.explanation }}</p>
+                                        <p v-html="renderMarkdown(question.explanation)"></p>
                                     </div>
                                 </div>
                             </div>
@@ -398,39 +406,28 @@ export default {
 
 .answers {
     margin: 24px 0;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
 
     p {
-        margin: 6px 0;
+        margin: 0;
     }
 
     label {
-        display: flex;
-        align-items: flex-start;
+        color: rgba(0, 0, 0, 0.87);
+        display: block;
         padding: 12px 16px;
         border-radius: 4px;
-        transition: all 0.2s ease;
-        border: 1px solid transparent;
+        transition: background-color 0.2s ease;
         cursor: pointer;
-        gap: 12px;
-
-        input[type="radio"] {
-            margin: 3px 0 0 0;
-            flex-shrink: 0;
-        }
 
         &:hover {
             background-color: #f5f5f5;
-            border-color: #e0e0e0;
         }
+    }
 
-        span {
-            font-size: 1rem;
-            line-height: 1.4;
-            padding-top: 1px;
-        }
+    [type="radio"]:not(:checked)+span,
+    [type="radio"]:checked+span {
+        height: auto;
+        line-height: 1.4;
     }
 }
 
@@ -758,5 +755,24 @@ h5 {
     &.active {
         cursor: zoom-out;
     }
+}
+
+.answers label span :deep(p) {
+    margin: 0;
+    line-height: inherit;
+}
+
+.question-text span :deep(p) {
+    margin: 0;
+    display: inline;
+}
+
+.answer-text span :deep(p) {
+    margin: 0;
+    display: inline;
+}
+
+.explanation p :deep(p) {
+    margin: 0;
 }
 </style>

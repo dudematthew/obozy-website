@@ -71,6 +71,15 @@ export default {
             this.preloadedImage = new Image();
             this.preloadedImage.src = this.nextQuestion.imageUrl;
         },
+        scrollToElement(elementId, offset = 0) {
+            this.$nextTick(() => {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    const y = element.getBoundingClientRect().top + window.pageYOffset + offset;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+            });
+        },
         startQuiz() {
             this.shuffleQuestions();
             this.quizStarted = true;
@@ -78,10 +87,11 @@ export default {
             this.score = 0;
             this.selectedAnswerIndex = null;
             this.quizFinished = false;
-            this.userAnswers = []; // Reset user answers
+            this.userAnswers = [];
             if (this.enablePreload) {
                 this.preloadNextImage();
             }
+            this.scrollToElement('current-question', -20);
         },
         selectAnswer(index) {
             this.selectedAnswerIndex = index;
@@ -92,7 +102,6 @@ export default {
             const currentQuestion = this.currentQuestion;
             const selectedAnswer = currentQuestion.answers[this.selectedAnswerIndex];
 
-            // Store user's answer
             this.userAnswers[this.currentQuestionIndex] = selectedAnswer;
 
             if (selectedAnswer?.isCorrect) {
@@ -107,18 +116,20 @@ export default {
                     this.preloadNextImage();
                 }
                 this.reinitMaterialbox();
+                this.scrollToElement('current-question', -20);
             } else {
                 this.quizFinished = true;
                 this.reinitMaterialbox();
+                this.scrollToElement('quiz-results', -20);
             }
         },
         toggleQuestion(questionId) {
-            if (this.expandedQuestions.has(questionId)) {
-                this.expandedQuestions.clear();
-            } else {
-                this.expandedQuestions.clear();
+            const wasExpanded = this.expandedQuestions.has(questionId);
+            this.expandedQuestions.clear();
+            if (!wasExpanded) {
                 this.expandedQuestions.add(questionId);
                 this.reinitMaterialbox();
+                this.scrollToElement(`question-${questionId}`, -20);
             }
         },
         isQuestionExpanded(questionId) {
@@ -192,7 +203,8 @@ export default {
                     </div>
 
                     <!-- Quiz Questions -->
-                    <div v-if="quizStarted && !quizFinished && currentQuestion" class="quiz-container">
+                    <div v-if="quizStarted && !quizFinished && currentQuestion" class="quiz-container"
+                        id="current-question">
                         <div class="progress">
                             <div class="determinate" :style="{ width: progress + '%' }"></div>
                         </div>
@@ -233,7 +245,7 @@ export default {
                     </div>
 
                     <!-- Quiz Results -->
-                    <div v-if="quizFinished" class="center-align">
+                    <div v-if="quizFinished" class="center-align" id="quiz-results">
                         <div class="score-overview">
                             <h4>Twój wynik</h4>
                             <div class="score-big">
@@ -255,7 +267,8 @@ export default {
 
                         <h5 class="details-header">Szczegółowe odpowiedzi</h5>
                         <div class="answers-review">
-                            <div v-for="question in questions" :key="question.id" class="card question-review">
+                            <div v-for="question in questions" :key="question.id" class="card question-review"
+                                :id="'question-' + question.id">
                                 <div class="question-review-header" @click="toggleQuestion(question.id)"
                                     :class="{ 'correct': question.answers.find(a => a.isCorrect)?.text === userAnswers[questions.indexOf(question)]?.text }">
                                     <div class="question-text">
@@ -302,7 +315,7 @@ export default {
                         </div>
 
                         <div class="retry-button">
-                            <button @click="startQuiz" class="btn green waves-effect waves-light">
+                            <button @click="startQuiz" class="btn-large green waves-effect waves-light">
                                 Spróbuj ponownie
                             </button>
                         </div>

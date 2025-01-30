@@ -47,6 +47,7 @@ export default {
                 if (this.enablePreload && this.questions.length > 0) {
                     this.preloadNextImage();
                 }
+                this.initMaterialbox();
             } catch (error) {
                 console.error('Failed to load quiz questions:', error);
             }
@@ -99,25 +100,50 @@ export default {
                 if (this.enablePreload) {
                     this.preloadNextImage();
                 }
+                this.reinitMaterialbox();
             } else {
                 this.quizFinished = true;
+                this.reinitMaterialbox();
             }
         },
         toggleQuestion(questionId) {
             if (this.expandedQuestions.has(questionId)) {
                 this.expandedQuestions.clear();
             } else {
-                this.expandedQuestions.clear(); // Clear all expanded questions first
+                this.expandedQuestions.clear();
                 this.expandedQuestions.add(questionId);
+                this.reinitMaterialbox();
             }
         },
         isQuestionExpanded(questionId) {
             return this.expandedQuestions.has(questionId);
+        },
+        initMaterialbox() {
+            document.addEventListener('DOMContentLoaded', () => {
+                const elems = document.querySelectorAll('.materialboxed');
+                M.Materialbox.init(elems, {
+                    inDuration: 0,
+                    outDuration: 0
+                });
+            });
+        },
+        reinitMaterialbox() {
+            this.$nextTick(() => {
+                const elems = document.querySelectorAll('.materialboxed');
+                M.Materialbox.init(elems, {
+                    inDuration: 0,
+                    outDuration: 0
+                });
+            });
         }
     },
     mounted() {
         M.AutoInit();
         this.loadQuestions();
+        this.initMaterialbox();
+    },
+    updated() {
+        this.reinitMaterialbox();
     }
 };
 </script>
@@ -168,7 +194,8 @@ export default {
                         <div class="quiz-card card">
                             <div class="quiz-content-wrapper">
                                 <div class="quiz-image card-image" v-if="currentQuestion.imageUrl">
-                                    <img :src="currentQuestion.imageUrl" :alt="'Pytanie ' + (currentQuestionIndex + 1)">
+                                    <img :src="currentQuestion.imageUrl" :alt="'Pytanie ' + (currentQuestionIndex + 1)"
+                                        class="materialboxed responsive-img">
                                 </div>
                                 <div class="quiz-text card-content">
                                     <div class="question-header">
@@ -238,7 +265,8 @@ export default {
                                 </div>
                                 <div v-show="isQuestionExpanded(question.id)" class="question-review-content">
                                     <div class="question-image" v-if="question.imageUrl">
-                                        <img :src="question.imageUrl" :alt="question.question">
+                                        <img :src="question.imageUrl" :alt="question.question"
+                                            class="materialboxed responsive-img">
                                     </div>
                                     <div class="answers-list">
                                         <div class="answer-review" v-for="answer in question.answers" :key="answer.text"
@@ -721,6 +749,14 @@ h5 {
         width: auto;
         height: auto;
         object-fit: contain;
+    }
+}
+
+.materialboxed {
+    cursor: zoom-in;
+
+    &.active {
+        cursor: zoom-out;
     }
 }
 </style>

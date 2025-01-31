@@ -1,25 +1,47 @@
 <!DOCTYPE html>
 <html lang="pl" class="has-navbar-fixed-top">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
 
-    <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body>
-    <noscript>
-      <strong>Przepraszamy ale <%= htmlWebpackPlugin.options.title %> nie działa poprawnie bez włączonego języka Javascript. Prosimy włączyć Javascript aby korzystać z witryny.</strong>
-    </noscript>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
 
-    <script src="https://cdn.jsdelivr.net/npm/publicalbum@latest/embed-ui.min.js" async></script>
+  <title>Obozy Letnie - Harcerstwo</title>
 
-    <!-- For Facebook script -->
-    <div id="fb-root"></div>
-    
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
+  <!-- Open Graph / Facebook -->
+  <!-- Using absolute URLs for reliable social media sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://obozy.org.pl/">
+  <meta property="og:title" content="Obozy Letnie - Harcerstwo">
+  <meta property="og:description"
+    content="Dołącz do naszych obozów letnich i przeżyj niezapomnianą przygodę! Odkryj harcerstwo, nowe przyjaźnie i ekscytujące wyzwania w otoczeniu natury.">
+  <meta property="og:image" content="https://obozy.org.pl/og-image.png">
 
-  </body>
+  <!-- Twitter -->
+  <!-- Using absolute URLs for reliable social media sharing -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://obozy.org.pl/">
+  <meta property="twitter:title" content="Obozy Letnie - Harcerstwo">
+  <meta property="twitter:description"
+    content="Dołącz do naszych obozów letnich i przeżyj niezapomnianą przygodę! Odkryj harcerstwo, nowe przyjaźnie i ekscytujące wyzwania w otoczeniu natury.">
+  <meta property="twitter:image" content="https://obozy.org.pl/og-image.png">
+</head>
+
+<body>
+  <noscript>
+    <strong>Przepraszamy ale strona nie działa poprawnie bez włączonego języka Javascript. Prosimy włączyć Javascript
+      aby korzystać z witryny.</strong>
+  </noscript>
+
+  <script src="https://cdn.jsdelivr.net/npm/publicalbum@latest/embed-ui.min.js" async></script>
+
+  <!-- For Facebook script -->
+  <div id="fb-root"></div>
+
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+
+</body>
+
 </html>

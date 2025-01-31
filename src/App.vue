@@ -92,15 +92,12 @@ p {
   line-height: 2rem;
 }
 
-.index-banner {
-  width: 100%;
-}
-
 .sidenav-trigger {
-  color: #26a69a;
+  color: #040707;
 }
 
 .parallax-container {
+  width: 100%;
   min-height: 420px;
   line-height: 0;
   height: auto;

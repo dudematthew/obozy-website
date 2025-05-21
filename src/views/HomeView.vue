@@ -18,13 +18,13 @@ export default {
 	data() {
 		return {
 			event: {
-				date: '2024-08-09',
+				date: '2025-08-29',
 				time: '15:00',
 				place: 'Turawa',
-				description: 'W tym roku zostanie dodana klasa Goblina. Możemy się spodziewać również zmian w klasie Skauta.\nOczywiście jak zawsze obecne będą bardzo drobne poprawki w mechanice na podstawie poprzedniej edycji.',
-				bannerLink: 'https://i.imgur.com/OtOj6GW.png',
-				eventLink: 'https://www.facebook.com/events/927687392071879',
-				name: 'Obozy VIII Edycja'
+				description: 'W tym roku wprowadzamy uproszczenie zasad, zbicie ich i zadbanie o komfortową grę. Miast zrzutów będziecie szukać skarbów 🙂.\nOczywiście jak zawsze obecne będą bardzo drobne poprawki w mechanice na podstawie poprzedniej edycji.',
+				bannerLink: 'https://i.imgur.com/nJAHasU.png',
+				eventLink: 'https://www.facebook.com/events/1203318538195199',
+				name: 'Obozy IX Edycja'
 			},
 		};
 	},
@@ -165,7 +165,7 @@ export default {
 		</div>
 	</div>
 
-	<div class="container is-fullwidth mx-0">
+	<div class="mx-0 container is-fullwidth">
 		<div class="section">
 			<div class="row">
 				<div class="col center" style="margin-bottom: -30px">
@@ -182,7 +182,7 @@ export default {
 								<a class="btn-floating halfway-fab waves-effect waves-light green"
 									:href="event.eventLink" target="_blank"><i class="material-icons">link</i></a>
 							</div>
-							<div class="card-content left-align">
+							<div class="left-align card-content">
 								<p style="
 										height: 33px;
 										display: flex;

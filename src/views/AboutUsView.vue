@@ -1,67 +1,71 @@
 <script>
-  import GalleryCarousel from '@/components/about-us/GalleryCarousel.vue'
+import GalleryCarousel from '@/components/about-us/GalleryCarousel.vue'
 
-  export default {
-    name: "HomeView",
-    components: {
-      GalleryCarousel
+export default {
+  name: "HomeView",
+  components: {
+    GalleryCarousel
+  },
+  data() {
+    return {
+      googleAlbums: [
+        {
+          link: "https://photos.app.goo.gl/B4p4S8MRT2253Jfu9",
+          image: "obozy-8.png"
+        },
+        {
+          link: "https://photos.app.goo.gl/ui2GPk5REdbqEvrB7",
+          image: "obozy-7.png"
+        },
+        {
+          link: "https://photos.app.goo.gl/vSDwqxgKufh1es1JA",
+          image: "obozy-6.png"
+        },
+        {
+          link: "https://photos.app.goo.gl/cpVnRNrYRCok6BJeA",
+          image: "obozy-5.png"
+        },
+      ]
+    }
+  },
+  computed: {
+    yearsFromStart() {
+      return new Date().getFullYear() - 2016;
     },
-    data () {
-      return {
-        googleAlbums: [
-          {
-            link: "https://photos.app.goo.gl/ui2GPk5REdbqEvrB7",
-            image: "obozy-7.png"
-          },
-          {
-            link: "https://photos.app.goo.gl/vSDwqxgKufh1es1JA",
-            image: "obozy-6.png"
-          },
-          {
-            link: "https://photos.app.goo.gl/cpVnRNrYRCok6BJeA",
-            image: "obozy-5.png"
-          },
-        ]
+    imagesPaths() {
+      let fileNames = require.context(
+        '@/assets/images/gallery',
+        false,
+        /^.*\.jpg$/
+      ).keys();
+
+      fileNames.forEach((fileName, index) => {
+        console.log(fileNames[index]);
+        fileNames[index] = fileNames[index].slice(2);
+      });
+
+      console.log(fileNames);
+
+      return fileNames;
+    },
+    groupedAlbums() {
+      let groups = [];
+      for (let i = 0; i < this.googleAlbums.length; i += 2) {
+        groups.push(this.googleAlbums.slice(i, i + 2));
       }
-    },
-    computed: {
-      yearsFromStart() {
-        return new Date().getFullYear() - 2016;
-      },
-      imagesPaths() {
-        let fileNames = require.context(
-          '@/assets/images/gallery',
-          false,
-          /^.*\.jpg$/
-        ).keys();
-
-        fileNames.forEach((fileName, index) => {
-          console.log(fileNames[index]);
-          fileNames[index] = fileNames[index].slice(2);
-        });
-
-        console.log(fileNames);
-
-        return fileNames;
-      },
-      groupedAlbums() {
-        let groups = [];
-        for (let i = 0; i < this.googleAlbums.length; i += 2) {
-          groups.push(this.googleAlbums.slice(i, i + 2));
-        }
-        return groups;
-      }
-    },
-    mounted() {
-      let parallaxElems = document.querySelectorAll(".parallax");
-      let materialboxedElems = document.querySelectorAll(".materialboxed");
-      M.Parallax.init(parallaxElems);
-      M.Materialbox.init(materialboxedElems, {
-        inDuration: 0,
-        outDuration: 0
-      })
-    },
-  }
+      return groups;
+    }
+  },
+  mounted() {
+    let parallaxElems = document.querySelectorAll(".parallax");
+    let materialboxedElems = document.querySelectorAll(".materialboxed");
+    M.Parallax.init(parallaxElems);
+    M.Materialbox.init(materialboxedElems, {
+      inDuration: 0,
+      outDuration: 0
+    })
+  },
+}
 </script>
 
 <template>
@@ -85,9 +89,9 @@
   <div class="index-banner container">
     <div class="section">
       <div class="row">
-        <div class="col s12 left-align">
+        <div class="left-align col s12">
           <h4>Wydarzenie w którym stajesz się członkiem rywalizacji</h4>
-          <blockquote class="flow-text left-align">
+          <blockquote class="left-align flow-text">
             Miłosz, mój brat wpadł na pomysł, że zaprosi kolegów na grę w którą graliśmy kiedyś na obozie konnym -
             Flagi.
             <br><br>
@@ -99,7 +103,7 @@
           <img class="materialboxed responsive-img center" src="@/assets/images/photo1.jpg"
             style="margin: 60px auto; width: 450px" data-caption="Jedno z pierwszych zdjęć na Obozach.">
 
-          <p class="flow-text left-align">
+          <p class="left-align flow-text">
             Tak powstały Obozy - gra którą dwaj bracia rozszerzyli o dodatkowe zasady, które urozmaiciły zwyczajne
             dobieranie się do flag i zrywanie bibuł.
             <br><br>
@@ -109,7 +113,7 @@
 
           <h4>Prosta gra na urodziny stała się czymś więcej</h4>
 
-          <p class="flow-text left-align">
+          <p class="left-align flow-text">
             Impreza została zorganizowana w nasze urodziny i ku naszemu zaskoczeniu została bardzo pozytywnie odebrana.
             Kontynuowaliśmy ją w następnym roku, wciąż usprawniając zasady.
             <br><br>
@@ -129,7 +133,7 @@
 
           <h4>Możesz do nas dołączyć</h4>
 
-          <p class="flow-text left-align">
+          <p class="left-align flow-text">
 
 
             Teraz Obozy to już coroczny zwyczaj i trudno sobie niektórym wyobrazić wakacje bez nich.
@@ -187,18 +191,20 @@
     <div class="section">
       <div class="row">
         <div class="col s12 center">
-            <h4 class="subtitle">Więcej zdjęć?</h4>
-            <h5 class="header col s12 light">Zobacz albumy poprzednich Edycji Obozów!</h5>
+          <h4 class="subtitle">Więcej zdjęć?</h4>
+          <h5 class="header col s12 light">Zobacz albumy poprzednich Edycji Obozów!</h5>
         </div>
         <div class="col s12">
           <div class="row" v-for="(albumGroup, index) in groupedAlbums" :key="index">
-            <div class="col s12 m6" v-for="album, key in albumGroup" :key="key" :class="{ 'offset-m3': albumGroup.length === 1 }">
+            <div class="col s12 m6" v-for="album, key in albumGroup" :key="key"
+              :class="{ 'offset-m3': albumGroup.length === 1 }">
               <div class="card hoverable">
                 <a :href="album.link" target="_blank" class="card-image">
                   <img class="activator" :src="require('@/assets/images/backgrounds/' + album.image)">
                 </a>
                 <div class="card-action center">
-                  <a :href="album.link" target="_blank" class="light-green-text" style="margin: 0;">Zobacz Album Google</a>
+                  <a :href="album.link" target="_blank" class="light-green-text" style="margin: 0;">Zobacz Album
+                    Google</a>
                 </div>
               </div>
             </div>
@@ -221,8 +227,7 @@
         <div class="col s12 center">
           <br><br>
           <iframe src="https://drive.google.com/embeddedfolderview?id=13csMsz_7qZmU8rTouc3kgGcIshRWUNCw#list"
-            style="width:100%; height:500px; border:0; overflow: hidden;"
-            title="Zasady Gry"></iframe>
+            style="width:100%; height:500px; border:0; overflow: hidden;" title="Zasady Gry"></iframe>
         </div>
       </div>
 
@@ -242,22 +247,22 @@
 </template>
 
 <style lang="scss" scoped>
-  h4 {
-    margin-top: 70px;
+h4 {
+  margin-top: 70px;
+}
+
+@media only screen and (max-width : 1200px) {
+  .carousel-container {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 
-  @media only screen and (max-width : 1200px) {
-    .carousel-container {
-      width: 100%;
-      margin-right: 0;
-      margin-left: 0;
-      padding-left: 0;
-      padding-right: 0;
-    }
-
-    .col {
-      padding-left: 0;
-      padding-right: 0;
-    }
+  .col {
+    padding-left: 0;
+    padding-right: 0;
   }
+}
 </style>

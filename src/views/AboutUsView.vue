@@ -90,22 +90,24 @@ export default {
     <div class="section">
       <div class="row">
         <div class="left-align col s12">
-          <h4>Wydarzenie w którym stajesz się członkiem rywalizacji</h4>
+          <h4>Wydarzenie w którym dołączasz do dwudniowej bitwy</h4>
           <blockquote class="left-align flow-text">
-            Miłosz, mój brat wpadł na pomysł, że zaprosi kolegów na grę w którą graliśmy kiedyś na obozie konnym -
-            Flagi.
-            <br><br>
-            Prosta gra w której dwie drużyny walczą przeciwko sobie aby zdobyć flagę przeciwnika a jedynym sposobem
-            walki było zrywanie przeciwnikowi bibuły umieszczonej na jego ręce.
-            Poszło im świetnie i już zaraz nastąpiła chęć zwiększenia skali przedsięwzięcia.
+            <i>
+              Miłosz, mój brat wpadł na pomysł, że zaprosi kolegów na grę w którą graliśmy kiedyś na obozie konnym
+              - Flagi.
+              <br><br>
+              Prosta gra w której dwie drużyny walczą przeciwko sobie aby zdobyć flagę przeciwnika a jedynym sposobem
+              walki było zrywanie przeciwnikowi bibuły umieszczonej na jego ręce.
+              Poszło im świetnie - nie mogliśmy się doczekać żeby rozbudować rozgrywkę - mieliśmy wiele pomysłów.
+            </i>
           </blockquote>
 
           <img class="materialboxed responsive-img center" src="@/assets/images/photo1.jpg"
             style="margin: 60px auto; width: 450px" data-caption="Jedno z pierwszych zdjęć na Obozach.">
 
           <p class="left-align flow-text">
-            Tak powstały Obozy - gra którą dwaj bracia rozszerzyli o dodatkowe zasady, które urozmaiciły zwyczajne
-            dobieranie się do flag i zrywanie bibuł.
+            Tak powstały Obozy - gra którą dwaj bracia zaczęli pieczołowicie rozwijać by grało się coraz lepiej i
+            ciekawiej a także by zachęcić więcej osób do zabawy.
             <br><br>
             Dodano magiczne zwoje, zrzuty, przerwy na jedzenie, śpiewanie i granie przy ogniskach i mnóstwo innych
             rzeczy które sprawiły, że rozgrywka nabrała zupełnie innego wymiaru.
@@ -115,17 +117,19 @@ export default {
 
           <p class="left-align flow-text">
             Impreza została zorganizowana w nasze urodziny i ku naszemu zaskoczeniu została bardzo pozytywnie odebrana.
-            Kontynuowaliśmy ją w następnym roku, wciąż usprawniając zasady.
+            Kontynuowaliśmy ją rok w rok i nie mieliśmy dość.
             <br><br>
-            Zarówno nam, jak i znajomym, którzy odwiedzali imprezę podobało się to coraz bardziej, by w końcu rozpocząć
-            III edycję Obozów, na której finalna, działająca wersja gry została zaprezentowana i w pełni przetestowana.
+            Na III edycji Obozów rozgrywka w pełni rozłożyła skrzydła, pełna niesamowitości które nasze umysły ożywiły a
+            także coraz większej ilości asortymentu i pracy.
 
             <br><br>
 
-            Teraz pojawia się coraz więcej osób a my wymyślamy coraz więcej sposobów żeby rozgrywka była dynamiczna.
+            Teraz pojawia się coraz więcej i więcej osób a my wymyślamy sposoby żeby rozgrywka zbiegła się z
+            wizualizowanym przez nas ideałem.
             uczestnicy spędzają około 36 godzin rozgrywki w namiotach i lesie, ale to właśnie ten fakt sprawia że gra
             jest tak dobrze odbierana. Rozgrywka nabiera życia na łonie natury a roślinność umila pobyt i przywraca
-            energię.
+            energię. Uczestnicy mogą doświadczyć unikatowego połączenia obozu survivalowego, zdrowego wysiłku, zabawy,
+            kooperacji i jednocześnie rywalizacji.
           </p>
 
           <img class="materialboxed responsive-img" src="@/assets/images/photo2.jpg"
@@ -143,7 +147,7 @@ export default {
             Jeśli Ty również masz ochotę spróbować, a mieszkasz niedaleko <a
               href="https://goo.gl/maps/iFRiGYe8CB5s8Tbm6" target="_blank">Opola</a> - <a
               href="http://www.messenger.com/obozygraterenowa" target="_blank" rel="noopener noreferrer">napisz do
-              nas</a> - a my powiemy Ci co i jak.
+              nas</a> - a my wytłumaczymy co i jak.
             <br><br>
             Następny termin Obozów powinien znajdować się w wydarzeniu na <a
               href="https://www.facebook.com/pg/ObozyGraTerenowa" target="_blank" rel="noopener noreferrer">stronie</a>

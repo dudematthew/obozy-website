@@ -21,7 +21,7 @@ export default {
 				date: '2025-08-29',
 				time: '15:00',
 				place: 'Turawa',
-				description: 'W tym roku wprowadzamy uproszczenie zasad, zbicie ich i zadbanie o komfortową grę. Miast zrzutów będziecie szukać skarbów 🙂.\nOczywiście jak zawsze obecne będą bardzo drobne poprawki w mechanice na podstawie poprzedniej edycji.',
+				description: 'W tym roku wprowadzamy uproszczenie zasad, zbicie ich i zadbanie o komfortową grę. Miast zrzutów będziecie szukać skarbów.\nOczywiście jak zawsze obecne będą bardzo drobne poprawki w mechanice na podstawie poprzedniej edycji.',
 				bannerLink: 'https://i.imgur.com/nJAHasU.png',
 				eventLink: 'https://www.facebook.com/events/1203318538195199',
 				name: 'Obozy IX Edycja'

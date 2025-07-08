@@ -1,4 +1,5 @@
 <script>
+/* global M */
 import { loadScript } from "vue-plugin-load-script";
 loadScript("https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY")
 	.then(() => {
@@ -10,11 +11,6 @@ loadScript("https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY")
 
 export default {
 	name: "HomeView",
-	computed: {
-		yearsFromStart() {
-			return new Date().getFullYear() - 2016;
-		},
-	},
 	data() {
 		return {
 			event: {
@@ -49,6 +45,9 @@ export default {
 			});
 	},
 	computed: {
+		yearsFromStart() {
+			return new Date().getFullYear() - 2016;
+		},
 		eventPassed() {
 			let eventDate = new Date(this.event.date + " " + this.event.time);
 			let now = new Date();
@@ -150,12 +149,12 @@ export default {
 				<div class="row center">
 					<h5 class="header col s12 light subtitle">
 						Zobacz, dlaczego od {{ yearsFromStart }} lat wciąż
-						wracamy do gry
+						powracamy na Obozy
 					</h5>
 				</div>
 				<div class="row center">
 					<router-link to="/o-nas" class="btn-large waves-effect waves-light green">Dowiedz się
-						więcej</router-link>
+						więcej o grze</router-link>
 				</div>
 				<br /><br />
 			</div>
@@ -249,18 +248,18 @@ export default {
 			</div>
 
 			<!-- On large devices -->
-			<div class="row l1 offset-l2 hide-on-med-and-down">
-				<div class="col s12 m12 l4 xl3 center">
+			<div class="row hide-on-med-and-down">
+				<div class="col s12 m12 l2 xl3"></div>
+				<div class="col s12 m12 l3 xl2 center">
 					<a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
 						<img src="@/assets/images/logo.png" class="circle responsive-img pulse" />
 					</a>
 				</div>
-
-				<div class="col s12 m12 l7 xl9 light">
+				<div class="left-align col s12 m12 l5 xl4">
 					<a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
 						<h4>Obozy - Gra terenowa</h4>
 					</a>
-					<p class="black-text flow-text light" style="margin-bottom: 20px; margin-top: 0">
+					<p class="black-text light" style="margin-bottom: 20px; margin-top: 0; font-size: 1.2rem;">
 						@ObozyGraTerenowa · Wydarzenie
 						<br />
 					</p>
@@ -270,6 +269,7 @@ export default {
 							data-layout="button_count" data-action="like" data-size="large" data-share="true"></div>
 					</span>
 				</div>
+				<div class="col s12 m12 l2 xl2"></div>
 			</div>
 
 			<!-- On medium devices -->

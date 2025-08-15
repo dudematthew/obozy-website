@@ -1,4 +1,5 @@
 <script>
+/* global M */
 import { loadScript } from "vue-plugin-load-script";
 // loadScript("https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY")
 // 	.then(() => {
@@ -10,21 +11,16 @@ import { loadScript } from "vue-plugin-load-script";
 
 export default {
 	name: "HomeView",
-	computed: {
-		yearsFromStart() {
-			return new Date().getFullYear() - 2016;
-		},
-	},
 	data() {
 		return {
 			event: {
-				date: '2024-08-09',
+				date: '2025-08-29',
 				time: '15:00',
 				place: 'Turawa',
-				description: 'W tym roku zostanie dodana klasa Goblina. Możemy się spodziewać również zmian w klasie Skauta.\nOczywiście jak zawsze obecne będą bardzo drobne poprawki w mechanice na podstawie poprzedniej edycji.',
-				bannerLink: 'https://i.imgur.com/OtOj6GW.png',
-				eventLink: 'https://www.facebook.com/events/927687392071879',
-				name: 'Obozy VIII Edycja'
+				description: 'W tym roku wprowadzamy uproszczenie zasad, zbicie ich i zadbanie o komfortową grę. Miast zrzutów będziecie szukać skarbów.\nOczywiście jak zawsze obecne będą bardzo drobne poprawki w mechanice na podstawie poprzedniej edycji.',
+				bannerLink: 'https://i.imgur.com/nJAHasU.png',
+				eventLink: 'https://www.facebook.com/events/1203318538195199',
+				name: 'Obozy IX Edycja'
 			},
 		};
 	},
@@ -49,6 +45,9 @@ export default {
 			});
 	},
 	computed: {
+		yearsFromStart() {
+			return new Date().getFullYear() - 2016;
+		},
 		eventPassed() {
 			let eventDate = new Date(this.event.date + " " + this.event.time);
 			let now = new Date();
@@ -150,12 +149,12 @@ export default {
 				<div class="center row">
 					<h5 class="col header light s12 subtitle">
 						Zobacz, dlaczego od {{ yearsFromStart }} lat wciąż
-						wracamy do gry
+						powracamy na Obozy
 					</h5>
 				</div>
-				<div class="center row">
-					<router-link to="/o-nas" class="btn-large green waves-effect waves-light">Dowiedz się
-						więcej</router-link>
+				<div class="row center">
+					<router-link to="/o-nas" class="btn-large waves-effect waves-light green">Dowiedz się
+						więcej o grze</router-link>
 				</div>
 				<br /><br />
 			</div>
@@ -249,18 +248,18 @@ export default {
 			</div>
 
 			<!-- On large devices -->
-			<div class="hide-on-med-and-down l1 offset-l2 row">
-				<div class="center col l4 m12 s12 xl3">
+			<div class="row hide-on-med-and-down">
+				<div class="col s12 m12 l2 xl3"></div>
+				<div class="col s12 m12 l3 xl2 center">
 					<a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
 						<img src="@/assets/images/logo.png" class="circle pulse responsive-img" />
 					</a>
 				</div>
-
-				<div class="col l7 light m12 s12 xl9">
+				<div class="left-align col s12 m12 l5 xl4">
 					<a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
 						<h4>Obozy - Gra terenowa</h4>
 					</a>
-					<p class="flow-text black-text light" style="margin-bottom: 20px; margin-top: 0">
+					<p class="black-text light" style="margin-bottom: 20px; margin-top: 0; font-size: 1.2rem;">
 						@ObozyGraTerenowa · Wydarzenie
 						<br />
 					</p>
@@ -270,6 +269,7 @@ export default {
 							data-layout="button_count" data-action="like" data-size="large" data-share="true"></div>
 					</span>
 				</div>
+				<div class="col s12 m12 l2 xl2"></div>
 			</div>
 
 			<!-- On medium devices -->

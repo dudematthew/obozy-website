@@ -10,6 +10,10 @@ export default {
     return {
       googleAlbums: [
         {
+          link: "https://photos.app.goo.gl/B4p4S8MRT2253Jfu9",
+          image: "obozy-8.png"
+        },
+        {
           link: "https://photos.app.goo.gl/ui2GPk5REdbqEvrB7",
           image: "obozy-7.png"
         },
@@ -86,40 +90,83 @@ export default {
     <div class="section">
       <div class="row">
         <div class="left-align col s12">
-          <h4>Wydarzenie w którym stajesz się członkiem rywalizacji</h4>
-          <blockquote class="left-align flow-text">
-            Miłosz, mój brat wpadł na pomysł, że zaprosi kolegów na grę w którą graliśmy kiedyś na obozie konnym -
-            Flagi.
-            <br><br>
-            Prosta gra w której dwie drużyny walczą przeciwko sobie aby zdobyć flagę przeciwnika a jedynym sposobem
-            walki było zrywanie przeciwnikowi bibuły umieszczonej na jego ręce.
-            Poszło im świetnie i już zaraz nastąpiła chęć zwiększenia skali przedsięwzięcia.
-          </blockquote>
-
-          <img class="materialboxed responsive-img center" src="@/assets/images/photo1.jpg"
-            style="margin: 60px auto; width: 450px" data-caption="Jedno z pierwszych zdjęć na Obozach.">
+          <h4>Obozy to kompleksowa gra terenowa na łonie natury</h4>
 
           <p class="left-align flow-text">
-            Tak powstały Obozy - gra którą dwaj bracia rozszerzyli o dodatkowe zasady, które urozmaiciły zwyczajne
-            dobieranie się do flag i zrywanie bibuł.
-            <br><br>
-            Dodano magiczne zwoje, zrzuty, przerwy na jedzenie, śpiewanie i granie przy ogniskach i mnóstwo innych
-            rzeczy które sprawiły, że rozgrywka nabrała zupełnie innego wymiaru.
+            Wyobraź sobie weekend, gdzie dwie drużyny budują prawdziwe obozy na krańcach lasu i przez cały czas próbują
+            zdobyć flagę przeciwnika. Jedynym sposobem walki jest zerwanie kolorowej bibuły z nadgarstka wroga - bez
+            bibuły jesteś <i>martwy</i> i idziesz do cmentarza w swoim obozie, żeby po
+            kilkunastu minutach wrócić do walki.
           </p>
 
-          <h4>Prosta gra na urodziny stała się czymś więcej</h4>
+          <blockquote class="left-align flow-text">
+            <i>
+              Miłosz, mój brat wpadł na pomysł, że zaprosi kolegów na grę w którą graliśmy kiedyś na obozie konnym -
+              Flagi. Prosta gra w której dwie drużyny walczą przeciwko sobie aby zdobyć flagę przeciwnika a jedynym
+              sposobem walki było zrywanie przeciwnikowi bibuły umieszczonej na jego ręce. Poszło im świetnie - nie
+              mogliśmy się doczekać żeby rozbudować rozgrywkę.
+            </i>
+          </blockquote>
 
           <p class="left-align flow-text">
-            Impreza została zorganizowana w nasze urodziny i ku naszemu zaskoczeniu została bardzo pozytywnie odebrana.
-            Kontynuowaliśmy ją w następnym roku, wciąż usprawniając zasady.
-            <br><br>
-            Zarówno nam, jak i znajomym, którzy odwiedzali imprezę podobało się to coraz bardziej, by w końcu rozpocząć
-            III edycję Obozów, na której finalna, działająca wersja gry została zaprezentowana i w pełni przetestowana.
+            To nie jest zwykła gra w berka. Budujesz szałas, planujesz nocne wypady, organizujesz obronę. Możesz być
+            zwykłym szturmowcem, tankiem który przedziera się przez pokonanych wrogów, czy chochlikiem z magiczną laską.
+            Kradniesz przeciwnikowi zasoby, bierzesz jeńców i handlujesz nimi w strefie neutralnej.
+          </p>
 
-            <br><br>
+          <img class="materialboxed responsive-img center" src="@/assets/images/photo3.jpg"
+            style="margin: 60px auto; width: 450px" data-caption="Walka dwóch Chochlików.">
 
-            Teraz pojawia się coraz więcej osób a my wymyślamy coraz więcej sposobów żeby rozgrywka była dynamiczna.
-            uczestnicy spędzają około 36 godzin w namiotach i lesie, ale to właśnie ten fakt sprawia że gra
+          <h4>Jak wygląda typowy dzień na Obozach?</h4>
+
+          <p class="left-align flow-text">
+            Budzisz się w namiocie, jesz śniadanie przy ognisku z drużyną. Dowódca rozdaje zadania - ktoś zostaje bronić
+            obozu, ktoś idzie na zwiad, ktoś poluje na zrzuty zasobów oznaczone na mapie. Przez cały dzień trwają
+            potyczki, pojmanie jeńców, próby kradzieży flagi.
+            <br><br>
+            Wieczorem czy na obiad przerwa na kolację, śpiewanie przy ognisku, opowiadanie o wypadkach dnia. Nocą -
+            tajne wypady,
+            zasadzki, próby sabotażu. Znajdujesz ukryte paczki z magicznymi zwojami - od "zamrożenia" po
+            klątwy.
+          </p>
+
+          <h4>Dlaczego to działa?</h4>
+
+          <p class="left-align flow-text">
+            Bo nie ma wczytywania gry jak w grach komputerowych. Każda śmierć, każdy pojmany jeniec, każdy zdobyty zwój
+            ma
+            prawdziwe konsekwencje. Drużyna musi ze sobą współpracować, planować, reagować na zmieniającą się sytuację.
+            A jednocześnie bawiąc się w lesie, budując obozy i siedząc przy ognisku spędzając niezapomniane chwile.
+          </p>
+
+          <h4>Historia - od prostej gry do 27-stronicowej instrukcji</h4>
+
+          <p class="left-align flow-text">
+            Mateusz i Miłosz zaczęli od prostej gry w Flagi na swoich urodzinach. Rok po roku dodawali nowe
+            elementy. Klasy postaci z różnymi umiejętnościami. System pojmowania więźniów. Magiczne zwoje. Rytuały
+            poświęcenia jeńców. Handel między obozami. Arena do pojedynków. Zrzuty zasobów. Ukryte skarby.
+            <br><br>
+            Prosta gra w berka stała się złożonym systemem, gdzie każdy element ma znaczenie. Na III edycji Obozów
+            rozgrywka w pełni rozłożyła skrzydła - pełna niesamowitości które nasze umysły ożywiły a także coraz
+            większej ilości asortymentu i pracy - koszulki, zaopatrzenie, zasoby, zwoje, itp.
+          </p>
+
+          <img class="materialboxed responsive-img" src="@/assets/images/photo1.jpg"
+            style="margin: 60px auto; width: 450px" data-caption="Jedno z pierwszych zdjęć na Obozach." />
+
+          <h4>Nie dla każdego, ale dla wielu</h4>
+
+          <p class="left-align flow-text">
+            Obozy to nie relaks nad jeziorem. To intensywny weekend, gdzie możesz spać 5 godzin, bo o świcie planowana
+            jest akcja. Gdzie twoja drużyna liczy na ciebie, a powodzenie może oznaczać jej zwycięstwo. Gdzie będziesz
+            brudny,
+            zmęczony, ale w pozytywny sposób i jednocześnie pełen adrenaliny.
+            <br><br>
+            Ale to właśnie dlatego uczestnicy wracają rok po roku. Bo niewiele rzeczy daje takie poczucie przygody jak
+            prawdziwa bitwa w lesie z prawdziwymi konsekwencjami. Połączenie survivalu, strategii, pracy zespołowej i
+            czystej zabawy.
+            <br><br>
+            Uczestnicy spędzają około 36 godzin rozgrywki w namiotach i lesie, ale to właśnie ten fakt sprawia że gra
             jest tak dobrze odbierana. Rozgrywka nabiera życia na łonie natury a roślinność umila pobyt i przywraca
             energię.
           </p>
@@ -127,23 +174,21 @@ export default {
           <img class="materialboxed responsive-img" src="@/assets/images/photo2.jpg"
             style="margin: 60px auto; width: 450px" />
 
-          <h4>Możesz do nas dołączyć</h4>
+          <h4>Dołącz do nas</h4>
 
           <p class="left-align flow-text">
-
-
-            Teraz Obozy to już coroczny zwyczaj i trudno sobie niektórym wyobrazić wakacje bez nich.
+            Teraz Obozy to już coroczny zwyczaj i trudno sobie niektórym wyobrazić wakacje bez nich. Wiele osób
+            zaczynało z ciekawości i zostało z nami na dłużej. Ty też możesz!
             <br>
-            Szukamy coraz większej grupy ludzi którzy mieliby ochotę spróbować przeżyć z nami tę przygodę.
+            Szukamy ludzi, którzy mają ochotę spróbować wymyślonej przez nas zabawy. Jeśli brzmi to
+            interesująco i mieszkasz niedaleko <a href="https://goo.gl/maps/iFRiGYe8CB5s8Tbm6" target="_blank">Opola</a>
+            - <a href="http://www.messenger.com/obozygraterenowa" target="_blank" rel="noopener noreferrer">napisz do
+              nas</a> - a my wytłumaczymy co i jak.
             <br><br>
-            Jeśli Ty również masz ochotę spróbować, a mieszkasz niedaleko <a
-              href="https://goo.gl/maps/iFRiGYe8CB5s8Tbm6" target="_blank">Opola</a> - <a
-              href="http://www.messenger.com/obozygraterenowa" target="_blank" rel="noopener noreferrer">napisz do
-              nas</a> - a my powiemy Ci co i jak.
-            <br><br>
-            Następny termin Obozów powinien znajdować się w wydarzeniu na <a
-              href="https://www.facebook.com/pg/ObozyGraTerenowa" target="_blank" rel="noopener noreferrer">stronie</a>
-            na Facebooku.
+            Następna edycja może być już niedługo. Następny termin Obozów powinien znajdować
+            się w
+            wydarzeniu na <a href="https://www.facebook.com/pg/ObozyGraTerenowa" target="_blank"
+              rel="noopener noreferrer">stronie</a> na Facebooku.
           </p>
         </div>
       </div>
@@ -233,11 +278,39 @@ export default {
   <div class="container">
     <div class="section">
       <div class="row">
-        <div class="row center">
-          <router-link to="/dolacz-do-nas" class="btn-large waves-effect waves-light green">Dołącz do nas</router-link>
+        <div class="col s12 center">
+          <h4 class="subtitle">A Ty jak znasz zasady Chochlika?</h4>
+          <h5 class="header col s12 light">Sprawdź swoją wiedzę o grze Obozy!</h5>
+          <p class="flow-text">Przetestuj swoją znajomość zasad, historii i ciekawostek związanych z naszą grą terenową.
+          </p>
+          <br>
+          <router-link to="/quiz" class="btn-large waves-effect waves-light green darken-2">
+            <i class="left material-icons">quiz</i>
+            Sprawdź się
+          </router-link>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="index-banner parallax-container" style="margin-bottom: 7em;">
+    <div class="section no-pad-bot">
+      <div class="container center">
+        <h3 class="center title">Gotowy na przygodę?</h3>
+        <h5 class="header col s12 light subtitle">Dołącz do nas - nie martw się, pasujesz!</h5>
+        <div class="row center">
+          <router-link to="/dolacz-do-nas" class="btn-large waves-effect waves-light green" style="margin: 10px;">
+            Dołącz do nas
+          </router-link>
+          <a href="https://www.messenger.com/obozygraterenowa" target="_blank" rel="noopener noreferrer"
+            class="btn-large waves-effect waves-light white green-text" style="margin: 10px;">
+            Kontakt
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="@/assets/images/backgrounds/background6.jpg" alt="Tło"
+        style="filter: brightness(50%)"></div>
   </div>
 
 </template>

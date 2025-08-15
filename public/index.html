@@ -1,25 +1,103 @@
 <!DOCTYPE html>
 <html lang="pl" class="has-navbar-fixed-top">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
 
-    <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body>
-    <noscript>
-      <strong>Przepraszamy ale <%= htmlWebpackPlugin.options.title %> nie działa poprawnie bez włączonego języka Javascript. Prosimy włączyć Javascript aby korzystać z witryny.</strong>
-    </noscript>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="<%= BASE_URL %>favicon-32x32.png">
 
-    <script src="https://cdn.jsdelivr.net/npm/publicalbum@latest/embed-ui.min.js" async></script>
+  <!-- SEO Meta Tags -->
+  <meta name="description"
+    content="Dołącz do Obozów - intensywnej gry terenowej na łonie natury. Dwie drużyny, jeden cel: zdobądź flagę przeciwnika w prawdziwej bitwie w lesie!">
+  <meta name="keywords"
+    content="obozy, gra terenowa, survival, przygoda, las, drużyna, flaga, zabawa, event, opole, weekend">
+  <meta name="author" content="Obozy - Gra Terenowa">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="Polish">
+  <meta name="revisit-after" content="7 days">
 
-    <!-- For Facebook script -->
-    <div id="fb-root"></div>
-    
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
+  <!-- Primary Meta Tags -->
+  <title>Obozy - Gra Terenowa | Prawdziwa przygoda w lesie</title>
+  <meta name="title" content="Obozy - Gra Terenowa | Prawdziwa przygoda w lesie">
+  <meta name="description"
+    content="Spędź dwa dni na łonie natury tocząc wspólnie zaciekły bój o flagę. Odkryj intensywną grę terenową pełną strategii, pracy zespołowej i prawdziwej adrenaliny.">
 
-  </body>
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://obozy.org.pl/">
+  <meta property="og:title" content="Obozy - Gra Terenowa | Prawdziwa przygoda w lesie">
+  <meta property="og:description"
+    content="Spędź dwa dni na łonie natury tocząc wspólnie zaciekły bój o flagę. Odkryj intensywną grę terenową pełną strategii, pracy zespołowej i prawdziwej adrenaliny.">
+  <meta property="og:image" content="https://obozy.org.pl/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Obozy - Gra Terenowa - Uczestnicy w lesie podczas intensywnej gry terenowej">
+  <meta property="og:site_name" content="Obozy - Gra Terenowa">
+  <meta property="og:locale" content="pl_PL">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://obozy.org.pl/">
+  <meta property="twitter:title" content="Obozy - Gra Terenowa | Prawdziwa przygoda w lesie">
+  <meta property="twitter:description"
+    content="Spędź dwa dni na łonie natury tocząc wspólnie zaciekły bój o flagę. Odkryj intensywną grę terenową pełną strategii, pracy zespołowej i prawdziwej adrenaliny.">
+  <meta property="twitter:image" content="https://obozy.org.pl/og-image.png">
+  <meta property="twitter:image:alt"
+    content="Obozy - Gra Terenowa - Uczestnicy w lesie podczas intensywnej gry terenowej">
+  <meta name="twitter:creator" content="@obozygraterenowa">
+  <meta name="twitter:site" content="@obozygraterenowa">
+
+  <!-- Additional SEO Tags -->
+  <meta name="theme-color" content="#4CAF50">
+  <meta name="msapplication-TileColor" content="#4CAF50">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Obozy">
+
+  <!-- Geo Tags -->
+  <meta name="geo.region" content="PL-OP">
+  <meta name="geo.placename" content="Opole, Poland">
+  <meta name="geo.position" content="50.6751;17.9213">
+  <meta name="ICBM" content="50.6751, 17.9213">
+
+  <!-- Structured Data for Event Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Obozy - Gra Terenowa",
+    "url": "https://obozy.org.pl",
+    "logo": "https://obozy.org.pl/og-image.png",
+    "description": "Organizatorzy intensywnej gry terenowej na łonie natury w okolicach Opola",
+    "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "Opolskie",
+      "addressCountry": "PL"
+    },
+    "sameAs": [
+      "https://www.facebook.com/ObozyGraTerenowa",
+      "https://www.messenger.com/obozygraterenowa"
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <noscript>
+    <strong>Przepraszamy ale strona nie działa poprawnie bez włączonego języka Javascript. Prosimy włączyć Javascript
+      aby korzystać z witryny.</strong>
+  </noscript>
+
+  <script src="https://cdn.jsdelivr.net/npm/publicalbum@latest/embed-ui.min.js" async></script>
+
+  <!-- For Facebook script -->
+  <div id="fb-root"></div>
+
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+
+</body>
+
 </html>

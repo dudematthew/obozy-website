@@ -296,16 +296,6 @@ export default {
   </div>
   -->
 
-  <div class="container">
-    <div class="section">
-      <div class="row">
-        <div class="row center">
-          <router-link to="/dolacz-do-nas" class="btn-large waves-effect waves-light green">Dołącz do nas</router-link>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div class="index-banner parallax-container" style="margin-bottom: 7em;">
     <div class="section no-pad-bot">
       <div class="container center">

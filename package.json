@@ -4,6 +4,7 @@
   "description": "Web front page dedicated to Obozy Gra Terenowa event.",
   "private": true,
   "scripts": {
+    "start": "npm run serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",

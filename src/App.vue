@@ -2,19 +2,7 @@
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import 'materialize-css/dist/js/materialize.js'
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
-import 'materialize-css/dist/js/materialize.js'
 
-export default {
-  components: {
-    Header,
-    Footer
-  },
-  mounted() {
-    M.AutoInit();
-  },
-}
 export default {
   components: {
     Header,
@@ -42,10 +30,6 @@ export default {
 @import 'materialize-css/sass/materialize.scss';
 @import 'material-icons/iconfont/material-icons.css';
 @import 'swiper/css/bundle';
-// @import '@fortawesome/fontawesome-free/css/all.css';
-@import 'materialize-css/sass/materialize.scss';
-@import 'material-icons/iconfont/material-icons.css';
-@import 'swiper/css/bundle';
 
 
 // Customize Swiper CSS
@@ -58,43 +42,9 @@ html {
   width: 100%;
 }
 
-body,
-html {
-  width: 100%;
-}
-
 .swiper-pagination-bullet-active,
 .swiper-pagination-bullet {
   background: #64f023 !important;
-}
-
-.swiper-pagination-bullet-active,
-.swiper-pagination-bullet {
-  background: #64f023 !important;
-}
-
-.brand-logo,
-.main-title {
-
-  /* m-plus-rounded-1c-regular - latin */
-  @font-face {
-    font-family: 'M PLUS Rounded 1c' !important;
-    font-style: normal;
-    font-weight: 500 !important;
-    src: url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.eot');
-    /* IE9 Compat Modes */
-    src: local(''),
-      url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.eot?#iefix') format('embedded-opentype'),
-      /* IE6-IE8 */
-      url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.woff2') format('woff2'),
-      /* Super Modern Browsers */
-      url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.woff') format('woff'),
-      /* Modern Browsers */
-      url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.ttf') format('truetype'),
-      /* Safari, Android, iOS */
-      url('@/assets/fonts/m-plus-rounded-1c-v15-latin-regular.svg#MPLUSRounded1c') format('svg');
-    /* Legacy iOS */
-  }
 }
 
 .brand-logo,

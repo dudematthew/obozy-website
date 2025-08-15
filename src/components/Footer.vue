@@ -15,7 +15,10 @@
             <li><router-link to="/" class="white-text">Strona główna</router-link></li>
             <li><router-link to="/dolacz-do-nas" class="white-text">Dołącz do nas</router-link></li>
             <li><router-link to="/o-nas" class="white-text">Dowiedz się więcej</router-link></li>
-            <li><router-link to="/quiz" class="white-text">Quiz - Sprawdź się</router-link></li>
+            <li><a href="http://obozy.dudematthew.smallhost.pl/" target="_blank" class="white-text">Narzędzia dla
+                arbitrów</a></li>
+            <!-- CLOSED BETA - Quiz temporarily hidden from navigation -->
+            <!-- <li><router-link to="/quiz" class="white-text">Quiz - Sprawdź się</router-link></li> -->
           </ul>
         </div>
         <div class="col l3 s12">

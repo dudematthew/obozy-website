@@ -34,11 +34,11 @@
                 "isCorrect": false
             },
             {
-                "text": "Tak, jeśli nie jest to związane z aktualną sytuacją",
+                "text": "Tylko jeżeli uznają że zamierzają odsunąć swoje laski od siebie na minimum 20cm by kontynuować walkę",
                 "isCorrect": false
             }
         ],
-        "explanation": "Jeżeli gracze zamrożą się w czasie dziesiątych sekundy na raz, wtedy odsuwają swoje laski od siebie na minimum 20cm i kontynuują walkę.",
+        "explanation": "Jeżeli gracze zamrożą się w czasie dziesiątych sekundy na raz, wtedy nie są zamrożeni a odsuwają swoje laski od siebie na minimum 20cm i kontynuują walkę.",
         "weight": 1
     },
     {
@@ -47,12 +47,12 @@
         "imageUrl": "https://i.imgur.com/nDNzHmn.jpeg",
         "answers": [
             {
-                "text": "Tak",
-                "isCorrect": true
-            },
-            {
                 "text": "Nie",
                 "isCorrect": false
+            },
+            {
+                "text": "Tak",
+                "isCorrect": true
             },
             {
                 "text": "Zależy od Klasy Janka",
@@ -64,24 +64,24 @@
     },
     {
         "id": 4,
-        "question": "Silny Karus zaskoczył biegnącego Mateusza poprawnym zamrożeniem. Mateusz usłyszał hasło *Freeze*, jednak z racji rozpędu będzie musiał oderwać się od Laski Karusa. Po oderwaniu się:",
-        "imageUrl": "https://i.imgur.com/0nNcFqW.jpeg",
+        "question": "Mateusz (środek) zamroził poprawnie Karusa (lewo) jako pierwszy. Następnie Janek spróbował zamrozić laską Mateusza. Czy Mateusz może się aktualnie odzywać?",
+        "imageUrl": "https://i.imgur.com/nDNzHmn.jpeg",
         "answers": [
             {
-                "text": "Karus powinien dobiec do Mateusza który powinien jak najszybciej się zatrzymać",
+                "text": "Nie",
                 "isCorrect": false
             },
             {
-                "text": "Mateusz powinien jak najszybciej wytracić rozpęd i wrócić do miejsca w którym byłby zamrożony",
+                "text": "Tak",
                 "isCorrect": true
             },
             {
-                "text": "Mateusza nie obowiązuje już zamrożenie ponieważ Laska Chochlika przestała go dotykać",
+                "text": "Zależy od Klasy Janka",
                 "isCorrect": false
             }
         ],
-        "explanation": "Jeśli gracz zostanie zamrożony a aktualnie jest w ruchu, powinien możliwie szybko ten ruch zatrzymać i więcej się już nie ruszać.",
-        "weight": 3
+        "explanation": "Nie można zamrażać zamrażających graczy. Mateusz nie jest zamrożony więc może normalnie się porozumiewać.",
+        "weight": 2
     },
     {
         "id": 5,
@@ -105,7 +105,758 @@
                 "isCorrect": false
             }
         ],
-        "explanation": "Jeśli gracz zostanie zamrożony a aktualnie jest w ruchu, powinien możliwie szybko ten ruch zatrzymać i więcej się już nie ruszać.",
+        "explanation": "Jeśli gracz zostanie zamrożony a aktualnie jest w ruchu, powinien on ten ruch możliwie szybko wytracić, wrócić do pozycji w której został zamrożony i dalej już się nie ruszać.",
         "weight": 3
+    },
+    {
+        "id": 6,
+        "question": "Mateusz próbuje zamrozić Karusa. Karus wie że nie jest poprawnie zamrożony. Czy mimo to podniesienie ręki Karusa jest poprawne?",
+        "imageUrl": "https://i.imgur.com/NCtyzw2.jpeg",
+        "answers": [
+            {
+                "text": "Nie, ponieważ Karus myli graczy dookoła i wprowadza niepotrzebny zamęt",
+                "isCorrect": false
+            },
+            {
+                "text": "Tak ponieważ żadne zasady nie zabraniają podnoszenia ręki",
+                "isCorrect": true
+            },
+            {
+                "text": "Nie ponieważ podnoszenie ręki w ten sposób jest zarezerwowane dla zamrożonych graczy",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Zamrożeni gracze powinni mieć cały czas podniesioną rękę nad głową. Choć udawanie zamrożenia wprowadza zamęt, nie da się nikomu udowodnić, że wie, że nie jest zamrożony. Nie ma również zasady która to zabrania.",
+        "weight": 1
+    },
+    {
+        "id": 7,
+        "question": "Mateusz i Karus zostali poprawnie zamrożeni przez Janusza. Który z nich poprawnie podnosi rękę?",
+        "imageUrl": "https://i.imgur.com/iGs3Orp.jpeg",
+        "answers": [
+            {
+                "text": "Mateusz",
+                "isCorrect": false
+            },
+            {
+                "text": "Karus",
+                "isCorrect": false
+            },
+            {
+                "text": "Oboje",
+                "isCorrect": true
+            }
+        ],
+        "explanation": "Zamrożeni gracze powinni mieć cały czas podniesioną rękę nad głową. Zarówno Karus jak i Mateusz ją podnoszą.",
+        "weight": 1
+    },
+    {
+        "id": 8,
+        "question": "Mateusz i Karus zostali poprawnie zamrożeni przez Janusza. Który z nich ma poprawną postawę?",
+        "imageUrl": "https://i.imgur.com/xJXssx4.jpeg",
+        "answers": [
+            {
+                "text": "Mateusz",
+                "isCorrect": true
+            },
+            {
+                "text": "Karus",
+                "isCorrect": false
+            },
+            {
+                "text": "Oboje",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Zamrożeni gracze powinni mieć cały czas podniesioną rękę nad głową. Karus nie podnosi ręki.",
+        "weight": 1
+    },
+    {
+        "id": 9,
+        "question": "Jaka jest odległość którą Mateusz powinien mniej-więcej utrzymać od poprawnie zamrożonego Karusa?",
+        "imageUrl": "https://i.imgur.com/0usxcWG.png",
+        "answers": [
+            {
+                "text": "10cm",
+                "isCorrect": false
+            },
+            {
+                "text": "20cm",
+                "isCorrect": true
+            },
+            {
+                "text": "25cm",
+                "isCorrect": false
+            },
+            {
+                "text": "30cm",
+                "isCorrect": false
+            },
+            {
+                "text": "Bezpieczna",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "W stanie zamrożenia nie można być dotykanym przez innego gracza, a wszyscy dookoła powinni się odsunąć na 20cm od każdej części ciała zamrożonego.",
+        "weight": 2
+    },
+    {
+        "id": 10,
+        "question": "Janek i Mateusz poprawnie zamrażają Karusa. Janek zamroził Karusa jako pierwszy i rozpoczął liczenie z ręką na ramieniu. Następnie Mateusz *domroził* Karusa jako drugi i również rozpoczął liczenie z ręką na ramieniu. Który z nich może dotykać Karusa w tej sytuacji?",
+        "imageUrl": "https://i.imgur.com/z1hBMaM.jpeg",
+        "answers": [
+            {
+                "text": "Żaden, ponieważ zamrażający nie może pojmać mrożonego gracza",
+                "isCorrect": true
+            },
+            {
+                "text": "Janek, ponieważ rozpoczął liczenie jako pierwszy",
+                "isCorrect": false
+            },
+            {
+                "text": "Mateusz, ponieważ Janek nie może rozpocząć liczenia, jeśli sam zamraża przeciwnika",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Zasady nie zabraniają *domrażać* zamrożonego. Zarówno Janek, jak i Mateusz zamrażają więc Karusa a zamrażający nie może pojmać tego, którego mrozi.",
+        "weight": 1
+    },
+    {
+        "id": 11,
+        "question": "Janek poprawnie zamraża Karusa. Czy Mateusz może przytulić Karusa na mniej niż 10 sekund?",
+        "imageUrl": "https://i.imgur.com/0usxcWG.png",
+        "answers": [
+            {
+                "text": "Tak",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie",
+                "isCorrect": true
+            },
+            {
+                "text": "Tylko, jeśli Janek na to pozwoli",
+                "isCorrect": false
+            },
+            {
+                "text": "Tylko, jeśli Mateusz nie ściągnie Karusowi bibuły",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "W stanie zamrożenia nie można być dotykanym przez innego gracza, a wszyscy dookoła powinni się odsunąć na 20cm od każdej części ciała zamrożonego.",
+        "weight": 2
+    },
+    {
+        "id": 12,
+        "question": "Dwóch lub więcej graczy aktualnie toczą walkę siłując się na ziemi. Co powinien zrobić jeden z tych graczy jeśli zostanie poprawnie zamrożony?",
+        "imageUrl": "https://i.imgur.com/ME1VYgs.jpeg",
+        "answers": [
+            {
+                "text": "Powiadomić o tym otaczających graczy, kazać im się odsunąć, następnie wstać i podnieść rękę",
+                "isCorrect": true
+            },
+            {
+                "text": "Kontynuować walkę",
+                "isCorrect": false
+            },
+            {
+                "text": "Przestać się ruszać i leżeć zamrożony",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Jeśli ktoś zostanie zamrożony powinien jak najszybciej powiadomić o tym otaczających graczy i kazać im się odsunąć.",
+        "weight": 3
+    },
+    {
+        "id": 13,
+        "question": "Czy wolno przeszkadzać zamrożonemu graczowi w poprawnym podniesieniu się i powstaniu?",
+        "imageUrl": "https://i.imgur.com/ME1VYgs.jpeg",
+        "answers": [
+            {
+                "text": "Tak",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie",
+                "isCorrect": true
+            },
+            {
+                "text": "Nie, chyba że chcemy zerwać mu bibułę",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Jeśli ktoś zostanie zamrożony powinien jak najszybciej powiadomić o tym otaczających graczy i kazać im się odsunąć. Następnie powinien powstać. Nie wolno zdejmować bibuł zamrożonym graczom ani wywierać na nich fizycznego wpływu.",
+        "weight": 3
+    },
+    {
+        "id": 14,
+        "question": "Janek poprawnie zamraża Karusa. Czy Mateusz może ściągnąć bibułę Karusowi?",
+        "imageUrl": "https://i.imgur.com/gQnIsDy.jpeg",
+        "answers": [
+            {
+                "text": "Tak",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie",
+                "isCorrect": true
+            },
+            {
+                "text": "Nie, chyba że Karus opuści rękę",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Nie wolno zdejmować bibuł zamrożonym graczom ani wywierać na nich fizycznego wpływu. Opuszczenie ręki nie odmraża gracza.",
+        "weight": 3
+    },
+    {
+        "id": 15,
+        "question": "Janek poprawnie zamroził Karusa. Co Chochlik Mateusz może zrobić w tej sytuacji żeby wspomóc Janka?",
+        "imageUrl": "https://i.imgur.com/EJxsZNf.jpeg",
+        "answers": [
+            {
+                "text": "Może natychmiast zerwać Karusowi bibułę póki jest zamrożony i nie może się ruszać",
+                "isCorrect": false
+            },
+            {
+                "text": "Może poczekać aż Janek przestanie zamrażać Karusa i jak najszybciej rzucić się na niego zrywając bibułę",
+                "isCorrect": true
+            },
+            {
+                "text": "Może położyć rękę Karusowi na ramieniu i zacząć odliczanie",
+                "isCorrect": false
+            },
+            {
+                "text": "Gdy Karus przestanie być zamrożony powinien rzucić się na Karusa żeby Janek zerwał Karusowi bibułę",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Zarówno Mateusz, jak i Janek są Chochlikami, nie mogą więc zrywać innym bibuł.",
+        "weight": 3
+    },
+    {
+        "id": 16,
+        "question": "Mateusz zamierza zamrozić Janka. Której laski powinien się pozbyć aby ich ilość była zgodna z zasadami?",
+        "imageUrl": "https://i.imgur.com/1Y8mrvB.jpeg",
+        "answers": [
+            {
+                "text": "Laski trzymanej w zębach",
+                "isCorrect": false
+            },
+            {
+                "text": "Laski trzymanej w prawej ręce",
+                "isCorrect": false
+            },
+            {
+                "text": "Laski trzymanej w lewej ręce",
+                "isCorrect": false
+            },
+            {
+                "text": "Wszystkich oprócz jednej, trzymanej w dowolnej ręce",
+                "isCorrect": true
+            },
+            {
+                "text": "Żadnej",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Chochlik posiada jedną laskę, musi być trzymana dłonią w wyznaczonym miejscu.",
+        "weight": 1
+    },
+    {
+        "id": 17,
+        "question": "Mateusz zamraża Karusa. Czy robi to poprawnie?",
+        "imageUrl": "https://i.imgur.com/NCtyzw2.jpeg",
+        "answers": [
+            {
+                "text": "Tak",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie",
+                "isCorrect": true
+            },
+            {
+                "text": "Zależy od tego, którą rękę podnosi Karus",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Laska trzymana w nieoznaczonym miejscu przynajmniej jedną ręką jest **nieaktywna**. Nieaktywna laska nie może zamrażać graczy.",
+        "weight": 3
+    },
+    {
+        "id": 18,
+        "question": "Mateusz zamraża Karusa. Czy robi to poprawnie?",
+        "imageUrl": "https://i.imgur.com/NCtyzw2.jpeg",
+        "answers": [
+            {
+                "text": "Tak",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie",
+                "isCorrect": true
+            },
+            {
+                "text": "Zależy od tego, którą rękę podnosi Karus",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Laska trzymana w nieoznaczonym miejscu przynajmniej jedną ręką jest **nieaktywna**. Nieaktywna laska nie może zamrażać graczy.",
+        "weight": 3
+    },
+    {
+        "id": 19,
+        "question": "Janek zamraża Karusa. Mateusz jest w trakcie pojmowania zamrożonego. Janek dotyka kija w aż dwóch miejscach. Czy jeśli na chwilę zmieni chwyt puszczając środek laski, nie zabierając z niej drugiej ręki to Karus zostanie odmrożony?",
+        "imageUrl": "https://i.imgur.com/NLw0qdJ.jpeg",
+        "answers": [
+            {
+                "text": "Tak, niezależnie na jak krótko Janek puści środek laski",
+                "isCorrect": true
+            },
+            {
+                "text": "Nie",
+                "isCorrect": false
+            },
+            {
+                "text": "Zależy czy Mateusz będzie kontynuował pojmowanie",
+                "isCorrect": false
+            },
+            {
+                "text": "Tak, chyba, że Janek złapie z powrotem środek laski w przeciągu sekundy",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Laskę należy trzymać **chociaż** jedną ręką w wyznaczonym miejscu, żeby była aktywna. Niepoprawnie trzymana laska staje się nieaktywna aż do ponownej aktywacji. Karus mógłby spokojnie uciec.",
+        "weight": 2
+    },
+    {
+        "id": 20,
+        "question": "Janek, który jest z obozu Zielonych zamraża Karusa z obozu Brązowych i Mateusza z obozu Zielonych. Który gracz jest zamrożony?",
+        "imageUrl": "https://i.imgur.com/iGs3Orp.jpeg",
+        "answers": [
+            {
+                "text": "Tylko Mateusz",
+                "isCorrect": false
+            },
+            {
+                "text": "Zarówno Karus jak i Mateusz",
+                "isCorrect": true
+            },
+            {
+                "text": "Tylko Karus",
+                "isCorrect": false
+            },
+            {
+                "text": "Żaden z nich, ponieważ laska staje się nieaktywna",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Można zamrażać zarówno sojuszników jak i wrogów.",
+        "weight": 2
+    },
+    {
+        "id": 21,
+        "question": "Karus chce zamrozić sam siebie, Mateusz wykorzystuje sytuację by pojmać Karusa. Kiedy taka sytuacja może mieć miejsce?",
+        "imageUrl": "https://i.imgur.com/AAbjOoB.jpeg",
+        "answers": [
+            {
+                "text": "W przypadku, gdy Mateusz jest z przeciwnej drużyny niż Karus ponieważ można zamrażać członków własnego obozu",
+                "isCorrect": false
+            },
+            {
+                "text": "Nigdy, ponieważ nie można zamrozić samego siebie",
+                "isCorrect": true
+            },
+            {
+                "text": "Nie może, ponieważ Mateusz nie jest Chochlikiem",
+                "isCorrect": false
+            },
+            {
+                "text": "Tylko gdy Mateusz nie dotyka Karusa",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Nie można zamrażać samego siebie. Pojmanie nie może mieć więc miejsca.",
+        "weight": 2
+    },
+    {
+        "id": 22,
+        "question": "Janek zamraża Mateusza. Czy Janek może przesunąć biednego zamrożonego swoją laską lub go popchnąć?",
+        "imageUrl": "https://i.imgur.com/dcTFJ5M.jpeg",
+        "answers": [
+            {
+                "text": "Zależy czy będzie to lekko czy mocno",
+                "isCorrect": false
+            },
+            {
+                "text": "Tak, niezależnie czy będzie to lekko czy mocno",
+                "isCorrect": false
+            },
+            {
+                "text": "Tak, jeśli Mateusz nie wyrazi sprzeciwu",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie, niezależnie czy będzie to lekko czy mocno",
+                "isCorrect": true
+            }
+        ],
+        "explanation": "Laska nie może wywierać fizycznego wpływu na zamrożonego. Popchnięcie czy przesunięcie zalicza się do fizycznego wpływu.",
+        "weight": 1
+    },
+    {
+        "id": 23,
+        "question": "Janek zamraża Karusa. Mateusz wykorzystuje sytuację i trzyma rękę na ramieniu Karusa, licząc do trzydziestu. Mateusz zamierza dać drugą rękę na ramię Karusa, chcąc się oprzeć. Czy zamierzenie Mateusza jest zgodne z zasadami?",
+        "imageUrl": "https://i.imgur.com/NLw0qdJ.jpeg",
+        "answers": [
+            {
+                "text": "Zależy czy będzie opierał się lekko czy mocno",
+                "isCorrect": false
+            },
+            {
+                "text": "Tak, jeśli Karus nie wyrazi sprzeciwu",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie",
+                "isCorrect": true
+            },
+            {
+                "text": "Tak, jeśli Janek będzie kontynuował zamrażanie Karusa",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Mateusz aktualnie pojmuje Karusa. Laska jest jedyną rzeczą, która może dotykać zamrożonego za wyjątkiem liczącej dłoni.",
+        "weight": 1
+    },
+    {
+        "id": 24,
+        "question": "Janek zamraża Karusa. Mateusz wykorzystuje sytuację i trzyma rękę na ramieniu Karusa, licząc do trzydziestu. Mateusz zamierza dać drugą rękę na ramię Karusa, chcąc się oprzeć. Czy zamierzenie Mateusza jest zgodne z zasadami?",
+        "imageUrl": "https://i.imgur.com/NLw0qdJ.jpeg",
+        "answers": [
+            {
+                "text": "Zależy czy będzie opierał się lekko czy mocno",
+                "isCorrect": false
+            },
+            {
+                "text": "Tak, jeśli Karus nie wyrazi sprzeciwu",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie",
+                "isCorrect": true
+            },
+            {
+                "text": "Tak, jeśli Janek będzie kontynuował zamrażanie Karusa",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Mateusz aktualnie pojmuje Karusa. Laska jest jedyną rzeczą, która może dotykać zamrożonego za wyjątkiem liczącej dłoni.",
+        "weight": 1
+    },
+    {
+        "id": 25,
+        "question": "Karus na chwilę podrzuca swoją laskę a następnie łapie ją w poprawnym miejscu. Czy laska będzie natychmiast aktywna?",
+        "imageUrl": "https://i.imgur.com/eG5i6iW.jpeg",
+        "answers": [
+            {
+                "text": "Nie, ponieważ aby aktywować laskę należy policzyć do trzech",
+                "isCorrect": true
+            },
+            {
+                "text": "Tak, ponieważ laska nie została zdezaktywowana, więc dalej jest aktywna",
+                "isCorrect": false
+            },
+            {
+                "text": "Zależy w którą rękę złapie laskę",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Laska zostaje zdezaktywowana gdy przestanie kogoś zamrażać lub przestanie być poprawnie trzymana. Aby pozbyć się tego efektu należy policzyć na głos do trzech utrzymując warunki aktywnej laski.",
+        "weight": 2
+    },
+    {
+        "id": 26,
+        "question": "Janek niepostrzeżenie podkradł się do Karusa tak, żeby Mateusz go nie zobaczył. Następnie zamroził Karusa. Czy Janek jest zobowiązany krzyknąć ***Freeze*** lub głośno policzyć gdy puści Karusa? Zakładamy że te trzy osoby są same.",
+        "imageUrl": "https://i.imgur.com/Wpq0G31.jpeg",
+        "answers": [
+            {
+                "text": "Tak",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie, ponieważ Mateusz nie zdaje sobie sprawy że Janek jest obok",
+                "isCorrect": true
+            },
+            {
+                "text": "Zobowiązany jest tylko do krzyknięcia głośno ***Freeze*** a nie do liczenia",
+                "isCorrect": false
+            },
+            {
+                "text": "Zobowiązany jest tylko do liczenia a nie krzyknięcia głośno ***Freeze***",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Jeśli się skradasz i nikt nie zdaje sobie sprawy, że jesteś obok możesz policzyć ciszej i nie musisz krzyczeć ***Freeze***.",
+        "weight": 1
+    },
+    {
+        "id": 27,
+        "question": "Zanim Mateusz próbuje poprawnie zamrozić Karusa, ten jednak łapie go pierwszy za rękę. Co Mateusz musi zrobić aby zamrozić Karusa w tej sytuacji?",
+        "imageUrl": "https://i.imgur.com/daQlqmb.jpeg",
+        "answers": [
+            {
+                "text": "Nic, Karus zostaje poprawnie zamrożony po dotknięciu laską",
+                "isCorrect": false
+            },
+            {
+                "text": "Musi zerwać kontakt fizyczny z Karusem, policzyć do trzech nie dając się znowu dotknąć a następnie spróbować ponownie",
+                "isCorrect": true
+            },
+            {
+                "text": "Musi policzyć do trzech, żeby Karus automatycznie się zamroził",
+                "isCorrect": false
+            },
+            {
+                "text": "Wystarczy że krzyknie ***Freeze!***",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Aby można było zamrażać, nie można być dotykanym przez żadnego gracza. Jeśli jesteś dotykany przez kogoś, twoja laska staje się nieaktywna. Pamiętaj, że odliczasz od momentu, gdy ktoś cię puści a nie złapie.",
+        "weight": 2
+    },
+    {
+        "id": 28,
+        "question": "Zanim Karus zdąży złapać Mateusza za rękę, ten zamraża go poprawnie. Co się stanie jeśli Karus dotknie Mateusza w tej sytuacji?",
+        "imageUrl": "https://i.imgur.com/DObWLuV.jpeg",
+        "answers": [
+            {
+                "text": "Nic, Karus powinien przyjąć postawę zamrożonego",
+                "isCorrect": true
+            },
+            {
+                "text": "Zamrażający Mateusz zostanie dotknięty a laska przestanie być aktywna",
+                "isCorrect": false
+            },
+            {
+                "text": "Mateusz będzie musiał odepchnąć rękę Karusa żeby zamrożenie trwało",
+                "isCorrect": false
+            },
+            {
+                "text": "Karus będzie musiał pozostać zamrożonym trzymając rękę Mateusza",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Zamrożona osoba, według zasad, nie powinna się ruszać a wszyscy powinni trzymać się z dala od niej o 20cm. Dotknięcie Mateusza ręką przez zamrożonego nie może mieć więc miejsca, toteż laska nie zostanie zdezaktywowana.",
+        "weight": 2
+    },
+    {
+        "id": 29,
+        "question": "Mateusz zamrażał poprawnie Karusa po czym przestał go dotykać laską. Co się dzieje?",
+        "imageUrl": "https://i.imgur.com/ZQLs0bW.jpeg",
+        "answers": [
+            {
+                "text": "Karus przestaje być zamrożony a magiczna laska przestaje być aktywna",
+                "isCorrect": true
+            },
+            {
+                "text": "Karus przestaje być zamrożony a magiczna laska pozostaje aktywna",
+                "isCorrect": false
+            },
+            {
+                "text": "Karus pozostaje zamrożonym ponieważ magiczna laska pozostaje aktywna",
+                "isCorrect": false
+            },
+            {
+                "text": "Karus traci bibułę, umierając",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Jeśli laska przestaje dotykać jakiegoś gracza, staje się nieaktywna, a ten zostaje odmrożony.",
+        "weight": 3
+    },
+    {
+        "id": 30,
+        "question": "Janek poprawnie zamraża Karusa i Mateusza jednocześnie. Co się stanie jeśli magiczna laska straci kontakt z Karusem?",
+        "imageUrl": "https://i.imgur.com/iGs3Orp.jpeg",
+        "answers": [
+            {
+                "text": "Karus i Mateusz przestają być zamrożeni a laska przestaje być aktywna",
+                "isCorrect": true
+            },
+            {
+                "text": "Karus przestaje być zamrożony a Mateusz pozostaje zamrożony",
+                "isCorrect": false
+            },
+            {
+                "text": "Mateusz pozostaje zamrożonym ponieważ magiczna laska pozostaje aktywna",
+                "isCorrect": false
+            },
+            {
+                "text": "Karus musi wrócić do laski, jakby nigdy go nie przestała dotykać",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Laska może zamrażać więcej niż jedną osobę, jednak, jeśli choć jedna z nich się uwolni, wszyscy się odmrażają.",
+        "weight": 3
+    },
+    {
+        "id": 31,
+        "question": "Janek poprawnie zamraża Karusa, jednak chciałby zamrozić również Chochlika Mateusza w jak najkrótszym czasie. Jak może doprowadzić do takiej sytuacji?",
+        "imageUrl": "https://i.imgur.com/1esmz6z.jpeg",
+        "answers": [
+            {
+                "text": "Może przesunąć laskę po ciele Karusa tak, żeby dotknąć drugim końcem Mateusza",
+                "isCorrect": true
+            },
+            {
+                "text": "Może puścić laską Karusa i natychmiast dotknąć obu graczy na raz",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie może, można zamrażać maksymalnie jednego gracza na raz",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie może, ponieważ Mateusz jest Chochlikiem",
+                "isCorrect": false
+            },
+            {
+                "text": "Może przyciągnąć Mateusza do siebie inną ręką niż ta, która trzyma laskę tak, żeby dotknął kija",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Laska może zamrażać więcej niż jedną osobę. Można przemieszczać laskę po ciele gracza, na przykład w celu dotknięcia następnych graczy. Przyciąganie Mateusza nie wchodzi w grę ponieważ doszłoby do dezaktywacji laski, podobnie jak przy puszczeniu Karusa laską.",
+        "weight": 1
+    },
+    {
+        "id": 32,
+        "question": "Mateusz przez przypadek upuścił swoją laskę, kończąc zamrożenie. Czy Karus może uniemożliwić Mateuszowi podniesienia jej, jeśli robi to nogą?",
+        "imageUrl": "https://i.imgur.com/IIBgJ69.jpeg",
+        "answers": [
+            {
+                "text": "Nie, póki laska jest aktywna",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie, póki laska jest nieaktywna",
+                "isCorrect": false
+            },
+            {
+                "text": "Tak, ponieważ Karus jest Chochlikiem",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie, ponieważ laska należy do Mateusza",
+                "isCorrect": true
+            }
+        ],
+        "explanation": "Nie można zabrać laski Chochlikowi. Jeśli ją złapałeś, uwolnij uścisk. Nie wywieraj na nią fizycznego wpływu inaczej niż laską.",
+        "weight": 2
+    },
+    {
+        "id": 33,
+        "question": "Zdenerwowany Mateusz zamierza chwycić laskę Chochlika i pozostać zamrożonym trzymając ją mocno. Poprawnie podniesie drugą rękę. Czy według zasad może to zrobić?",
+        "imageUrl": "https://i.imgur.com/ioyw2Wq.jpeg",
+        "answers": [
+            {
+                "text": "Nie, póki laska jest aktywna",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie, póki laska jest nieaktywna",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie, niezależnie czy laska jest aktywna",
+                "isCorrect": true
+            },
+            {
+                "text": "Tak, ponieważ podniósł poprawnie rękę",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Nie można zabrać laski Chochlikowi. Jeśli ją złapałeś, uwolnij uścisk. Nie wywieraj na nią fizycznego wpływu inaczej niż laską.",
+        "weight": 1
+    },
+    {
+        "id": 34,
+        "question": "Mateusz (pośrodku) jako pierwszy poprawnie zamroził Karusa. Następnie Janek podszedł i spróbował zamrozić Mateusza. Co to za sytuacja?",
+        "imageUrl": "https://i.imgur.com/aqyBccf.jpeg",
+        "answers": [
+            {
+                "text": "Karus przestaje być zamrożony ponieważ Mateusz nie może go już zamrażać",
+                "isCorrect": false
+            },
+            {
+                "text": "Powstaje impas ponieważ żeby Karus się odmroził Mateusz najpierw musi przestać być zamrożony",
+                "isCorrect": false
+            },
+            {
+                "text": "Mateusz nie zostaje zamrożony ponieważ zamraża Karusa",
+                "isCorrect": true
+            },
+            {
+                "text": "Wszyscy trzej stają się zamrożeni",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Nie można zamrozić zamrażającego. Mateusz aktualnie zamraża, więc jest nietykalny dla magicznej laski Janka.",
+        "weight": 3
+    },
+    {
+        "id": 35,
+        "question": "Mateusz zamroził poprawnie Janka, jednak Janek w mniej niż sekundę potem zamroził Mateusza. Co powinno się w takiej sytuacji zrobić?",
+        "imageUrl": "https://i.imgur.com/ENOk1iO.jpeg",
+        "answers": [
+            {
+                "text": "Janek powinien zorientować się, że był drugi i przyjąć postawę zamrożonego",
+                "isCorrect": false
+            },
+            {
+                "text": "Mateusz powinien się zorientować że laska Janka dotyka skóry a jego laska dotyka ręki i przyjąć postawę zamrożonego",
+                "isCorrect": false
+            },
+            {
+                "text": "Obaj gracze powinni odsunąć swoje laski na minimum 20cm a następnie kontynuować walkę",
+                "isCorrect": true
+            },
+            {
+                "text": "Janek powinien odrzucić swoją laskę i przyjąć postawę zamrożonego",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Jeżeli gracze dotkną się w czasie dziesiątych sekundy na raz, wtedy odsuwają swoje laski od siebie na minimum 20cm i kontynuują walkę",
+        "weight": 1
+    },
+    {
+        "id": 36,
+        "question": "Janek zamraża Karusa. Mateusz zamierza mocno uderzyć swoją laską laskę Janka żeby zerwać kontakt laski z Karusem. Czy jeśli kontakt zostanie zerwany, to Karus się odmraża?",
+        "imageUrl": "https://i.imgur.com/OcHRlik.png",
+        "answers": [
+            {
+                "text": "Zależy czy będzie to lekko czy mocno",
+                "isCorrect": false
+            },
+            {
+                "text": "Tak, niezależnie czy będzie to lekko czy mocno",
+                "isCorrect": true
+            },
+            {
+                "text": "Tak, jeśli Karus nie wyrazi sprzeciwu",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie, niezależnie czy będzie to lekko czy mocno",
+                "isCorrect": false
+            },
+            {
+                "text": "Nie, ponieważ nie wolno wywierać fizycznego wpływu na laskę chochlika",
+                "isCorrect": false
+            }
+        ],
+        "explanation": "Laska chochlika jest jedyną rzeczą która może wywrzeć fizyczny wpływ na inną laskę chochlika.",
+        "weight": 1
     }
 ]

@@ -33,6 +33,7 @@ const routes = [
       description: 'Chcesz dołączyć do Obozów? Poznaj naszą ekipę i dowiedz się, jak możesz zostać uczestnikiem najbardziej intensywnej gry terenowej w okolicach Opola.'
     }
   },
+  // CLOSED BETA - Quiz temporarily hidden from navigation
   {
     path: '/quiz',
     name: 'quiz',

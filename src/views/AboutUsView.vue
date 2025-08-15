@@ -275,6 +275,8 @@ export default {
     </div>
   </div>
 
+  <!-- CLOSED BETA - Quiz section temporarily hidden from navigation -->
+  <!--
   <div class="container">
     <div class="section">
       <div class="row">
@@ -288,6 +290,17 @@ export default {
             <i class="left material-icons">quiz</i>
             Sprawdź się
           </router-link>
+        </div>
+      </div>
+    </div>
+  </div>
+  -->
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="row center">
+          <router-link to="/dolacz-do-nas" class="btn-large waves-effect waves-light green">Dołącz do nas</router-link>
         </div>
       </div>
     </div>

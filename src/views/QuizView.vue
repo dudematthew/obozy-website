@@ -17,8 +17,8 @@ export default {
                     { min: 80, max: 89, level: 'master', title: 'Władca Zamrożenia ❄️', message: 'Imponujące! Znasz każdy sekret Stanu Zamrożenia. Przeciwnicy będą się zastanawiać czy jesteś nietykalny...' },
                     { min: 70, max: 79, level: 'expert', title: 'Arcychochlik 🎭', message: 'Świetnie! Twoja laska będzie siać postrach w szeregach wroga. Możesz śmiało iść na pole bitwy!' },
                     { min: 60, max: 69, level: 'advanced', title: 'Doświadczony ⚔️', message: 'Solidnie! Znasz większość zasad, ale jeszcze trochę nauki nie zaszkodzi.' },
-                    { min: 50, max: 59, level: 'good', title: 'Możesz grać 😐', message: 'Hmm... Podstawy znasz, ale to naprawdę minimum żeby nie zawstydzić swojego obozu. Lepiej się jeszcze pouczaj!' },
-                    { min: 40, max: 49, level: 'basic', title: 'Wstyd Obozu 😬', message: 'Auć... To już jest wstyd. Twój Dowódca będzie miał łzy w oczach. Koniecznie przeczytaj instrukcję jeszcze raz!' },
+                    { min: 50, max: 59, level: 'good', title: 'Możesz grać 😐', message: 'Hmm... Podstawy znasz, ale to naprawdę minimum żeby nie zawstydzić swojego obozu. Lepiej się jeszcze poucz!' },
+                    { min: 40, max: 49, level: 'basic', title: 'Wstyd Obozu 😬', message: 'Auć... To już jest wstyd. Twój Dowódca będzie miał łzy w oczach. Koniecznie przeczytaj instrukcję raz jeszcze!' },
                     { min: 25, max: 39, level: 'beginner', title: 'Kompromitacja! 🤦‍♂️', message: 'To jest po prostu żenujące... Jak możesz myśleć o graniu w Obozy z taką wiedzą? Wracaj do podstaw i nie pokazuj się na polu bitwy!' },
                     { min: 0, max: 24, level: 'disaster', title: 'Katastrofa! 💀', message: 'DRAMAT! Czy ty w ogóle czytałeś instrukcję? Lepiej idź grać w klasy - tam przynajmniej nie zaszkodzisz nikomu poza sobą 😡' }
                 ]
@@ -31,6 +31,8 @@ export default {
             score: 0,
             quizStarted: false,
             quizFinished: false,
+            quizMode: 'full', // 'basic' | 'full'
+            BASIC_LIMIT: 20,
             enablePreload: true,
             preloadedImage: null,
             expandedQuestions: new Set(), // Track which questions are expanded
@@ -56,7 +58,10 @@ export default {
         },
         performanceMessage() {
             return this.getPerformanceMessage(this.scorePercentage);
-        }
+        },
+        isLastQuestion() {
+            return this.currentQuestionIndex === this.questions.length - 1;
+        },
     },
     methods: {
         renderMarkdown(text) {
@@ -112,6 +117,20 @@ export default {
                 question.answers = this.shuffleArray(question.answers);
             });
         },
+        // Build the 20-question basic pool:
+        // All 3pt + all 2pt questions always included,
+        // remainder filled with shuffled 1pt questions.
+        buildBasicPool() {
+            const highWeight = this.shuffleArray(
+                this.originalQuestions.filter(q => (q.weight || 1) >= 2)
+            );
+            const lowWeight = this.shuffleArray(
+                this.originalQuestions.filter(q => (q.weight || 1) === 1)
+            );
+            const needed = Math.max(0, this.BASIC_LIMIT - highWeight.length);
+            const pool = [...highWeight, ...lowWeight.slice(0, needed)].slice(0, this.BASIC_LIMIT);
+            return pool;
+        },
         preloadNextImage() {
             if (!this.enablePreload || !this.nextQuestion?.imageUrl) return;
             this.preloadedImage = new Image();
@@ -126,8 +145,19 @@ export default {
                 }
             });
         },
-        startQuiz() {
-            this.shuffleQuestions();
+        startQuiz(mode = 'full') {
+            this.quizMode = mode;
+
+            if (mode === 'basic') {
+                const pool = this.buildBasicPool();
+                this.questions = pool.map(q => ({
+                    ...q,
+                    answers: this.shuffleArray([...q.answers])
+                }));
+            } else {
+                this.shuffleQuestions();
+            }
+
             this.quizStarted = true;
             this.currentQuestionIndex = 0;
             this.score = 0;
@@ -200,6 +230,7 @@ export default {
                 score: this.score,
                 quizStarted: this.quizStarted,
                 quizFinished: this.quizFinished,
+                quizMode: this.quizMode,
                 userAnswers: this.userAnswers,
                 timestamp: Date.now()
             };
@@ -219,6 +250,7 @@ export default {
                         this.score = progressData.score || 0;
                         this.quizStarted = progressData.quizStarted || false;
                         this.quizFinished = progressData.quizFinished || false;
+                        this.quizMode = progressData.quizMode || 'full';
                         this.userAnswers = progressData.userAnswers || [];
                         return true;
                     } else {
@@ -231,6 +263,10 @@ export default {
             return false;
         },
         resetQuiz() {
+            if (!window.confirm('Czy na pewno chcesz zacząć od nowa?')) {
+                return;
+            }
+
             // Clear localStorage
             localStorage.removeItem(this.localStorageKey);
             // Reset all quiz state
@@ -240,6 +276,7 @@ export default {
             this.score = 0;
             this.quizStarted = false;
             this.quizFinished = false;
+            this.quizMode = 'full';
             this.userAnswers = [];
             this.expandedQuestions.clear();
             // Reload questions and shuffle them
@@ -305,11 +342,12 @@ export default {
         <div class="section">
             <div class="row">
                 <div class="col m10 offset-m1 s12">
+
                     <!-- Quiz Start Screen -->
                     <div v-if="!quizStarted && !quizFinished" class="center-align">
                         <h4>Gotowy na test?</h4>
                         <p class="flow-text">
-                            Organizatorzy zadadzą Ci szereg pytań dotyczących zasad Stanu Zamrożenia. Różne pytania mają
+                            Zadamy Ci szereg pytań dotyczących zasad Stanu Zamrożenia. Różne pytania mają
                             różną ilość punktów, które możesz zdobyć. Powodzenia!
                         </p>
                         <!-- Show saved progress indicator if exists -->
@@ -319,11 +357,22 @@ export default {
                             <span>Masz zapisany postęp: pytanie {{ currentQuestionIndex + 1 }} z {{ questions.length
                                 }}</span>
                         </div>
-                        <button @click="startQuiz" class="btn-large green waves-effect waves-light">
-                            {{ currentQuestionIndex > 0 ? 'Kontynuuj Quiz' : 'Rozpocznij Quiz' }}
-                        </button>
+
+                        <!-- Mode selection buttons -->
+                        <div class="quiz-mode-buttons"
+                            style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 8px;">
+                            <button @click="startQuiz('basic')" class="btn-large green waves-effect waves-light">
+                                <i class="left material-icons">school</i>
+                                Quiz podstawowy - 20 pytań
+                            </button>
+                            <button @click="startQuiz('full')" class="btn-large orange waves-effect waves-light">
+                                <i class="left material-icons">whatshot</i>
+                                Pełny quiz - {{ originalQuestions.length }} pytań
+                            </button>
+                        </div>
+
                         <!-- Reset button if there's saved progress -->
-                        <div v-if="currentQuestionIndex > 0 || quizFinished" style="margin-top: 15px;">
+                        <div v-if="currentQuestionIndex > 0 || quizFinished" style="margin-top: 20px;">
                             <button @click="resetQuiz" class="btn grey waves-effect waves-light">
                                 <i class="left material-icons">refresh</i>
                                 Od nowa
@@ -354,15 +403,14 @@ export default {
                                         <span class="question-number">Pytanie {{ currentQuestionIndex + 1 }}/{{
                                             questions.length }}</span>
                                         <div class="question-points-container"
-                                            style="display: flex; align-items: center; ">
+                                            style="display: flex; align-items: center;">
                                             <span class="question-points grey" style="cursor: pointer;"
-                                                @click="resetQuiz">
+                                                @click="resetQuiz" title="Zacznij od nowa">
                                                 <i class="material-icons"
                                                     style="font-size: 16px; transform: translateY(2px);">refresh</i>
                                             </span>
                                             <span class="question-points" style="margin-left: 8px;">{{
-                                                currentQuestion.weight || 1 }}
-                                                pkt</span>
+                                                currentQuestion.weight || 1 }} pkt</span>
                                         </div>
                                     </div>
                                     <h5 v-html="renderMarkdown(currentQuestion.question)"></h5>
@@ -379,7 +427,7 @@ export default {
                                     <div class="card-action">
                                         <button @click="submitAnswer" class="btn green waves-effect waves-light"
                                             :disabled="selectedAnswerIndex === null">
-                                            Następne pytanie
+                                            {{ isLastQuestion ? 'Zakończ quiz' : 'Następne pytanie' }}
                                         </button>
                                     </div>
                                 </div>
@@ -409,7 +457,16 @@ export default {
                                     <span class="question-points">{{ question.weight || 1 }}pkt</span>
                                 </div>
                             </div>
+                            <!-- Instruction link -->
+                            <div class="instruction-link" style="margin-top: 2rem;">
+                                <a href="https://drive.google.com/open?id=1WWFw06k45N8-DWfNoseUmSyXJB835ybT&usp=drive_fs"
+                                    target="_blank" class="btn waves-effect waves-light btn-small">
+                                    <i class="left material-icons">menu_book</i>
+                                    Instrukcja Obozów
+                                </a>
+                            </div>
                         </div>
+
 
                         <h5 class="details-header">Szczegółowe odpowiedzi</h5>
                         <div class="answers-review">
@@ -463,13 +520,21 @@ export default {
                             </div>
                         </div>
 
-
-                        <div class="col s12">
-                            <button @click="startQuiz" class="btn-large green waves-effect waves-light">
-                                Spróbuj ponownie
+                        <!-- Play again buttons -->
+                        <h5 class="details-header">Jeszcze raz?</h5>
+                        <div class="col s12"
+                            style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 2rem;">
+                            <button @click="startQuiz('basic')" class="btn-large green waves-effect waves-light">
+                                <i class="left material-icons">school</i>
+                                Quiz podstawowy &mdash; 20 pytań
+                            </button>
+                            <button @click="startQuiz('full')" class="btn-large orange waves-effect waves-light">
+                                <i class="left material-icons">whatshot</i>
+                                Pełny quiz &mdash; {{ originalQuestions.length }} pytań
                             </button>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -496,6 +561,10 @@ export default {
     .quiz-content-wrapper {
         display: flex;
         flex-direction: column;
+    }
+
+    .reset-button:hover {
+        color: red;
     }
 }
 
@@ -656,6 +725,11 @@ h5 {
     .answers label {
         padding: 10px;
     }
+
+    .quiz-mode-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 .answers-review {
@@ -729,7 +803,7 @@ h5 {
             @media (max-width: 600px) {
                 width: 100%;
                 justify-content: flex-end;
-                padding-left: 32px; // Align with question text
+                padding-left: 32px;
             }
 
             i {
@@ -923,10 +997,6 @@ h5 {
 .details-header {
     margin: 2rem 0 1rem;
     color: #666;
-}
-
-.retry-button {
-    margin-top: 2rem;
 }
 
 .question-image {

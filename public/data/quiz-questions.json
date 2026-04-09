@@ -340,7 +340,7 @@
             }
         ],
         "explanation": "Zarówno Mateusz, jak i Janek są Chochlikami, nie mogą więc zrywać innym bibuł.",
-        "weight": 3
+        "weight": 2
     },
     {
         "id": 16,
@@ -590,7 +590,7 @@
     },
     {
         "id": 26,
-        "question": "Janek niepostrzeżenie podkradł się do Karusa tak, żeby Mateusz go nie zobaczył. Następnie zamroził Karusa. Czy Janek jest zobowiązany krzyknąć ***Freeze*** lub głośno policzyć gdy puści Karusa? Zakładamy że te trzy osoby są same.",
+        "question": "Janek niepostrzeżenie podkradł się do Karusa tak, żeby Mateusz go nie zobaczył. Następnie zamroził Karusa. Czy Janek jest zobowiązany krzyknąć ***Freeze*** przy zamrożeniu lub głośno policzyć gdy puści Karusa w tej sytuacji? Zakładamy że te trzy osoby są same.",
         "imageUrl": "https://i.imgur.com/Wpq0G31.jpeg",
         "answers": [
             {
@@ -598,15 +598,11 @@
                 "isCorrect": false
             },
             {
-                "text": "Nie, ponieważ Mateusz nie zdaje sobie sprawy że Janek jest obok",
+                "text": "Nie, ponieważ przy skradaniu można pominąć informowanie głosem",
                 "isCorrect": true
             },
             {
                 "text": "Zobowiązany jest tylko do krzyknięcia głośno ***Freeze*** a nie do liczenia",
-                "isCorrect": false
-            },
-            {
-                "text": "Zobowiązany jest tylko do liczenia a nie krzyknięcia głośno ***Freeze***",
                 "isCorrect": false
             }
         ],
@@ -615,7 +611,7 @@
     },
     {
         "id": 27,
-        "question": "Zanim Mateusz próbuje poprawnie zamrozić Karusa, ten jednak łapie go pierwszy za rękę. Co Mateusz musi zrobić aby zamrozić Karusa w tej sytuacji?",
+        "question": "Zanim Mateusz spróbuje poprawnie zamrozić Karusa, ten łapie go pierwszy za rękę. Co Mateusz musi zrobić aby zamrozić Karusa w tej sytuacji?",
         "imageUrl": "https://i.imgur.com/daQlqmb.jpeg",
         "answers": [
             {

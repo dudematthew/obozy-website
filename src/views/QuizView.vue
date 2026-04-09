@@ -17,8 +17,8 @@ export default {
                     { min: 80, max: 89, level: 'master', title: 'Władca Zamrożenia ❄️', message: 'Imponujące! Znasz każdy sekret Stanu Zamrożenia. Przeciwnicy będą się zastanawiać czy jesteś nietykalny...' },
                     { min: 70, max: 79, level: 'expert', title: 'Arcychochlik 🎭', message: 'Świetnie! Twoja laska będzie siać postrach w szeregach wroga. Możesz śmiało iść na pole bitwy!' },
                     { min: 60, max: 69, level: 'advanced', title: 'Doświadczony ⚔️', message: 'Solidnie! Znasz większość zasad, ale jeszcze trochę nauki nie zaszkodzi.' },
-                    { min: 50, max: 59, level: 'good', title: 'Możesz grać 😐', message: 'Hmm... Podstawy znasz, ale to naprawdę minimum żeby nie zawstydzić swojego obozu. Lepiej się jeszcze pouczaj!' },
-                    { min: 40, max: 49, level: 'basic', title: 'Wstyd Obozu 😬', message: 'Auć... To już jest wstyd. Twój Dowódca będzie miał łzy w oczach. Koniecznie przeczytaj instrukcję jeszcze raz!' },
+                    { min: 50, max: 59, level: 'good', title: 'Możesz grać 😐', message: 'Hmm... Podstawy znasz, ale to naprawdę minimum żeby nie zawstydzić swojego obozu. Lepiej się jeszcze poucz!' },
+                    { min: 40, max: 49, level: 'basic', title: 'Wstyd Obozu 😬', message: 'Auć... To już jest wstyd. Twój Dowódca będzie miał łzy w oczach. Koniecznie przeczytaj instrukcję raz jeszcze!' },
                     { min: 25, max: 39, level: 'beginner', title: 'Kompromitacja! 🤦‍♂️', message: 'To jest po prostu żenujące... Jak możesz myśleć o graniu w Obozy z taką wiedzą? Wracaj do podstaw i nie pokazuj się na polu bitwy!' },
                     { min: 0, max: 24, level: 'disaster', title: 'Katastrofa! 💀', message: 'DRAMAT! Czy ty w ogóle czytałeś instrukcję? Lepiej idź grać w klasy - tam przynajmniej nie zaszkodzisz nikomu poza sobą 😡' }
                 ]

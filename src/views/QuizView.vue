@@ -1,5 +1,6 @@
 <script>
 import MarkdownIt from 'markdown-it';
+import originalQuestions from '@/data/quiz-questions.json';
 const md = new MarkdownIt();
 
 /* global M */
@@ -24,7 +25,7 @@ export default {
                 ]
             },
 
-            originalQuestions: [], // Store original questions
+            originalQuestions, // Store original questions
             questions: [], // Store shuffled questions
             currentQuestionIndex: 0,
             selectedAnswerIndex: null,
@@ -98,8 +99,6 @@ export default {
         },
         async loadQuestions() {
             try {
-                const response = await fetch('/data/quiz-questions.json');
-                this.originalQuestions = await response.json();
                 this.shuffleQuestions();
                 if (this.enablePreload && this.questions.length > 0) {
                     this.preloadNextImage();

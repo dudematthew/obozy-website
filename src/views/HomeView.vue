@@ -1,6 +1,7 @@
 <script>
 /* global M */
 import { loadScript } from "vue-plugin-load-script";
+import event from '@/data/event.json';
 // loadScript("https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY")
 // 	.then(() => {
 // 		// Script is loaded, do something
@@ -13,15 +14,7 @@ export default {
 	name: "HomeView",
 	data() {
 		return {
-			event: {
-				date: '2026-07-24',
-				time: '15:00',
-				place: 'Turawa',
-				description: 'W tym roku wprowadzamy uproszczenie zasad, zbicie ich i zadbanie o komfortową grę. Miast zrzutów będziecie szukać skarbów. Oczywiście jak zawsze obecne będą bardzo drobne poprawki w mechanice na podstawie poprzedniej edycji.',
-				bannerLink: 'https://i.imgur.com/kFj0NYX.png',
-				eventLink: 'https://www.facebook.com/events/1203318538195199',
-				name: 'Obozy IX Edycja'
-			},
+			event,
 		};
 	},
 	mounted() {

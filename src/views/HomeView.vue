@@ -252,7 +252,7 @@ export default {
 				<div class="col s12 m12 l2 xl3"></div>
 				<div class="col s12 m12 l3 xl2 center">
 					<a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
-						<img src="@/assets/images/logo.png" class="circle pulse responsive-img" />
+						<img src="@/assets/images/logo.png" class="circle responsive-img" />
 					</a>
 				</div>
 				<div class="left-align col s12 m12 l5 xl4">
@@ -276,7 +276,7 @@ export default {
 			<div class="hide-on-large-only row">
 				<div class="center col l4 m12 s12 xl3">
 					<a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">
-						<img src="@/assets/images/logo.png" class="circle pulse responsive-img" />
+						<img src="@/assets/images/logo.png" class="circle responsive-img" />
 					</a>
 				</div>
 

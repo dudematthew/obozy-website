@@ -14,11 +14,11 @@ export default {
 	data() {
 		return {
 			event: {
-				date: '2025-08-29',
+				date: '2026-07-24',
 				time: '15:00',
 				place: 'Turawa',
-				description: 'W tym roku wprowadzamy uproszczenie zasad, zbicie ich i zadbanie o komfortową grę. Miast zrzutów będziecie szukać skarbów.\nOczywiście jak zawsze obecne będą bardzo drobne poprawki w mechanice na podstawie poprzedniej edycji.',
-				bannerLink: 'https://i.imgur.com/nJAHasU.png',
+				description: 'W tym roku wprowadzamy uproszczenie zasad, zbicie ich i zadbanie o komfortową grę. Miast zrzutów będziecie szukać skarbów. Oczywiście jak zawsze obecne będą bardzo drobne poprawki w mechanice na podstawie poprzedniej edycji.',
+				bannerLink: 'https://i.imgur.com/kFj0NYX.png',
 				eventLink: 'https://www.facebook.com/events/1203318538195199',
 				name: 'Obozy IX Edycja'
 			},

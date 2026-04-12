@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import AboutUsView from '../views/AboutUsView.vue';
 import JoinUsView from '../views/JoinUsView.vue';
 import QuizView from '../views/QuizView.vue';
+import NotificationsView from '../views/NotificationsView.vue';
 import { updateMetaTags, getMetaForRoute } from '../lib/metaUtils.js';
 
 // Remember to also set proper og tags in ./netlify/edge-functions/og-inject.js
@@ -32,6 +33,15 @@ const routes = [
     meta: {
       title: 'Dołącz do nas - Instrukcje i Kontakt | Obozy - Gra Terenowa',
       description: 'Chcesz dołączyć do Obozów? Poznaj naszą ekipę i dowiedz się, jak możesz zostać uczestnikiem najbardziej intensywnej gry terenowej w okolicach Opola.'
+    }
+  },
+  {
+    path: '/powiadomienia',
+    name: 'powiadomienia',
+    component: NotificationsView,
+    meta: {
+      title: 'Bądź na bieżąco - Powiadomienia | Obozy - Gra Terenowa',
+      description: 'Zostaw swój adres e-mail i dowiedz się pierwszy o terminie, lokalizacji i wolnych miejscach na kolejnej edycji Obozów.'
     }
   },
   {

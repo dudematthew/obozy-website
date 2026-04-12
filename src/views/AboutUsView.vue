@@ -285,7 +285,7 @@ export default {
           </p>
           <br>
           <router-link to="/quiz" class="btn-large waves-effect waves-light green darken-2">
-            <i class="left material-icons">quiz</i>h
+            <i class="left material-icons">quiz</i>
             Sprawdź się
           </router-link>
         </div>

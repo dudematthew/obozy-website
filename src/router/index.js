@@ -5,6 +5,7 @@ import JoinUsView from '../views/JoinUsView.vue';
 import QuizView from '../views/QuizView.vue';
 import { updateMetaTags, getMetaForRoute } from '../lib/metaUtils.js';
 
+// Remember to also set proper og tags in ./netlify/edge-functions/og-inject.js
 const routes = [
   {
     path: '/',

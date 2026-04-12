@@ -33,18 +33,15 @@ const routes = [
       description: 'Chcesz dołączyć do Obozów? Poznaj naszą ekipę i dowiedz się, jak możesz zostać uczestnikiem najbardziej intensywnej gry terenowej w okolicach Opola.'
     }
   },
-  // CLOSED BETA - Quiz temporarily hidden from navigation
   {
     path: '/quiz',
     name: 'quiz',
-    component: QuizView
+    component: QuizView,
+    meta: {
+      title: 'Quiz o Zamrożeniu | Obozy - Gra Terenowa',
+      description: 'Sprawdź, jak dobrze znasz zasady Stanu Zamrożenia! Rozwiąż quiz i dowiedz się, czy jesteś gotowy na pole bitwy.'
+    }
   },
-  // {
-  //   path: '/game-master-panel',
-  //   name: 'game master panel',
-  //   component: () => import('../views/GameMasterPanelView.vue')
-  // },
-
 ];
 
 const router = createRouter({

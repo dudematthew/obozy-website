@@ -268,33 +268,30 @@ export default {
         <div class="col s12 center">
           <br><br>
           <iframe src="https://drive.google.com/embeddedfolderview?id=13csMsz_7qZmU8rTouc3kgGcIshRWUNCw#list"
-            style="width:100%; height:500px; border:0; overflow: hidden;" title="Zasady Gry"></iframe>
+            style="width:100%; height:400px; border:0; overflow: hidden;" title="Zasady Gry"></iframe>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- CLOSED BETA - Quiz section temporarily hidden from navigation -->
-  <!--
-  <div class="container">
+  <div class="container" style="margin-bottom: 100px;">
     <div class="section">
       <div class="row">
-        <div class="col s12 center">
+        <div class="col s12 center card" style="padding-bottom: 50px;">
           <h4 class="subtitle">A Ty jak znasz zasady Chochlika?</h4>
-          <h5 class="header col s12 light">Sprawdź swoją wiedzę o grze Obozy!</h5>
-          <p class="flow-text">Przetestuj swoją znajomość zasad, historii i ciekawostek związanych z naszą grą terenową.
+          <h5 class="header col s12 light">Mamy dla ciebie quiz!</h5>
+          <p class="flow-text">Przetestuj swoją znajomość zasad zamrożenia w naszej grze terenowej.
           </p>
           <br>
           <router-link to="/quiz" class="btn-large waves-effect waves-light green darken-2">
-            <i class="left material-icons">quiz</i>
+            <i class="left material-icons">quiz</i>h
             Sprawdź się
           </router-link>
         </div>
       </div>
     </div>
   </div>
-  -->
 
   <div class="index-banner parallax-container" style="margin-bottom: 7em;">
     <div class="section no-pad-bot">

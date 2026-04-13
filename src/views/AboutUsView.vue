@@ -86,7 +86,7 @@ export default {
         style="filter: brightness(60%)"></div>
   </div>
 
-  <div class="index-banner container">
+  <div class="container">
     <div class="section">
       <div class="row">
         <div class="left-align col s12">
@@ -239,7 +239,7 @@ export default {
           <div class="row" v-for="(albumGroup, index) in groupedAlbums" :key="index">
             <div class="col s12 m6" v-for="album, key in albumGroup" :key="key"
               :class="{ 'offset-m3': albumGroup.length === 1 }">
-              <div class="card hoverable">
+              <div class="card hoverable" style="margin-inline-end: 10px;">
                 <a :href="album.link" target="_blank" class="card-image">
                   <img class="activator" :src="require('@/assets/images/backgrounds/' + album.image)">
                 </a>

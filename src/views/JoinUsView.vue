@@ -93,8 +93,8 @@ export default {
           <h4 class="header col s12 light subtitle">Nie myśl - działaj</h4>
         </div>
         <div class="row center">
-          <a href="https://www.messenger.com/t/105317307701584?fbclid=IwAR1kWyWl0I83qIfKwfy-p1Ca21bb6g9JvODzkiZq5016idUDqEcSipvmWm4"
-            target="_blank" class="btn-large waves-effect waves-light green" style="margin: 10px;">Skontaktuj się z
+          <a href="https://www.messenger.com/t/105317307701584" target="_blank"
+            class="btn-large waves-effect waves-light green" style="margin: 10px;">Skontaktuj się z
             nami</a>
           <router-link to="/powiadomienia" class="btn-large brown lighten-1 white-text waves-effect waves-light"
             style="margin: 10px;">Bądź na bieżąco</router-link>

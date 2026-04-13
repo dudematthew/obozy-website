@@ -302,7 +302,7 @@ export default {
           <router-link to="/dolacz-do-nas" class="btn-large waves-effect waves-light green" style="margin: 10px;">
             Dołącz do nas
           </router-link>
-          <a href="https://www.messenger.com/obozygraterenowa" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.messenger.com/t/105317307701584" target="_blank" rel="noopener noreferrer"
             class="btn-large waves-effect waves-light white green-text" style="margin: 10px;">
             Kontakt
           </a>

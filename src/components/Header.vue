@@ -51,6 +51,7 @@ export default {
       </ul>
 
       <ul id="nav-mobile" class="sidenav">
+        <li><router-link to="/" class="sidenav-close">OBOZY</router-link></li>
         <li><router-link to="/o-nas" class="sidenav-close">O Obozach</router-link></li>
         <li><router-link to="/dolacz-do-nas" class="sidenav-close">Dołącz do nas</router-link></li>
         <li><router-link to="/powiadomienia" class="sidenav-close">Bądź na bieżąco</router-link></li>

@@ -309,7 +309,7 @@ export default {
         </div>
       </div>
     </div>
-    <div class="parallax"><img src="@/assets/images/backgrounds/background6.jpg" alt="Tło"
+    <div class="parallax"><img src="@/assets/images/backgrounds/background30.jpg" alt="Tło"
         style="filter: brightness(50%)"></div>
   </div>
 

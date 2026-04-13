@@ -36,6 +36,17 @@ export default {
             return eventDate < new Date();
         },
     },
+    methods: {
+        scrollToElement(elementId, offset = 0) {
+            this.$nextTick(() => {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    const y = element.getBoundingClientRect().top + window.pageYOffset + offset;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+            });
+        },
+    },
     mounted() {
         let parallaxElems = document.querySelectorAll('.parallax');
         M.Parallax.init(parallaxElems);
@@ -59,7 +70,9 @@ export default {
                     </h5>
                 </div>
                 <div class="row center">
-                    <a href="#formularz" class="btn-large green waves-effect waves-light">Zapisz się</a>
+                    <a href="#formularz" class="btn-large green waves-effect waves-light"
+                        @click.prevent="this.scrollToElement('formularz', -20)">Zapisz
+                        się</a>
                 </div>
                 <br /><br />
             </div>

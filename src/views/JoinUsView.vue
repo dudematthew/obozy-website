@@ -202,7 +202,7 @@ export default {
     <div class="section">
       <div class="row">
         <div class="col s12 center">
-          <h4 class="subtitle" style="color: #ef5350;">Przerażony wydarzeniem?</h4>
+          <h4 class="text-lighten-2 red-text subtitle">Przerażony wydarzeniem?</h4>
           <p class="black-text light" style="font-size: 1.1rem;">
             Jeśli proces dołączania wydaje się skomplikowany lub masz obawy, możesz skorzystać z tego formularza
             kontaktowego. </p>

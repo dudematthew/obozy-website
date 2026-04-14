@@ -22,7 +22,7 @@
   <p align="center">
     This repository was created to showcase the Obozy - Gra Terenowa event, which takes place annually in the Opolskie Voivodeship in Poland. It provides information about the nature of the game, invites people to get in touch, and encourages them to join in the fun.
     <br />
-    <a href="http://www.obozygraterenowa.pl"><strong>Explore the website »</strong></a>
+    <a href="http://obozy.org.pl"><strong>Explore the website »</strong></a>
     <br />
     <a href="https://github.com/dudematthew/obozy-website/issues">Report Bug</a>
     ·

@@ -1,0 +1,8 @@
+{
+  "manuals": [
+    {
+      "id": "mayhem",
+      "source": "src/assets/game-manuals/obozy-mayhem-manual.md"
+    }
+  ]
+}

@@ -1,0 +1,451 @@
+{
+  "schemaVersion": 1,
+  "id": "mayhem",
+  "meta": {
+    "title": "Obozy – Mayhem",
+    "description": "Gra alternatywna dla Obozy - Gra Terenowa, zaprojektowana dla agresywniejszej dynamiki walki faworyzującej taktykę grupową.",
+    "logo": "obozy-mayhem-manual.assets/icons8-torii-100.png",
+    "logoUrl": "/manual-assets/mayhem/icons8-torii-100.png",
+    "glossary": {
+      "eliminacja": "Wyeliminowanie gracza z gry.",
+      "wskrzeszenie": "Przywrócenie gracza do gry.",
+      "zwój": "Kartka papieru zawinięta w sznurek żeby nie było widać zawartości.",
+      "ołtarz": "Miejsce na mapie gdzie można zdobyć nagrody.",
+      "nagroda": "Przedmiot, który można zdobyć z ołtarza."
+    }
+  },
+  "parts": [
+    {
+      "id": "obozy--mayhem",
+      "title": "OBOZY – MAYHEM",
+      "coverHtml": "<p><em><strong>INSTRUKCJA GRY</strong></em></p>\n<p>Obozy - Mayhem to alternatywna wersja gry Obozy - Gra Terenowa, zaprojektowana dla agresywniejszej dynamiki walki faworyzującej taktykę grupową.</p>",
+      "tiles": [
+        {
+          "id": "cel-gry",
+          "title": "Cel gry",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p><em><strong>Mayhem</strong></em> to gra dla od 9 do 18 osób. Celem gry jest zdobycie jak największej liczby <strong>punktów</strong> przed zakończeniem rozgrywki. Punkty można zdobywać poprzez realizowanie nagród ołtarzy oraz <span class=\"manual-glossary-term\" data-glossary=\"eliminacja\">eliminacja</span> przeciwników.</p>\n<p>Gra kończy się w momencie, gdy przy życiu pozostanie tylko jedna drużyna, upłynie <strong>30 minut</strong> od rozpoczęcia rozgrywki, lub wszyscy gracze zostaną wyeliminowani. Po zakończeniu gry następuje podliczenie punktów - ostatnia drużyna w grze nie wygrywa jej automatycznie.</p>"
+        },
+        {
+          "id": "drużyny",
+          "title": "Drużyny",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Gracze biorą udział w grze w <strong>drużynach trzech osób</strong>. Każda drużyna posiada przydzieloną literę alfabetu, używaną jako identyfikator przy oznaczaniu się na kartach ołtarzy.</p>\n<p>Eliminacja członków drużyny osłabia jej możliwości działania, lecz nie kończy jej udziału w grze, dopóki przynajmniej jeden członek pozostaje przy życiu.</p>"
+        },
+        {
+          "id": "punkty",
+          "title": "Punkty",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Drużyna zdobywa punkty na dwa sposoby:</p>\n<ul>\n<li>odbierając nagrody punktowe z ołtarzy</li>\n<li>eliminując przeciwników</li>\n</ul>\n<p>Za każde zabójstwo drużyna otrzymuje <strong>3 punkty</strong> - przyznawane tej drużynie, której członek zerwał ostatnią bibułę. Drużyny liczą ilość zabitych podczas gry, nie punkty za zabójstwa.</p>"
+        },
+        {
+          "id": "sposób-walki",
+          "title": "^Sposób walki",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Gracze otrzymują kolorowe bibuły wiązane na nadgarstkach, reprezentujące ich <strong>punkty życia</strong>. Aby unieszkodliwić przeciwnika, należy zerwać jego bibułę.</p>\n<div class=\"markdown-alert markdown-alert-note\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z\"></path></svg>NOTE</p>\n<p></p>\n<p><em>Gracz który zerwał bibułę krzyczy <strong>zerwałem bibułę na danej ręce</strong>. Gracz który wie że zerwana mu bibuła była ostatnia krzyczy <strong>odpadam</strong>. Krzyczenie \"nie żyjesz\" nie jest wskazane ponieważ gracz może mieć wiele bibuł.</em></p>\n</div>\n<p>Gracz pozbawiony wszystkich bibuł zostaje <strong>wyeliminowany</strong> - upuszcza wówczas wszystkie posiadane zwoje, po czym udaje się do miejsca wyeliminowanych graczy. Wyeliminowani gracze podróżujący po polu gry sygnalizują swój stan <strong>trzymając skrzyżowane ręce</strong> i nie mogą wykonywać żadnych działań mających wpływ na rozgrywkę. Wyeliminowanych graczy nie można śledzić.</p>"
+        },
+        {
+          "id": "klasy",
+          "title": "Klasy",
+          "introHtml": "<p>Klasa to zestaw atrybutów przyznawanych graczowi który ją posiada. Wyboru klasy <strong>nie można zmienić</strong> w trakcie gry inaczej niż zastępując ją klasą zdobytą z ołtarza.</p>\n<p>Niektóre klasy posiadają umiejętność. Każda umiejętność może być użyta maksymalnie raz na odnowienie. <strong>Umiejętność klasy odnawia się w momencie odebrania dowolnej nagrody z dowolnego ołtarza.</strong> Gracz musi stać na ołtarzu w momencie odebrania nagrody.</p>",
+          "subsections": [
+            {
+              "id": "szturmowiec",
+              "title": "Szturmowiec",
+              "html": "<p><strong>Szturmowiec</strong> jest podstawową klasą przyznawaną każdemu na początku rozrywki.</p>\n<ul>\n<li>\n<p>Szturmowiec posiada <strong>jeden punkt życia</strong>.</p>\n</li>\n<li>\n<p>Szturmowiec <strong>nie posiada</strong> dodatkowych umiejętności.</p>\n</li>\n</ul>"
+            },
+            {
+              "id": "tank",
+              "title": "Tank",
+              "html": "<p><strong>Tank</strong> jest klasą trudną do zabicia, przydatną wszędzie tam, gdzie trzeba dłużej wytrzymać lub powalić silnych przeciwników.</p>\n<ul>\n<li>Tank posiada <strong>dwa punkty życia</strong>, wiązane na obu nadgarstkach. Jeśli straci jedno z nich, może je odnowić przy ołtarzu w którym jego drużyna odbiera nagrodę.</li>\n<li>Tank <strong>nie może samotnie przejmować ołtarzy</strong>, lecz wlicza się do wymaganej liczby osób przy przejmowaniu.</li>\n<li>Tank posiada umiejętność <strong>Powalenie</strong> - dotykając dowolnego gracza zmusza go do położenia się na ziemi. Dobrze jest ustalić hasło wykrzykiwane przy użyciu, np. <em>gleba</em>. Powalony gracz musi dotknąć korpusem podłoża, lecz może podczas tego bronić swojego życia.</li>\n</ul>"
+            },
+            {
+              "id": "skaut",
+              "title": "Skaut",
+              "html": "<p><strong>Skaut</strong> to klasa zwiadowcza, przydatna przy rekonesansie rozgrywki bez ryzykowania.</p>\n<ul>\n<li>Skaut posiada <strong>jeden punkt życia</strong>.</li>\n<li>Skaut posiada umiejętność <strong>Samobójstwo</strong> - jako jedyna klasa może spowodować własną śmierć, licząc głośno do trzech i zrywając bibułę życia. Raz rozpoczęte liczenie musi zakończyć się zerwaniem bibuły.</li>\n<li>Po użyciu Samobójstwa Skaut <strong>odradza się przy dowolnym przejętym ołtarzu</strong> zamiast w miejscu wyeliminowanych graczy, o ile żaden przeciwnik go nie dotyka w momencie użycia umiejętności.</li>\n</ul>"
+            },
+            {
+              "id": "chochlik",
+              "title": "Chochlik",
+              "html": "<p><strong>Chochlik</strong> to klasa defensywna, niewymagająca fizycznej siły, a raczej zręczności i logicznego myślenia. Dzięki Magicznej Lasce przydaje się do unieszkodliwiania kluczowych graczy przeciwnika.</p>\n<ul>\n<li>Chochlik posiada <strong>jeden punkt życia</strong>.</li>\n<li>Chochlik <strong>nie może zrywać bibuł</strong> symbolizujących punkty życia.</li>\n<li>Chochlik nosi ze sobą <strong>Magiczną Laskę</strong>, pozwalającą wprowadzać graczy w stan zamrożenia przy dotknięciu.</li>\n</ul>"
+            },
+            {
+              "id": "goblin",
+              "title": "Goblin",
+              "html": "<p><strong>Goblin</strong> to klasa bardzo przypominająca Chochlika, jednak częściej używająca zamrożenia ofensywnie, zaskakując wrogów od pleców. W odróżnieniu od Chochlika <strong>może zrywać bibuły</strong> przeciwnikom.</p>\n<ul>\n<li>Goblin posiada <strong>jeden punkt życia</strong>.</li>\n<li>Goblin nosi ze sobą <strong>Magiczny Nóż</strong> - krótszą wersję Magicznej Laski działającą na tych samych zasadach.</li>\n</ul>"
+            },
+            {
+              "id": "medyk",
+              "title": "Medyk",
+              "html": "<p><strong>Medyk</strong> to klasa ściśle współpracująca z resztą drużyny. Jego umiejętności skupiają się na podtrzymywaniu sojuszników przy życiu.</p>\n<ul>\n<li>Medyk posiada <strong>jeden punkt życia</strong>.</li>\n<li>Medyk zawsze nosi ze sobą <strong>zapas bibuł życia</strong>.</li>\n<li>Medyk posiada umiejętność <strong>Podniesienie</strong> - przywrócenie wyeliminowanego Szturmowca do gry. Gdy Szturmowiec ginie, może krzyknąć <em>„Medyk!\"</em>. Medyk może odpowiedzieć <em>„Jestem\"</em> w ciągu trzech sekund. Wyeliminowany Szturmowiec kieruje się wówczas w stronę Medyka i czeka, aż ten zawiąże mu bibułę życia. Jeśli Medyk zginie lub Wyeliminowany opuści jego pole widzenia, użycie umiejętności przepada.</li>\n<li>Medyk posiada umiejętność <strong>Uleczenie</strong> - może uzupełnić życie dowolnego Tanka tak, jakby ten odbierał nagrodę.</li>\n</ul>\n<pre><code class=\"language-md\">### Szaman (zamiast medyka)\r\n\r\n**Szaman** to klasa ściśle współpracująca z resztą drużyny. Jego umiejętności skupiają się na podtrzymywaniu sojuszników przy życiu i wspomaganiu ich w akcji.\r\n\r\n- Szaman posiada **jeden punkt życia**.\r\n- Szaman zawsze nosi ze sobą **zapas bibuł życia**.\r\n- Szaman posiada umiejętność **Przywołanie** - przywrócenie wyeliminowanego Szturmowca do gry. Gdy dowolny Szturmowiec w drużynie ginie, może krzyknąć *„Szaman A!\"* (używając litery swojej drużyny). Szaman może odpowiedzieć *„Jestem\"* w ciągu trzech sekund. Wyeliminowany Szturmowiec kieruje się wówczas w stronę Szamana i czeka, aż ten zawiąże mu bibułę. Jeśli Szaman zostanie wyeliminowany lub wyeliminowany Szturmowiec opuści jego pole widzenia, użycie umiejętności przepada.\r\n- Szaman posiada umiejętność **Odnowa** - może uzupełnić umiejętność dowolnego gracza w drużynie tak, jakby ten przejął ołtarz.\n</code></pre>"
+            }
+          ],
+          "contentHtml": null
+        },
+        {
+          "id": "magiczna-laska-i-zamrażanie",
+          "title": "Magiczna Laska i Zamrażanie",
+          "introHtml": null,
+          "subsections": [
+            {
+              "id": "magiczna-laska",
+              "title": "^Magiczna Laska",
+              "html": "<p><strong>Magiczna Laska</strong> to przedmiot, który dotykając gracza wprowadza go w <strong>stan zamrożenia</strong>. Zamrożenie trwa tak długo, jak długo Laska dotyka gracza. Jest najbardziej skomplikowanym przedmiotem w grze - każdy gracz musi dokładnie rozumieć zasady jej działania.</p>"
+            },
+            {
+              "id": "aktywna-i-nieaktywna-laska",
+              "title": "^Aktywna i nieaktywna Laska",
+              "html": "<p>Laska jest <strong>aktywna</strong>, gdy właściciel trzyma ją za wyznaczone miejsce (20-centymetrowy środek standardowej laski lub rączkę w odmianach) przynajmniej jedną ręką, a jednocześnie <strong>nie jest dotykany przez inną osobę</strong>. Aktywna Laska zamraża graczy poprzez dotyk ich ubrania lub skóry.</p>\n<p>Laska staje się <strong>nieaktywna</strong>, gdy właściciel zostanie dotknięty, puści laskę lub zginie. Nieaktywna Laska nie zamraża nikogo. Aby ją reaktywować, właściciel musi odliczyć głośno do trzech, spełniając warunki aktywności.</p>"
+            },
+            {
+              "id": "mechanika-zamrażania",
+              "title": "^Mechanika zamrażania",
+              "html": "<p>Aktywna Laska dotykając gracza <strong>natychmiast go zamraża</strong> - dotyczy to również sojuszników. Właściciel może przemieszczać laskę po ciele zamrożonego i dotykać kolejnych graczy. Laska może zamrażać kilku graczy jednocześnie, jeśli dotyka ich wszystkich.</p>\n<p>Gdy Laska przestanie dotykać <strong>któregokolwiek</strong> z zamrożonych graczy, wszyscy zostają natychmiast zwolnieni, ponieważ Laska staje się nieaktywna.</p>\n<p>Aktywna Laska <strong>nie może zamrozić</strong> gracza, który sam kogoś aktywnie zamraża - taki gracz jest niewrażliwy na inne laski.</p>"
+            },
+            {
+              "id": "zasady-dodatkowe",
+              "title": "^Zasady dodatkowe",
+              "html": "<p>Magiczna Laska jest <strong>nienaruszalna</strong> - nie można jej zabrać właścicielowi, nawet gdy leży na ziemi i nawet gdy jest nieaktywna. Jeśli zamrożony gracz przypadkowo złapał laskę, powinien rozluźnić chwyt.</p>\n<p>Gdy dwóch graczy z Laskami walczy, obowiązuje zasada pierwszeństwa - <strong>kto pierwszy zostanie dotknięty, zamraża się</strong>. Jeżeli dotkną się równocześnie, oboje odsuwają laski o 20 centymetrów i kontynuują walkę.</p>"
+            },
+            {
+              "id": "odmiany-magicznej-laski",
+              "title": "^Odmiany Magicznej Laski",
+              "html": "<p>Standardowa <strong>Magiczna Laska</strong> ma długość <strong>1,4 metra</strong>.</p>\n<ul>\n<li><strong>Magiczny Nóż</strong> - krótsza wersja o długości około 20 cm, trzymana za 10-centymetrową rączkę. Ekskluzywna dla klasy Goblina.</li>\n<li><strong>Magiczny Miecz</strong> - wersja o długości 70 cm, trzymana za 10-centymetrową rączkę.</li>\n</ul>"
+            }
+          ],
+          "contentHtml": null
+        },
+        {
+          "id": "zwoje",
+          "title": "^Zwoje",
+          "introHtml": "<p><strong>Zwoje</strong> to kartki papieru zawinięte w sznurek żeby nie było widać zawartości. Każdy zwój posiada swoją nazwę i opisane na nim działanie - są one <strong>jednorazowe</strong> i po aktywowaniu nie mogą być użyte już w rozgrywce.</p>\n<div class=\"markdown-alert markdown-alert-warning\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z\"></path></svg>WARNING</p>\n<p></p>\n<p>Jeśli zwój wpływa na innego gracza, należy otworzyć go i trzymać w jednej ręce tak, aby jego treść była widoczna dla osoby, na której jest używany, dotknąć jej drugą ręką i wypowiedzieć nazwę zwoju. Jeśli zwój nie wpływa na innych graczy, wystarczy wypowiedzieć głośno jego nazwę.</p>\n</div>\n<p>Każdy gracz zobowiązany jest do zapoznania się z nazwami i działaniem wszystkich zwojów przed rozpoczęciem gry.</p>",
+          "subsections": [
+            {
+              "id": "zmartwychwstanie",
+              "title": "Zmartwychwstanie",
+              "html": "<blockquote>\n<p>Zwój powinien zostać użyty na <strong>wspólnym miejscu wyeliminowanych.</strong> Po użyciu przywraca wybranego wyeliminowanego na stałe członka drużyny do gry. Zwój można użyć alternatywnie gdy wyeliminowany jest dalej w zasięgu wzroku.</p>\n</blockquote>"
+            },
+            {
+              "id": "azyl",
+              "title": "Azyl",
+              "html": "<blockquote>\n<p>Po użyciu zwoju wszyscy członkowie drużyny w odległości wzroku stają się wyeliminowani a następnie udają się wspólnie do jednego z najbliższych ołtarzy, pomijając te, które aktualnie są przejmowane. Po dotarciu na miejsce mogą kontynuować bycie wyeliminowanym przez maksymalnie trzy minuty, dopóki ktoś nie opuści granicy ołtarza.</p>\n</blockquote>"
+            },
+            {
+              "id": "szał",
+              "title": "Szał",
+              "html": "<blockquote>\n<p>Po użyciu zwoju następne zabójstwo użytkownika liczone jest podwójnie.</p>\n</blockquote>"
+            },
+            {
+              "id": "sabotaż",
+              "title": "Sabotaż",
+              "html": "<blockquote>\n<p>Zwój powinien zostać użyty na ołtarzu. Po użyciu ołtarz na stałe zwiększa czas przejmowania o <strong>3 minuty</strong>.</p>\n</blockquote>"
+            },
+            {
+              "id": "zniszczenie",
+              "title": "Zniszczenie",
+              "html": "<blockquote>\n<p>Zwój powinien zostać użyty na ołtarzu. Po użyciu najwyższa nagroda zostaje usunięta, jakby została już przejęta. Po użyciu w polu przejętej nagrody zamiast litery drużyny należy wpisać <strong>X</strong>. Użycie zwoju nie umożliwia przejęcia ołtarza wiele razy z rzędu.</p>\n</blockquote>"
+            },
+            {
+              "id": "zamrożenie",
+              "title": "Zamrożenie",
+              "html": "<blockquote>\n<p>Po użyciu dotknięty gracz rozpoczyna liczenie i wchodzi w <strong>stan zamrożenia</strong> na 30 sekund.</p>\n</blockquote>"
+            },
+            {
+              "id": "wzmocnienie",
+              "title": "Wzmocnienie",
+              "html": "<blockquote>\n<p>Po użyciu, jeśli dotknięty gracz posiada miejsce na bibułę, może ją zawiązać. W przeciwieństwie do Tanka nie może jej zawiązać z powrotem przy przejęciu ołtarza.</p>\n</blockquote>"
+            },
+            {
+              "id": "przerażenie",
+              "title": "Przerażenie",
+              "html": "<blockquote>\n<p>Po użyciu dotknięty gracz staje się wyeliminowany i przemieszcza się do najbliższego ołtarza, pomijając te które są aktualnie przejmowane, gdzie wraca do gry.</p>\n</blockquote>"
+            },
+            {
+              "id": "osłabienie",
+              "title": "Osłabienie",
+              "html": "<blockquote>\n<p>Po użyciu dotknięty gracz zrywa sobie nadmiarową bibułę. Nie działa jeśli nie posiada więcej niż jedną.</p>\n</blockquote>"
+            }
+          ],
+          "contentHtml": null
+        },
+        {
+          "id": "ołtarze",
+          "title": "Ołtarze",
+          "introHtml": "<p>Ołtarze są kluczowymi strefami na terenie gry wielkości wahającej się od 4 do 8 metrów szerokości. Liczba ołtarzy w jednej rundzie wynosi <strong>dwa razy więcej niż liczba drużyn</strong>.</p>\n<p>Każdy typ ołtarza (<em>Dzik, Sowa, Niedźwiedź, ...</em>) posiada własną <strong>kartę ołtarza</strong> - wywieszoną w widocznym miejscu w środku strefy - zawiera ona nazwę ołtarza, czas wymagany do przejęcia, dostępne nagrody w danej kolejności oraz ewentualne własne mechaniki czy wymagania.</p>\n<p>Choć nagrody ołtarza w postaci punktów i zwojów są zawsze takie same dla danego typu ołtarza, nagroda w postaci klasy zawsze jest losowa.</p>\n<p>Na odwrocie map, którą posiadają gracze znajduje się <strong>legenda</strong>, informująca o statystykach każdego rodzaju ołtarza. Drużyny zawsze wiedzą wszystko o danym typie ołtarza ale nie wiedzą jaką nagrodę w postaci klasy oferują w danej rundzie.</p>\n<p>Ołtarz nazywamy <strong>przejętym</strong> przez daną drużynę, jeśli odebrała z niego co najmniej jedną nagrodę.</p>",
+          "subsections": [
+            {
+              "id": "strefa-ołtarza-i-przejmowanie",
+              "title": "Strefa ołtarza i przejmowanie",
+              "html": "<p>Każdy ołtarz posiada własną <strong>strefę</strong> wyznaczoną sznurkiem. Przejmowanie ołtarza odbywa się po wpisaniu się na kartę a następnie poprzez przebywanie wewnątrz tej strefy. Opuszczenie strefy przez ostatniego członka drużyny natychmiast kończy przejmowanie.</p>"
+            },
+            {
+              "id": "nagrody-ołtarza",
+              "title": "Nagrody ołtarza",
+              "html": "<p>Każdy ołtarz oferuje nagrody w ustalonej kolejności. Pierwsza drużyna, która skutecznie go przejmie, odbiera nagrodę na najwyższym miejscu - kolejne drużyny otrzymują to, co pozostało. Drużyna <strong>zawsze odbiera najwyższą dostępną nagrodę</strong> i wpisuje literę swojej drużyny przy odpowiedniej rubryce na karcie ołtarza.</p>\n<p>Ołtarz w którym skończyły się nagrody uznaje się za <strong>wykorzystany</strong> i nie może być przejmowany.</p>\n<p>Nagrody dzielą się na trzy rodzaje:</p>\n<ul>\n<li><strong>Klasa</strong> - unikalna, dostępna tylko raz na ołtarz.</li>\n<li><strong>Zwoje</strong> - dostępne w ograniczonej liczbie sztuk.</li>\n<li><strong>Punkty</strong> - niewyczerpalne; każda drużyna może odebrać je raz.</li>\n</ul>\n<p>Żadna drużyna <strong>nie może odebrać nagrody z tego samego ołtarza dwa razy</strong> z rzędu. Zachęca to do eksploracji mapy zamiast wielokrotnego korzystania z jednego miejsca.</p>\n<div class=\"markdown-alert markdown-alert-note\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z\"></path></svg>NOTE</p>\n<p></p>\n<p><em>Przykładowo ołtarz <strong>Sowa</strong> oferuje nagrody w poniższej kolejności:</em></p>\n<ol>\n<li><em>Zwoje</em></li>\n<li><em>Punkty</em></li>\n<li><em>Klasa</em></li>\n</ol>\n<p><em>Drużyna A może zabrać jedynie zwoje jeśli przejmie Sowę. Następna po niej drużyna B będzie mogła zabrać jedynie punkty bo zwoje są już zabrane. Drużyna A lub C mogą zabrać następnie jedynie klasę.</em></p>\n</div>"
+            },
+            {
+              "id": "przejmowanie-ołtarza",
+              "title": "Przejmowanie ołtarza",
+              "html": "<p>Aby rozpocząć przejmowanie, drużyna musi wejść do strefy, spełnić ewentualne wymagania ołtarza i wpisać się na karcie ołtarza podając <strong>literę drużyny, godzinę rozpoczęcia oraz planowaną godzinę zakończenia</strong>:</p>\n<ul>\n<li><strong>Drużyna</strong> - np. A</li>\n<li><strong>Start</strong> - zawsze następująca po aktualnej minuta (<em>np. jeśli start to 13:28:34 to start to 13:29</em>)</li>\n<li><strong>Koniec</strong> - suma godziny startu i czasu oczekiwania (<em>np. jeśli czas oczekiwania to trzy minuty a start to 13:29 to koniec to 13:32</em>)</li>\n</ul>\n<p>Od momentu wpisania przejmowanie jest aktywne. Jeśli przejmująca drużyna przeżyje do godziny zakończenia, ołtarz zostaje przez nią przejęty i może ona odebrać nagrodę, niezależnie od obecności innych drużyn w strefie w tym momencie.</p>\n<p>Jeśli cała niewyeleminowana drużyna opuści strefę przed upływem czasu - dobrowolnie lub wskutek walki - <strong>przejmowanie zostaje anulowane</strong>. Nieukończone wpisy można przekreślić dla czytelności.</p>\n<p>Gdy drużyna przejmuje ołtarz, <strong>żadna inna drużyna nie może rozpocząć własnego przejmowania</strong> dopóki przejmowanie nie zostanie zakończone - sukcesem lub porażką.</p>\n<p>Drużyna B, chcąc nie dopuścić do przejęcia ołtarza przez drużynę A, musi wyeliminować wszystkich jej członków ze strefy <strong>przed godziną zakończenia</strong> wpisaną na karcie.</p>\n<p>Domyślnie do rozpoczęcia przejmowania wymagana jest <strong>jedna osoba</strong>, chyba że karta ołtarza stanowi inaczej. Jeśli ołtarz wymaga określonej liczby osób, wymóg ten dotyczy wyłącznie momentu rozpoczęcia - po wpisaniu się liczba obecnych graczy nie ma znaczenia.</p>\n<h4 id=\"user-content-spis-ołtarzy\">Spis ołtarzy</h4>\n<p>Poniżej znajduje się lista ołtarzy dostępnych w grze. Nie trzeba się ich uczyć na pamięć, ponieważ ich opis będzie widoczny na karcie ołtarza.</p>\n<h5 id=\"user-content-sowa-\">Sowa </h5>\n<pre><code>Kolejność:\r\n\r\n4 zwoje\r\n6 punktów\r\nKlasa\r\n\r\nWymóg: 3 osoby\r\nCzas: 6:00\r\n\r\nMechanika:\r\nUmożliwia poświęcenie zwojów by skrócić czas przejmowania i wymóg osób:\r\n- 1 zwój: 4:00 i 2 osoby\r\n- 2 zwoje: 2:00 i 1 osoba\r\nZwoje zużywane są przy rozpoczęciu przejmowania i przepadają jeśli przejęcie się nie powiedzie.\n</code></pre>\n<h5 id=\"user-content-niedźwiedź-\">Niedźwiedź </h5>\n<pre><code>Kolejność:\r\n\r\nKlasa\r\n5 punktów\r\n1 zwój\r\n\r\nWymóg: 3 osoby\r\nCzas: 4:00\r\n\r\nMechanika:\r\nZamiast trzech osób wystarczy jeden Tank by rozpocząć przejmowanie. Ostatnia nagroda wymaga jedynie 30 sekund poświęcenia.\n</code></pre>\n<h5 id=\"user-content-królik-\">Królik </h5>\n<p>W grze powinny być 2 króliki lub 3 króliki jeśli drużyn jest więcej niż 4. Przed tasowaniem należy je wyciągnąć a następnie wtasować do wylosowanych ołtarzy.</p>\n<pre><code>Kolejność:\r\n\r\n3 punkty\r\n1 zwój\r\nKlasa\r\n\r\nWymóg: 1 osoba\r\nCzas: 1:00\r\n\r\nMechanika:\r\nNa mapie rozmieszczone są maksymalnie trzy króliki. Przejęty królik wymaga odebrania nagrody z dowolnego innego królika. (Na tym króliku należy się wpisać a nagrodę zaznaczyć na innym Króliku). Królika można przejmować nawet jeśli jest wykorzystany.\n</code></pre>\n<h5 id=\"user-content-jeleń-\">Jeleń </h5>\n<pre><code>Jeleń\r\n\r\nKolejność:\r\n\r\n5 punktów\r\n2 zwoje\r\nklasa\r\n\r\nWymóg: 2 osoby\r\nCzas: 5:00\r\n\r\nMechanika:\r\nJeśli drużyna przejmie ołtarz bez walki w jego strefie — czas skraca się o 1 minutę.\n</code></pre>\n<h5 id=\"user-content-wąż--\">Wąż  </h5>\n<pre><code>Wąż\r\n\r\nKolejność:\r\n\r\n3 zwoje\r\n4 punkty\r\nklasa\r\n\r\nWymóg: 1 osoba\r\nCzas: 2:30\r\n\r\nMechanika:\r\nMożna rozpocząć przejmowanie tylko jeśli w zasięgu wzroku jest przeciwnik.\n</code></pre>\n<h5 id=\"user-content-dzik-\">Dzik </h5>\n<pre><code>Dzik\r\n\r\nKolejność:\r\n\r\n6 punktów\r\n1 zwój\r\nKlasa\r\n\r\nWymóg: 2 osoby\r\nCzas: 4:30\r\n\r\nMechanika:\r\nJeśli w trakcie przejmowania dowolny gracz z poza drużyny zostanie wyeliminowany znajdując się w strefie przejmowanie natychmiast zakańcza się sukcesem.\n</code></pre>\n<h5 id=\"user-content-sęp-\">Sęp </h5>\n<pre><code>Kolejność:\r\n\r\nKlasa\r\n3 punkty\r\n2 zwoje\r\n\r\nWymóg: 2 osoby\r\nCzas: 3:30\r\n\r\nMechanika:\r\nJeśli ołtarz zacznie być przejmowany do 4 minut po ostatnim przejęciu Sępa, nagrody zmieniają się:\r\n- 3 punkty -> 6 punktów i zwój\r\n- 2 Zwoje -> 2 zwoje i 2 punkty\n</code></pre>\n<h5 id=\"user-content-pająk-\">Pająk </h5>\n<pre><code>Kolejność:\r\n\r\n3 zwoje\r\n5 punktów\r\nklasa\r\n\r\nWymóg: 2 osoby\r\nCzas: 3:30\r\n\r\nMechanika:\r\nPo przejęciu jeden z graczy nie może opuścić strefy aż zegar pokaże następną pełną minutę.\n</code></pre>\n<h5 id=\"user-content-lis-\">Lis </h5>\n<pre><code>Kolejność:\r\n\r\nklasa\r\n4 punkty\r\n2 zwoje\r\n\r\nWymóg: 1 osoba\r\nCzas: 3:00\r\n\r\nMechanika:\r\nPo opuszczeniu strefy przejmowanie się nie zakańcza. Drużyna musi jednak znajdować się w strefie w godzinie przejęcia.\n</code></pre>\n<h5 id=\"user-content-kot-\">Kot </h5>\n<pre><code>Kolejność:\r\n\r\n2 zwoje\r\nklasa\r\n4 punkty\r\n\r\nWymóg: 1 osoba\r\nCzas: 2:00\r\n\r\nMechanika:\r\nNiezależnie od tego czy ołtarz zostanie przejęty, wszyscy którzy zginęli w jego strefie podczas jego przejmowania wracają na miejsce wyeliminowanych graczy a następnie wracają do gry.\n</code></pre>\n<h5 id=\"user-content-wiewiórka-\">Wiewiórka </h5>\n<pre><code>Kuna\r\n\r\nKolejność:\r\n\r\n5 punktów\r\n2 zwoje\r\nklasa\r\n\r\nWymóg: 2 osoby\r\nCzas: 4:00\r\n\r\nMechanika:\r\nKarta ołtarza musi być cały czas dotykana przez przynajmniej jednego przejmującego inaczej przejęcie się zakańcza. \n</code></pre>\n<h5 id=\"user-content-skorpion-\">Skorpion </h5>\n<pre><code>Kolejność:\r\n\r\n7 punktów\r\nklasa\r\n3 zwoje\r\n\r\nWymóg: 3 osoby\r\nCzas: 4:30\r\n\r\nMechanika:\r\nPo przejęciu wybrany członek drużyny z obecnych w strefie zostaje wyeliminowany.\n</code></pre>\n<h5 id=\"user-content-łoś-\">Łoś </h5>\n<pre><code>Kolejność:\r\n\r\nklasa\r\n6 punktów\r\n1 zwój\r\n\r\nWymóg: 2 osoby\r\nCzas: 4:00\r\n\r\nMechanika:\r\nJeśli drużyna rozpocznie przejmowanie z pełnym składem może wybrać następną nagrodę jeśli jest dostępna. Cała drużyna musi być jednak obecna na koniec przejęcia.\n</code></pre>\n<h5 id=\"user-content-rekin-\">Rekin </h5>\n<pre><code>Kolejność:\r\n\r\n2 punkty\r\nklasa\r\n2 zwoje\r\n\r\nWymóg: 2 osoby\r\nCzas: 3:00\r\n\r\nMechanika:\r\nJeśli w trakcie przejmowania w strefie znajdzie się przeciwnik - czas skraca się jednorazowo o 30 sekund.\n</code></pre>\n<h5 id=\"user-content-borsuk-\">Borsuk </h5>\n<pre><code>Kolejność:\r\n\r\nKlasa\r\n4 punkty\r\n1 zwój\r\n\r\nWymóg: 2 osoby\r\nCzas: 3:30\r\n\r\nMechanika:\r\nJeśli gracz jest ostatnią niewyeliminowaną na stałe osobą w drużynie, wymóg zmniejsza się do jednej osoby a czas zmniejsza się do 2:00.\n</code></pre>\n<h5 id=\"user-content-świnia-\">Świnia </h5>\n<pre><code>Kolejność:\r\n\r\n5 punktów\r\n1 zwój\r\nKlasa\r\n\r\nWymóg: 2 osoby\r\nCzas: 3:00\r\n\r\nMechanika:\r\nPo zakończeniu przejmowania drużyna może się zdecydować żeby odebrać nagrodę w postaci 3 punktów, w zamian oznaczając Świnię jako wykorzystaną. Postaw znak X na wszystkich pozostałych nagrodach.\n</code></pre>\n<h5 id=\"user-content-owca-\">Owca </h5>\n<pre><code>Kolejność:\r\n\r\n3 punkty\r\n2 zwoje\r\nKlasa\r\n\r\nWymóg: 1 osoba\r\nCzas: 2:00\n</code></pre>\n<h5 id=\"user-content-gołąb-\">Gołąb </h5>\n<pre><code>Kolejność:\r\n\r\n2 punkty\r\n1 zwój\r\nKlasa\r\n\r\nWymóg: 1 osoba\r\nCzas: 1:30\n</code></pre>\n<h5 id=\"user-content-baran-\">Baran </h5>\n<pre><code>Kolejność:\r\n\r\nKlasa\r\n5 punktów\r\n1 zwój\r\n\r\nWymóg: 3 osoby\r\nCzas: 3:30\n</code></pre>\n<h5 id=\"user-content-żuraw-\">Żuraw </h5>\n<pre><code>Kolejność:\r\n\r\n2 zwoje\r\n2 punkty\r\nklasa\r\n\r\nWymóg: 2 osoby\r\nCzas: 2:30\n</code></pre>"
+            },
+            {
+              "id": "rozpoczęcie-gry-i-ołtarze-startowe",
+              "title": "Rozpoczęcie gry i ołtarze startowe",
+              "html": "<p>Na początku rozgrywki każda drużyna ma <strong>2–3 minuty</strong> na omówienie taktyki z dostępną mapą. Następnie dzieli się na <strong>dwie <em>części</em></strong> - dwie osoby i jedna osoba - każda z tych części otrzymuje losową kartę ołtarza. Obie części wyruszają do przydzielonych ołtarzy i przymocowują karty na miejscu.</p>\n<p>Żaden z ołtarzy startowych <strong>nie może być pierwszym ołtarzem przejętym przez daną drużynę</strong>. Drużyna może do niego wrócić i przejąć go na normalnych zasadach, jeśli wcześniej przejęła już inny ołtarz.</p>"
+            }
+          ],
+          "contentHtml": null
+        },
+        {
+          "id": "eliminacja-i-wskrzeszenie",
+          "title": "Eliminacja i wskrzeszenie",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Gracz zostaje wyeliminowany w momencie utraty wszystkich bibuł życia i udaje się do <strong>wspólnego miejsca wyeliminowanych graczy</strong>. Gracz nie może wrócić do gry dopóki nie zostanie wskrzeszony.</p>\n<p>Wskrzeszenie jest możliwe wyłącznie przy użyciu <strong>Zwoju Zmartwychwstania</strong> lub umiejętności <strong>Podniesienie</strong> klasy Medyka.</p>\n<p>Jeśli w danym momencie <strong>wszystkie drużyny oprócz jednej</strong> znajdują się w miejscu wyeliminowanych graczy, gra kończy się natychmiast.</p>"
+        },
+        {
+          "id": "koniec-gry-i-liczenie-punktów",
+          "title": "Koniec gry i liczenie punktów",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Po zakończeniu gry organizator zbiera karty wszystkich ołtarzy. Na kartach znajdują się oznaczenia drużyn, które odebrały nagrody punktowe. Drużyny doliczają punkty za pokonanych przeciwników - każda drużyna powinna mieć ustalone, kto ich wyeliminował.</p>\n<p>Wygrywa drużyna z największą łączną liczbą punktów.</p>"
+        }
+      ]
+    },
+    {
+      "id": "porady-dla-organizatora",
+      "title": "Porady dla organizatora",
+      "coverHtml": "<p>Poniższe zasady nie wymagają przeciętnego uczestnika do zapoznania się z nimi - są przeznaczone dla organizatora.</p>",
+      "tiles": [
+        {
+          "id": "przygotowanie-do-gry",
+          "title": "Przygotowanie do gry",
+          "introHtml": null,
+          "subsections": [
+            {
+              "id": "akcesoria",
+              "title": "Akcesoria",
+              "html": "<p>Organizator przed rozpoczęciem rozgrywki powinien przygotować następujące materiały na każdą planowaną rundę gry:</p>\n<ul>\n<li><strong>Bibuły</strong> (lub pokrojone biodegradowalne worki na śmieci) w kolorach drużyn - po dwie na gracza, wiązane na nadgarstkach. Dodatkowe bibuły dla Medyków oraz dla Tanków jako zapasowe punkty życia.</li>\n<li><strong>Karty ołtarzy</strong> - po jednej na każdy typ ołtarza (12), wydrukowane i zabezpieczone przed warunkami atmosferycznymi (np. w koszulce foliowej).</li>\n<li><strong>Mapy terenu</strong> z legendą ołtarzy na odwrocie - po jednej na drużynę.</li>\n<li><strong>Sznurek</strong> (najlepiej elastyczny budowlany do wyznaczania) - do wyznaczenia stref ołtarzy.</li>\n<li><strong>Długopisy</strong> (lub zmazywalne markery jeśli używane są koszulki) - po jednym przy każdym ołtarzu, najlepiej przywiązane do karty lub sznurka.</li>\n<li><strong>Zwoje</strong> - przygotowane i zwinięte, gotowe do rozdania lub rozłożenia na terenie gry.</li>\n<li><strong>Magiczne Laski, Noże i Miecze</strong> - po jednym na każdego potencjalnie uczestniczącego Chochlika i Goblina.</li>\n</ul>"
+            },
+            {
+              "id": "przygotowanie-terenu",
+              "title": "Przygotowanie terenu",
+              "html": "<p>Aby wyznaczyć położenie ołtarzy, organizator powinien wcześniej znaleźć na terenie gry <strong>12 interesujących miejsc</strong> (<em>większe drzewo, polana, zagłębienie, stary płot itd.</em>) - następnie nanieść je na mapę terenu i ponumerować na mapie każde z nich.</p>\n<p>Organizator wyznacza strefy wszystkich ołtarzy przy użyciu sznurka, tak aby granica każdej strefy była jednoznaczna i dobrze widoczna. Przy każdym ołtarzu wiesza się kartę ołtarza w widocznym miejscu wewnątrz strefy oraz przywiązuje długopis.</p>\n<p>Liczba użytych ołtarzy powinna wynosić dokładnie dwa razy więcej niż liczba drużyn. Ołtarze rozmieszcza się równomiernie na terenie gry tak, aby żaden nie znajdował się zbyt blisko miejsca wyeliminowanych graczy ani bezpośrednio na trasie między skrajnymi punktami mapy.</p>\n<p>Organizator losuje ołtarze pomiędzy numerami interesujących miejsc (<em>np. ołtarz Sowa znajduje się na numerze 3, przy wielkim drzewie</em>). Nadwyżka kart ołtarzy pozostaje niewykorzystana i nie uczestniczą one w grze.</p>"
+            },
+            {
+              "id": "przygotowanie-drużyn",
+              "title": "Przygotowanie drużyn",
+              "html": "<p>Organizator przydziela każdej drużynie literę alfabetu, po jednej bibule na gracza oraz mapę. Gracze w drużynie nanoszą ustalone ołtarze na numery na mapie a następnie ustalają między sobą taktykę na co mają <strong>2 minuty</strong>.</p>\n<p>Następnie każda drużyna dzieli się na dwie części i otrzymuje przydziały ołtarzy startowych - losowo, tak aby żadna drużyna nie otrzymała ołtarza, który chciałaby przejąć jako pierwszy.</p>"
+            },
+            {
+              "id": "przygotowanie-kart-ołtarzy",
+              "title": "Przygotowanie kart ołtarzy",
+              "html": "<p>Każda karta ołtarza powinna podążać za wzorem dostępnym w załączeniu do zasad.</p>\n<p>Przed grą organizator losuje dostępne klasy w postaci karteczek z nazwą klasy i rozdaje je losowo podzielonym na dwie części drużynom - ci dopisują niejawnie do swojego startowego ołtarza jaką klasę ten oferuje. Wynik losowania jest niejawny - gracze nie wiedzą jak wygląda rozmieszczenie klas. Nadwyżka klas pozostaje niewykorzystana.</p>"
+            },
+            {
+              "id": "start-gry",
+              "title": "Start gry",
+              "html": "<p>O wyznaczonej godzinie obie części każdej drużyny w kolejności rosnącej (A, B, C - po kolei, tak, żeby nie zdradzić jakie akcesoria niosą ze sobą) wyruszają do przydzielonych ołtarzy startowych i przymocowują karty na miejscu.  Gra rozpoczyna się o godzinie ustalonej przez organizatora - <strong>30 minut</strong> po tej godzinie rozgrywka się kończy, unieważniając wszelkie czynności wykonane po tym czasie.</p>"
+            }
+          ],
+          "contentHtml": null
+        }
+      ]
+    }
+  ],
+  "linkIndex": {
+    "cel-gry": {
+      "part": 0,
+      "tile": 0
+    },
+    "drużyny": {
+      "part": 0,
+      "tile": 1
+    },
+    "punkty": {
+      "part": 0,
+      "tile": 2
+    },
+    "sposób-walki": {
+      "part": 0,
+      "tile": 3
+    },
+    "szturmowiec": {
+      "part": 0,
+      "tile": 4,
+      "subsection": 0
+    },
+    "tank": {
+      "part": 0,
+      "tile": 4,
+      "subsection": 1
+    },
+    "skaut": {
+      "part": 0,
+      "tile": 4,
+      "subsection": 2
+    },
+    "chochlik": {
+      "part": 0,
+      "tile": 4,
+      "subsection": 3
+    },
+    "goblin": {
+      "part": 0,
+      "tile": 4,
+      "subsection": 4
+    },
+    "medyk": {
+      "part": 0,
+      "tile": 4,
+      "subsection": 5
+    },
+    "klasy": {
+      "part": 0,
+      "tile": 4
+    },
+    "magiczna-laska": {
+      "part": 0,
+      "tile": 5,
+      "subsection": 0
+    },
+    "aktywna-i-nieaktywna-laska": {
+      "part": 0,
+      "tile": 5,
+      "subsection": 1
+    },
+    "mechanika-zamrażania": {
+      "part": 0,
+      "tile": 5,
+      "subsection": 2
+    },
+    "zasady-dodatkowe": {
+      "part": 0,
+      "tile": 5,
+      "subsection": 3
+    },
+    "odmiany-magicznej-laski": {
+      "part": 0,
+      "tile": 5,
+      "subsection": 4
+    },
+    "magiczna-laska-i-zamrażanie": {
+      "part": 0,
+      "tile": 5
+    },
+    "zmartwychwstanie": {
+      "part": 0,
+      "tile": 6,
+      "subsection": 0
+    },
+    "azyl": {
+      "part": 0,
+      "tile": 6,
+      "subsection": 1
+    },
+    "szał": {
+      "part": 0,
+      "tile": 6,
+      "subsection": 2
+    },
+    "sabotaż": {
+      "part": 0,
+      "tile": 6,
+      "subsection": 3
+    },
+    "zniszczenie": {
+      "part": 0,
+      "tile": 6,
+      "subsection": 4
+    },
+    "zamrożenie": {
+      "part": 0,
+      "tile": 6,
+      "subsection": 5
+    },
+    "wzmocnienie": {
+      "part": 0,
+      "tile": 6,
+      "subsection": 6
+    },
+    "przerażenie": {
+      "part": 0,
+      "tile": 6,
+      "subsection": 7
+    },
+    "osłabienie": {
+      "part": 0,
+      "tile": 6,
+      "subsection": 8
+    },
+    "zwoje": {
+      "part": 0,
+      "tile": 6
+    },
+    "strefa-ołtarza-i-przejmowanie": {
+      "part": 0,
+      "tile": 7,
+      "subsection": 0
+    },
+    "nagrody-ołtarza": {
+      "part": 0,
+      "tile": 7,
+      "subsection": 1
+    },
+    "przejmowanie-ołtarza": {
+      "part": 0,
+      "tile": 7,
+      "subsection": 2
+    },
+    "rozpoczęcie-gry-i-ołtarze-startowe": {
+      "part": 0,
+      "tile": 7,
+      "subsection": 3
+    },
+    "ołtarze": {
+      "part": 0,
+      "tile": 7
+    },
+    "eliminacja-i-wskrzeszenie": {
+      "part": 0,
+      "tile": 8
+    },
+    "koniec-gry-i-liczenie-punktów": {
+      "part": 0,
+      "tile": 9
+    },
+    "akcesoria": {
+      "part": 1,
+      "tile": 0,
+      "subsection": 0
+    },
+    "przygotowanie-terenu": {
+      "part": 1,
+      "tile": 0,
+      "subsection": 1
+    },
+    "przygotowanie-drużyn": {
+      "part": 1,
+      "tile": 0,
+      "subsection": 2
+    },
+    "przygotowanie-kart-ołtarzy": {
+      "part": 1,
+      "tile": 0,
+      "subsection": 3
+    },
+    "start-gry": {
+      "part": 1,
+      "tile": 0,
+      "subsection": 4
+    },
+    "przygotowanie-do-gry": {
+      "part": 1,
+      "tile": 0
+    }
+  }
+}

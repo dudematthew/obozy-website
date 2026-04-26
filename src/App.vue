@@ -8,6 +8,11 @@ export default {
     Header,
     Footer
   },
+  computed: {
+    hideChrome () {
+      return Boolean(this.$route?.meta?.hideChrome)
+    }
+  },
   mounted() {
     M.AutoInit();
   },
@@ -16,11 +21,11 @@ export default {
 
 <template>
 
-  <Header />
+  <Header v-if="!hideChrome" />
 
   <router-view />
 
-  <Footer />
+  <Footer v-if="!hideChrome" />
 
 
 </template>

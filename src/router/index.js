@@ -9,6 +9,26 @@ import { updateMetaTags, getMetaForRoute } from '../lib/metaUtils.js';
 // Remember to also set proper og tags in ./netlify/edge-functions/og-inject.js
 const routes = [
   {
+    path: '/instrukcja',
+    name: 'manual-index',
+    component: () => import('../views/ManualIndexView.vue'),
+    meta: {
+      title: 'Instrukcje | Obozy - Gra Terenowa',
+      description: 'Lista interaktywnych instrukcji do gier Obozy.',
+      hideChrome: true
+    }
+  },
+  {
+    path: '/instrukcja/:manualId',
+    name: 'manual',
+    component: () => import('../views/ManualView.vue'),
+    meta: {
+      title: 'Instrukcja | Obozy - Gra Terenowa',
+      description: 'Interaktywna instrukcja gry terenowej Obozy.',
+      hideChrome: true
+    }
+  },
+  {
     path: '/',
     name: 'home',
     component: HomeView,
@@ -58,8 +78,12 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-  scrollBehavior() {
-    document.getElementById('app').scrollIntoView({ behavior: 'auto' });
+  scrollBehavior(to) {
+    if (to.name === 'manual' || to.name === 'manual-index') {
+      return { left: 0, top: 0 }
+    }
+    const app = document.getElementById('app')
+    if (app) app.scrollIntoView({ behavior: 'auto' })
   }
 });
 

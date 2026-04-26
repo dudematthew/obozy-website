@@ -1,0 +1,1495 @@
+<script>
+import 'remark-github-blockquote-alert/alert.css'
+import { getManual } from '@/data/manual-ir/registry'
+import { updateMetaTags } from '@/lib/metaUtils.js'
+import { SnapDeck } from '@/lib/manual-reader/snapDeck'
+
+/* global M */
+export default {
+  name: 'ManualView',
+  data() {
+    return {
+      loadError: null,
+      ir: null,
+      activePart: 0,
+      activeSlide: 0,
+      activeSub: 0,
+      subDir: 1, // last H3 transition direction: +1 forward, -1 back
+      searchQuery: '',
+      searchOpen: false,
+      glossOpen: false,
+      glossTerm: '',
+      glossText: '',
+      deck: null,
+      _swipe: null
+    }
+  },
+  computed: {
+    documentTitle() {
+      return this.ir?.meta?.title || 'Instrukcja'
+    },
+    part() {
+      return this.ir?.parts?.[this.activePart] || null
+    },
+    /** Slides: cover (optional) + each tile (full screen). */
+    verticalSlideCount() {
+      if (!this.part) return 0
+      let n = 0
+      if (this.part.coverHtml) n += 1
+      n += (this.part.tiles || []).length
+      return n
+    },
+    slides() {
+      if (!this.part) return []
+      const out = []
+      if (this.part.coverHtml) out.push({ kind: 'cover', id: `${this.part.id}-cover` })
+        ; (this.part.tiles || []).forEach((t) => out.push({ kind: 'tile', id: t.id, tile: t }))
+      return out
+    },
+    current() {
+      return this.slides[this.activeSlide] || null
+    },
+    searchHits() {
+      if (!this.searchQuery || !this.ir) return []
+      const q = this.searchQuery.toLowerCase().trim()
+      if (!q) return []
+      const hits = []
+      this.ir.parts.forEach((p, pi) => {
+        (p.tiles || []).forEach((t, ti) => {
+          const title = (t.title || '').toLowerCase()
+          if (title.includes(q)) {
+            let slide = p.coverHtml ? 1 : 0
+            const tileIdx = (p.tiles || []).indexOf(t)
+            slide += tileIdx
+            hits.push({ label: t.title, part: pi, slide })
+            return
+          }
+          if (t.subsections) {
+            t.subsections.forEach((s) => {
+              if ((s.title || '').toLowerCase().includes(q)) {
+                let slide = p.coverHtml ? 1 : 0
+                slide += (p.tiles || []).indexOf(t)
+                hits.push({ label: `${t.title} → ${s.title}`, part: pi, slide })
+              }
+            })
+          }
+        })
+      })
+      return hits.slice(0, 12)
+    },
+    vProgress() {
+      const n = this.verticalSlideCount
+      if (n < 2) return 0
+      return (this.activeSlide / (n - 1)) * 100
+    },
+    canPrevTile() {
+      return this.activeSlide > 0
+    },
+    canNextTile() {
+      return this.verticalSlideCount > 0 && this.activeSlide < this.verticalSlideCount - 1
+    },
+    remainingTiles() {
+      if (!this.verticalSlideCount) return 0
+      return Math.max(0, this.verticalSlideCount - this.activeSlide - 1)
+    },
+    currentSubs() {
+      const c = this.current
+      if (!c || c.kind !== 'tile') return []
+      return (c.tile && c.tile.subsections) || []
+    },
+    currentSub() {
+      const subs = this.currentSubs
+      if (!subs.length) return null
+      const i = Math.max(0, Math.min(subs.length - 1, this.activeSub))
+      return subs[i]
+    },
+    canPrevSub() {
+      return this.currentSubs.length > 0 && this.activeSub > 0
+    },
+    canNextSub() {
+      return this.currentSubs.length > 0 && this.activeSub < this.currentSubs.length - 1
+    },
+    dotsGridStyle() {
+      return {}
+    }
+  },
+  watch: {
+    activePart() {
+      this.activeSlide = 0
+      this.activeSub = 0
+      this.subDir = 1
+      this.$nextTick(() => this.rebuildDeck())
+    },
+    activeSlide() {
+      this.activeSub = 0
+      this.subDir = 1
+    },
+    '$route.params.manualId'() {
+      this.loadData()
+    }
+  },
+  mounted() {
+    this.loadData()
+    window.addEventListener('keydown', this.onGlobalKey)
+  },
+  beforeUnmount() {
+    this.destroyDeck()
+    window.removeEventListener('keydown', this.onGlobalKey)
+  },
+  methods: {
+    loadData() {
+      this.destroyDeck()
+      const id = this.$route.params.manualId
+      const data = getManual(id)
+      if (!data) {
+        this.loadError = 'Nie znaleziono tej instrukcji.'
+        this.ir = null
+        return
+      }
+      this.loadError = null
+      this.ir = data
+      this.activePart = 0
+      this.activeSlide = 0
+      this.updatePageMeta()
+      this.$nextTick(() => this.rebuildDeck())
+    },
+    updatePageMeta() {
+      if (!this.ir) return
+      const t = `${this.documentTitle} | Instrukcja | Obozy - Gra Terenowa`
+      const d = this.ir.meta?.description || 'Interaktywna instrukcja gry — Obozy Gra Terenowa'
+      document.title = t
+      updateMetaTags({ title: t, description: d, image: 'https://obozy.org.pl/og-image.png', imageAlt: t, url: window.location.href })
+    },
+    destroyDeck() {
+      if (this.deck) {
+        try { this.deck.unmount() } catch (e) { /* noop */ }
+        this.deck = null
+      }
+    },
+    rebuildDeck() {
+      this.destroyDeck()
+      this.$nextTick(() => {
+        const root = this.$refs.deckRoot
+        if (!root) return
+        this.deck = new SnapDeck({
+          getCount: () => this.slides.length,
+          getIndex: () => this.activeSlide,
+          setIndex: (n) => {
+            this.activeSlide = n
+            // reset scroll position on slide change
+            this.$nextTick(() => {
+              const sc = this.$refs.slideScroll
+              if (sc) sc.scrollTop = 0
+            })
+          },
+          getScrollEl: () => this.$refs.slideScroll || null
+        })
+        this.deck.mount(root)
+      })
+    },
+    onContentClick(e) {
+      const el = e.target.closest ? e.target.closest('.manual-glossary-term') : null
+      if (!el) return
+      const slug = el.dataset && el.dataset.glossary
+      if (!slug) return
+      const map = (this.ir && this.ir.meta && this.ir.meta.glossary) || {}
+      const g = map[slug]
+      const label = (el.textContent || '').trim() || slug
+      this.glossTerm = label
+      this.glossText = (typeof g === 'string' && g) ? g : `Brak definicji w słowniku: ${slug}`
+      this.glossOpen = true
+    },
+    openSearch() {
+      this.searchOpen = true
+      this.$nextTick(() => {
+        const i = this.$el.querySelector('#manual-search')
+        if (i) i.focus()
+      })
+    },
+    jumpTo(hit) {
+      this.searchQuery = ''
+      this.searchOpen = false
+      this.activePart = hit.part
+      this.$nextTick(() => {
+        this.rebuildDeck()
+        this.$nextTick(() => {
+          this.activeSlide = hit.slide
+        })
+      })
+    },
+    /** For users without a mouse wheel — navbar + SnapDeck throttling. */
+    stepTile(dir) {
+      if (this.deck) {
+        this.deck.nudge(dir)
+        return
+      }
+      const n = this.slides.length
+      if (n < 1) return
+      const next = this.activeSlide + dir
+      if (next < 0 || next >= n) return
+      this.activeSlide = next
+      this.$nextTick(() => {
+        const sc = this.$refs.slideScroll
+        if (sc) sc.scrollTop = 0
+      })
+    },
+    /** Subsection navigation (H3). Tracks direction for the slide animation
+     *  and aligns the new sub-card's top with the viewport so the user lands
+     *  at the start of the new subsection — without scrolling all the way back
+     *  up to the H2 title. */
+    goToSub(i) {
+      const subs = this.currentSubs
+      if (!subs.length) return
+      const next = Math.max(0, Math.min(subs.length - 1, i))
+      if (next === this.activeSub) return
+      this.subDir = next > this.activeSub ? 1 : -1
+      this.activeSub = next
+      this.$nextTick(this.scrollToActiveSubTop)
+    },
+    /**
+     * Scrolls the slide-scroll container so the active H3 card sits
+     * SUB_TOP_OFFSET pixels below the visible top edge of the scroll viewport.
+     *
+     * Why bounding rects + scrollTop arithmetic (and NOT element.offsetTop):
+     *   .manual-h3-card's offsetParent is whatever the closest positioned
+     *   ancestor happens to be — currently .manual-reader__stage. That makes
+     *   `article.offsetTop` stage-relative, while scrollEl.scrollTo expects
+     *   slide-scroll-relative coordinates. The two numbers happen to line up
+     *   in today's layout (manual-slide adds zero offset), but any future
+     *   `position`, `padding`, or `border` change on an ancestor silently
+     *   breaks that. Bounding-rect math is layout-agnostic:
+     *     newScrollTop = currentScrollTop + (article.top - scrollEl.top) - offset
+     *   reads as "shift the scroll so the article moves from where it is now
+     *   to `offset` pixels below the scroll viewport's top edge".
+     *
+     * Why this is safe during <Transition mode="out-in">:
+     *   At $nextTick we measure the OLD article (it's still in DOM with
+     *   leave-from + leave-active classes; leave-to with the translateX is
+     *   applied on the next animation frame, not yet). The OLD and NEW
+     *   articles share the same DOM slot, so the OLD's vertical bounding
+     *   rect equals where the NEW will land. translateX doesn't perturb
+     *   the y axis even after leave-to fires.
+     *
+     * Bulletproofing:
+     *   - clamp to [0, scrollHeight - clientHeight] so we never request a
+     *     scroll position that will be silently truncated to a different
+     *     value by the browser (which would also cancel a queued smooth
+     *     scroll mid-flight).
+     *   - honor prefers-reduced-motion by switching to instant scroll.
+     *   - run inside requestAnimationFrame so layout reflects the just-
+     *     committed Vue update even when the browser hasn't painted yet
+     *     (DevTools throttling, slow CPU, complex tile content).
+     */
+    scrollToActiveSubTop() {
+      const scrollEl = this.$refs.slideScroll
+      if (!scrollEl) return
+
+      const SUB_TOP_OFFSET = 16
+      const reduce = !!(window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+
+      requestAnimationFrame(() => {
+        const article = scrollEl.querySelector('.manual-h3-card')
+        if (!article) return
+        const aRect = article.getBoundingClientRect()
+        const sRect = scrollEl.getBoundingClientRect()
+        const desired = scrollEl.scrollTop + (aRect.top - sRect.top) - SUB_TOP_OFFSET
+        const max = Math.max(0, scrollEl.scrollHeight - scrollEl.clientHeight)
+        const target = Math.min(max, Math.max(0, Math.round(desired)))
+        if (Math.abs(target - scrollEl.scrollTop) < 1) return
+        scrollEl.scrollTo({ top: target, behavior: reduce ? 'auto' : 'smooth' })
+      })
+    },
+    stepSub(dir) {
+      this.goToSub(this.activeSub + dir)
+    },
+    /**
+     * Horizontal swipe detection. Only triggers when:
+     * - single-finger gesture
+     * - horizontal-dominant (|dx| > |dy|)
+     * - decisive (|dx| >= 50px) and not too slow (<700ms)
+     * Vertical-dominant swipes pass through to SnapDeck.
+     */
+    onSwipeStart(e) {
+      if (!e.touches || e.touches.length !== 1) {
+        this._swipe = null
+        return
+      }
+      const t = e.touches[0]
+      this._swipe = { x0: t.clientX, y0: t.clientY, t0: Date.now() }
+    },
+    onSwipeEnd(e) {
+      if (!this._swipe) return
+      const s = this._swipe
+      this._swipe = null
+      const ce = e.changedTouches && e.changedTouches[0]
+      if (!ce) return
+      const dx = ce.clientX - s.x0
+      const dy = ce.clientY - s.y0
+      const dt = Date.now() - s.t0
+      if (Math.abs(dx) <= Math.abs(dy)) return
+      if (Math.abs(dx) < 50) return
+      if (dt > 700) return
+      if (!this.currentSubs.length) return
+      this.stepSub(dx < 0 ? +1 : -1)
+    },
+    onSwipeCancel() {
+      this._swipe = null
+    },
+    /** Global keyboard: ←/→ navigate H3 inside a tile (↑/↓ are SnapDeck's). */
+    onGlobalKey(e) {
+      if (this.searchOpen || this.glossOpen) return
+      const t = e.target
+      const tag = (t && t.tagName ? t.tagName.toLowerCase() : '')
+      if (tag === 'input' || tag === 'textarea' || tag === 'select') return
+      if (t && t.isContentEditable) return
+      if (!this.currentSubs.length) return
+      if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        this.stepSub(+1)
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        this.stepSub(-1)
+      }
+    }
+  }
+}
+</script>
+
+<template>
+  <div v-if="loadError" class="container section center">
+    <h4>{{ loadError }}</h4>
+    <router-link to="/" class="btn green">Strona główna</router-link>
+  </div>
+  <div v-else-if="ir" class="manual-reader">
+    <div class="manual-reader-nav">
+      <div class="manual-reader-nav__zone manual-reader-nav__zone--left">
+        <router-link
+          to="/"
+          class="brand-logo manual-reader-nav__brand"
+          aria-label="Powrót na stronę Obozy"
+        >
+          OBOZY
+        </router-link>
+      </div>
+      <div class="manual-reader-nav__zone manual-reader-nav__zone--center">
+        <img
+          v-if="ir.meta.logoUrl"
+          :src="ir.meta.logoUrl"
+          class="manual-reader-nav__logo"
+          width="32"
+          height="32"
+          alt=""
+        />
+        <i v-else class="material-icons manual-reader-nav__logo manual-reader-nav__logo--fallback" aria-hidden="true">menu_book</i>
+        <div class="manual-reader-nav__heading">
+          <span class="manual-reader-nav__eyebrow">Instrukcja</span>
+          <span class="manual-reader-nav__title">{{ documentTitle }}</span>
+        </div>
+      </div>
+      <div class="manual-reader-nav__zone manual-reader-nav__zone--right">
+        <button class="btn-flat manual-reader-nav__icon" @click="openSearch" aria-label="Szukaj">
+          <i class="material-icons">search</i>
+        </button>
+        <router-link to="/instrukcja" class="btn-flat manual-reader-nav__icon" aria-label="Lista instrukcji">
+          <i class="material-icons">menu_book</i>
+        </router-link>
+      </div>
+    </div>
+
+    <div v-if="part" class="manual-reader__stage" ref="deckRoot">
+      <div v-if="verticalSlideCount > 1" class="manual-reader__progress"
+        :aria-label="`Pozostało ${remainingTiles} ekranów`">
+        <div class="manual-reader__progress-track" aria-hidden="true" />
+        <div class="manual-reader__progress-fill" :style="{ height: vProgress + '%' }" aria-hidden="true" />
+        <div class="manual-reader__progress-thumb" :style="{ top: vProgress + '%' }">
+          <i v-if="remainingTiles === 0" class="material-icons" aria-hidden="true">check</i>
+          <span v-else>{{ remainingTiles }}</span>
+        </div>
+      </div>
+
+      <div class="manual-slide">
+        <div ref="slideScroll" class="manual-slide__scroll"
+          :class="{ 'cover-tile': current && current.kind === 'cover', 'has-subs': currentSubs.length > 0 }"
+          @click="onContentClick"
+          @touchstart.passive="onSwipeStart"
+          @touchend.passive="onSwipeEnd"
+          @touchcancel.passive="onSwipeCancel">
+          <template v-if="current && current.kind === 'cover'">
+            <div class="manual-cover">
+              <img
+                v-if="ir.meta.logoUrl"
+                class="manual-cover__logo"
+                :src="ir.meta.logoUrl"
+                :alt="part.title || documentTitle"
+              />
+              <i
+                v-else
+                class="material-icons manual-cover__logo manual-cover__logo--fallback"
+                aria-hidden="true"
+              >menu_book</i>
+              <h1 class="manual-cover__title">{{ part.title || documentTitle }}</h1>
+              <div v-if="part.coverHtml" class="manual-cover__body manual-body" v-html="part.coverHtml" />
+            </div>
+          </template>
+          <template v-else-if="current && current.kind === 'tile'">
+            <h2 class="manual-tile__h2">{{ current.tile.title }}</h2>
+            <div v-if="current.tile.introHtml" v-html="current.tile.introHtml" class="manual-body" />
+            <div v-if="current.tile.contentHtml" v-html="current.tile.contentHtml" class="manual-body" />
+            <Transition v-else :name="subDir > 0 ? 'h3-next' : 'h3-prev'" mode="out-in">
+              <article v-if="currentSub" :key="currentSub.id" class="manual-h3-card">
+                <h3 class="manual-tile__h3">{{ currentSub.title }}</h3>
+                <div v-html="currentSub.html" class="manual-body" />
+              </article>
+            </Transition>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <div class="manual-reader-foot" role="navigation" aria-label="Nawigacja czytnika">
+      <button
+        type="button"
+        class="manual-foot-btn"
+        :disabled="!canPrevTile"
+        aria-label="Poprzedni ekran"
+        @click="stepTile(-1)"
+      >
+        <i class="material-icons">expand_less</i>
+      </button>
+      <div class="manual-foot-center">
+        <button
+          v-if="currentSubs.length > 0"
+          type="button"
+          class="manual-foot-btn manual-foot-btn--sub"
+          :disabled="!canPrevSub"
+          aria-label="Poprzednia podsekcja"
+          @click="stepSub(-1)"
+        >
+          <i class="material-icons">chevron_left</i>
+        </button>
+        <div
+          v-if="currentSubs.length && currentSubs.length <= 14"
+          class="manual-foot-dots"
+          :style="dotsGridStyle"
+          role="tablist"
+          aria-label="Podsekcje"
+        >
+          <button
+            v-for="(sub, i) in currentSubs"
+            :key="sub.id"
+            type="button"
+            class="manual-foot-dot"
+            :class="{ 'is-active': i === activeSub }"
+            :aria-label="sub.title"
+            :aria-selected="i === activeSub"
+            @click="goToSub(i)"
+          />
+        </div>
+        <div
+          v-else-if="currentSubs.length > 14"
+          class="manual-foot-counter"
+          aria-live="polite"
+        >
+          <span class="manual-foot-counter__num">{{ activeSub + 1 }}</span>
+          <span class="manual-foot-counter__sep">/</span>
+          <span class="manual-foot-counter__total">{{ currentSubs.length }}</span>
+        </div>
+        <button
+          v-if="currentSubs.length > 0"
+          type="button"
+          class="manual-foot-btn manual-foot-btn--sub"
+          :disabled="!canNextSub"
+          aria-label="Następna podsekcja"
+          @click="stepSub(1)"
+        >
+          <i class="material-icons">chevron_right</i>
+        </button>
+      </div>
+      <button
+        type="button"
+        class="manual-foot-btn"
+        :disabled="!canNextTile"
+        aria-label="Następny ekran"
+        @click="stepTile(1)"
+      >
+        <i class="material-icons">expand_more</i>
+      </button>
+    </div>
+
+    <div v-show="searchOpen" class="manual-overlay" @click.self="searchOpen = false">
+      <div class="card manual-overlay__card">
+        <div class="card-content">
+          <div class="manual-overlay__head">
+            <span class="card-title" style="font-size: 1.1rem; margin: 0">Szukaj</span>
+            <a href="#" class="green-text" @click.prevent="searchOpen = false">Zamknij</a>
+          </div>
+          <div class="input-field" style="margin: 0.25rem 0 0">
+            <i class="material-icons prefix" style="color: #9e9e9e">search</i>
+            <input v-model="searchQuery" id="manual-search" type="search" placeholder="Szukaj po tytułach sekcji…" />
+          </div>
+          <div v-if="searchHits.length" class="manual-overlay__results">
+            <a v-for="(h, i) in searchHits" :key="i" href="#" class="manual-search-hit" @click.prevent="jumpTo(h)">
+              <i class="material-icons">north_east</i>
+              <span>{{ h.label }}</span>
+            </a>
+          </div>
+          <div v-else class="grey-text" style="margin-top: 0.75rem">
+            Wpisz nazwę sekcji, np. „Klasy”.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      v-show="glossOpen"
+      class="manual-gloss-backdrop"
+      role="dialog"
+      aria-modal="true"
+      :aria-label="glossTerm ? `Słownik: ${glossTerm}` : 'Słownik'"
+      @click.self="glossOpen = false"
+    >
+      <div class="manual-gloss-card">
+        <div class="manual-gloss-top">
+          <div class="manual-gloss-heading">
+            <span class="manual-gloss-label">
+              <i class="material-icons" aria-hidden="true">lightbulb</i>
+              Definicja
+            </span>
+            <span class="manual-gloss-term">{{ glossTerm }}</span>
+          </div>
+          <button
+            type="button"
+            class="manual-gloss-close"
+            aria-label="Zamknij słownik"
+            @click="glossOpen = false"
+          >
+            <i class="material-icons">close</i>
+          </button>
+        </div>
+        <p class="manual-gloss-text">{{ glossText }}</p>
+      </div>
+    </div>
+  </div>
+  <div v-else class="container section center">
+    <div class="preloader-wrapper active">
+      <div class="spinner-layer spinner-green-only">
+        <div class="left circle-clipper">
+          <div class="circle" />
+        </div>
+        <div class="gap-patch">
+          <div class="circle" />
+        </div>
+        <div class="right circle-clipper">
+          <div class="circle" />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+$reader-green: #4CAF50;
+$reader-green-dark: #2e7d32;
+$reader-green-darker: #1b5e20;
+$reader-bg: #eceff1;
+$reader-text: rgba(0, 0, 0, 0.87);
+$reader-nav-h: 56px;
+$reader-foot-h: 60px;
+$reader-font: 'Lato', sans-serif;
+
+.manual-reader {
+  height: 100dvh;
+  position: relative;
+  background: $reader-bg;
+  padding-top: $reader-nav-h;
+  padding-bottom: $reader-foot-h;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* 3-zone navbar: brand left, guide title centered, controls right.
+   Grid (1fr auto 1fr) keeps the centre column visually centred regardless of
+   side widths; min-width: 0 lets long titles ellipsize instead of pushing edges. */
+.manual-reader-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $reader-nav-h;
+  z-index: 1200;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  display: grid;
+  grid-template-columns: 1fr minmax(0, auto) 1fr;
+  align-items: center;
+  padding: 0 12px;
+  gap: 12px;
+}
+
+.manual-reader-nav__zone {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-width: 0;
+}
+
+.manual-reader-nav__zone--left {
+  justify-content: flex-start;
+}
+
+.manual-reader-nav__zone--center {
+  justify-content: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.manual-reader-nav__zone--right {
+  justify-content: flex-end;
+  gap: 2px;
+}
+
+/* Match Header.vue: plain Materialize .brand-logo (#444, M PLUS Rounded 1c),
+   but neutralise the absolute / mobile-centring behaviour so it stays inline-left. */
+.manual-reader-nav__brand.brand-logo {
+  position: static;
+  left: auto;
+  right: auto;
+  transform: none;
+  float: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  color: #444;
+  font-size: 1.6rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+@media only screen and (max-width: 992px) {
+  .manual-reader-nav__brand.brand-logo {
+    left: auto;
+    transform: none;
+  }
+}
+
+.manual-reader-nav__logo {
+  flex: 0 0 auto;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.manual-reader-nav__logo--fallback {
+  font-size: 28px;
+  color: $reader-green-dark;
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.manual-reader-nav__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: 0;
+  line-height: 1;
+  gap: 2px;
+}
+
+.manual-reader-nav__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $reader-green-dark;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.manual-reader-nav__title {
+  font-family: $reader-font;
+  font-weight: 700;
+  color: #263238;
+  font-size: 0.95rem;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.manual-reader-nav__icon {
+  padding: 0 8px;
+  color: #37474f;
+}
+
+.manual-reader-nav__icon .material-icons {
+  color: $reader-green-dark;
+}
+
+/* Tight phones: drop the OBOZY brand so the centred title gets the spotlight.
+   Grid auto-recentres because zone--left collapses to 0 width. */
+@media (max-width: 480px) {
+  .manual-reader-nav {
+    padding: 0 8px;
+    gap: 8px;
+  }
+  .manual-reader-nav__brand.brand-logo {
+    font-size: 1.3rem;
+  }
+}
+
+.manual-reader__stage {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 8px;
+  width: 100%;
+}
+
+/* Vertical progress bar: faint track + green fill + green thumb showing
+   remaining-tile count. Lives in the right margin of the stage so it doesn't
+   overlap text (slide-scroll keeps a 1.5rem right padding to clear the thumb). */
+.manual-reader__progress {
+  position: absolute;
+  right: 4px;
+  top: 12px;
+  bottom: 12px;
+  width: 24px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.manual-reader__progress-track {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 2px;
+}
+
+.manual-reader__progress-fill {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  width: 4px;
+  background: $reader-green;
+  border-radius: 2px;
+  transition: height 0.25s ease;
+}
+
+.manual-reader__progress-thumb {
+  position: absolute;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: $reader-green;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  transform: translateY(-50%);
+  transition: top 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.manual-reader__progress-thumb .material-icons {
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.manual-slide {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.manual-slide__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 1.25rem 1.5rem 1.5rem 1.25rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  font-family: $reader-font;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $reader-text;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Cover tile: book-cover style — vertically centred logo + title + tagline,
+   on a soft green-to-white gradient. The slide-scroll above has overflow-y
+   already, so a tall cover scrolls naturally on small phones. */
+.cover-tile {
+  background: linear-gradient(180deg, #e8f5e9 0%, #f0f8e8 40%, #f8fcf8 70%, #ffffff 100%);
+}
+
+.manual-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100%;
+  padding: 1.5rem 0 2rem;
+  gap: 1.5rem;
+}
+
+.manual-cover__logo {
+  display: block;
+  width: 144px;
+  height: 144px;
+  object-fit: contain;
+  border-radius: 18px;
+  margin: 0;
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(46, 125, 50, 0.22),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.manual-cover__logo--fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(76, 175, 80, 0.12);
+  color: $reader-green-dark;
+  font-size: 88px;
+}
+
+.manual-cover__title {
+  font-family: $reader-font;
+  font-size: clamp(1.85rem, 5.5vw + 0.6rem, 2.4rem);
+  font-weight: 900;
+  line-height: 1.15;
+  margin: 0;
+  color: $reader-green-dark;
+  letter-spacing: -0.01em;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.manual-cover__body {
+  max-width: 32ch;
+  margin: 0 auto;
+}
+
+.manual-cover__body :deep(p) {
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0 0 0.75rem;
+}
+
+.manual-cover__body :deep(> p:first-of-type) {
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $reader-green-darker;
+  margin: 0 0 0.5rem;
+}
+
+.manual-cover__body :deep(> p:first-of-type em),
+.manual-cover__body :deep(> p:first-of-type strong) {
+  font-style: normal;
+  font-weight: 700;
+}
+
+.manual-tile__h2 {
+  font-family: $reader-font;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  line-height: 1.4;
+  color: #333;
+}
+
+.manual-tile__h3 {
+  font-family: $reader-font;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.35;
+  color: $reader-green-dark;
+}
+
+:deep(.manual-body p) {
+  font-family: $reader-font;
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+  color: $reader-text;
+  font-size: 16px;
+  font-style: normal;
+}
+
+:deep(.manual-body p:last-child) {
+  margin-bottom: 0;
+}
+
+:deep(.manual-body img) {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0.75rem auto;
+  border-radius: 6px;
+}
+
+:deep(.manual-body a) {
+  color: $reader-green-dark;
+  text-decoration: underline;
+}
+
+:deep(.manual-glossary-term) {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  color: $reader-green-dark;
+  cursor: pointer;
+}
+
+/* GitHub-style alerts — explicit light theme (package CSS relies on system color scheme) */
+:deep(.markdown-alert) {
+  margin: 0.75rem 0 1rem 0;
+  padding: 0.75rem 1rem 0.85rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  border-radius: 8px;
+  border: 1px solid #c8d9e1;
+  border-left-width: 4px;
+  background: #f6f8fa;
+  color: #24292f;
+}
+
+:deep(.markdown-alert p) {
+  margin: 0.35rem 0 0.35rem 0;
+  color: #24292f;
+  font-size: 0.95rem;
+  font-style: normal;
+}
+
+:deep(.markdown-alert p:first-of-type) {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #0969da;
+  margin: 0 0 0.4rem 0;
+}
+
+:deep(.markdown-alert p .octicon) {
+  flex-shrink: 0;
+  fill: #0969da;
+}
+
+:deep(.markdown-alert.markdown-alert-note) {
+  border-left-color: #2e7d32;
+  background: #e8f5e9;
+  border-color: rgba(46, 125, 50, 0.35);
+}
+
+:deep(.markdown-alert.markdown-alert-note p:first-of-type) {
+  color: #1b5e20;
+}
+
+:deep(.markdown-alert.markdown-alert-note p .octicon) {
+  fill: #2e7d32;
+}
+
+:deep(.markdown-alert.markdown-alert-tip) {
+  border-left-color: #1b5e20;
+  background: #e8f5e9;
+}
+
+:deep(.markdown-alert.markdown-alert-tip p:first-of-type) {
+  color: #1b5e20;
+}
+
+:deep(.markdown-alert.markdown-alert-tip p .octicon) {
+  fill: #1b5e20;
+}
+
+:deep(.markdown-alert.markdown-alert-warning) {
+  border-left-color: #9a6700;
+  background: #fff8c5;
+}
+
+:deep(.markdown-alert.markdown-alert-warning p:first-of-type) {
+  color: #9a6700;
+}
+
+:deep(.markdown-alert.markdown-alert-warning p .octicon) {
+  fill: #9a6700;
+}
+
+:deep(.markdown-alert.markdown-alert-caution) {
+  border-left-color: #cf222e;
+  background: #ffebe9;
+}
+
+:deep(.markdown-alert.markdown-alert-caution p:first-of-type) {
+  color: #cf222e;
+}
+
+:deep(.markdown-alert.markdown-alert-caution p .octicon) {
+  fill: #cf222e;
+}
+
+:deep(.markdown-alert pre) {
+  font-size: 0.85rem;
+  margin: 0.5rem 0 0 0;
+}
+
+.manual-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2500;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 68px 12px 12px;
+}
+
+.manual-overlay__card {
+  width: 100%;
+  max-width: 560px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+.manual-overlay__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.manual-overlay__results {
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.manual-search-hit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  background: rgba(76, 175, 80, 0.1);
+  color: #1b5e20;
+}
+
+.manual-search-hit i {
+  font-size: 18px;
+  color: #2e7d32;
+}
+
+:deep(ul) {
+  padding-left: 1.25rem;
+  margin: 0.5rem 0 1rem;
+}
+
+:deep(ul) li {
+  list-style: disc;
+  margin: 0.25rem 0;
+}
+
+:deep(ol) {
+  padding-left: 1.25rem;
+  margin: 0.5rem 0 1rem;
+}
+
+:deep(strong) {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+:deep(pre) {
+  font-family: 'Roboto Mono', 'Consolas', 'Menlo', monospace;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  background: #f1f3f4;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  overflow-x: hidden;
+}
+
+:deep(code) {
+  font-family: 'Roboto Mono', 'Consolas', 'Menlo', monospace;
+  font-size: 0.9em;
+  background: #f1f3f4;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+:deep(pre code) {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* Glossary bottom-sheet. Sized to the reading column (640px max) so the
+   definition has the same comfortable line length as the manual body. */
+.manual-gloss-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(#{$reader-nav-h} + 16px) 16px 16px;
+}
+
+.manual-gloss-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 24px 24px 28px;
+  max-height: 80dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.manual-gloss-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.manual-gloss-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.manual-gloss-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.manual-gloss-label .material-icons {
+  font-size: 14px;
+  color: #f9a825;
+}
+
+.manual-gloss-term {
+  font-family: $reader-font;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #263238;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.manual-gloss-close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.4);
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  margin: -6px -6px 0 0;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.manual-gloss-close:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.manual-gloss-close .material-icons {
+  font-size: 20px;
+}
+
+.manual-gloss-text {
+  font-family: $reader-font;
+  margin: 0;
+  font-size: 0.97rem;
+  line-height: 1.6;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* H3 subsection card: rendered one at a time, tile auto-sized to its content.
+   Outlined with the reader green so the subsection reads as a distinct unit
+   without tinting the reading surface. */
+.manual-h3-card {
+  margin: 1.25rem 0 0;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid rgba(76, 175, 80, 0.45);
+  overflow-wrap: anywhere;
+}
+
+.manual-h3-card :deep(pre),
+.manual-h3-card :deep(img) {
+  max-width: 100%;
+}
+
+/* Cursor + selection hints when subsections exist (desktop discoverability). */
+.manual-slide__scroll.has-subs .manual-h3-card {
+  cursor: grab;
+}
+
+.manual-slide__scroll.has-subs .manual-h3-card:active {
+  cursor: grabbing;
+}
+
+/* Direction-aware H3 transitions. Both directions are 180ms, mode="out-in". */
+.h3-next-enter-active,
+.h3-next-leave-active,
+.h3-prev-enter-active,
+.h3-prev-leave-active {
+  transition: transform 0.18s ease, opacity 0.18s ease;
+  will-change: transform, opacity;
+}
+
+.h3-next-enter-from {
+  transform: translateX(36px);
+  opacity: 0;
+}
+
+.h3-next-leave-to {
+  transform: translateX(-36px);
+  opacity: 0;
+}
+
+.h3-prev-enter-from {
+  transform: translateX(-36px);
+  opacity: 0;
+}
+
+.h3-prev-leave-to {
+  transform: translateX(36px);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .h3-next-enter-active,
+  .h3-next-leave-active,
+  .h3-prev-enter-active,
+  .h3-prev-leave-active {
+    transition: opacity 0.12s ease;
+    transform: none !important;
+  }
+}
+
+/* Static reader footer: tile up/down + H3 dots in the thumb-reach zone.
+   The bar background spans edge-to-edge, but the buttons are constrained to
+   the same 720px column as .manual-reader__stage via a side-gutter that grows
+   with the viewport. Below 720px the gutter falls back to 12px. */
+.manual-reader-foot {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: $reader-foot-h;
+  z-index: 1200;
+  background: #ffffff;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 max(12px, calc((100% - 720px) / 2)) env(safe-area-inset-bottom, 0);
+  gap: 8px;
+}
+
+.manual-foot-btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(76, 175, 80, 0.1);
+  color: $reader-green-dark;
+  transition: background 0.15s ease, transform 0.15s ease;
+  flex: 0 0 auto;
+}
+
+.manual-foot-btn:hover:not(:disabled) {
+  background: rgba(76, 175, 80, 0.18);
+}
+
+.manual-foot-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.manual-foot-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+  background: rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.manual-foot-btn .material-icons {
+  font-size: 24px;
+}
+
+/* Center cluster: ←  • • •  → (only ← and → shown when there are subsections). */
+.manual-foot-center {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.manual-foot-btn--sub {
+  width: 36px;
+  height: 36px;
+  background: transparent;
+}
+
+.manual-foot-btn--sub:hover:not(:disabled) {
+  background: rgba(76, 175, 80, 0.12);
+}
+
+.manual-foot-btn--sub .material-icons {
+  font-size: 22px;
+}
+
+/* Dots: prefer one horizontal row, wrapping only when there genuinely isn't
+   room. flex: 0 1 auto means the container sizes to its content (all dots in
+   a row) but can shrink when the parent is too narrow, at which point
+   flex-wrap kicks in and justify-content: center re-centres every row. */
+.manual-foot-dots {
+  flex: 0 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 4px 6px;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.manual-foot-dot {
+  appearance: none;
+  border: 0;
+  padding: 6px;
+  box-sizing: border-box;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.manual-foot-dot::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.22);
+  transition: background 0.15s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.manual-foot-dot:hover::before {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.manual-foot-dot.is-active::before {
+  background: $reader-green-dark;
+  transform: scale(1.4);
+  box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.18);
+}
+
+/* Fallback when there are too many subsections to fit dots in two rows. */
+.manual-foot-counter {
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: $reader-text;
+  font-size: 0.95rem;
+  min-width: 0;
+}
+
+.manual-foot-counter__num {
+  color: $reader-green-dark;
+  font-weight: 700;
+}
+
+.manual-foot-counter__sep {
+  color: rgba(0, 0, 0, 0.3);
+  margin: 0 2px;
+}
+
+.manual-foot-counter__total {
+  color: rgba(0, 0, 0, 0.55);
+}
+</style>

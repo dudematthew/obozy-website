@@ -1,17 +1,22 @@
+---
+title: "Obozy – Mayhem"
+description: "Gra alternatywna dla Obozy - Gra Terenowa, zaprojektowana dla agresywniejszej dynamiki walki faworyzującej taktykę grupową."
+logo: "obozy-mayhem-manual.assets/icons8-torii-100.png"
+glossary:
+  eliminacja: "Wyeliminowanie gracza z gry."
+  wskrzeszenie: "Przywrócenie gracza do gry."
+  zwój: "Kartka papieru zawinięta w sznurek żeby nie było widać zawartości."
+  ołtarz: "Miejsce na mapie gdzie można zdobyć nagrody."
+  nagroda: "Przedmiot, który można zdobyć z ołtarza."
+---
 # OBOZY – MAYHEM
 ***INSTRUKCJA GRY***
 
-[TOC]
-
-
-
-> [!NOTE]
->
-> *Akapity które są dokładnie takie same jak w grze **Obozy - Gra Terenowa** oznaczone są prefiksem **^** dla zaznajomionych czytelników* 
+Obozy - Mayhem to alternatywna wersja gry Obozy - Gra Terenowa, zaprojektowana dla agresywniejszej dynamiki walki faworyzującej taktykę grupową.
 
 ## Cel gry
 
-***Mayhem*** to gra dla od 9 do 18 osób. Celem gry jest zdobycie jak największej liczby **punktów** przed zakończeniem rozgrywki. Punkty można zdobywać poprzez realizowanie nagród ołtarzy oraz eliminowanie przeciwników.
+***Mayhem*** to gra dla od 9 do 18 osób. Celem gry jest zdobycie jak największej liczby **punktów** przed zakończeniem rozgrywki. Punkty można zdobywać poprzez realizowanie nagród ołtarzy oraz [eliminacja](glossary:eliminacja) przeciwników.
 
 Gra kończy się w momencie, gdy przy życiu pozostanie tylko jedna drużyna, upłynie **30 minut** od rozpoczęcia rozgrywki, lub wszyscy gracze zostaną wyeliminowani. Po zakończeniu gry następuje podliczenie punktów - ostatnia drużyna w grze nie wygrywa jej automatycznie.
 
@@ -104,6 +109,8 @@ Niektóre klasy posiadają umiejętność. Każda umiejętność może być uży
 - Szaman posiada umiejętność **Przywołanie** - przywrócenie wyeliminowanego Szturmowca do gry. Gdy dowolny Szturmowiec w drużynie ginie, może krzyknąć *„Szaman A!"* (używając litery swojej drużyny). Szaman może odpowiedzieć *„Jestem"* w ciągu trzech sekund. Wyeliminowany Szturmowiec kieruje się wówczas w stronę Szamana i czeka, aż ten zawiąże mu bibułę. Jeśli Szaman zostanie wyeliminowany lub wyeliminowany Szturmowiec opuści jego pole widzenia, użycie umiejętności przepada.
 - Szaman posiada umiejętność **Odnowa** - może uzupełnić umiejętność dowolnego gracza w drużynie tak, jakby ten przejął ołtarz.
 ```
+
+## Magiczna Laska i Zamrażanie
 
 ### ^Magiczna Laska
 

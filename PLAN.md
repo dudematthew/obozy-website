@@ -23,7 +23,7 @@ The goals are: (1) **minimal surface area outside `.md` files**—authors edit M
 | **Further H1s (parts)** | A **second (and any further) H1** behaves like a **new chapter / part**—it may get its own **cover-style** intro tile, but the UI must make clear it is still the **same document** (shared chrome, **YAML `title`**, part label/breadcrumb, optional **logo** from metadata on each part title tile; see **§3.2**). |
 | **`logo` in front matter** | Optional path (or URL) to an image used to **identify the guide** (e.g. in **title/cover** tiles, nav, or list entries). Resolved like other assets at **build** time. |
 | **Build vs runtime** | **Markdown is not edited or parsed on the client.** The **unified/remark** pipeline runs **at build** only, producing **static IR** (e.g. JSON) shipped with the app. **Required** for the current **Netlify** static + SPA routing setup and predictable performance. |
-| H2 “gum” snap | **Product requirement:** when scrolling, the view **snaps** so **one H2** is always the “main” phone screen; users may **scroll faster**, but the dominant motion **settles** on a single H2. **§7.1** names the **single** library strategy (Swiper first; fullPage-class only on failure). |
+| H2 “gum” snap | **Product requirement:** when scrolling, the view **snaps** so **one H2** is always the “main” phone screen; users may **scroll faster**, but the dominant motion **settles** on a single H2. **§7.1** defines the mechanism: a small, in-house **SnapDeck** controller (no Swiper). |
 | Search | v1: **search UI in the app** (filter client-side from IR or plain text as available). Later: real **indexer** (build step or service) if needed. |
 | Authoring docs | A **dedicated `*.md` manual for authors** (conventions, comments, front matter) is a **deliverable** of the project. |
 
@@ -38,7 +38,7 @@ The goals are: (1) **minimal surface area outside `.md` files**—authors edit M
 | **Vue 3** + **vue-router 4** | SPA, history mode | **Lazy** manual route; deep links to part/chapter/tile (hash/params TBD in implementation). |
 | **@vue/cli-service** (Vue CLI 5) | Build, not Vite | Raw `import` of `.md` via webpack; `fs` is **disabled** in client (`vue.config.js`). |
 | **materialize-css** | Primary layout (`container`, `row`/`col`, waves, `material-icons`) | **Sole** layout system for new manual UI. |
-| **Swiper 8** | `GalleryCarousel.vue` + **candidate for vertical H2 snap and horizontal H3** | **Central** to scroll UX; see **§7.1** vs adding **fullPage.js**. |
+| **Swiper 8** | `GalleryCarousel.vue` only | **Not used for manuals**. The manual reader must behave like a **reader** with stable inner scroll; Swiper introduces nested-scroll edge cases. |
 | **markdown-it 14** | `QuizView.vue` only | **Out of scope** for the manual engine; keep quiz separate unless you later **unify** pipelines. |
 | **Bulma** | In `package.json`; almost unused in views | **Do not use** for manuals; do not add patterns that depend on Bulma. |
 
@@ -199,26 +199,27 @@ The goals are: (1) **minimal surface area outside `.md` files**—authors edit M
 
 ---
 
-## 7. Layout engine: H2 “gum” snap and H3 (Swiper)
+## 7. Layout engine: H2 “gum” snap and H3 (SnapDeck, no Swiper)
 
-### 7.1 Vertical: **one** mechanism (Swiper vs fullPage)
+### 7.1 Vertical: **SnapDeck** (in-house) + licensing notes
 
-**Product:** outer vertical motion **should** end **aligned** to **one H2** (rubber / gum to the nearest screen), not stop mid-baseline between two H2s.
+**Product:** outer vertical motion ends **aligned** to exactly one H2 “screen”. Users can scroll within a tile; **changing tiles happens only when the inner content hits an edge** (top/bottom) and the user continues the gesture.
+
+**Why not fullPage.js:** fullPage.js v4 is **GPLv3** unless you buy a commercial license. This project is not currently GPLv3, so fullPage.js is **not** the default option.
+
+**Why not Swiper:** Swiper is a strong slider but fragile for a long-form reader with nested vertical scroll. It tends to require special handling and still feels buggy on mobile.
 
 | Approach | In codebase | Verdict |
 |----------|-------------|--------|
-| **Swiper 8, `direction: 'vertical'`** | Already a dependency; used horizontally today | **Try first:** each **H2 = one vertical slide**; **inner** `div` is **`overflow-y: auto`** (long tile body). `nested: true` if H3 is another Swiper inside. **Pro:** one ecosystem; no new **scroll-hijack** library. **Con:** iOS + nested touch needs careful options and QA. |
-| **fullPage.js** or **@fullpage/vue-fullpage** | New dependency; purpose-built for full-viewport scroll | **Only** if Swiper vertical fails product QA (jank, accessibility, or unmaintainable workarounds). **If added,** avoid **also** using Swiper for the **same** axis—**one** tool per direction to keep behavior predictable. |
-| **CSS `scroll-snap` (mandatory, y)** | No new JS | **Fallback** for vertical snap if you drop JS snap entirely; may still need JS for **hash** and **progress**. |
+| **SnapDeck (in-house)** | New small module | **Chosen:** tile is full height; inner scroll is native; when inner hits an edge, SnapDeck transitions to prev/next tile. No license risk. |
+| **pagePiling.js (MIT)** | Not in repo | Requires jQuery; not chosen. |
+| **Other micro-libs (MIT)** | Not in repo | Often single-maintainer and unclear nested-scroll story; not chosen for v1. |
 
-**Decided process:** implement **Swiper vertical for H2**; schedule **device QA**; document **“escape hatch”** to fullPage (or another lib) in one paragraph of ADR if needed.
-
-**Note:** “Scroll hijack” in marketing language often = **this** snap behavior. **Swiper** is not *only* a carousel; it’s a **scroll container with controlled translation**—functionally the same *category* as fullPage for “one panel per H2” if configured that way. **Do not** add a second full-page library for the same axis without removing the first.
+**Decided process (v1):** implement SnapDeck in `src/lib/manual-reader/`:\n\n- **Inputs:** wheel, touch pan, keyboard arrows.\n- **Policy:**\n  - scroll within the tile while possible\n  - only transition when at top/bottom and the user keeps scrolling\n- **A11y:** support `prefers-reduced-motion`.\n\nIf SnapDeck is still insufficient, revisit licensing to purchase fullPage.js or pick a well-maintained permissive library later.
 
 ### 7.2 H3 horizontal
 
-- **Swiper** horizontal for H3 under each H2 (existing dependency).
-- **Touch:** parent vertical Swiper + child horizontal = enable **`nested: true`**, test on Android and iOS.
+- Use **native** horizontal scrolling:\n  - `overflow-x: auto; scroll-snap-type: x mandatory`\n  - each subsection: `scroll-snap-align: start`\n  - optional dots built with IntersectionObserver (later)
 
 ### 7.3 Comment-driven “show all” for H3
 
@@ -261,7 +262,7 @@ Bring official docs (or the GitHub repo README) for each. Placeholders use **eco
 | 9 | **remark-github-blockquote-alert** (or maintained fork) | `> [!NOTE]` | Search npm for **remark** + **github** + **alert**; confirm compatibility with your `remark-gfm` version |
 | 10 | **github-slugger** | If custom slug logic is needed | https://github.com/Flet/github-slugger |
 | 11 | **gray-matter** (optional if front matter fully handled by remark) | String split | https://github.com/jonschlinkert/gray-matter |
-| 12 | **Swiper 8** | Vertical + horizontal + `nested` | https://swiperjs.com/ (Vue, modules you use) |
+| 12 | **SnapDeck (in-house)** | Edge-triggered snap transitions | (project-local) |
 | 13 | **Vue Router 4** | Lazy routes, `scrollBehavior` | https://router.vuejs.org/ |
 | 14 | **Vue 3** | Composition / SFC (if you adopt in manual view) | https://vuejs.org/ |
 | 15 | **Materialize CSS** (1.x RC) | Modals, grid, waves | https://materializecss.com/ |
@@ -276,8 +277,8 @@ Bring official docs (or the GitHub repo README) for each. Placeholders use **eco
 |-------|--------|------------------------|
 | **0** | IR v1, **author’s `authoring-guide.md`**, 1 golden fixture | Heading + multi-H1 + comments + `logo` agreed |
 | **1** | **Build-time** **MD → IR** (Node) + tests + **webpack/CLI hook** to emit static files | GFM, alerts, `glossary:` link, no `^` |
-| **2** | Lazy **Vue** manual view + **Swiper vertical** H2 + inner scroll | “Gum” feel on real devices |
-| **3** | H3 **Swiper**, deep links, progress, **glossary** sheet | iOS + Android |
+| **2** | Lazy **Vue** manual view + **SnapDeck** H2 + inner scroll | “Gum” feel on real devices |
+| **3** | H3 native scroll-snap, deep links, progress, **glossary** sheet | iOS + Android |
 | **4** | **Search** UI (client filter), `meta` / OG if needed | — |
 
 **Reusable package:** e.g. `@obozy/manual-engine` (parsing only); Vue is a **thin** shell.
@@ -288,13 +289,13 @@ Bring official docs (or the GitHub repo README) for each. Placeholders use **eco
 
 1. **Golden** `.md` cases: two H1s, H2 snap targets, `> [!NOTE]`, `[a](glossary:x)`, `<!-- manual:... -->`, image, code block.
 2. In CI: **mdast snapshot** or **IR snapshot**; **no** golden DOM.
-3. On device: **vertical Swiper** + **inner scroll** + **horizontal** child—one failing gesture = adjust options or revisit §7.1 escape hatch.
+3. On device: SnapDeck edge transitions + long inner scroll + horizontal subsections — one failing gesture = adjust thresholds/edge rules.
 
 ---
 
 ## 12. Conclusion
 
-- **unified + remark + rehype** ( **build-time only** ) for a **truly extensible** parser; **static IR** in the middle; **Materialize** + **Swiper** (vertical H2, horizontal H3) without **Bulma**; **glossary:** `[term](glossary:slug)`; **tags:** **HTML comments**; **no** `^`, **no** `[TOC]`; **title** + optional **`logo`** in YAML; **H1** parts with optional **chapter-style** covers; **second+ H1** = new part, **same** document; **Swiper first** for gum-snap, **fullPage-class** only on failure; **links on site and GDrive** left to team policy; **route lazy** for **view**, **static** data; **search** UI first; **author guide** in Markdown; **Netlify**-friendly **static** deploy.
+- **unified + remark + rehype** ( **build-time only** ) for a **truly extensible** parser; **static IR** in the middle; **Materialize** for UI; **SnapDeck** (in-house) for gum-snap H2; native horizontal scroll-snap for H3; **glossary:** `[term](glossary:slug)`; **tags:** **HTML comments**; **no** `^`, **no** `[TOC]`; **title** + optional **`logo`** in YAML; **H1** parts with optional **chapter-style** covers; **second+ H1** = new part, **same** document; no fullPage.js by default due to GPL/commercial licensing; **links on site and GDrive** left to team policy; **route lazy** for **view**, **static** data; **search** UI first; **author guide** in Markdown; **Netlify**-friendly **static** deploy.
 
 **First code:** **IR + parser** + tests—not the full UI.
 

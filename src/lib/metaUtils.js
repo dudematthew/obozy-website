@@ -163,6 +163,22 @@ export function getMetaForRoute(routeName) {
             return metaConfigs.about;
         case 'join-us':
             return metaConfigs.joinUs;
+        case 'manual':
+            return {
+                title: 'Instrukcja | Obozy - Gra Terenowa',
+                description: 'Interaktywna instrukcja gry terenowej Obozy (wersja w przeglądarce).',
+                url: 'https://obozy.org.pl/',
+                image: 'https://obozy.org.pl/og-image.png',
+                imageAlt: 'Obozy - Gra Terenowa'
+            };
+        case 'manual-index':
+            return {
+                title: 'Instrukcje | Obozy - Gra Terenowa',
+                description: 'Lista interaktywnych instrukcji do gier Obozy.',
+                url: 'https://obozy.org.pl/',
+                image: 'https://obozy.org.pl/og-image.png',
+                imageAlt: 'Obozy - Gra Terenowa'
+            };
         default:
             return metaConfigs.home;
     }

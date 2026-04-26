@@ -74,7 +74,7 @@ The Obozy Website is designed to promote and facilitate the Obozy - Gra Terenowa
 ### Built With
 
 * [![Vue][Vue.js]][Vue-url]
-* [![Bulma][Bulma]][Bulma-url]
+* [![Materialize CSS][Materialize.css]][Materialize-url]
 * [![Babel][Babel]][Babel-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -207,7 +207,7 @@ Project Link: [https://github.com/dudematthew/obozy-website](https://github.com/
 <!-- https://simpleicons.org -->
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [Vue-url]: https://vuejs.org/
-[Bulma]: https://img.shields.io/badge/Bulma-white?style=for-the-badge&logo=bulma&logoColor=00D1B2
-[Bulma-url]: https://bulma.io/
+[Materialize.css]: https://img.shields.io/badge/Materialize-ee6e73?style=for-the-badge
+[Materialize-url]: https://materializecss.com/
 [Babel]: https://img.shields.io/badge/Babel-3B3C38?style=for-the-badge&logo=babel&logoColor=#F9DC3E
 [Babel-url]: https://babeljs.io/

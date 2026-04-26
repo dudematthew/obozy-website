@@ -71,18 +71,14 @@ html {
   }
 }
 
+/* Third-party / legacy full-width button layout */
 button.is-fullwidth,
 button.is-fullwidth span {
   display: block !important;
   text-align: center !important;
 }
 
-// Fix Bulma Flex
-// .field {
-//   flex-grow: unset !important;
-//   flex-shrink: unset !important;
-//   flex: 1 1 0 !important;
-// }
+// (third-party form helpers: keep flex rules local to those components if needed)
 
 // Fix index-banner not taking full width
 .index-banner {

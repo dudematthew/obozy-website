@@ -3,9 +3,11 @@
  * Add an import for each entry in manuals.config.json
  */
 import mayhem from './mayhem.json'
+import classic from './classic.json'
 
 const manuals = {
-  mayhem
+  mayhem,
+  classic
 }
 
 /**

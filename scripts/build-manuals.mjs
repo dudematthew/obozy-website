@@ -12,6 +12,7 @@ import remarkStringify from 'remark-stringify'
 import remarkRehype from 'remark-rehype'
 import remarkGitHubAlert from 'remark-github-blockquote-alert'
 import rehypeSlug from 'rehype-slug'
+import rehypeRaw from 'rehype-raw'
 import rehypeStringify from 'rehype-stringify'
 import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import { visit } from 'unist-util-visit'
@@ -37,12 +38,12 @@ const warn = (m) => console.warn(`[build-manuals] ${m}`)
 
 const sanitizeSchema = {
   ...defaultSchema,
-  tagNames: [...(defaultSchema.tagNames || []), 'div', 'span', 'svg', 'path', 'g'],
+  tagNames: [...(defaultSchema.tagNames || []), 'div', 'span', 'svg', 'path', 'g', 'details', 'summary'],
   attributes: {
     ...defaultSchema.attributes,
     div: ['className', 'class', 'dir'],
-    span: ['className', 'class', 'dir', 'dataGlossary'],
-    a: ['href', 'title', 'className', 'class'],
+    span: ['className', 'class', 'dir', 'dataGlossary', 'dataTag', 'role', 'tabIndex'],
+    a: ['href', 'title', 'className', 'class', 'target', 'rel'],
     img: ['src', 'alt', 'title', 'width', 'height', 'loading', 'className', 'class'],
     code: ['className', 'class'],
     pre: ['className', 'class'],
@@ -51,7 +52,141 @@ const sanitizeSchema = {
     td: ['colspan', 'rowspan', 'align', 'className', 'class'],
     svg: ['viewBox', 'width', 'height', 'fill', 'className', 'class', 'xmlns', 'focusable', 'aria-hidden'],
     path: ['d', 'fill', 'className', 'class'],
-    g: ['className', 'class']
+    g: ['className', 'class'],
+    details: ['open', 'className', 'class'],
+    summary: ['className', 'class']
+  }
+}
+
+/**
+ * Wraps H4, H5, H6 heading+content groups into <details>/<summary> elements,
+ * making them collapsible accordion items. The heading text becomes the
+ * <summary>; everything up to the next heading of equal/higher rank becomes
+ * the details body.
+ *
+ * Opt-in expansion: if the MDAST heading had <!-- manual:expand true -->
+ * before it, remark-rehype will have forwarded data-manual-expand="true" onto
+ * the hast element. We read that attribute and add the `open` attribute to
+ * <details> to default it to open.
+ */
+function rehypeAccordion () {
+  return (/** @type {import('hast').Root} */ tree) => {
+    if (!tree || typeof tree !== 'object' || !('type' in tree)) return
+    // Visit both 'root' and 'element' nodes — in a fragment pipeline the h4/h5/h6
+    // nodes are direct children of root (not wrapped in a body element), so we
+    // must process root's own children array as well.
+    visit(tree, ['root', 'element'], (node) => {
+      if (!Array.isArray(node.children)) return
+      const newChildren = []
+      let i = 0
+      while (i < node.children.length) {
+        const child = node.children[i]
+        if (
+          child.type === 'element' &&
+          /^h[456]$/.test(child.tagName)
+        ) {
+          const level = parseInt(child.tagName[1], 10)
+          // Collect subsequent sibling nodes until the next heading ≤ this level
+          const bodyNodes = []
+          let j = i + 1
+          while (j < node.children.length) {
+            const sibling = node.children[j]
+            if (
+              sibling.type === 'element' &&
+              /^h[1-6]$/.test(sibling.tagName) &&
+              parseInt(sibling.tagName[1], 10) <= level
+            ) break
+            bodyNodes.push(sibling)
+            j++
+          }
+          // rehypeRaw normalises data-* attributes to camelCase (data-manual-expand → dataManualExpand)
+          const expand = child.properties && (
+            child.properties['data-manual-expand'] === 'true' ||
+            child.properties['dataManualExpand'] === 'true'
+          )
+          // Remove the metadata attribute from summary so it doesn't appear in HTML
+          if (child.properties) {
+            delete child.properties['data-manual-expand']
+            delete child.properties['dataManualExpand']
+          }
+          // Wrap heading text in a <summary> and nest in <details>
+          const details = {
+            type: 'element',
+            tagName: 'details',
+            properties: { ...(expand ? { open: true } : {}), className: ['manual-accordion'] },
+            children: [
+              {
+                type: 'element',
+                tagName: 'summary',
+                properties: { className: ['manual-accordion__summary'] },
+                children: child.children
+              },
+              ...bodyNodes
+            ]
+          }
+          newChildren.push(details)
+          i = j
+        } else {
+          newChildren.push(child)
+          i++
+        }
+      }
+      node.children = newChildren
+    })
+  }
+}
+
+/** Classify links into four types by adding a CSS class:
+ *  - `#slug`       → manual-ref-link  (in-document navigation)
+ *  - `http(s)://`  → manual-ext-link  (external URL)
+ *  - `glossary:`   → manual-glossary-term (handled separately below)
+ *  - `tag:`        → manual-tag-inline (inline paragraph tag badge)
+ *  External links also get target="_blank" and rel="noopener noreferrer".
+ *  `tags` is the record from meta.tags – used to inject the correct icon into
+ *  inline tag spans.
+ *
+ * @param {Record<string, { icon: string, label: string, description: string }>} [tags]
+ */
+function rehypeLinkClasses (tags) {
+  return (/** @type {import('hast').Root} */ tree) => {
+    if (!tree || typeof tree !== 'object' || !('type' in tree)) return
+    visit(tree, 'element', (node) => {
+      if (node.tagName !== 'a' || !node.properties) return
+      const href = node.properties.href
+      if (typeof href !== 'string') return
+      if (href.startsWith('glossary:')) return // handled by rehypeGlossaryLinks
+      const cls = Array.isArray(node.properties.className) ? node.properties.className : []
+      if (href.startsWith('tag:')) {
+        const tagKey = href.replace(/^tag:/, '')
+        const tagDef = (tags || {})[tagKey]
+        node.tagName = 'span'
+        node.properties = {
+          className: ['manual-tag-inline'],
+          dataTag: tagKey,
+          role: 'button',
+          tabIndex: '0'
+        }
+        if (tagDef?.icon) {
+          node.children = [
+            ...node.children,
+            {
+              type: 'element',
+              tagName: 'span',
+              properties: { className: ['material-icons', 'manual-tag-inline__icon'], ariaHidden: 'true' },
+              children: [{ type: 'text', value: tagDef.icon }]
+            }
+          ]
+        }
+        return
+      }
+      if (href.startsWith('#')) {
+        node.properties.className = [...cls, 'manual-ref-link']
+      } else if (/^https?:\/\//.test(href) || href.startsWith('//')) {
+        node.properties.className = [...cls, 'manual-ext-link']
+        node.properties.target = '_blank'
+        node.properties.rel = ['noopener', 'noreferrer']
+      }
+    })
   }
 }
 
@@ -67,6 +202,60 @@ function rehypeGlossaryLinks () {
       node.properties = {
         className: ['manual-glossary-term'],
         dataGlossary: slug
+      }
+    })
+  }
+}
+
+/**
+ * Converts block elements annotated with `data-manual-tag` into content
+ * prefixed with a clickable badge chip showing the tag's icon and label.
+ * Clicking the badge in the Vue component opens an info modal that shows
+ * the full description from meta.tags.
+ *
+ * @param {Record<string, { icon: string, label: string, description: string }>} tags
+ */
+function rehypeTagBadges (tags) {
+  return (tree) => {
+    if (!tree || typeof tree !== 'object' || !('type' in tree)) return
+    visit(tree, ['root', 'element'], (node) => {
+      if (!Array.isArray(node.children)) return
+      for (let i = 0; i < node.children.length; i++) {
+        const child = node.children[i]
+        if (child.type !== 'element' || !child.properties) continue
+        // rehypeRaw normalises data-* attributes to camelCase; accept both forms
+        const tagKey = child.properties['data-manual-tag'] || child.properties['dataManualTag']
+        if (!tagKey) continue
+        const tagDef = (tags || {})[tagKey]
+        delete child.properties['data-manual-tag']
+        delete child.properties['dataManualTag']
+        if (!tagDef) continue
+        const badge = {
+          type: 'element',
+          tagName: 'span',
+          properties: {
+            className: ['manual-tag-badge'],
+            dataTag: tagKey,
+            role: 'button',
+            tabIndex: '0'
+          },
+          children: [
+            {
+              type: 'element',
+              tagName: 'span',
+              properties: { className: ['material-icons', 'manual-tag-badge__icon'], ariaHidden: 'true' },
+              children: [{ type: 'text', value: tagDef.icon || 'label' }]
+            },
+            {
+              type: 'element',
+              tagName: 'span',
+              properties: { className: ['manual-tag-badge__label'] },
+              children: [{ type: 'text', value: tagDef.label || tagKey }]
+            }
+          ]
+        }
+        // Prepend the badge inside the element so it floats in the top-right
+        child.children = [badge, ...child.children]
       }
     })
   }
@@ -100,12 +289,63 @@ function rehypeRewriteLocalImgs (ctx) {
 }
 
 /**
+ * Remark plugin: processes `<!-- manual:key value -->` HTML comment nodes in the
+ * MDAST, attaches the key/value as hProperties on the NEXT sibling, then removes
+ * the comment. Used inside mdastToHtml so that metadata re-inserted from
+ * data.hProperties survives the markdown round-trip.
+ */
+function remarkManualMeta () {
+  return (/** @type {import('mdast').Root} */ tree) => {
+    if (!tree.children) return
+    const kept = []
+    for (let i = 0; i < tree.children.length; i++) {
+      const n = tree.children[i]
+      if (
+        n.type === 'html' &&
+        /** @type {import('mdast').Html} */ (n).value?.trim().match(/<!--\s*manual:/)
+      ) {
+        const match = /** @type {import('mdast').Html} */ (n).value
+          .trim()
+          .match(/<!--\s*manual:(\w+)\s+(.+?)\s*-->/)
+        if (match) {
+          const next = tree.children[i + 1]
+          if (next) {
+            next.data = next.data || {}
+            next.data.hProperties = /** @type {Record<string,string>} */ (next.data.hProperties || {})
+            next.data.hProperties[`data-manual-${match[1]}`] = match[2]
+          }
+        }
+        continue
+      }
+      kept.push(n)
+    }
+    tree.children = kept
+  }
+}
+
+/**
  * @param {import('mdast').Node[]} nodes
  * @param {{ sourceDir: string, destDir: string, publicPathPrefix: string }} rewrite
  */
 async function mdastToHtml (nodes, rewrite) {
   if (!nodes || !nodes.length) return ''
-  const md = mdastToMd(nodes)
+  // Re-insert manual:* metadata as HTML comments before the markdown round-trip.
+  // The initial MDAST scan attaches them as data.hProperties on the next sibling,
+  // but remark-stringify drops data.* fields. By re-inserting raw comments here,
+  // remarkManualMeta can pick them up again after re-parsing.
+  const augmented = []
+  for (const n of nodes) {
+    if (n.data?.hProperties) {
+      for (const [key, val] of Object.entries(
+        /** @type {Record<string,string>} */ (n.data.hProperties)
+      )) {
+        const m = key.match(/^data-manual-(\w+)$/)
+        if (m) augmented.push({ type: 'html', value: `<!-- manual:${m[1]} ${val} -->` })
+      }
+    }
+    augmented.push(n)
+  }
+  const md = mdastToMd(augmented)
   if (!md.trim()) return ''
   const vfile = new VFile({ value: md, data: { rewrite } })
   return String(
@@ -113,10 +353,15 @@ async function mdastToHtml (nodes, rewrite) {
       .use(remarkParse)
       .use(remarkGfm)
       .use(remarkGitHubAlert)
+      .use(remarkManualMeta)
       .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeRaw)
       .use(rehypeSlug)
+      .use(rehypeAccordion)
+      .use(rehypeLinkClasses, rewrite.tags || {})
       .use(rehypeGlossaryLinks)
-      .use(rehypeRewriteLocalImgs(rewrite))
+      .use(rehypeTagBadges, rewrite.tags || {})
+      .use(rehypeRewriteLocalImgs, rewrite)
       .use(rehypeSanitize, sanitizeSchema)
       .use(rehypeStringify)
       .process(vfile)
@@ -211,13 +456,35 @@ async function buildOneManual (manual) {
     description: front.description || '',
     logo: front.logo || null,
     logoUrl: null,
-    glossary: front.glossary && typeof front.glossary === 'object' ? front.glossary : {}
+    related: Array.isArray(front.related) ? front.related : [],
+    tags: (front.tags && typeof front.tags === 'object')
+      ? Object.fromEntries(
+          Object.entries(front.tags).map(([k, v]) => [
+            k,
+            {
+              icon: String((v && v.icon) || 'label'),
+              label: String((v && v.label) || k),
+              description: String((v && v.description) || '')
+            }
+          ])
+        )
+      : {},
+    glossary: (front.glossary && typeof front.glossary === 'object')
+      ? Object.fromEntries(
+          Object.entries(front.glossary).map(([k, v]) => [
+            k,
+            typeof v === 'string'
+              ? { definition: v, link: null }
+              : { definition: String(v.definition || ''), link: v.link || null }
+          ])
+        )
+      : {}
   }
 
   const sourceDir = path.dirname(abs)
   const publicPathPrefix = `manual-assets/${id}`.replace(/\\/g, '/')
   const destDir = path.join(projectRoot, 'public', 'manual-assets', id)
-  const rewrite = { sourceDir, destDir, publicPathPrefix }
+  const rewrite = { sourceDir, destDir, publicPathPrefix, tags: meta.tags }
   const globalSlug = new GithubSlugger()
   const linkIndex = /** @type {Record<string, { part: number, tile: number, subsection?: number }>} */ ({})
 
@@ -226,16 +493,35 @@ async function buildOneManual (manual) {
     .use(remarkGfm)
     .use(remarkGitHubAlert))
   const root = /** @type {import('mdast').Root} */ (proc.parse(content))
-  // strip HTML comments
+  // Process <!-- manual:key value --> comments: attach as hProperties on the
+  // NEXT sibling so rehype plugins can read them, then remove the comment.
   if (root.children) {
-    root.children = root.children.filter(
-      (n) =>
-        !(
-          n.type === 'html' &&
+    const kept = []
+    for (let i = 0; i < root.children.length; i++) {
+      const n = root.children[i]
+      if (
+        n.type === 'html' &&
         /** @type {import('mdast').Html} */ (n).value &&
-        (/** @type {import('mdast').Html} */ (n).value).trim().startsWith('<!--')
-        )
-    )
+        (/** @type {import('mdast').Html} */ (n).value).trim().startsWith('<!')
+      ) {
+        const match = (/** @type {import('mdast').Html} */ (n)).value
+          .trim()
+          .match(/<!--\s*manual:(\w+)\s+(.+?)\s*-->/)
+        if (match) {
+          // Find the next real node and attach metadata via data.hProperties
+          const next = root.children[i + 1]
+          if (next) {
+            next.data = next.data || {}
+            next.data.hProperties = /** @type {Record<string,string>} */ (next.data.hProperties || {})
+            next.data.hProperties[`data-manual-${match[1]}`] = match[2]
+          }
+        }
+        // Always drop the comment itself
+        continue
+      }
+      kept.push(n)
+    }
+    root.children = kept
   }
 
   const children = root.children || []

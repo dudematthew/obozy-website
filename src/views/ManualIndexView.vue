@@ -49,13 +49,6 @@ export default {
 
 <template>
   <div class="manual-index">
-    <div class="manual-reader-nav">
-      <div class="manual-reader-nav__left">
-        <router-link to="/" class="brand-logo manual-reader-nav__brand">OBOZY</router-link>
-        <span class="manual-reader-nav__title">Instrukcje</span>
-      </div>
-    </div>
-
     <div class="manual-index__hero">
       <div class="container" style="max-width: 820px">
 
@@ -106,62 +99,6 @@ export default {
 .manual-index {
   background: #eceff1;
   min-height: 100dvh;
-  padding-top: 56px;
-}
-
-.manual-reader-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 56px;
-  z-index: 1000;
-  background: #ffffff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-}
-
-.manual-reader-nav__left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
-
-/* Match Header.vue: plain Materialize .brand-logo, but neutralise the absolute /
-   mobile-centring behaviour so it stays inline-left. */
-.manual-reader-nav__brand.brand-logo {
-  position: static;
-  left: auto;
-  right: auto;
-  transform: none;
-  float: none;
-  padding: 0;
-  margin: 0;
-  text-decoration: none;
-  color: #444;
-  font-size: 1.6rem;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  flex: 0 0 auto;
-}
-
-@media only screen and (max-width: 992px) {
-  .manual-reader-nav__brand.brand-logo {
-    left: auto;
-    transform: none;
-  }
-}
-
-.manual-reader-nav__title {
-  font-weight: 600;
-  color: #263238;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .manual-index__hero {

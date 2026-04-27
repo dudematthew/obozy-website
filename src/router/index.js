@@ -14,8 +14,7 @@ const routes = [
     component: () => import('../views/ManualIndexView.vue'),
     meta: {
       title: 'Instrukcje | Obozy - Gra Terenowa',
-      description: 'Lista interaktywnych instrukcji do gier Obozy.',
-      hideChrome: true
+      description: 'Lista interaktywnych instrukcji do gier Obozy.'
     }
   },
   {

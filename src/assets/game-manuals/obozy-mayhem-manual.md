@@ -2,21 +2,52 @@
 title: "Obozy – Mayhem"
 description: "Gra alternatywna dla Obozy - Gra Terenowa, zaprojektowana dla agresywniejszej dynamiki walki faworyzującej taktykę grupową."
 logo: "obozy-mayhem-manual.assets/icons8-torii-100.png"
+tags:
+  original:
+    icon: "content_copy"
+    label: "Znane z podstawowej gry"
+    description: "Ten fragment jest identyczny jak w grze Obozy – Gra Terenowa. Jeśli ją znasz, możesz go pominąć."
+  advanced:
+    icon: "psychology"
+    label: "Dla zaawansowanych"
+    description: "Ta sekcja opisuje zaawansowaną mechanikę. Przy pierwszej lekturze można ją pominąć."
 glossary:
-  eliminacja: "Wyeliminowanie gracza z gry."
-  wskrzeszenie: "Przywrócenie gracza do gry."
-  zwój: "Kartka papieru zawinięta w sznurek żeby nie było widać zawartości."
-  ołtarz: "Miejsce na mapie gdzie można zdobyć nagrody."
-  nagroda: "Przedmiot, który można zdobyć z ołtarza."
+  eliminacja:
+    definition: "Wyeliminowanie gracza z gry poprzez zerwanie ostatniej bibuły. Wyeliminowany gracz udaje się do miejsca wyeliminowanych i sygnalizuje stan skrzyżowanymi rękami."
+    link: "eliminacja-i-wskrzeszenie"
+  wskrzeszenie:
+    definition: "Przywrócenie wyeliminowanego gracza do gry. Możliwe wyłącznie Zwojem Zmartwychwstania lub umiejętnością Podniesienie klasy Medyka."
+    link: "eliminacja-i-wskrzeszenie"
+  zwój:
+    definition: "Kartka papieru zawinięta w sznurek żeby nie było widać zawartości. Jednorazowy przedmiot z unikalnym efektem – aktywuje się przez wypowiedzenie nazwy i dotknięcie celu."
+    link: "zwoje"
+  ołtarz:
+    definition: "Kluczowa strefa na terenie gry, z której można odbierać nagrody punktowe, klasy i zwoje. Ołtarz przejmuje się przez przebywanie w jego strefie przez określony czas."
+    link: "ołtarze"
+  nagroda:
+    definition: "Przedmiot, który można zdobyć przez przejęcie ołtarza: klasa, zwoje lub punkty. Drużyna zawsze odbiera najwyższą dostępną nagrodę."
+    link: "nagrody-ołtarza"
+  bibuła:
+    definition: "Kolorowa tasiemka wiązana na nadgarstkach gracza, reprezentująca jeden punkt życia. Zerwanie ostatniej bibuły oznacza eliminację gracza."
+    link: "sposób-walki"
+  klasa:
+    definition: "Zestaw atrybutów przyznawanych graczowi na początku gry lub jako nagroda z ołtarza. Klasa może dawać dodatkowe punkty życia lub specjalną umiejętność."
+    link: "klasy"
+  zamrożenie:
+    definition: "Stan unieruchomienia wywołany przez Magiczną Laskę lub Zwój Zamrożenie. Zamrożony gracz nie może się poruszać ani działać dopóki laska go dotyka."
+    link: "mechanika-zamrażania"
+  przejmowanie:
+    definition: "Proces zajmowania ołtarza – drużyna wpisuje się na kartę i przebywa w strefie przez wyznaczony czas. Przejęcie kończy się sukcesem jeśli nikt ze strefy nie wyjdzie przed czasem zakończenia."
+    link: "przejmowanie-ołtarza"
 ---
 # OBOZY – MAYHEM
 ***INSTRUKCJA GRY***
 
-Obozy - Mayhem to alternatywna wersja gry Obozy - Gra Terenowa, zaprojektowana dla agresywniejszej dynamiki walki faworyzującej taktykę grupową.
+Obozy - Mayhem to alternatywna wersja gry terenowej - Obozy, zaprojektowana dla agresywniejszej dynamiki walki faworyzującej taktykę grupową.
 
 ## Cel gry
 
-***Mayhem*** to gra dla od 9 do 18 osób. Celem gry jest zdobycie jak największej liczby **punktów** przed zakończeniem rozgrywki. Punkty można zdobywać poprzez realizowanie nagród ołtarzy oraz [eliminacja](glossary:eliminacja) przeciwników.
+***Mayhem*** to gra dla od 9 do 18 osób. Celem gry jest zdobycie jak największej liczby **punktów** przed zakończeniem rozgrywki. Punkty można zdobywać poprzez realizowanie [nagród](glossary:nagroda) [ołtarzy](glossary:ołtarz) oraz [eliminację](glossary:eliminacja) przeciwników.
 
 Gra kończy się w momencie, gdy przy życiu pozostanie tylko jedna drużyna, upłynie **30 minut** od rozpoczęcia rozgrywki, lub wszyscy gracze zostaną wyeliminowani. Po zakończeniu gry następuje podliczenie punktów - ostatnia drużyna w grze nie wygrywa jej automatycznie.
 
@@ -35,19 +66,20 @@ Drużyna zdobywa punkty na dwa sposoby:
 
 Za każde zabójstwo drużyna otrzymuje **3 punkty** - przyznawane tej drużynie, której członek zerwał ostatnią bibułę. Drużyny liczą ilość zabitych podczas gry, nie punkty za zabójstwa.
 
-## ^Sposób walki
+## Sposób walki
 
-Gracze otrzymują kolorowe bibuły wiązane na nadgarstkach, reprezentujące ich **punkty życia**. Aby unieszkodliwić przeciwnika, należy zerwać jego bibułę.
+<!-- manual:tag original -->
+Gracze otrzymują kolorowe [bibuły](glossary:bibuła) wiązane na nadgarstkach, reprezentujące ich **punkty życia**. Aby unieszkodliwić przeciwnika, należy zerwać jego bibułę.
 
 > [!NOTE]
 >
 > *Gracz który zerwał bibułę krzyczy **zerwałem bibułę na danej ręce**. Gracz który wie że zerwana mu bibuła była ostatnia krzyczy **odpadam**. Krzyczenie "nie żyjesz" nie jest wskazane ponieważ gracz może mieć wiele bibuł.*
 
-Gracz pozbawiony wszystkich bibuł zostaje **wyeliminowany** - upuszcza wówczas wszystkie posiadane zwoje, po czym udaje się do miejsca wyeliminowanych graczy. Wyeliminowani gracze podróżujący po polu gry sygnalizują swój stan **trzymając skrzyżowane ręce** i nie mogą wykonywać żadnych działań mających wpływ na rozgrywkę. Wyeliminowanych graczy nie można śledzić.
+Gracz pozbawiony wszystkich bibuł zostaje **wyeliminowany** - upuszcza wówczas wszystkie posiadane [zwoje](glossary:zwój), po czym udaje się do miejsca wyeliminowanych graczy. Wyeliminowani gracze podróżujący po polu gry sygnalizują swój stan **trzymając skrzyżowane ręce** i nie mogą wykonywać żadnych działań mających wpływ na rozgrywkę. Wyeliminowanych graczy nie można śledzić.
 
 ## Klasy
 
-Klasa to zestaw atrybutów przyznawanych graczowi który ją posiada. Wyboru klasy **nie można zmienić** w trakcie gry inaczej niż zastępując ją klasą zdobytą z ołtarza.
+[Klasa](glossary:klasa) to zestaw atrybutów przyznawanych graczowi który ją posiada. Wyboru klasy **nie można zmienić** w trakcie gry inaczej niż zastępując ją klasą zdobytą z [ołtarza](glossary:ołtarz).
 
 Niektóre klasy posiadają umiejętność. Każda umiejętność może być użyta maksymalnie raz na odnowienie. **Umiejętność klasy odnawia się w momencie odebrania dowolnej nagrody z dowolnego ołtarza.** Gracz musi stać na ołtarzu w momencie odebrania nagrody.
 
@@ -112,40 +144,49 @@ Niektóre klasy posiadają umiejętność. Każda umiejętność może być uży
 
 ## Magiczna Laska i Zamrażanie
 
-### ^Magiczna Laska
+Poniżej znajdują się szczegółowe informacje o Magicznej Laski i jej odmian.
 
-**Magiczna Laska** to przedmiot, który dotykając gracza wprowadza go w **stan zamrożenia**. Zamrożenie trwa tak długo, jak długo Laska dotyka gracza. Jest najbardziej skomplikowanym przedmiotem w grze - każdy gracz musi dokładnie rozumieć zasady jej działania.
+### Magiczna Laska
 
-### ^Aktywna i nieaktywna Laska
+<!-- manual:tag original -->
+**Magiczna Laska** to przedmiot, który dotykając gracza wprowadza go w **[stan zamrożenia](glossary:zamrożenie)**. Zamrożenie trwa tak długo, jak długo Laska dotyka gracza. Jest najbardziej skomplikowanym przedmiotem w grze - każdy gracz musi dokładnie rozumieć zasady jej działania.
 
+### Aktywna i nieaktywna Laska
+
+<!-- manual:tag original -->
 Laska jest **aktywna**, gdy właściciel trzyma ją za wyznaczone miejsce (20-centymetrowy środek standardowej laski lub rączkę w odmianach) przynajmniej jedną ręką, a jednocześnie **nie jest dotykany przez inną osobę**. Aktywna Laska zamraża graczy poprzez dotyk ich ubrania lub skóry.
 
 Laska staje się **nieaktywna**, gdy właściciel zostanie dotknięty, puści laskę lub zginie. Nieaktywna Laska nie zamraża nikogo. Aby ją reaktywować, właściciel musi odliczyć głośno do trzech, spełniając warunki aktywności.
 
-### ^Mechanika zamrażania
+### Mechanika zamrażania
 
+<!-- manual:tag original -->
 Aktywna Laska dotykając gracza **natychmiast go zamraża** - dotyczy to również sojuszników. Właściciel może przemieszczać laskę po ciele zamrożonego i dotykać kolejnych graczy. Laska może zamrażać kilku graczy jednocześnie, jeśli dotyka ich wszystkich.
 
 Gdy Laska przestanie dotykać **któregokolwiek** z zamrożonych graczy, wszyscy zostają natychmiast zwolnieni, ponieważ Laska staje się nieaktywna.
 
 Aktywna Laska **nie może zamrozić** gracza, który sam kogoś aktywnie zamraża - taki gracz jest niewrażliwy na inne laski.
 
-### ^Zasady dodatkowe
+<!-- manual:expand true -->
+### Zasady dodatkowe
 
+<!-- manual:tag original -->
 Magiczna Laska jest **nienaruszalna** - nie można jej zabrać właścicielowi, nawet gdy leży na ziemi i nawet gdy jest nieaktywna. Jeśli zamrożony gracz przypadkowo złapał laskę, powinien rozluźnić chwyt.
 
 Gdy dwóch graczy z Laskami walczy, obowiązuje zasada pierwszeństwa - **kto pierwszy zostanie dotknięty, zamraża się**. Jeżeli dotkną się równocześnie, oboje odsuwają laski o 20 centymetrów i kontynuują walkę.
 
-### ^Odmiany Magicznej Laski
+### Odmiany Magicznej Laski
 
+<!-- manual:tag original -->
 Standardowa **Magiczna Laska** ma długość **1,4 metra**.
 
 - **Magiczny Nóż** - krótsza wersja o długości około 20 cm, trzymana za 10-centymetrową rączkę. Ekskluzywna dla klasy Goblina.
 - **Magiczny Miecz** - wersja o długości 70 cm, trzymana za 10-centymetrową rączkę.
 
-## ^Zwoje
+## Zwoje
 
-**Zwoje** to kartki papieru zawinięte w sznurek żeby nie było widać zawartości. Każdy zwój posiada swoją nazwę i opisane na nim działanie - są one **jednorazowe** i po aktywowaniu nie mogą być użyte już w rozgrywce.
+<!-- manual:tag original -->
+**[Zwoje](glossary:zwój)** to kartki papieru zawinięte w sznurek żeby nie było widać zawartości. Każdy zwój posiada swoją nazwę i opisane na nim działanie - są one **jednorazowe** i po aktywowaniu nie mogą być użyte już w rozgrywce.
 
 > [!WARNING]
 >
@@ -191,7 +232,7 @@ Każdy gracz zobowiązany jest do zapoznania się z nazwami i działaniem wszyst
 
 ## Ołtarze
 
-Ołtarze są kluczowymi strefami na terenie gry wielkości wahającej się od 4 do 8 metrów szerokości. Liczba ołtarzy w jednej rundzie wynosi **dwa razy więcej niż liczba drużyn**.
+[Ołtarze](glossary:ołtarz) są kluczowymi strefami na terenie gry wielkości wahającej się od 4 do 8 metrów szerokości. Liczba ołtarzy w jednej rundzie wynosi **dwa razy więcej niż liczba drużyn**.
 
 Każdy typ ołtarza (*Dzik, Sowa, Niedźwiedź, ...*) posiada własną **kartę ołtarza** - wywieszoną w widocznym miejscu w środku strefy - zawiera ona nazwę ołtarza, czas wymagany do przejęcia, dostępne nagrody w danej kolejności oraz ewentualne własne mechaniki czy wymagania.  
 
@@ -207,7 +248,7 @@ Każdy ołtarz posiada własną **strefę** wyznaczoną sznurkiem. Przejmowanie 
 
 ### Nagrody ołtarza
 
-Każdy ołtarz oferuje nagrody w ustalonej kolejności. Pierwsza drużyna, która skutecznie go przejmie, odbiera nagrodę na najwyższym miejscu - kolejne drużyny otrzymują to, co pozostało. Drużyna **zawsze odbiera najwyższą dostępną nagrodę** i wpisuje literę swojej drużyny przy odpowiedniej rubryce na karcie ołtarza.
+Każdy ołtarz oferuje [nagrody](glossary:nagroda) w ustalonej kolejności. Pierwsza drużyna, która skutecznie go [przejmie](glossary:przejmowanie), odbiera nagrodę na najwyższym miejscu - kolejne drużyny otrzymują to, co pozostało. Drużyna **zawsze odbiera najwyższą dostępną nagrodę** i wpisuje literę swojej drużyny przy odpowiedniej rubryce na karcie ołtarza.
 
 Ołtarz w którym skończyły się nagrody uznaje się za **wykorzystany** i nie może być przejmowany.
 
@@ -247,11 +288,12 @@ Drużyna B, chcąc nie dopuścić do przejęcia ołtarza przez drużynę A, musi
 
 Domyślnie do rozpoczęcia przejmowania wymagana jest **jedna osoba**, chyba że karta ołtarza stanowi inaczej. Jeśli ołtarz wymaga określonej liczby osób, wymóg ten dotyczy wyłącznie momentu rozpoczęcia - po wpisaniu się liczba obecnych graczy nie ma znaczenia.
 
+<!-- manual:expand true -->
 #### Spis ołtarzy
 
 Poniżej znajduje się lista ołtarzy dostępnych w grze. Nie trzeba się ich uczyć na pamięć, ponieważ ich opis będzie widoczny na karcie ołtarza.
 
-##### Sowa <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-owl-100.png" alt="icons8-owl-100" style="zoom:25%;" />
+##### Sowa <img src="./obozy-mayhem-manual.assets/icons8-owl-100.png" alt="icons8-owl-100" />
 
 ```
 Kolejność:
@@ -270,7 +312,7 @@ Umożliwia poświęcenie zwojów by skrócić czas przejmowania i wymóg osób:
 Zwoje zużywane są przy rozpoczęciu przejmowania i przepadają jeśli przejęcie się nie powiedzie.
 ```
 
-##### Niedźwiedź <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-bear-100.png" alt="icons8-bear-100" style="zoom: 25%;" />
+##### Niedźwiedź <img src="./obozy-mayhem-manual.assets/icons8-bear-100.png" alt="icons8-bear-100" />
 
 ```
 Kolejność:
@@ -286,7 +328,7 @@ Mechanika:
 Zamiast trzech osób wystarczy jeden Tank by rozpocząć przejmowanie. Ostatnia nagroda wymaga jedynie 30 sekund poświęcenia.
 ```
 
-##### Królik <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-rabbit-100.png" alt="icons8-rabbit-100" style="zoom:25%;" />
+##### Królik <img src="./obozy-mayhem-manual.assets/icons8-rabbit-100.png" alt="icons8-rabbit-100" />
 
 W grze powinny być 2 króliki lub 3 króliki jeśli drużyn jest więcej niż 4. Przed tasowaniem należy je wyciągnąć a następnie wtasować do wylosowanych ołtarzy. 
 
@@ -304,7 +346,7 @@ Mechanika:
 Na mapie rozmieszczone są maksymalnie trzy króliki. Przejęty królik wymaga odebrania nagrody z dowolnego innego królika. (Na tym króliku należy się wpisać a nagrodę zaznaczyć na innym Króliku). Królika można przejmować nawet jeśli jest wykorzystany.
 ```
 
-##### Jeleń <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-deer-100.png" alt="icons8-deer-100" style="zoom:25%;" />
+##### Jeleń <img src="./obozy-mayhem-manual.assets/icons8-deer-100.png" alt="icons8-deer-100" />
 
 ```
 Jeleń
@@ -322,7 +364,7 @@ Mechanika:
 Jeśli drużyna przejmie ołtarz bez walki w jego strefie — czas skraca się o 1 minutę.
 ```
 
-##### Wąż  <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-snake-100.png" alt="icons8-snake-100" style="zoom:25%;" />
+##### Wąż  <img src="./obozy-mayhem-manual.assets/icons8-snake-100.png" alt="icons8-snake-100" />
 
 ```
 Wąż
@@ -340,7 +382,7 @@ Mechanika:
 Można rozpocząć przejmowanie tylko jeśli w zasięgu wzroku jest przeciwnik.
 ```
 
-##### Dzik <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-boar-100.png" alt="icons8-boar-100" style="zoom:25%;" />
+##### Dzik <img src="./obozy-mayhem-manual.assets/icons8-boar-100.png" alt="icons8-boar-100" />
 
 ```
 Dzik
@@ -358,7 +400,7 @@ Mechanika:
 Jeśli w trakcie przejmowania dowolny gracz z poza drużyny zostanie wyeliminowany znajdując się w strefie przejmowanie natychmiast zakańcza się sukcesem.
 ```
 
-##### Sęp <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-vulture-bird-wild-west-griffon-animal-100.png" alt="icons8-vulture-bird-wild-west-griffon-animal-100" style="zoom:25%;" />
+##### Sęp <img src="./obozy-mayhem-manual.assets/icons8-vulture-bird-wild-west-griffon-animal-100.png" alt="icons8-vulture-bird-wild-west-griffon-animal-100" />
 
 ```
 Kolejność:
@@ -376,7 +418,7 @@ Jeśli ołtarz zacznie być przejmowany do 4 minut po ostatnim przejęciu Sępa,
 - 2 Zwoje -> 2 zwoje i 2 punkty
 ```
 
-##### Pająk <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-spider-100.png" alt="icons8-spider-100" style="zoom:25%;" />
+##### Pająk <img src="./obozy-mayhem-manual.assets/icons8-spider-100.png" alt="icons8-spider-100" />
 
 ```
 Kolejność:
@@ -392,7 +434,7 @@ Mechanika:
 Po przejęciu jeden z graczy nie może opuścić strefy aż zegar pokaże następną pełną minutę.
 ```
 
-##### Lis <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-fox-100.png" alt="icons8-fox-100" style="zoom:25%;" />
+##### Lis <img src="./obozy-mayhem-manual.assets/icons8-fox-100.png" alt="icons8-fox-100" />
 
 ```
 Kolejność:
@@ -408,7 +450,7 @@ Mechanika:
 Po opuszczeniu strefy przejmowanie się nie zakańcza. Drużyna musi jednak znajdować się w strefie w godzinie przejęcia.
 ```
 
-##### Kot <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-cat-100.png" alt="icons8-cat-100" style="zoom:25%;" />
+##### Kot <img src="./obozy-mayhem-manual.assets/icons8-cat-100.png" alt="icons8-cat-100" />
 
 ```
 Kolejność:
@@ -424,7 +466,7 @@ Mechanika:
 Niezależnie od tego czy ołtarz zostanie przejęty, wszyscy którzy zginęli w jego strefie podczas jego przejmowania wracają na miejsce wyeliminowanych graczy a następnie wracają do gry.
 ```
 
-##### Wiewiórka <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-squirrel-100.png" alt="icons8-squirrel-100" style="zoom:25%;" />
+##### Wiewiórka <img src="./obozy-mayhem-manual.assets/icons8-squirrel-100.png" alt="icons8-squirrel-100" />
 
 ```
 Kuna
@@ -442,7 +484,7 @@ Mechanika:
 Karta ołtarza musi być cały czas dotykana przez przynajmniej jednego przejmującego inaczej przejęcie się zakańcza. 
 ```
 
-##### Skorpion <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-scorpion-100.png" alt="icons8-scorpion-100" style="zoom:25%;" />
+##### Skorpion <img src="./obozy-mayhem-manual.assets/icons8-scorpion-100.png" alt="icons8-scorpion-100" />
 
 ```
 Kolejność:
@@ -458,7 +500,7 @@ Mechanika:
 Po przejęciu wybrany członek drużyny z obecnych w strefie zostaje wyeliminowany.
 ```
 
-##### Łoś <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-moose-100.png" alt="icons8-moose-100" style="zoom:25%;" />
+##### Łoś <img src="./obozy-mayhem-manual.assets/icons8-moose-100.png" alt="icons8-moose-100" />
 
 ```
 Kolejność:
@@ -474,7 +516,7 @@ Mechanika:
 Jeśli drużyna rozpocznie przejmowanie z pełnym składem może wybrać następną nagrodę jeśli jest dostępna. Cała drużyna musi być jednak obecna na koniec przejęcia.
 ```
 
-##### Rekin <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-shark-100.png" alt="icons8-shark-100" style="zoom:25%;" />
+##### Rekin <img src="./obozy-mayhem-manual.assets/icons8-shark-100.png" alt="icons8-shark-100" />
 
 ```
 Kolejność:
@@ -490,7 +532,7 @@ Mechanika:
 Jeśli w trakcie przejmowania w strefie znajdzie się przeciwnik - czas skraca się jednorazowo o 30 sekund.
 ```
 
-##### Borsuk <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-badger-100.png" alt="icons8-badger-100" style="zoom:25%;" />
+##### Borsuk <img src="./obozy-mayhem-manual.assets/icons8-badger-100.png" alt="icons8-badger-100" />
 
 ````
 Kolejność:
@@ -506,7 +548,7 @@ Mechanika:
 Jeśli gracz jest ostatnią niewyeliminowaną na stałe osobą w drużynie, wymóg zmniejsza się do jednej osoby a czas zmniejsza się do 2:00.
 ````
 
-##### Świnia <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-pig-100.png" alt="icons8-pig-100" style="zoom:25%;" />
+##### Świnia <img src="./obozy-mayhem-manual.assets/icons8-pig-100.png" alt="icons8-pig-100" />
 
 ```
 Kolejność:
@@ -522,7 +564,7 @@ Mechanika:
 Po zakończeniu przejmowania drużyna może się zdecydować żeby odebrać nagrodę w postaci 3 punktów, w zamian oznaczając Świnię jako wykorzystaną. Postaw znak X na wszystkich pozostałych nagrodach.
 ```
 
-##### Owca <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-sheep-100.png" alt="icons8-sheep-100" style="zoom:25%;" />
+##### Owca <img src="./obozy-mayhem-manual.assets/icons8-sheep-100.png" alt="icons8-sheep-100" />
 
 ````
 Kolejność:
@@ -535,7 +577,7 @@ Wymóg: 1 osoba
 Czas: 2:00
 ````
 
-##### Gołąb <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-pigeon-100.png" alt="icons8-pigeon-100" style="zoom:25%;" />
+##### Gołąb <img src="./obozy-mayhem-manual.assets/icons8-pigeon-100.png" alt="icons8-pigeon-100" />
 
 ```
 Kolejność:
@@ -548,7 +590,7 @@ Wymóg: 1 osoba
 Czas: 1:30
 ```
 
-##### Baran <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-ram-100.png" alt="icons8-ram-100" style="zoom:25%;" />
+##### Baran <img src="./obozy-mayhem-manual.assets/icons8-ram-100.png" alt="icons8-ram-100" />
 
 ```
 Kolejność:
@@ -561,7 +603,7 @@ Wymóg: 3 osoby
 Czas: 3:30
 ```
 
-##### Żuraw <img src="./Obozy%20Mayhem%20-%20Zasady%20gry.assets/icons8-crane-100.png" alt="icons8-crane-100" style="zoom:25%;" />
+##### Żuraw <img src="./obozy-mayhem-manual.assets/icons8-crane-100.png" alt="icons8-crane-100" />
 
 ```
 Kolejność:
@@ -582,9 +624,9 @@ Na początku rozgrywki każda drużyna ma **2–3 minuty** na omówienie taktyki
 
 ## Eliminacja i wskrzeszenie
 
-Gracz zostaje wyeliminowany w momencie utraty wszystkich bibuł życia i udaje się do **wspólnego miejsca wyeliminowanych graczy**. Gracz nie może wrócić do gry dopóki nie zostanie wskrzeszony.
+Gracz zostaje [wyeliminowany](glossary:eliminacja) w momencie utraty wszystkich [bibuł](glossary:bibuła) życia i udaje się do **wspólnego miejsca wyeliminowanych graczy**. Gracz nie może wrócić do gry dopóki nie zostanie [wskrzeszony](glossary:wskrzeszenie).
 
-Wskrzeszenie jest możliwe wyłącznie przy użyciu **Zwoju Zmartwychwstania** lub umiejętności **Podniesienie** klasy Medyka.
+[Wskrzeszenie](glossary:wskrzeszenie) jest możliwe wyłącznie przy użyciu **Zwoju Zmartwychwstania** lub umiejętności **Podniesienie** klasy Medyka.
 
 Jeśli w danym momencie **wszystkie drużyny oprócz jednej** znajdują się w miejscu wyeliminowanych graczy, gra kończy się natychmiast.
 

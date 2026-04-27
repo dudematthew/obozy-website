@@ -3,6 +3,10 @@
     {
       "id": "mayhem",
       "source": "src/assets/game-manuals/obozy-mayhem-manual.md"
+    },
+    {
+      "id": "classic",
+      "source": "src/assets/game-manuals/obozy-classic-manual.md"
     }
   ]
 }

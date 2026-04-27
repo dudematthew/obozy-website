@@ -1,6 +1,6 @@
 <script>
 import 'remark-github-blockquote-alert/alert.css'
-import { getManual } from '@/data/manual-ir/registry'
+import { getManual, manuals as allManuals } from '@/data/manual-ir/registry'
 import { updateMetaTags } from '@/lib/metaUtils.js'
 import { SnapDeck } from '@/lib/manual-reader/snapDeck'
 
@@ -14,12 +14,19 @@ export default {
       activePart: 0,
       activeSlide: 0,
       activeSub: 0,
-      subDir: 1, // last H3 transition direction: +1 forward, -1 back
+      subDir: 1,        // last H3 transition direction: +1 forward, -1 back
+      subMemory: {},    // { [tileId]: activeSub } — remembers last sub per tile
+      subAnimated: false, // false on first entry; true only after explicit navigation
       searchQuery: '',
       searchOpen: false,
       glossOpen: false,
       glossTerm: '',
       glossText: '',
+      glossLink: null,
+      tagOpen: false,
+      tagLabel: '',
+      tagDesc: '',
+      tagIcon: 'label',
       deck: null,
       _swipe: null
     }
@@ -31,20 +38,41 @@ export default {
     part() {
       return this.ir?.parts?.[this.activePart] || null
     },
-    /** Slides: cover (optional) + each tile (full screen). */
+    /** Slides: cover (optional) + each tile + optional finale. Always mirrors slides.length. */
     verticalSlideCount() {
-      if (!this.part) return 0
-      let n = 0
-      if (this.part.coverHtml) n += 1
-      n += (this.part.tiles || []).length
-      return n
+      return this.slides.length
     },
     slides() {
       if (!this.part) return []
       const out = []
       if (this.part.coverHtml) out.push({ kind: 'cover', id: `${this.part.id}-cover` })
         ; (this.part.tiles || []).forEach((t) => out.push({ kind: 'tile', id: t.id, tile: t }))
+      // Last-slide cap: finale for the final part, part-end for every other part
+      if (this.activePart === this.partsCount - 1) {
+        out.push({ kind: 'finale', id: '__finale__' })
+      } else {
+        out.push({ kind: 'part-end', id: '__part-end__' })
+      }
       return out
+    },
+    nextPart() {
+      if (!this.ir || this.activePart >= this.partsCount - 1) return null
+      return this.ir.parts[this.activePart + 1] || null
+    },
+    relatedManuals() {
+      if (!this.ir) return []
+      const suggestedIds = this.ir.meta?.related
+      const all = Object.values(allManuals || {})
+      if (suggestedIds && suggestedIds.length) {
+        return suggestedIds
+          .map((id) => allManuals[id])
+          .filter(Boolean)
+          .map((m) => ({ id: m.id, title: m.meta?.title || m.id, logoUrl: m.meta?.logoUrl || null }))
+      }
+      // Default: all other manuals
+      return all
+        .filter((m) => m.id !== this.ir?.id)
+        .map((m) => ({ id: m.id, title: m.meta?.title || m.id, logoUrl: m.meta?.logoUrl || null }))
     },
     current() {
       return this.slides[this.activeSlide] || null
@@ -82,11 +110,21 @@ export default {
       if (n < 2) return 0
       return (this.activeSlide / (n - 1)) * 100
     },
+    partsCount() {
+      return this.ir?.parts?.length || 0
+    },
+    canPrevPart() {
+      return this.activePart > 0
+    },
+    canNextPart() {
+      return this.activePart < this.partsCount - 1
+    },
     canPrevTile() {
-      return this.activeSlide > 0
+      return this.activeSlide > 0 || this.canPrevPart
     },
     canNextTile() {
-      return this.verticalSlideCount > 0 && this.activeSlide < this.verticalSlideCount - 1
+      const atLastSlide = this.verticalSlideCount > 0 && this.activeSlide >= this.verticalSlideCount - 1
+      return (!atLastSlide) || this.canNextPart
     },
     remainingTiles() {
       if (!this.verticalSlideCount) return 0
@@ -118,11 +156,16 @@ export default {
       this.activeSlide = 0
       this.activeSub = 0
       this.subDir = 1
+      this.subAnimated = false
+      this.subMemory = {}
       this.$nextTick(() => this.rebuildDeck())
     },
     activeSlide() {
-      this.activeSub = 0
+      const slide = this.slides[this.activeSlide]
+      const tileId = slide?.tile?.id
+      this.activeSub = (tileId && this.subMemory[tileId] != null) ? this.subMemory[tileId] : 0
       this.subDir = 1
+      this.subAnimated = false
     },
     '$route.params.manualId'() {
       this.loadData()
@@ -135,6 +178,7 @@ export default {
   beforeUnmount() {
     this.destroyDeck()
     window.removeEventListener('keydown', this.onGlobalKey)
+    clearTimeout(this._scrollTimer)
   },
   methods: {
     loadData() {
@@ -188,16 +232,73 @@ export default {
       })
     },
     onContentClick(e) {
-      const el = e.target.closest ? e.target.closest('.manual-glossary-term') : null
-      if (!el) return
-      const slug = el.dataset && el.dataset.glossary
-      if (!slug) return
-      const map = (this.ir && this.ir.meta && this.ir.meta.glossary) || {}
-      const g = map[slug]
-      const label = (el.textContent || '').trim() || slug
-      this.glossTerm = label
-      this.glossText = (typeof g === 'string' && g) ? g : `Brak definicji w słowniku: ${slug}`
-      this.glossOpen = true
+      // --- paragraph / inline tag badges ---
+      const tagEl = e.target.closest
+        ? (e.target.closest('.manual-tag-badge') || e.target.closest('.manual-tag-inline'))
+        : null
+      if (tagEl) {
+        const tagKey = tagEl.dataset && tagEl.dataset.tag
+        if (!tagKey) return
+        const tags = (this.ir && this.ir.meta && this.ir.meta.tags) || {}
+        const tagDef = tags[tagKey]
+        if (!tagDef) return
+        this.tagLabel = tagDef.label || tagKey
+        this.tagDesc = tagDef.description || ''
+        this.tagIcon = tagDef.icon || 'label'
+        this.tagOpen = true
+        return
+      }
+      // --- glossary terms ---
+      const glossEl = e.target.closest ? e.target.closest('.manual-glossary-term') : null
+      if (glossEl) {
+        const slug = glossEl.dataset && glossEl.dataset.glossary
+        if (!slug) return
+        const map = (this.ir && this.ir.meta && this.ir.meta.glossary) || {}
+        const entry = map[slug]
+        const label = (glossEl.textContent || '').trim() || slug
+        this.glossTerm = label
+        const def = entry && typeof entry === 'object' ? entry.definition : entry
+        this.glossText = (typeof def === 'string' && def) ? def : `Brak definicji w słowniku: ${slug}`
+        this.glossLink = (entry && typeof entry === 'object' && entry.link) ? entry.link : null
+        this.glossOpen = true
+        return
+      }
+      // --- in-document reference links ---
+      const refEl = e.target.closest ? e.target.closest('.manual-ref-link') : null
+      if (refEl) {
+        e.preventDefault()
+        const href = refEl.getAttribute('href') || ''
+        const slug = href.replace(/^#/, '')
+        if (!slug || !this.ir) return
+        const entry = this.ir.linkIndex && this.ir.linkIndex[slug]
+        if (!entry) return
+        const targetPart = entry.part ?? 0
+        const targetSlide = (entry.tile ?? 0) + ((this.ir.parts[targetPart]?.coverHtml) ? 1 : 0)
+        this.activePart = targetPart
+        this.$nextTick(() => {
+          this.activeSlide = targetSlide
+          if (entry.subsection != null) {
+            this.$nextTick(() => this.goToSub(entry.subsection))
+          }
+        })
+      }
+    },
+    jumpToGlossLink() {
+      const slug = this.glossLink
+      if (!slug || !this.ir) return
+      this.glossOpen = false
+      const entry = this.ir.linkIndex && this.ir.linkIndex[slug]
+      if (!entry) return
+      const targetPart = entry.part ?? 0
+      const coverOffset = this.ir.parts[targetPart]?.coverHtml ? 1 : 0
+      const targetSlide = (entry.tile ?? 0) + coverOffset
+      this.activePart = targetPart
+      this.$nextTick(() => {
+        this.activeSlide = targetSlide
+        if (entry.subsection != null) {
+          this.$nextTick(() => this.goToSub(entry.subsection))
+        }
+      })
     },
     openSearch() {
       this.searchOpen = true
@@ -217,8 +318,23 @@ export default {
         })
       })
     },
-    /** For users without a mouse wheel — navbar + SnapDeck throttling. */
+    /** For users without a mouse wheel. Handles cross-part navigation:
+     *  pressing ▲ on the first slide of a part goes to the last slide of the
+     *  previous part, and ▼ on the last slide advances to the next part. */
     stepTile(dir) {
+      const atFirst = this.activeSlide === 0
+      const atLast = this.activeSlide >= this.verticalSlideCount - 1
+      if (dir < 0 && atFirst && this.canPrevPart) {
+        this.activePart -= 1
+        this.$nextTick(() => {
+          this.activeSlide = this.verticalSlideCount - 1
+        })
+        return
+      }
+      if (dir > 0 && atLast && this.canNextPart) {
+        this.activePart += 1
+        return
+      }
       if (this.deck) {
         this.deck.nudge(dir)
         return
@@ -236,7 +352,15 @@ export default {
     /** Subsection navigation (H3). Tracks direction for the slide animation
      *  and aligns the new sub-card's top with the viewport so the user lands
      *  at the start of the new subsection — without scrolling all the way back
-     *  up to the H2 title. */
+     *  up to the H2 title.
+     *
+     *  Why setTimeout(200) and not $nextTick + rAF:
+     *  <Transition mode="out-in"> leaves the OLD article in DOM for its full
+     *  leave duration (180ms) before mounting the new one. At $nextTick the
+     *  old article is still animating; measuring it gives a stale / wrong
+     *  position. 200ms (180ms transition + 20ms budget) guarantees the new
+     *  article is mounted and laid out before we read its geometry.
+     */
     goToSub(i) {
       const subs = this.currentSubs
       if (!subs.length) return
@@ -244,7 +368,11 @@ export default {
       if (next === this.activeSub) return
       this.subDir = next > this.activeSub ? 1 : -1
       this.activeSub = next
-      this.$nextTick(this.scrollToActiveSubTop)
+      this.subAnimated = true
+      const tileId = this.current?.tile?.id
+      if (tileId) this.subMemory = { ...this.subMemory, [tileId]: next }
+      clearTimeout(this._scrollTimer)
+      this._scrollTimer = setTimeout(this.scrollToActiveSubTop, 200)
     },
     /**
      * Scrolls the slide-scroll container so the active H3 card sits
@@ -280,25 +408,29 @@ export default {
      *     committed Vue update even when the browser hasn't painted yet
      *     (DevTools throttling, slow CPU, complex tile content).
      */
+    /**
+     * Scroll so the H3 card's top edge aligns with the scroll container's
+     * top edge.  Tune SUB_TOP_OFFSET_PX (pixels below the top edge) to taste
+     * — 0 = flush, 8 = a little breathing room.
+     *
+     * Called after a 200ms delay from goToSub so the Transition out-in has
+     * finished and the NEW article is fully mounted.
+     */
     scrollToActiveSubTop() {
       const scrollEl = this.$refs.slideScroll
       if (!scrollEl) return
-
-      const SUB_TOP_OFFSET = 16
+      const SUB_TOP_OFFSET_PX = 8
       const reduce = !!(window.matchMedia &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-
-      requestAnimationFrame(() => {
-        const article = scrollEl.querySelector('.manual-h3-card')
-        if (!article) return
-        const aRect = article.getBoundingClientRect()
-        const sRect = scrollEl.getBoundingClientRect()
-        const desired = scrollEl.scrollTop + (aRect.top - sRect.top) - SUB_TOP_OFFSET
-        const max = Math.max(0, scrollEl.scrollHeight - scrollEl.clientHeight)
-        const target = Math.min(max, Math.max(0, Math.round(desired)))
-        if (Math.abs(target - scrollEl.scrollTop) < 1) return
-        scrollEl.scrollTo({ top: target, behavior: reduce ? 'auto' : 'smooth' })
-      })
+      const article = scrollEl.querySelector('.manual-h3-card')
+      if (!article) return
+      const aRect = article.getBoundingClientRect()
+      const sRect = scrollEl.getBoundingClientRect()
+      const desired = scrollEl.scrollTop + (aRect.top - sRect.top) - SUB_TOP_OFFSET_PX
+      const max = Math.max(0, scrollEl.scrollHeight - scrollEl.clientHeight)
+      const target = Math.min(max, Math.max(0, Math.round(desired)))
+      if (Math.abs(target - scrollEl.scrollTop) < 1) return
+      scrollEl.scrollTo({ top: target, behavior: reduce ? 'auto' : 'smooth' })
     },
     stepSub(dir) {
       this.goToSub(this.activeSub + dir)
@@ -335,6 +467,34 @@ export default {
     },
     onSwipeCancel() {
       this._swipe = null
+    },
+    /** Progress bar drag/click: converts pointer position to slide index. */
+    onProgressDown(e) {
+      e.preventDefault()
+      const bar = this.$refs.progressBar
+      if (!bar) return
+      this._jumpToSlideByY(e.clientY, bar)
+      const onMove = (ev) => {
+        this._jumpToSlideByY(ev.clientY, bar)
+      }
+      const onUp = () => {
+        window.removeEventListener('pointermove', onMove)
+        window.removeEventListener('pointerup', onUp)
+      }
+      window.addEventListener('pointermove', onMove)
+      window.addEventListener('pointerup', onUp)
+    },
+    _jumpToSlideByY(clientY, bar) {
+      const rect = bar.getBoundingClientRect()
+      const ratio = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height))
+      const idx = Math.round(ratio * (this.verticalSlideCount - 1))
+      if (idx !== this.activeSlide) {
+        this.activeSlide = idx
+        this.$nextTick(() => {
+          const sc = this.$refs.slideScroll
+          if (sc) sc.scrollTop = 0
+        })
+      }
     },
     /** Global keyboard: ←/→ navigate H3 inside a tile (↑/↓ are SnapDeck's). */
     onGlobalKey(e) {
@@ -388,6 +548,17 @@ export default {
         </div>
       </div>
       <div class="manual-reader-nav__zone manual-reader-nav__zone--right">
+        <div v-if="partsCount > 1" class="manual-part-dots" aria-label="Części instrukcji">
+          <button
+            v-for="(p, i) in ir.parts"
+            :key="p.id"
+            type="button"
+            class="manual-part-dot"
+            :class="{ 'is-active': i === activePart }"
+            :aria-label="p.title || `Część ${i + 1}`"
+            @click="activePart = i"
+          />
+        </div>
         <button class="btn-flat manual-reader-nav__icon" @click="openSearch" aria-label="Szukaj">
           <i class="material-icons">search</i>
         </button>
@@ -398,12 +569,22 @@ export default {
     </div>
 
     <div v-if="part" class="manual-reader__stage" ref="deckRoot">
-      <div v-if="verticalSlideCount > 1" class="manual-reader__progress"
-        :aria-label="`Pozostało ${remainingTiles} ekranów`">
+      <div
+        v-if="verticalSlideCount > 1"
+        ref="progressBar"
+        class="manual-reader__progress"
+        :aria-label="`Postęp czytania, ekran ${activeSlide + 1} z ${verticalSlideCount}`"
+        role="slider"
+        :aria-valuenow="activeSlide"
+        :aria-valuemin="0"
+        :aria-valuemax="verticalSlideCount - 1"
+        @pointerdown="onProgressDown"
+      >
         <div class="manual-reader__progress-track" aria-hidden="true" />
         <div class="manual-reader__progress-fill" :style="{ height: vProgress + '%' }" aria-hidden="true" />
         <div class="manual-reader__progress-thumb" :style="{ top: vProgress + '%' }">
-          <i v-if="remainingTiles === 0" class="material-icons" aria-hidden="true">check</i>
+          <i v-if="current && current.kind === 'finale'" class="material-icons" aria-hidden="true">check</i>
+          <i v-else-if="current && current.kind === 'part-end'" class="material-icons" aria-hidden="true">arrow_forward</i>
           <span v-else>{{ remainingTiles }}</span>
         </div>
       </div>
@@ -417,6 +598,7 @@ export default {
           @touchcancel.passive="onSwipeCancel">
           <template v-if="current && current.kind === 'cover'">
             <div class="manual-cover">
+              <h1 class="manual-cover__title">{{ part.title || documentTitle }}</h1>
               <img
                 v-if="ir.meta.logoUrl"
                 class="manual-cover__logo"
@@ -428,20 +610,93 @@ export default {
                 class="material-icons manual-cover__logo manual-cover__logo--fallback"
                 aria-hidden="true"
               >menu_book</i>
-              <h1 class="manual-cover__title">{{ part.title || documentTitle }}</h1>
               <div v-if="part.coverHtml" class="manual-cover__body manual-body" v-html="part.coverHtml" />
+              <div class="manual-cover__hint" aria-hidden="true">
+                <!-- touch devices -->
+                <span class="manual-cover__hint--touch">
+                  <i class="material-icons">swipe_down</i>
+                  <span>przeciągnij w dół, by zacząć</span>
+                </span>
+                <!-- mouse / keyboard -->
+                <span class="manual-cover__hint--mouse">
+                  <i class="material-icons">keyboard_arrow_down</i>
+                  <span>przewiń w dół, by zacząć</span>
+                </span>
+              </div>
+            </div>
+          </template>
+          <template v-else-if="current && current.kind === 'finale'">
+            <div class="manual-finale">
+              <i class="material-icons manual-finale__icon" aria-hidden="true">check_circle</i>
+              <h2 class="manual-finale__title">Koniec instrukcji!</h2>
+              <p class="manual-finale__sub">Znasz już zasady. Czas na grę.</p>
+              <div v-if="relatedManuals.length" class="manual-finale__related">
+                <p class="manual-finale__related-label">Inne instrukcje</p>
+                <router-link
+                  v-for="m in relatedManuals"
+                  :key="m.id"
+                  :to="`/instrukcja/${m.id}`"
+                  class="manual-finale__related-card"
+                >
+                  <img v-if="m.logoUrl" :src="m.logoUrl" class="manual-finale__related-logo" width="36" height="36" alt="" />
+                  <i v-else class="material-icons manual-finale__related-logo--fallback" aria-hidden="true">menu_book</i>
+                  <span>{{ m.title }}</span>
+                  <i class="material-icons" aria-hidden="true">chevron_right</i>
+                </router-link>
+              </div>
+            </div>
+          </template>
+          <template v-else-if="current && current.kind === 'part-end'">
+            <div class="manual-part-end">
+              <i class="material-icons manual-part-end__icon" aria-hidden="true">flag</i>
+              <p class="manual-part-end__label">Część {{ activePart + 1 }} z {{ partsCount }}</p>
+              <h2 class="manual-part-end__title">{{ part.title }}</h2>
+              <p class="manual-part-end__sub">Ukończono tę część. Możesz przejść dalej.</p>
+              <button class="manual-part-end__cta" @click="stepTile(1)">
+                <span class="manual-part-end__cta-label">Następna część</span>
+                <span class="manual-part-end__cta-title">{{ nextPart && nextPart.title }}</span>
+                <i class="material-icons" aria-hidden="true">arrow_forward</i>
+              </button>
+              <div v-if="relatedManuals.length" class="manual-part-end__related">
+                <p class="manual-part-end__related-label">Inne instrukcje</p>
+                <router-link
+                  v-for="m in relatedManuals"
+                  :key="m.id"
+                  :to="`/instrukcja/${m.id}`"
+                  class="manual-finale__related-card"
+                >
+                  <img v-if="m.logoUrl" :src="m.logoUrl" class="manual-finale__related-logo" width="36" height="36" alt="" />
+                  <i v-else class="material-icons manual-finale__related-logo--fallback" aria-hidden="true">menu_book</i>
+                  <span>{{ m.title }}</span>
+                  <i class="material-icons" aria-hidden="true">chevron_right</i>
+                </router-link>
+              </div>
             </div>
           </template>
           <template v-else-if="current && current.kind === 'tile'">
             <h2 class="manual-tile__h2">{{ current.tile.title }}</h2>
             <div v-if="current.tile.introHtml" v-html="current.tile.introHtml" class="manual-body" />
             <div v-if="current.tile.contentHtml" v-html="current.tile.contentHtml" class="manual-body" />
-            <Transition v-else :name="subDir > 0 ? 'h3-next' : 'h3-prev'" mode="out-in">
-              <article v-if="currentSub" :key="currentSub.id" class="manual-h3-card">
-                <h3 class="manual-tile__h3">{{ currentSub.title }}</h3>
-                <div v-html="currentSub.html" class="manual-body" />
-              </article>
-            </Transition>
+            <div v-else class="manual-h3-wrap">
+              <span
+                v-if="currentSubs.length > 1"
+                class="manual-h3-edge manual-h3-edge--prev"
+                :class="{ 'is-hidden': !canPrevSub }"
+                aria-hidden="true"
+              ><i class="material-icons">chevron_left</i></span>
+              <Transition :name="subAnimated ? (subDir > 0 ? 'h3-next' : 'h3-prev') : ''" mode="out-in">
+                <article v-if="currentSub" :key="currentSub.id" class="manual-h3-card">
+                  <h3 class="manual-tile__h3">{{ currentSub.title }}</h3>
+                  <div v-html="currentSub.html" class="manual-body" />
+                </article>
+              </Transition>
+              <span
+                v-if="currentSubs.length > 1"
+                class="manual-h3-edge manual-h3-edge--next"
+                :class="{ 'is-hidden': !canNextSub }"
+                aria-hidden="true"
+              ><i class="material-icons">chevron_right</i></span>
+            </div>
           </template>
         </div>
       </div>
@@ -568,6 +823,44 @@ export default {
           </button>
         </div>
         <p class="manual-gloss-text">{{ glossText }}</p>
+        <button
+          v-if="glossLink"
+          type="button"
+          class="manual-gloss-jump"
+          @click="jumpToGlossLink"
+        >
+          <i class="material-icons">north_east</i>
+          Przejdź do sekcji
+        </button>
+      </div>
+    </div>
+
+    <div
+      v-show="tagOpen"
+      class="manual-gloss-backdrop"
+      role="dialog"
+      aria-modal="true"
+      :aria-label="tagLabel || 'Informacja'"
+      @click.self="tagOpen = false"
+    >
+      <div class="manual-gloss-card manual-tag-card">
+        <div class="manual-gloss-top">
+          <div class="manual-gloss-heading">
+            <span class="manual-gloss-label manual-tag-card__label">
+              <i class="material-icons" aria-hidden="true">{{ tagIcon }}</i>
+              {{ tagLabel }}
+            </span>
+          </div>
+          <button
+            type="button"
+            class="manual-gloss-close"
+            aria-label="Zamknij"
+            @click="tagOpen = false"
+          >
+            <i class="material-icons">close</i>
+          </button>
+        </div>
+        <p class="manual-gloss-text">{{ tagDesc }}</p>
       </div>
     </div>
   </div>
@@ -623,7 +916,7 @@ $reader-font: 'Lato', sans-serif;
   display: grid;
   grid-template-columns: 1fr minmax(0, auto) 1fr;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 16px;
   gap: 12px;
 }
 
@@ -728,6 +1021,30 @@ $reader-font: 'Lato', sans-serif;
   color: #37474f;
 }
 
+.manual-part-dots {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 4px;
+}
+
+.manual-part-dot {
+  appearance: none;
+  border: 0;
+  background: rgba(0, 0, 0, 0.15);
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.manual-part-dot.is-active {
+  background: $reader-green-dark;
+  transform: scale(1.35);
+}
+
 .manual-reader-nav__icon .material-icons {
   color: $reader-green-dark;
 }
@@ -757,32 +1074,38 @@ $reader-font: 'Lato', sans-serif;
   width: 100%;
 }
 
-/* Vertical progress bar: faint track + green fill + green thumb showing
-   remaining-tile count. Lives in the right margin of the stage so it doesn't
-   overlap text (slide-scroll keeps a 1.5rem right padding to clear the thumb). */
+/* Vertical progress bar — moved to the LEFT side so it doesn't conflict with
+   the browser's native scrollbar on the right. pointer-events: auto makes it
+   draggable; cursor: ns-resize signals vertical drag affordance. */
 .manual-reader__progress {
   position: absolute;
-  right: 4px;
-  top: 12px;
-  bottom: 12px;
+  /* -4px = tile left edge (8px) minus half bar width (12px), so the bar straddles
+     the tile border: half in the gutter, half inside the tile. */
+  left: -4px;
+  /* 20px inset keeps the thumb circle from overflowing the tile corners */
+  top: 20px;
+  bottom: 20px;
   width: 24px;
   z-index: 2;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: ns-resize;
+  touch-action: none;
+  border-radius: 8px 0 0 8px;
 }
 
 .manual-reader__progress-track {
   position: absolute;
-  right: 10px;
+  left: 10px;
   top: 0;
   bottom: 0;
   width: 4px;
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.12);
   border-radius: 2px;
 }
 
 .manual-reader__progress-fill {
   position: absolute;
-  right: 10px;
+  left: 10px;
   top: 0;
   width: 4px;
   background: $reader-green;
@@ -792,7 +1115,7 @@ $reader-font: 'Lato', sans-serif;
 
 .manual-reader__progress-thumb {
   position: absolute;
-  right: 0;
+  left: 0;
   width: 24px;
   height: 24px;
   background: $reader-green;
@@ -832,9 +1155,9 @@ $reader-font: 'Lato', sans-serif;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  padding: 1.25rem 1.5rem 1.5rem 1.25rem;
+  padding: 1.25rem 1.25rem 1.5rem 1.5rem;
   background: #fff;
-  border-radius: 8px;
+  border-radius: 0 8px 8px 0;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   font-family: $reader-font;
   font-size: 16px;
@@ -844,11 +1167,9 @@ $reader-font: 'Lato', sans-serif;
   overflow-wrap: anywhere;
 }
 
-/* Cover tile: book-cover style — vertically centred logo + title + tagline,
-   on a soft green-to-white gradient. The slide-scroll above has overflow-y
-   already, so a tall cover scrolls naturally on small phones. */
+/* Cover tile: plain white — no gradient, clean book-cover look. */
 .cover-tile {
-  background: linear-gradient(180deg, #e8f5e9 0%, #f0f8e8 40%, #f8fcf8 70%, #ffffff 100%);
+  background: #ffffff;
 }
 
 .manual-cover {
@@ -858,29 +1179,31 @@ $reader-font: 'Lato', sans-serif;
   justify-content: center;
   text-align: center;
   min-height: 100%;
-  padding: 1.5rem 0 2rem;
-  gap: 1.5rem;
+  padding: 2rem 0 1rem;
+  gap: 1.25rem;
+  position: relative;
 }
 
+/* Logo sits between the title and body text. drop-shadow follows the
+   alpha channel of the image, so transparent-background icons don't
+   get a box-shaped halo — the shadow "drips" from the icon content only. */
 .manual-cover__logo {
   display: block;
-  width: 144px;
-  height: 144px;
+  width: 120px;
+  height: 120px;
   object-fit: contain;
-  border-radius: 18px;
   margin: 0;
-  background: #ffffff;
-  box-shadow: 0 12px 32px rgba(46, 125, 50, 0.22),
-    0 2px 6px rgba(0, 0, 0, 0.06);
+  filter: drop-shadow(0 6px 16px rgba(46, 125, 50, 0.28))
+          drop-shadow(0 1px 3px rgba(0, 0, 0, 0.12));
 }
 
 .manual-cover__logo--fallback {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(76, 175, 80, 0.12);
   color: $reader-green-dark;
-  font-size: 88px;
+  font-size: 96px;
+  filter: drop-shadow(0 4px 10px rgba(46, 125, 50, 0.22));
 }
 
 .manual-cover__title {
@@ -889,7 +1212,7 @@ $reader-font: 'Lato', sans-serif;
   font-weight: 900;
   line-height: 1.15;
   margin: 0;
-  color: $reader-green-dark;
+  color: #1a1a1a;
   letter-spacing: -0.01em;
   max-width: 100%;
   overflow-wrap: anywhere;
@@ -905,6 +1228,7 @@ $reader-font: 'Lato', sans-serif;
   font-size: 1rem;
   line-height: 1.5;
   margin: 0 0 0.75rem;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .manual-cover__body :deep(> p:first-of-type) {
@@ -921,6 +1245,242 @@ $reader-font: 'Lato', sans-serif;
 .manual-cover__body :deep(> p:first-of-type strong) {
   font-style: normal;
   font-weight: 700;
+}
+
+/* "Swipe down to start" UX hint — sits at the bottom of the cover,
+   pulses gently to draw attention without being distracting. */
+.manual-cover__hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: auto;
+  padding-top: 1rem;
+  animation: hint-pulse 2.4s ease-in-out infinite;
+}
+
+.manual-cover__hint--touch,
+.manual-cover__hint--mouse {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Show touch variant on coarse-pointer devices (phones/tablets),
+   mouse variant on fine-pointer devices (desktop). */
+.manual-cover__hint--mouse { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .manual-cover__hint--touch { display: none; }
+  .manual-cover__hint--mouse { display: flex; }
+}
+
+.manual-cover__hint .material-icons {
+  font-size: 22px;
+}
+
+@keyframes hint-pulse {
+  0%, 100% { opacity: 0.55; transform: translateY(0); }
+  50%       { opacity: 1;    transform: translateY(5px); }
+}
+
+/* End-of-guide completion screen */
+.manual-finale {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100%;
+  padding: 2rem 1rem;
+  gap: 1rem;
+}
+
+.manual-finale__icon {
+  font-size: 64px;
+  color: $reader-green;
+}
+
+.manual-finale__title {
+  font-family: $reader-font;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.manual-finale__sub {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.manual-finale__related {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 0.5rem;
+}
+
+.manual-finale__related-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(0, 0, 0, 0.35);
+  margin: 0 0 4px;
+}
+
+.manual-finale__related-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  text-decoration: none;
+  color: #263238;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.manual-finale__related-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.manual-finale__related-card span {
+  flex: 1 1 auto;
+  text-align: left;
+}
+
+.manual-finale__related-logo {
+  flex: 0 0 36px;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.manual-finale__related-logo--fallback {
+  flex: 0 0 auto;
+  font-size: 28px;
+  color: $reader-green-dark;
+}
+
+/* Chapter-end transition screen — shown at the end of every non-last part */
+.manual-part-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1rem;
+  height: 100%;
+  gap: 0.5rem;
+}
+
+.manual-part-end__icon {
+  font-size: 4rem;
+  color: $reader-green;
+  margin-bottom: 0.5rem;
+}
+
+.manual-part-end__label {
+  font-family: $reader-font;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $reader-green-dark;
+}
+
+.manual-part-end__title {
+  font-family: $reader-font;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin: 0.1rem 0 0.4rem;
+  line-height: 1.2;
+}
+
+.manual-part-end__sub {
+  font-family: $reader-font;
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 1.5rem;
+}
+
+.manual-part-end__cta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: $reader-green-dark;
+  border: 2px solid $reader-green;
+  border-radius: 12px;
+  padding: 13px 20px;
+  cursor: pointer;
+  text-align: left;
+  max-width: 320px;
+  width: 100%;
+  transition: background 0.15s ease, transform 0.1s ease;
+
+  .material-icons {
+    flex: 0 0 auto;
+    margin-left: auto;
+    color: $reader-green;
+  }
+
+  &:hover {
+    background: rgba(76, 175, 80, 0.06);
+  }
+
+  &:active {
+    background: rgba(76, 175, 80, 0.12);
+    transform: scale(0.98);
+  }
+}
+
+.manual-part-end__cta-label {
+  font-family: $reader-font;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  display: block;
+}
+
+.manual-part-end__cta-title {
+  font-family: $reader-font;
+  font-size: 1rem;
+  font-weight: 700;
+  display: block;
+  line-height: 1.3;
+}
+
+.manual-part-end__related {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 360px;
+}
+
+.manual-part-end__related-label {
+  font-family: $reader-font;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.35);
+  margin-bottom: 0.5rem;
 }
 
 .manual-tile__h2 {
@@ -962,16 +1522,96 @@ $reader-font: 'Lato', sans-serif;
   border-radius: 6px;
 }
 
-:deep(.manual-body a) {
+/* Internal reference links — green, solid underline */
+:deep(.manual-body a),
+:deep(.manual-body .manual-ref-link) {
   color: $reader-green-dark;
   text-decoration: underline;
+  text-underline-offset: 2px;
 }
+
+/* External links — blue */
+:deep(.manual-body .manual-ext-link) {
+  color: #1565c0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Glossary terms — green, dotted underline (already styled via span) */
 
 :deep(.manual-glossary-term) {
   text-decoration: underline;
   text-decoration-style: dotted;
   color: $reader-green-dark;
   cursor: pointer;
+}
+
+/* ── Tag badges (block-level) ─────────────────────────────────────────────── */
+:deep(.manual-tag-badge) {
+  float: right;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(76, 175, 80, 0.07);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-radius: 100px;
+  padding: 2px 8px 2px 4px;
+  margin: 0 0 6px 10px;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+
+  .manual-tag-badge__icon {
+    font-size: 13px;
+    line-height: 1;
+    color: $reader-green-dark;
+  }
+
+  .manual-tag-badge__label {
+    font-size: 0.67rem;
+    font-weight: 700;
+    color: $reader-green-dark;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  &:hover,
+  &:focus {
+    background: rgba(76, 175, 80, 0.15);
+    outline: none;
+  }
+}
+
+/* ── Tag inline spans ─────────────────────────────────────────────────────── */
+:deep(.manual-tag-inline) {
+  cursor: pointer;
+  color: $reader-green-dark;
+  border-bottom: 1px solid rgba(76, 175, 80, 0.5);
+  padding-bottom: 1px;
+  border-radius: 2px;
+  transition: background 0.12s ease;
+
+  &:hover {
+    background: rgba(76, 175, 80, 0.08);
+  }
+
+  .manual-tag-inline__icon {
+    font-size: 0.8em;
+    vertical-align: middle;
+    margin-left: 2px;
+    color: $reader-green;
+    line-height: 1;
+  }
+}
+
+/* Tag info modal — reuses .manual-gloss-card structure */
+.manual-tag-card .manual-tag-card__label {
+  color: $reader-green-dark;
+
+  .material-icons {
+    color: $reader-green-dark;
+  }
 }
 
 /* GitHub-style alerts — explicit light theme (package CSS relies on system color scheme) */
@@ -1197,13 +1837,13 @@ $reader-font: 'Lato', sans-serif;
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .manual-gloss-heading {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -1225,10 +1865,10 @@ $reader-font: 'Lato', sans-serif;
 
 .manual-gloss-term {
   font-family: $reader-font;
-  font-size: 1.15rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: #263238;
-  line-height: 1.3;
+  line-height: 1.25;
   overflow-wrap: anywhere;
 }
 
@@ -1258,6 +1898,33 @@ $reader-font: 'Lato', sans-serif;
   font-size: 20px;
 }
 
+.manual-gloss-jump {
+  appearance: none;
+  border: 1px solid rgba(46, 125, 50, 0.4);
+  background: rgba(76, 175, 80, 0.06);
+  color: $reader-green-dark;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  width: 100%;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+
+.manual-gloss-jump:hover {
+  background: rgba(76, 175, 80, 0.12);
+}
+
+.manual-gloss-jump .material-icons {
+  font-size: 18px;
+}
+
 .manual-gloss-text {
   font-family: $reader-font;
   margin: 0;
@@ -1268,11 +1935,54 @@ $reader-font: 'Lato', sans-serif;
   overflow-wrap: anywhere;
 }
 
+/* Wrapper that positions the edge-swipe hint arrows relative to the card. */
+.manual-h3-wrap {
+  position: relative;
+  margin: 1.25rem 0 0;
+}
+
+/* Edge arrow buttons: sit vertically centred at the left/right edge of the
+   card. Very low opacity so they hint without distracting from content.
+   `pointer-events: none` on is-hidden means the invisible arrows don't block
+   tap targets behind them. */
+.manual-h3-edge {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  border: none;
+  background: #ffffff;
+  border-radius: 999px;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  cursor: default;
+  opacity: 1;
+  transition: opacity 0.15s ease;
+  padding: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.manual-h3-edge--prev { left: -12px; }
+.manual-h3-edge--next { right: -12px; }
+
+.manual-h3-edge.is-hidden {
+  opacity: 0;
+}
+
+.manual-h3-edge .material-icons {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.3);
+}
+
 /* H3 subsection card: rendered one at a time, tile auto-sized to its content.
    Outlined with the reader green so the subsection reads as a distinct unit
    without tinting the reading surface. */
 .manual-h3-card {
-  margin: 1.25rem 0 0;
+  margin: 0;
   padding: 1rem;
   border-radius: 8px;
   background: #ffffff;
@@ -1285,12 +1995,106 @@ $reader-font: 'Lato', sans-serif;
   max-width: 100%;
 }
 
+/* H4/H5/H6 accordion: <details>/<summary> generated by rehypeAccordion */
+:deep(.manual-accordion) {
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-radius: 8px;
+  margin: 0.5rem 0;
+  overflow: hidden;
+}
+
+:deep(.manual-accordion + .manual-accordion) {
+  margin-top: 0.35rem;
+}
+
+/* Nested accordions (h5 inside h4, h6 inside h5): no box border — just a
+   subtle left indent so they don't create borders-within-borders. */
+:deep(.manual-accordion .manual-accordion) {
+  border: none;
+  border-radius: 0;
+  border-left: 2px solid rgba(0, 0, 0, 0.08);
+  margin: 0.2rem 0 0.2rem 8px;
+  overflow: visible;
+}
+
+:deep(.manual-accordion .manual-accordion[open]) {
+  border-left-color: rgba(76, 175, 80, 0.4);
+}
+
+:deep(.manual-accordion .manual-accordion > .manual-accordion__summary) {
+  font-size: 0.88rem;
+  font-weight: 600;
+  background: none;
+  padding: 7px 10px;
+}
+
+:deep(.manual-accordion .manual-accordion[open] > .manual-accordion__summary) {
+  background: none;
+  border-bottom: none;
+}
+
+:deep(.manual-accordion .manual-accordion > *:not(summary)) {
+  padding: 6px 10px 8px;
+  font-size: 0.88rem;
+}
+
+:deep(.manual-accordion[open]) {
+  border-color: rgba(76, 175, 80, 0.35);
+}
+
+:deep(.manual-accordion__summary) {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #263238;
+  padding: 10px 14px;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+  background: rgba(0, 0, 0, 0.02);
+  transition: background 0.12s ease;
+}
+
+:deep(.manual-accordion__summary:hover) {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+:deep(.manual-accordion[open] > .manual-accordion__summary) {
+  background: rgba(76, 175, 80, 0.07);
+  color: $reader-green-dark;
+  border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+/* Chevron indicator built with CSS so we don't depend on Material Icons
+   inside a :deep context. */
+:deep(.manual-accordion__summary::before) {
+  content: '▶';
+  font-size: 0.65rem;
+  color: rgba(0, 0, 0, 0.35);
+  transition: transform 0.18s ease;
+  flex: 0 0 auto;
+}
+
+:deep(.manual-accordion[open] > .manual-accordion__summary::before) {
+  transform: rotate(90deg);
+  color: $reader-green-dark;
+}
+
+:deep(.manual-accordion > *:not(summary)) {
+  padding: 10px 14px 12px;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
 /* Cursor + selection hints when subsections exist (desktop discoverability). */
-.manual-slide__scroll.has-subs .manual-h3-card {
+.manual-slide__scroll.has-subs .manual-h3-wrap {
   cursor: grab;
 }
 
-.manual-slide__scroll.has-subs .manual-h3-card:active {
+.manual-slide__scroll.has-subs .manual-h3-wrap:active {
   cursor: grabbing;
 }
 

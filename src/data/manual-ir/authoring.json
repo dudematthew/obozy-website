@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "id": "authoring",
+  "meta": {
+    "title": "Konwencje autorów",
+    "description": "Jak pisać instrukcje gier dla aplikacji Obozy – Mayhem.",
+    "logo": null,
+    "logoUrl": null,
+    "related": [],
+    "tags": {},
+    "glossary": {}
+  },
+  "parts": [
+    {
+      "id": "konwencje-autorów",
+      "title": "Konwencje autorów",
+      "coverHtml": "<p>Ten plik jest widoczny tylko w trybie deweloperskim (<code>npm run serve</code>). Opisuje cały dostępny zestaw rozszerzeń Markdown.</p>\n<p>Po każdej zmianie pliku <code>.md</code> uruchom <code>npm run build:manuals</code>, a następnie odśwież <code>npm run serve</code>.</p>",
+      "tiles": [
+        {
+          "id": "front-matter-yaml",
+          "title": "Front matter (YAML)",
+          "tagKey": null,
+          "introHtml": "<pre><code class=\"language-yaml\">---\r\ntitle: \"Obozy – Mayhem\"\r\ndescription: \"Krótki opis dla wyszukiwarek i OG tagów.\"\r\nlogo: \"obozy-mayhem-manual.assets/ikona.png\"\r\nrelated:\r\n  - classic\r\ntags:\r\n  original:\r\n    icon: \"content_copy\"\r\n    label: \"Znane z podstawowej gry\"\r\n    description: \"Ten fragment jest identyczny z grą Obozy – Gra Terenowa.\"\r\n  advanced:\r\n    icon: \"psychology\"\r\n    label: \"Dla zaawansowanych\"\r\n    description: \"Zaawansowana mechanika – przy pierwszej lekturze można pominąć.\"\r\n  note:\r\n    icon: \"info\"\r\n    label: \"\"\r\n    description: \"Dodatkowa informacja.\"\r\nglossary:\r\n  eliminacja:\r\n    display: \"Eliminacja gracza\"\r\n    definition: \"Pełny opis terminu widoczny w panelu słownika.\"\r\n    link: \"eliminacja-i-wskrzeszenie\"\r\n  zwoj:\r\n    display: \"Zwój\"\r\n    definition: \"Jednorazowy przedmiot z efektem.\"\r\n    link: \"zwoje\"\r\n---\n</code></pre>",
+          "subsections": [
+            {
+              "id": "pola-front-matter",
+              "title": "Pola front matter",
+              "tagKey": null,
+              "html": "<ul>\n<li><strong><code>title</code></strong> – tytuł wyświetlany w nagłówku czytnika i tytule karty przeglądarki.</li>\n<li><strong><code>description</code></strong> – tekst dla wyszukiwarek; trafia też do OG tagów generowanych przez <code>og-inject.js</code>.</li>\n<li><strong><code>logo</code></strong> – ścieżka względem folderu <code>.md</code>; obraz jest kopiowany do <code>public/manual-assets/&#x3C;id>/</code>.</li>\n<li><strong><code>related</code></strong> – lista <code>id</code> powiązanych instrukcji; wyświetlana na ekranach końcowych.</li>\n<li><strong><code>tags</code></strong> – słownik tagów dostępnych w tym pliku. Każdy tag: <code>icon</code> (Material Icons), <code>label</code> (tekst etykiety – pusty string = tylko ikona), <code>description</code> (treść w modalu). Klucze powinny być ASCII.</li>\n<li><strong><code>glossary</code></strong> – słownik terminów. Każdy wpis: <code>display</code> (pełna nazwa w modalu), <code>definition</code> (definicja), <code>link</code> (slug sekcji do której odsyła przycisk „przejdź\"). Klucze MUSZĄ być ASCII – bez polskich liter (np. <code>zwoj</code>, nie <code>zwój</code>).</li>\n</ul>"
+            }
+          ],
+          "contentHtml": null
+        },
+        {
+          "id": "struktura-nagłówków",
+          "title": "Struktura nagłówków",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<pre><code># Część I – Zasady\r\nTekst opcjonalnej okładki tej części.\r\n\r\n## Sekcja główna\r\nTreść sekcji (może zawierać H3 lub H4+).\r\n\r\n### Podsekcja\r\nTreść podsekcji (przewijana poziomo).\r\n\r\n#### Podnagłówek (akordeon)\r\nDomyślnie zwinięty. H5 i H6 też są akordeонами.\n</code></pre>\n<ul>\n<li><strong><code>#</code> (H1)</strong> – nowa część / rozdział. Tworzy oddzielny pionowy stos kafli. Tekst poniżej H1 (przed pierwszym H2) pojawia się jako strona tytułowa tej części.</li>\n<li><strong><code>##</code> (H2)</strong> – kafel (pełnoekranowy slajd). Użytkownik przewija w górę/dół.</li>\n<li><strong><code>###</code> (H3)</strong> – podsekcja wewnątrz kafla. Użytkownik przesuwa w lewo/prawo.</li>\n<li><strong><code>####</code>+ (H4/H5/H6)</strong> – akordeon – domyślnie zwinięty. Otwierając, treść jest widoczna.</li>\n</ul>\n<p>Nie wstawiaj ręcznej nawigacji ani <code>[TOC]</code> – robi to aplikacja.</p>"
+        },
+        {
+          "id": "tagi-sekcji",
+          "title": "Tagi sekcji",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Umieszczony bezpośrednio przed pierwszym akapitem sekcji komentarz przyczepia tag do tytułu tej sekcji (H2 lub H3). Kliknięcie otwiera modal z opisem.</p>\n<pre><code class=\"language-md\">### ^Sposób walki\r\n\r\n&#x3C;!-- manual:tag original -->\r\nTekst pierwszego akapitu tej sekcji...\n</code></pre>\n<p>Inline w tekście:</p>\n<pre><code class=\"language-md\">Użyj [Zwoju Zmartwychwstania](tag:advanced) żeby przywrócić gracza.\n</code></pre>\n<p>Jeśli <code>label</code> tagu jest pustym stringiem, wyświetlana jest sama ikona (pill bez tekstu).</p>"
+        },
+        {
+          "id": "glossary--linki-w-treści",
+          "title": "Glossary – linki w treści",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<pre><code class=\"language-md\">Gracz traci [bibuły](glossary:bibula) i zostaje wyeliminowany.\n</code></pre>\n<p>Klucz po <code>glossary:</code> musi być identyczny z kluczem w front matter (ASCII). Kliknięcie otwiera modal z definicją i przyciskiem „przejdź do sekcji\" jeśli <code>link</code> jest podany.</p>"
+        },
+        {
+          "id": "linki-wewnętrzne",
+          "title": "Linki wewnętrzne",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<pre><code class=\"language-md\">Szczegóły w sekcji [Sposób walki](#sposob-walki).\n</code></pre>\n<p>Slug po <code>#</code> powinien być slugiem tytułu H2/H3 (małe litery, myślniki zamiast spacji). Kliknięcie przewija do odpowiedniego kafla lub podsekcji.</p>"
+        },
+        {
+          "id": "linki-zewnętrzne",
+          "title": "Linki zewnętrzne",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<pre><code class=\"language-md\">Więcej na [stronie projektu](https://obozy.org.pl).\n</code></pre>\n<p>Otwierają się w nowej karcie z <code>rel=\"noopener noreferrer\"</code>. Wyświetlane na niebiesko.</p>"
+        },
+        {
+          "id": "akordeon-z-domyślnie-otwartym-stanem",
+          "title": "Akordeon z domyślnie otwartym stanem",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<pre><code class=\"language-md\">&#x3C;!-- manual:expand true -->\r\n#### Spis ołtarzy\n</code></pre>\n<p>Komentarz przed nagłówkiem H4+ sprawia, że akordeon jest domyślnie otwarty.</p>"
+        },
+        {
+          "id": "obrazki",
+          "title": "Obrazki",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Używaj ścieżek względnych względem folderu pliku <code>.md</code>:</p>\n<pre><code class=\"language-md\">![Opis](./obozy-mayhem-manual.assets/zdjecie.png)\n</code></pre>\n<p>Obraz w akapicie jest wyświetlany na pełną szerokość kolumny.</p>\n<p>Obraz inline w nagłówku lub tytule akordeonu (<code>&#x3C;img></code> wewnątrz <code>#####</code>) jest automatycznie skalowany do rozmiaru ikony (<code>1.4em</code>):</p>\n<pre><code class=\"language-md\">##### Sowa &#x3C;img src=\"./obozy-mayhem-manual.assets/icons8-owl-100.png\" alt=\"sowa\" />\n</code></pre>\n<p>Jeśli potrzebujesz kontrolować rozmiar obrazu w akapicie, użyj składni Typora:</p>\n<pre><code class=\"language-md\">![Opis](./assets/rysunek.png){ style=\"zoom:50%;\" }\n</code></pre>\n<p>lub inline HTML z atrybutem style:</p>\n<pre><code class=\"language-html\">&#x3C;img src=\"./assets/rysunek.png\" alt=\"Opis\" style=\"zoom:50%;\" />\n</code></pre>\n<p>Build konwertuje <code>zoom:50%</code> → <code>max-width:50%;height:auto</code>.</p>"
+        },
+        {
+          "id": "alerty-github-style",
+          "title": "Alerty (GitHub-style)",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<pre><code class=\"language-md\">> [!NOTE]\r\n> To jest notatka.\r\n\r\n> [!WARNING]\r\n> Ważne ostrzeżenie.\n</code></pre>\n<p>Obsługiwane typy: <code>NOTE</code>, <code>TIP</code>, <code>IMPORTANT</code>, <code>WARNING</code>, <code>CAUTION</code>.</p>"
+        },
+        {
+          "id": "rejestr-nowej-instrukcji",
+          "title": "Rejestr nowej instrukcji",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<ol>\n<li>Dodaj wpis w <code>manuals.config.json</code>:</li>\n</ol>\n<pre><code class=\"language-json\">{ \"id\": \"moja-gra\", \"source\": \"src/assets/game-manuals/moja-gra.md\" }\n</code></pre>\n<p>Dla instrukcji widocznej tylko lokalnie (np. ten plik):</p>\n<pre><code class=\"language-json\">{ \"id\": \"authoring\", \"source\": \"src/assets/game-manuals/authoring-guide.md\", \"devOnly\": true }\n</code></pre>\n<ol start=\"2\">\n<li>Dodaj import w <code>src/data/manual-ir/registry.js</code>:</li>\n</ol>\n<pre><code class=\"language-js\">import mojaGra from './moja-gra.json'\r\n// ...\r\nconst manuals = { mayhem, classic, mojaGra }\n</code></pre>\n<ol start=\"3\">\n<li><code>npm run build:manuals</code>.</li>\n</ol>\n<p>Aplikacja udostępni instrukcję pod adresem <strong><code>/instrukcja/moja-gra</code></strong>.</p>"
+        },
+        {
+          "id": "url-i-udostępnianie",
+          "title": "URL i udostępnianie",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Każda zmiana kafla aktualizuje URL: <code>/instrukcja/mayhem/sposob-walki</code>. Takie linki można bezpośrednio udostępniać – aplikacja przewinie do właściwego kafla przy wczytaniu.</p>"
+        }
+      ]
+    }
+  ],
+  "linkIndex": {
+    "pola-front-matter": {
+      "part": 0,
+      "tile": 0,
+      "subsection": 0
+    },
+    "front-matter-yaml": {
+      "part": 0,
+      "tile": 0
+    },
+    "struktura-nagłówków": {
+      "part": 0,
+      "tile": 1
+    },
+    "tagi-sekcji": {
+      "part": 0,
+      "tile": 2
+    },
+    "glossary--linki-w-treści": {
+      "part": 0,
+      "tile": 3
+    },
+    "linki-wewnętrzne": {
+      "part": 0,
+      "tile": 4
+    },
+    "linki-zewnętrzne": {
+      "part": 0,
+      "tile": 5
+    },
+    "akordeon-z-domyślnie-otwartym-stanem": {
+      "part": 0,
+      "tile": 6
+    },
+    "obrazki": {
+      "part": 0,
+      "tile": 7
+    },
+    "alerty-github-style": {
+      "part": 0,
+      "tile": 8
+    },
+    "rejestr-nowej-instrukcji": {
+      "part": 0,
+      "tile": 9
+    },
+    "url-i-udostępnianie": {
+      "part": 0,
+      "tile": 10
+    }
+  }
+}

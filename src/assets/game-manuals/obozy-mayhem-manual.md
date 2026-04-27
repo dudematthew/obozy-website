@@ -11,32 +11,45 @@ tags:
     icon: "psychology"
     label: "Dla zaawansowanych"
     description: "Ta sekcja opisuje zaawansowaną mechanikę. Przy pierwszej lekturze można ją pominąć."
+  note:
+    icon: "info"
+    label: ""
+    description: "Dodatkowa informacja pomocna podczas gry."
 glossary:
   eliminacja:
+    display: "Eliminacja gracza"
     definition: "Wyeliminowanie gracza z gry poprzez zerwanie ostatniej bibuły. Wyeliminowany gracz udaje się do miejsca wyeliminowanych i sygnalizuje stan skrzyżowanymi rękami."
     link: "eliminacja-i-wskrzeszenie"
   wskrzeszenie:
+    display: "Wskrzeszenie gracza"
     definition: "Przywrócenie wyeliminowanego gracza do gry. Możliwe wyłącznie Zwojem Zmartwychwstania lub umiejętnością Podniesienie klasy Medyka."
     link: "eliminacja-i-wskrzeszenie"
-  zwój:
+  zwoj:
+    display: "Zwój"
     definition: "Kartka papieru zawinięta w sznurek żeby nie było widać zawartości. Jednorazowy przedmiot z unikalnym efektem – aktywuje się przez wypowiedzenie nazwy i dotknięcie celu."
     link: "zwoje"
-  ołtarz:
+  oltarz:
+    display: "Ołtarz"
     definition: "Kluczowa strefa na terenie gry, z której można odbierać nagrody punktowe, klasy i zwoje. Ołtarz przejmuje się przez przebywanie w jego strefie przez określony czas."
     link: "ołtarze"
   nagroda:
+    display: "Nagroda z ołtarza"
     definition: "Przedmiot, który można zdobyć przez przejęcie ołtarza: klasa, zwoje lub punkty. Drużyna zawsze odbiera najwyższą dostępną nagrodę."
     link: "nagrody-ołtarza"
-  bibuła:
+  bibula:
+    display: "Bibuła"
     definition: "Kolorowa tasiemka wiązana na nadgarstkach gracza, reprezentująca jeden punkt życia. Zerwanie ostatniej bibuły oznacza eliminację gracza."
     link: "sposób-walki"
   klasa:
+    display: "Klasa gracza"
     definition: "Zestaw atrybutów przyznawanych graczowi na początku gry lub jako nagroda z ołtarza. Klasa może dawać dodatkowe punkty życia lub specjalną umiejętność."
     link: "klasy"
-  zamrożenie:
+  zamrozenie:
+    display: "Stan zamrożenia"
     definition: "Stan unieruchomienia wywołany przez Magiczną Laskę lub Zwój Zamrożenie. Zamrożony gracz nie może się poruszać ani działać dopóki laska go dotyka."
     link: "mechanika-zamrażania"
   przejmowanie:
+    display: "Przejmowanie ołtarza"
     definition: "Proces zajmowania ołtarza – drużyna wpisuje się na kartę i przebywa w strefie przez wyznaczony czas. Przejęcie kończy się sukcesem jeśli nikt ze strefy nie wyjdzie przed czasem zakończenia."
     link: "przejmowanie-ołtarza"
 ---
@@ -47,7 +60,7 @@ Obozy - Mayhem to alternatywna wersja gry terenowej - Obozy, zaprojektowana dla 
 
 ## Cel gry
 
-***Mayhem*** to gra dla od 9 do 18 osób. Celem gry jest zdobycie jak największej liczby **punktów** przed zakończeniem rozgrywki. Punkty można zdobywać poprzez realizowanie [nagród](glossary:nagroda) [ołtarzy](glossary:ołtarz) oraz [eliminację](glossary:eliminacja) przeciwników.
+***Mayhem*** to gra dla od 9 do 18 osób. Celem gry jest zdobycie jak największej liczby **punktów** przed zakończeniem rozgrywki. Punkty można zdobywać poprzez realizowanie [nagród](glossary:nagroda) [ołtarzy](glossary:oltarz) oraz [eliminację](glossary:eliminacja) przeciwników.
 
 Gra kończy się w momencie, gdy przy życiu pozostanie tylko jedna drużyna, upłynie **30 minut** od rozpoczęcia rozgrywki, lub wszyscy gracze zostaną wyeliminowani. Po zakończeniu gry następuje podliczenie punktów - ostatnia drużyna w grze nie wygrywa jej automatycznie.
 
@@ -69,17 +82,17 @@ Za każde zabójstwo drużyna otrzymuje **3 punkty** - przyznawane tej drużynie
 ## Sposób walki
 
 <!-- manual:tag original -->
-Gracze otrzymują kolorowe [bibuły](glossary:bibuła) wiązane na nadgarstkach, reprezentujące ich **punkty życia**. Aby unieszkodliwić przeciwnika, należy zerwać jego bibułę.
+Gracze otrzymują kolorowe [bibuły](glossary:bibula) wiązane na nadgarstkach, reprezentujące ich **punkty życia**. Aby unieszkodliwić przeciwnika, należy zerwać jego bibułę.
 
 > [!NOTE]
 >
 > *Gracz który zerwał bibułę krzyczy **zerwałem bibułę na danej ręce**. Gracz który wie że zerwana mu bibuła była ostatnia krzyczy **odpadam**. Krzyczenie "nie żyjesz" nie jest wskazane ponieważ gracz może mieć wiele bibuł.*
 
-Gracz pozbawiony wszystkich bibuł zostaje **wyeliminowany** - upuszcza wówczas wszystkie posiadane [zwoje](glossary:zwój), po czym udaje się do miejsca wyeliminowanych graczy. Wyeliminowani gracze podróżujący po polu gry sygnalizują swój stan **trzymając skrzyżowane ręce** i nie mogą wykonywać żadnych działań mających wpływ na rozgrywkę. Wyeliminowanych graczy nie można śledzić.
+Gracz pozbawiony wszystkich bibuł zostaje **wyeliminowany** - upuszcza wówczas wszystkie posiadane [zwoje](glossary:zwoj), po czym udaje się do miejsca wyeliminowanych graczy. Wyeliminowani gracze podróżujący po polu gry sygnalizują swój stan **trzymając skrzyżowane ręce** i nie mogą wykonywać żadnych działań mających wpływ na rozgrywkę. Wyeliminowanych graczy nie można śledzić.
 
 ## Klasy
 
-[Klasa](glossary:klasa) to zestaw atrybutów przyznawanych graczowi który ją posiada. Wyboru klasy **nie można zmienić** w trakcie gry inaczej niż zastępując ją klasą zdobytą z [ołtarza](glossary:ołtarz).
+[Klasa](glossary:klasa) to zestaw atrybutów przyznawanych graczowi który ją posiada. Wyboru klasy **nie można zmienić** w trakcie gry inaczej niż zastępując ją klasą zdobytą z [ołtarza](glossary:oltarz).
 
 Niektóre klasy posiadają umiejętność. Każda umiejętność może być użyta maksymalnie raz na odnowienie. **Umiejętność klasy odnawia się w momencie odebrania dowolnej nagrody z dowolnego ołtarza.** Gracz musi stać na ołtarzu w momencie odebrania nagrody.
 
@@ -149,7 +162,7 @@ Poniżej znajdują się szczegółowe informacje o Magicznej Laski i jej odmian.
 ### Magiczna Laska
 
 <!-- manual:tag original -->
-**Magiczna Laska** to przedmiot, który dotykając gracza wprowadza go w **[stan zamrożenia](glossary:zamrożenie)**. Zamrożenie trwa tak długo, jak długo Laska dotyka gracza. Jest najbardziej skomplikowanym przedmiotem w grze - każdy gracz musi dokładnie rozumieć zasady jej działania.
+**Magiczna Laska** to przedmiot, który dotykając gracza wprowadza go w **[stan zamrożenia](glossary:zamrozenie)**. Zamrożenie trwa tak długo, jak długo Laska dotyka gracza. Jest najbardziej skomplikowanym przedmiotem w grze - każdy gracz musi dokładnie rozumieć zasady jej działania.
 
 ### Aktywna i nieaktywna Laska
 
@@ -175,6 +188,8 @@ Magiczna Laska jest **nienaruszalna** - nie można jej zabrać właścicielowi, 
 
 Gdy dwóch graczy z Laskami walczy, obowiązuje zasada pierwszeństwa - **kto pierwszy zostanie dotknięty, zamraża się**. Jeżeli dotkną się równocześnie, oboje odsuwają laski o 20 centymetrów i kontynuują walkę.
 
+![Infografika: strefa wokół zamrożonego gracza](./obozy-mayhem-manual.assets/stan-zamrozenia.png)
+
 ### Odmiany Magicznej Laski
 
 <!-- manual:tag original -->
@@ -186,7 +201,7 @@ Standardowa **Magiczna Laska** ma długość **1,4 metra**.
 ## Zwoje
 
 <!-- manual:tag original -->
-**[Zwoje](glossary:zwój)** to kartki papieru zawinięte w sznurek żeby nie było widać zawartości. Każdy zwój posiada swoją nazwę i opisane na nim działanie - są one **jednorazowe** i po aktywowaniu nie mogą być użyte już w rozgrywce.
+**[Zwoje](glossary:zwoj)** to kartki papieru zawinięte w sznurek żeby nie było widać zawartości. Każdy zwój posiada swoją nazwę i opisane na nim działanie - są one **jednorazowe** i po aktywowaniu nie mogą być użyte już w rozgrywce.
 
 > [!WARNING]
 >
@@ -232,7 +247,7 @@ Każdy gracz zobowiązany jest do zapoznania się z nazwami i działaniem wszyst
 
 ## Ołtarze
 
-[Ołtarze](glossary:ołtarz) są kluczowymi strefami na terenie gry wielkości wahającej się od 4 do 8 metrów szerokości. Liczba ołtarzy w jednej rundzie wynosi **dwa razy więcej niż liczba drużyn**.
+[Ołtarze](glossary:oltarz) są kluczowymi strefami na terenie gry wielkości wahającej się od 4 do 8 metrów szerokości. Liczba ołtarzy w jednej rundzie wynosi **dwa razy więcej niż liczba drużyn**.
 
 Każdy typ ołtarza (*Dzik, Sowa, Niedźwiedź, ...*) posiada własną **kartę ołtarza** - wywieszoną w widocznym miejscu w środku strefy - zawiera ona nazwę ołtarza, czas wymagany do przejęcia, dostępne nagrody w danej kolejności oraz ewentualne własne mechaniki czy wymagania.  
 
@@ -624,9 +639,10 @@ Na początku rozgrywki każda drużyna ma **2–3 minuty** na omówienie taktyki
 
 ## Eliminacja i wskrzeszenie
 
-Gracz zostaje [wyeliminowany](glossary:eliminacja) w momencie utraty wszystkich [bibuł](glossary:bibuła) życia i udaje się do **wspólnego miejsca wyeliminowanych graczy**. Gracz nie może wrócić do gry dopóki nie zostanie [wskrzeszony](glossary:wskrzeszenie).
+<!-- manual:tag note -->
+Gracz zostaje [wyeliminowany](glossary:eliminacja) w momencie utraty wszystkich [bibuł](glossary:bibula) życia i udaje się do **wspólnego miejsca wyeliminowanych graczy**. Gracz nie może wrócić do gry dopóki nie zostanie [wskrzeszony](glossary:wskrzeszenie). Szczegółowy opis bibuł znajdziesz w sekcji [Sposób walki](#sposób-walki). Przykład linku zewnętrznego: [strona projektu](https://obozy.org.pl).
 
-[Wskrzeszenie](glossary:wskrzeszenie) jest możliwe wyłącznie przy użyciu **Zwoju Zmartwychwstania** lub umiejętności **Podniesienie** klasy Medyka.
+[Wskrzeszenie](glossary:wskrzeszenie) jest możliwe wyłącznie przy użyciu [Zwoju Zmartwychwstania](tag:advanced) lub umiejętności **Podniesienie** klasy Medyka.
 
 Jeśli w danym momencie **wszystkie drużyny oprócz jednej** znajdują się w miejscu wyeliminowanych graczy, gra kończy się natychmiast.
 

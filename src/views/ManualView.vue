@@ -27,6 +27,8 @@ export default {
       tagLabel: '',
       tagDesc: '',
       tagIcon: 'label',
+      _routePushPending: false, // guard: don't re-act to our own router.replace
+      navOpen: false,
       deck: null,
       _swipe: null
     }
@@ -93,11 +95,11 @@ export default {
             return
           }
           if (t.subsections) {
-            t.subsections.forEach((s) => {
+            t.subsections.forEach((s, si) => {
               if ((s.title || '').toLowerCase().includes(q)) {
                 let slide = p.coverHtml ? 1 : 0
                 slide += (p.tiles || []).indexOf(t)
-                hits.push({ label: `${t.title} → ${s.title}`, part: pi, slide })
+                hits.push({ label: `${t.title} → ${s.title}`, part: pi, slide, sub: si })
               }
             })
           }
@@ -149,6 +151,25 @@ export default {
     },
     dotsGridStyle() {
       return {}
+    },
+    navTree() {
+      if (!this.ir) return []
+      const items = []
+      this.ir.parts.forEach((p, pi) => {
+        items.push({ kind: 'part', label: p.title || `Część ${pi + 1}`, part: pi })
+        if (p.coverHtml) {
+          items.push({ kind: 'tile', label: 'Strona tytułowa', part: pi, slide: 0 })
+        }
+        const coverOffset = p.coverHtml ? 1 : 0
+        ;(p.tiles || []).forEach((t, ti) => {
+          const slide = ti + coverOffset
+          items.push({ kind: 'tile', label: t.title || `Sekcja ${ti + 1}`, part: pi, slide })
+          ;(t.subsections || []).forEach((s, si) => {
+            items.push({ kind: 'sub', label: s.title || `Podsekcja ${si + 1}`, part: pi, slide, sub: si })
+          })
+        })
+      })
+      return items
     }
   },
   watch: {
@@ -158,7 +179,10 @@ export default {
       this.subDir = 1
       this.subAnimated = false
       this.subMemory = {}
-      this.$nextTick(() => this.rebuildDeck())
+      this.$nextTick(() => {
+        this.rebuildDeck()
+        this.$nextTick(() => this.syncRouteFromSlide())
+      })
     },
     activeSlide() {
       const slide = this.slides[this.activeSlide]
@@ -166,9 +190,15 @@ export default {
       this.activeSub = (tileId && this.subMemory[tileId] != null) ? this.subMemory[tileId] : 0
       this.subDir = 1
       this.subAnimated = false
+      this.syncRouteFromSlide()
     },
     '$route.params.manualId'() {
       this.loadData()
+    },
+    '$route.params.tileSlug'(newSlug) {
+      // Ignore changes we ourselves pushed — only react to external navigation (back/forward)
+      if (this._routePushPending) return
+      if (newSlug) this.navigateToTileSlug(newSlug)
     }
   },
   mounted() {
@@ -195,7 +225,65 @@ export default {
       this.activePart = 0
       this.activeSlide = 0
       this.updatePageMeta()
-      this.$nextTick(() => this.rebuildDeck())
+      this.$nextTick(() => {
+        this.rebuildDeck()
+        const initialSlug = this.$route.params.tileSlug
+        if (initialSlug) {
+          this.$nextTick(() => this.navigateToTileSlug(initialSlug))
+        }
+      })
+    },
+    /**
+     * Push the current slide's slug into the URL.
+     * Sets a guard flag so the tileSlug watcher doesn't create a navigation loop.
+     */
+    syncRouteFromSlide() {
+      const slide = this.slides[this.activeSlide]
+      if (!slide) return
+      const slug = slide.kind === 'cover'
+        ? `${this.part?.id}-cover`
+        : slide.kind === 'finale' ? '__finale__'
+        : slide.kind === 'part-end' ? '__part-end__'
+        : slide.tile?.id
+      if (!slug) return
+      if (this.$route.params.tileSlug === slug) return
+      this._routePushPending = true
+      this.$router.replace({
+        name: 'manual',
+        params: { manualId: this.$route.params.manualId, tileSlug: slug }
+      }).finally(() => { this._routePushPending = false })
+    },
+    /**
+     * Find and navigate to the slide matching a tile slug from the URL.
+     */
+    navigateToTileSlug(slug) {
+      if (!slug || !this.ir) return
+      for (let pi = 0; pi < this.ir.parts.length; pi++) {
+        const p = this.ir.parts[pi]
+        if (slug === `${p.id}-cover` || (pi === 0 && slug === 'cover')) {
+          if (this.activePart !== pi) {
+            this.activePart = pi
+          } else {
+            this.activeSlide = 0
+          }
+          return
+        }
+        const tiles = p.tiles || []
+        for (let ti = 0; ti < tiles.length; ti++) {
+          if (tiles[ti].id === slug) {
+            const coverOffset = p.coverHtml ? 1 : 0
+            if (this.activePart !== pi) {
+              this.activePart = pi
+              this.$nextTick(() => {
+                this.$nextTick(() => { this.activeSlide = ti + coverOffset })
+              })
+            } else {
+              this.activeSlide = ti + coverOffset
+            }
+            return
+          }
+        }
+      }
     },
     updatePageMeta() {
       if (!this.ir) return
@@ -255,7 +343,9 @@ export default {
         if (!slug) return
         const map = (this.ir && this.ir.meta && this.ir.meta.glossary) || {}
         const entry = map[slug]
-        const label = (glossEl.textContent || '').trim() || slug
+        // Prefer the explicit display name from meta, fall back to the clicked word
+        const display = (entry && typeof entry === 'object' && entry.display) ? entry.display : null
+        const label = display || (glossEl.textContent || '').trim() || slug
         this.glossTerm = label
         const def = entry && typeof entry === 'object' ? entry.definition : entry
         this.glossText = (typeof def === 'string' && def) ? def : `Brak definicji w słowniku: ${slug}`
@@ -263,12 +353,33 @@ export default {
         this.glossOpen = true
         return
       }
+      // --- accordion open: scroll into view if needed ---
+      const summaryEl = e.target.closest ? e.target.closest('.manual-accordion__summary') : null
+      if (summaryEl) {
+        const details = summaryEl.closest('details')
+        if (details) {
+          // toggle hasn't fired yet — check state on next frame
+          requestAnimationFrame(() => {
+            if (!details.open) return
+            const scrollEl = this.$refs.slideScroll
+            if (!scrollEl) return
+            const dRect = details.getBoundingClientRect()
+            const sRect = scrollEl.getBoundingClientRect()
+            // If the top of the accordion scrolled above the visible area, bring it back
+            if (dRect.top < sRect.top + 8) {
+              const desired = scrollEl.scrollTop + (dRect.top - sRect.top) - 8
+              scrollEl.scrollTo({ top: Math.max(0, desired), behavior: 'smooth' })
+            }
+          })
+        }
+        return
+      }
       // --- in-document reference links ---
       const refEl = e.target.closest ? e.target.closest('.manual-ref-link') : null
       if (refEl) {
         e.preventDefault()
         const href = refEl.getAttribute('href') || ''
-        const slug = href.replace(/^#/, '')
+        const slug = decodeURIComponent(href.replace(/^#/, ''))
         if (!slug || !this.ir) return
         const entry = this.ir.linkIndex && this.ir.linkIndex[slug]
         if (!entry) return
@@ -307,6 +418,32 @@ export default {
         if (i) i.focus()
       })
     },
+    openTagModal(tagKey) {
+      const tags = (this.ir && this.ir.meta && this.ir.meta.tags) || {}
+      const tagDef = tags[tagKey]
+      if (!tagDef) return
+      this.tagLabel = tagDef.label || tagKey
+      this.tagDesc = tagDef.description || ''
+      this.tagIcon = tagDef.icon || 'label'
+      this.tagOpen = true
+    },
+    navJump(item) {
+      this.navOpen = false
+      if (item.kind === 'part') {
+        this.activePart = item.part
+        return
+      }
+      this.activePart = item.part
+      this.$nextTick(() => {
+        this.rebuildDeck()
+        this.$nextTick(() => {
+          this.activeSlide = item.slide
+          if (item.sub != null) {
+            this.$nextTick(() => this.goToSub(item.sub))
+          }
+        })
+      })
+    },
     jumpTo(hit) {
       this.searchQuery = ''
       this.searchOpen = false
@@ -315,6 +452,9 @@ export default {
         this.rebuildDeck()
         this.$nextTick(() => {
           this.activeSlide = hit.slide
+          if (hit.sub != null) {
+            this.$nextTick(() => this.goToSub(hit.sub))
+          }
         })
       })
     },
@@ -548,19 +688,15 @@ export default {
         </div>
       </div>
       <div class="manual-reader-nav__zone manual-reader-nav__zone--right">
-        <div v-if="partsCount > 1" class="manual-part-dots" aria-label="Części instrukcji">
-          <button
-            v-for="(p, i) in ir.parts"
-            :key="p.id"
-            type="button"
-            class="manual-part-dot"
-            :class="{ 'is-active': i === activePart }"
-            :aria-label="p.title || `Część ${i + 1}`"
-            @click="activePart = i"
-          />
-        </div>
         <button class="btn-flat manual-reader-nav__icon" @click="openSearch" aria-label="Szukaj">
           <i class="material-icons">search</i>
+        </button>
+        <button
+          class="btn-flat manual-reader-nav__icon"
+          @click="navOpen = true"
+          aria-label="Spis treści"
+        >
+          <i class="material-icons">toc</i>
         </button>
         <router-link to="/instrukcja" class="btn-flat manual-reader-nav__icon" aria-label="Lista instrukcji">
           <i class="material-icons">menu_book</i>
@@ -674,7 +810,19 @@ export default {
             </div>
           </template>
           <template v-else-if="current && current.kind === 'tile'">
-            <h2 class="manual-tile__h2">{{ current.tile.title }}</h2>
+            <h2 class="manual-tile__h2">
+              {{ current.tile.title }}
+              <span
+                v-if="current.tile.tagKey && ir.meta.tags && ir.meta.tags[current.tile.tagKey]"
+                class="manual-tag-badge"
+                role="button"
+                tabindex="0"
+                @click.stop="openTagModal(current.tile.tagKey)"
+              >
+                <i class="material-icons manual-tag-badge__icon" aria-hidden="true">{{ ir.meta.tags[current.tile.tagKey].icon }}</i>
+                <span v-if="ir.meta.tags[current.tile.tagKey].label" class="manual-tag-badge__label">{{ ir.meta.tags[current.tile.tagKey].label }}</span>
+              </span>
+            </h2>
             <div v-if="current.tile.introHtml" v-html="current.tile.introHtml" class="manual-body" />
             <div v-if="current.tile.contentHtml" v-html="current.tile.contentHtml" class="manual-body" />
             <div v-else class="manual-h3-wrap">
@@ -686,7 +834,19 @@ export default {
               ><i class="material-icons">chevron_left</i></span>
               <Transition :name="subAnimated ? (subDir > 0 ? 'h3-next' : 'h3-prev') : ''" mode="out-in">
                 <article v-if="currentSub" :key="currentSub.id" class="manual-h3-card">
-                  <h3 class="manual-tile__h3">{{ currentSub.title }}</h3>
+                  <h3 class="manual-tile__h3">
+                    {{ currentSub.title }}
+                    <span
+                      v-if="currentSub.tagKey && ir.meta.tags && ir.meta.tags[currentSub.tagKey]"
+                      class="manual-tag-badge"
+                      role="button"
+                      tabindex="0"
+                      @click.stop="openTagModal(currentSub.tagKey)"
+                    >
+                      <i class="material-icons manual-tag-badge__icon" aria-hidden="true">{{ ir.meta.tags[currentSub.tagKey].icon }}</i>
+                      <span v-if="ir.meta.tags[currentSub.tagKey].label" class="manual-tag-badge__label">{{ ir.meta.tags[currentSub.tagKey].label }}</span>
+                    </span>
+                  </h3>
                   <div v-html="currentSub.html" class="manual-body" />
                 </article>
               </Transition>
@@ -863,6 +1023,55 @@ export default {
         <p class="manual-gloss-text">{{ tagDesc }}</p>
       </div>
     </div>
+
+    <!-- Navigation drawer (bottom sheet) -->
+    <Teleport to="body">
+      <div
+        v-show="navOpen"
+        class="manual-nav-drawer-backdrop"
+        @click.self="navOpen = false"
+      >
+        <div class="manual-nav-drawer" role="dialog" aria-modal="true" aria-label="Spis treści">
+          <div class="manual-nav-drawer__header">
+            <span class="manual-nav-drawer__title">Spis treści</span>
+            <button type="button" class="manual-nav-drawer__close btn-flat" aria-label="Zamknij" @click="navOpen = false">
+              <i class="material-icons">close</i>
+            </button>
+          </div>
+          <div class="manual-nav-drawer__body">
+            <template v-for="(item, idx) in navTree" :key="idx">
+              <div
+                v-if="item.kind === 'part'"
+                class="manual-nav-item manual-nav-item--part"
+              >
+                <i class="material-icons manual-nav-item__icon" aria-hidden="true">bookmark</i>
+                {{ item.label }}
+              </div>
+              <button
+                v-else-if="item.kind === 'tile'"
+                type="button"
+                class="manual-nav-item manual-nav-item--tile"
+                :class="{ 'is-active': activePart === item.part && activeSlide === item.slide }"
+                @click="navJump(item)"
+              >
+                <i class="material-icons manual-nav-item__icon" aria-hidden="true">article</i>
+                {{ item.label }}
+              </button>
+              <button
+                v-else-if="item.kind === 'sub'"
+                type="button"
+                class="manual-nav-item manual-nav-item--sub"
+                :class="{ 'is-active': activePart === item.part && activeSlide === item.slide && activeSub === item.sub }"
+                @click="navJump(item)"
+              >
+                <i class="material-icons manual-nav-item__icon" aria-hidden="true">subdirectory_arrow_right</i>
+                {{ item.label }}
+              </button>
+            </template>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
   <div v-else class="container section center">
     <div class="preloader-wrapper active">
@@ -1085,10 +1294,10 @@ $reader-font: 'Lato', sans-serif;
   /* 20px inset keeps the thumb circle from overflowing the tile corners */
   top: 20px;
   bottom: 20px;
-  width: 24px;
+  width: 28px;
   z-index: 2;
   pointer-events: auto;
-  cursor: ns-resize;
+  cursor: pointer;
   touch-action: none;
   border-radius: 8px 0 0 8px;
 }
@@ -1116,8 +1325,8 @@ $reader-font: 'Lato', sans-serif;
 .manual-reader__progress-thumb {
   position: absolute;
   left: 0;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   background: $reader-green;
   border: 2px solid #ffffff;
   border-radius: 999px;
@@ -1155,7 +1364,7 @@ $reader-font: 'Lato', sans-serif;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  padding: 1.25rem 1.25rem 1.5rem 1.5rem;
+  padding: 1.25rem 1.25rem 1.5rem 2rem;
   background: #fff;
   border-radius: 0 8px 8px 0;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
@@ -1314,7 +1523,7 @@ $reader-font: 'Lato', sans-serif;
 }
 
 .manual-finale__sub {
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.65);
   font-size: 1rem;
   margin: 0 0 0.5rem;
 }
@@ -1333,7 +1542,7 @@ $reader-font: 'Lato', sans-serif;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba(0, 0, 0, 0.35);
+  color: rgba(0, 0, 0, 0.55);
   margin: 0 0 4px;
 }
 
@@ -1414,7 +1623,7 @@ $reader-font: 'Lato', sans-serif;
 .manual-part-end__sub {
   font-family: $reader-font;
   font-size: 0.9rem;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.65);
   margin-bottom: 1.5rem;
 }
 
@@ -1455,7 +1664,7 @@ $reader-font: 'Lato', sans-serif;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  opacity: 0.55;
+  color: rgba(0, 0, 0, 0.6);
   display: block;
 }
 
@@ -1471,6 +1680,9 @@ $reader-font: 'Lato', sans-serif;
   margin-top: 1.5rem;
   width: 100%;
   max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .manual-part-end__related-label {
@@ -1522,6 +1734,23 @@ $reader-font: 'Lato', sans-serif;
   border-radius: 6px;
 }
 
+/* Images inside headings or accordion summaries are treated as inline icons.
+   .manual-body prefix gives this higher specificity than the block img rule. */
+:deep(.manual-body h2 img),
+:deep(.manual-body h3 img),
+:deep(.manual-body h4 img),
+:deep(.manual-body h5 img),
+:deep(.manual-body h6 img),
+:deep(.manual-body summary img) {
+  display: inline !important;
+  width: 1.4em;
+  height: 1.4em;
+  vertical-align: middle;
+  object-fit: contain;
+  border-radius: 0;
+  margin: 0 0.3em 0 0 !important;
+}
+
 /* Internal reference links — green, solid underline */
 :deep(.manual-body a),
 :deep(.manual-body .manual-ref-link) {
@@ -1547,8 +1776,21 @@ $reader-font: 'Lato', sans-serif;
 }
 
 /* ── Tag badges (block-level) ─────────────────────────────────────────────── */
+/* Badge inside headings: heading becomes flex so the badge sits flush-right */
+:deep(h2:has(.manual-tag-badge)),
+:deep(h3:has(.manual-tag-badge)),
+:deep(h4:has(.manual-tag-badge)) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .manual-tag-badge {
+    margin: 0 0 0 auto; /* push badge to the far right */
+    flex-shrink: 0;
+  }
+}
+
 :deep(.manual-tag-badge) {
-  float: right;
   display: inline-flex;
   align-items: center;
   gap: 3px;
@@ -1556,10 +1798,15 @@ $reader-font: 'Lato', sans-serif;
   border: 1px solid rgba(76, 175, 80, 0.3);
   border-radius: 100px;
   padding: 2px 8px 2px 4px;
-  margin: 0 0 6px 10px;
+  margin: 0 0 0 6px; /* inline — sits after the content */
+  vertical-align: middle;
   cursor: pointer;
   user-select: none;
-  vertical-align: middle;
+
+  /* Icon-only pill: tighten padding when there is no label */
+  &:has(.manual-tag-badge__icon):not(:has(.manual-tag-badge__label)) {
+    padding: 2px 4px;
+  }
 
   .manual-tag-badge__icon {
     font-size: 13px;
@@ -1588,9 +1835,13 @@ $reader-font: 'Lato', sans-serif;
   cursor: pointer;
   color: $reader-green-dark;
   border-bottom: 1px solid rgba(76, 175, 80, 0.5);
-  padding-bottom: 1px;
+  padding: 0 2px;
   border-radius: 2px;
   transition: background 0.12s ease;
+  white-space: nowrap; /* prevent the inline badge from line-breaking mid-tag */
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
 
   &:hover {
     background: rgba(76, 175, 80, 0.08);
@@ -1599,7 +1850,6 @@ $reader-font: 'Lato', sans-serif;
   .manual-tag-inline__icon {
     font-size: 0.8em;
     vertical-align: middle;
-    margin-left: 2px;
     color: $reader-green;
     line-height: 1;
   }
@@ -1963,7 +2213,7 @@ $reader-font: 'Lato', sans-serif;
   opacity: 1;
   transition: opacity 0.15s ease;
   padding: 0;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  box-shadow: none;
 }
 
 .manual-h3-edge--prev { left: -12px; }
@@ -1999,12 +2249,19 @@ $reader-font: 'Lato', sans-serif;
 :deep(.manual-accordion) {
   border: 1px solid rgba(0, 0, 0, 0.09);
   border-radius: 8px;
-  margin: 0.5rem 0;
+  margin: 0;
   overflow: hidden;
 }
 
 :deep(.manual-accordion + .manual-accordion) {
-  margin-top: 0.35rem;
+  margin-top: 4px;
+}
+
+/* First accordion in a block gets a small top margin for breathing room */
+:deep(p + .manual-accordion),
+:deep(ul + .manual-accordion),
+:deep(ol + .manual-accordion) {
+  margin-top: 0.5rem;
 }
 
 /* Nested accordions (h5 inside h4, h6 inside h5): no box border — just a
@@ -2295,5 +2552,116 @@ $reader-font: 'Lato', sans-serif;
 
 .manual-foot-counter__total {
   color: rgba(0, 0, 0, 0.55);
+}
+
+/* Navigation drawer — bottom sheet overlay */
+.manual-nav-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.manual-nav-drawer {
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.18);
+  max-height: 75dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.manual-nav-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  flex: 0 0 auto;
+}
+
+.manual-nav-drawer__title {
+  font-family: $reader-font;
+  font-weight: 700;
+  font-size: 1rem;
+  color: $reader-text;
+}
+
+.manual-nav-drawer__close {
+  padding: 4px !important;
+  height: 36px !important;
+  width: 36px !important;
+  line-height: 1 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.55) !important;
+}
+
+.manual-nav-drawer__body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px 0 env(safe-area-inset-bottom, 0);
+  flex: 1 1 auto;
+}
+
+.manual-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  font-family: $reader-font;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: background 0.1s ease;
+
+  &.is-active {
+    background: rgba(76, 175, 80, 0.08);
+    color: $reader-green-dark;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.manual-nav-item--part {
+  padding: 10px 16px 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  cursor: default;
+}
+
+.manual-nav-item--tile {
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: $reader-text;
+}
+
+.manual-nav-item--sub {
+  padding: 7px 16px 7px 40px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.manual-nav-item__icon {
+  font-size: 18px;
+  flex: 0 0 18px;
+  color: rgba(0, 0, 0, 0.35);
+
+  .manual-nav-item--tile & { color: $reader-green; }
+  .manual-nav-item--part & { color: rgba(0, 0, 0, 0.25); }
+  .is-active & { color: $reader-green-dark; }
 }
 </style>

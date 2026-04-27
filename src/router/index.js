@@ -18,7 +18,7 @@ const routes = [
     }
   },
   {
-    path: '/instrukcja/:manualId',
+    path: '/instrukcja/:manualId/:tileSlug?',
     name: 'manual',
     component: () => import('../views/ManualView.vue'),
     meta: {

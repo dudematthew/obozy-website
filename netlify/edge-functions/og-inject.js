@@ -1,3 +1,5 @@
+import { manualsMeta } from './manuals-meta.js'
+
 export default async (request, context) => {
     const url = new URL(request.url);
     const ua = request.headers.get('user-agent') || '';
@@ -31,9 +33,20 @@ export default async (request, context) => {
             title: 'Quiz o Zamrożeniu | Obozy - Gra Terenowa',
             description: 'Sprawdź jak dobrze znasz zasady Stanu Zamrożenia!',
         },
+        '/instrukcja': {
+            title: 'Instrukcje | Obozy - Gra Terenowa',
+            description: 'Lista interaktywnych instrukcji do gier Obozy.',
+        },
     };
 
-    const meta = metaMap[url.pathname] ?? metaMap['/'];
+    // Resolve per-manual OG tags from the build-generated manuals-meta.js
+    let meta = metaMap[url.pathname] ?? metaMap['/'];
+    if (url.pathname.startsWith('/instrukcja/')) {
+        const manualId = url.pathname.split('/')[2]
+        if (manualId && manualsMeta[manualId]) {
+            meta = manualsMeta[manualId]
+        }
+    }
     const siteUrl = 'https://obozy.org.pl'; // ← zmień na swoją domenę
 
     const response = await context.next();

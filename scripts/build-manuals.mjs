@@ -44,7 +44,7 @@ const sanitizeSchema = {
     div: ['className', 'class', 'dir'],
     span: ['className', 'class', 'dir', 'dataGlossary', 'dataTag', 'role', 'tabIndex'],
     a: ['href', 'title', 'className', 'class', 'target', 'rel'],
-    img: ['src', 'alt', 'title', 'width', 'height', 'loading', 'className', 'class'],
+    img: ['src', 'alt', 'title', 'width', 'height', 'loading', 'className', 'class', 'style'],
     code: ['className', 'class'],
     pre: ['className', 'class'],
     table: ['className', 'class'],
@@ -197,7 +197,9 @@ function rehypeGlossaryLinks () {
       if (node.tagName !== 'a' || !node.properties) return
       const href = node.properties.href
       if (typeof href !== 'string' || !href.startsWith('glossary:')) return
-      const slug = href.replace(/^glossary:/, '')
+      // Markdown parsers URL-encode non-ASCII hrefs; decode so the slug matches
+      // the YAML front matter key (e.g. "ołtarz", not "o%C5%82tarz").
+      const slug = decodeURIComponent(href.replace(/^glossary:/, ''))
       node.tagName = 'span'
       node.properties = {
         className: ['manual-glossary-term'],
@@ -246,16 +248,59 @@ function rehypeTagBadges (tags) {
               properties: { className: ['material-icons', 'manual-tag-badge__icon'], ariaHidden: 'true' },
               children: [{ type: 'text', value: tagDef.icon || 'label' }]
             },
-            {
-              type: 'element',
-              tagName: 'span',
-              properties: { className: ['manual-tag-badge__label'] },
-              children: [{ type: 'text', value: tagDef.label || tagKey }]
-            }
+            // Omit the label span when label is explicitly empty string (icon-only pill)
+            ...(tagDef.label !== ''
+              ? [{
+                  type: 'element',
+                  tagName: 'span',
+                  properties: { className: ['manual-tag-badge__label'] },
+                  children: [{ type: 'text', value: tagDef.label || tagKey }]
+                }]
+              : [])
           ]
         }
-        // Prepend the badge inside the element so it floats in the top-right
-        child.children = [badge, ...child.children]
+
+        // If the tagged element is a paragraph, find the nearest preceding heading
+        // sibling and badge that instead — the heading is what the user sees first.
+        // When no heading exists in this HTML fragment (H2/H3 title was stripped
+        // into the IR title field), skip — the Vue template uses tile.tagKey instead.
+        const HEADING_TAGS = new Set(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
+        if (child.tagName === 'p') {
+          let headingTarget = null
+          for (let j = i - 1; j >= 0; j--) {
+            const sib = node.children[j]
+            if (sib.type === 'element' && HEADING_TAGS.has(sib.tagName)) {
+              headingTarget = sib
+              break
+            }
+          }
+          if (!headingTarget) continue // handled by IR-level tagKey
+          headingTarget.children = [...headingTarget.children, badge]
+        } else {
+          // For non-paragraph elements (headings etc.) append directly
+          child.children = [...child.children, badge]
+        }
+      }
+    })
+  }
+}
+
+/**
+ * Normalises image size hints added by Typora (style="zoom:X%") and other
+ * width / height style overrides into standard CSS max-width so sanitize keeps
+ * them. Runs before rehypeSanitize.
+ */
+function rehypeImageSize () {
+  return (tree) => {
+    if (!tree || typeof tree !== 'object' || !('type' in tree)) return
+    visit(tree, 'element', (node) => {
+      if (node.tagName !== 'img' || !node.properties) return
+      const style = node.properties.style
+      if (typeof style !== 'string') return
+      // Typora exports `style="zoom:25%;"` – convert to CSS max-width
+      const zoomMatch = style.match(/zoom:\s*(\d+(?:\.\d+)?)%/)
+      if (zoomMatch) {
+        node.properties.style = `max-width:${zoomMatch[1]}%;height:auto`
       }
     })
   }
@@ -361,6 +406,7 @@ async function mdastToHtml (nodes, rewrite) {
       .use(rehypeLinkClasses, rewrite.tags || {})
       .use(rehypeGlossaryLinks)
       .use(rehypeTagBadges, rewrite.tags || {})
+      .use(rehypeImageSize)
       .use(rehypeRewriteLocalImgs, rewrite)
       .use(rehypeSanitize, sanitizeSchema)
       .use(rehypeStringify)
@@ -474,8 +520,12 @@ async function buildOneManual (manual) {
           Object.entries(front.glossary).map(([k, v]) => [
             k,
             typeof v === 'string'
-              ? { definition: v, link: null }
-              : { definition: String(v.definition || ''), link: v.link || null }
+              ? { definition: v, link: null, display: null }
+              : {
+                  definition: String(v.definition || ''),
+                  link: v.link || null,
+                  display: (v.display != null) ? String(v.display) : null
+                }
           ])
         )
       : {}
@@ -536,15 +586,28 @@ async function buildOneManual (manual) {
    * @param {number} partIdx
    * @param {number} tileIdx
    */
+  /**
+   * Read the tag key off the first MDAST content node, if the author placed
+   * a `<!-- manual:tag X -->` comment before it. Returns null if absent.
+   * @param {import('mdast').Node[]} nodes
+   */
+  const extractSectionTag = (nodes) => {
+    const first = nodes && nodes[0]
+    return (first && first.data && first.data.hProperties &&
+      (first.data.hProperties['data-manual-tag'] || null)) || null
+  }
+
   const buildTile = async (trec, partIdx, tileIdx) => {
     const g = new GithubSlugger()
     const s = splitTileToSubsections(trec, g)
     if (s._body) {
+      const tagKey = extractSectionTag(s._body)
       const html = await mdastToHtml(s._body, rewrite)
       linkIndex[s.id] = { part: partIdx, tile: tileIdx }
       return {
         id: s.id,
         title: s.title,
+        tagKey: tagKey || null,
         introHtml: null,
         subsections: null,
         contentHtml: html
@@ -558,20 +621,22 @@ async function buildOneManual (manual) {
       const subsections = []
       for (let si = 0; si < s.subsections.length; si++) {
         const sub = s.subsections[si]
+        const tagKey = extractSectionTag(sub.nodes)
         const html = await mdastToHtml(sub.nodes, rewrite)
         linkIndex[sub.id] = { part: partIdx, tile: tileIdx, subsection: si }
-        subsections.push({ id: sub.id, title: sub.title, html })
+        subsections.push({ id: sub.id, title: sub.title, tagKey: tagKey || null, html })
       }
       linkIndex[s.id] = { part: partIdx, tile: tileIdx }
       return {
         id: s.id,
         title: s.title,
+        tagKey: extractSectionTag(s.introHtml || []) || null,
         introHtml: intro,
         subsections,
         contentHtml: null
       }
     }
-    return { id: s.id, title: s.title, subsections: null, contentHtml: '<p></p>' }
+    return { id: s.id, title: s.title, tagKey: null, subsections: null, contentHtml: '<p></p>' }
   }
 
   if (h1Indices.length === 0) {
@@ -658,6 +723,7 @@ function enrichManualError (err, manual) {
 }
 
 async function main () {
+  const isProd = process.env.NODE_ENV === 'production'
   const cfgPath = path.join(projectRoot, 'manuals.config.json')
   const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'))
   if (!cfg.manuals?.length) {
@@ -666,7 +732,15 @@ async function main () {
   }
   const outDir = path.join(projectRoot, 'src', 'data', 'manual-ir')
   fs.mkdirSync(outDir, { recursive: true })
+
+  /** @type {{ id: string, title: string, description: string }[]} */
+  const builtMeta = []
+
   for (const m of cfg.manuals) {
+    if (m.devOnly && isProd) {
+      console.log(`Skipped dev-only manual: ${m.id}`)
+      continue
+    }
     let ir
     try {
       ir = await buildOneManual(m)
@@ -676,7 +750,22 @@ async function main () {
     const out = path.join(outDir, `${m.id}.json`)
     fs.writeFileSync(out, JSON.stringify(ir, null, 2), 'utf8')
     console.log(`Wrote ${path.relative(projectRoot, out)}`)
+    builtMeta.push({ id: m.id, title: ir.meta.title, description: ir.meta.description })
   }
+
+  // Write manuals-meta.js for the Netlify edge function so it can serve per-manual OG tags.
+  const metaEntries = builtMeta
+    .filter((m) => !m.id.startsWith('authoring')) // skip internal dev guides
+    .map((m) => {
+      const title = `${m.title} | Instrukcja | Obozy - Gra Terenowa`
+      const desc = m.description || 'Interaktywna instrukcja gry terenowej Obozy.'
+      return `  ${JSON.stringify(m.id)}: { title: ${JSON.stringify(title)}, description: ${JSON.stringify(desc)} }`
+    })
+    .join(',\n')
+  const metaFile = `// Auto-generated by build:manuals — do not edit manually.\nexport const manualsMeta = {\n${metaEntries}\n}\n`
+  const metaOut = path.join(projectRoot, 'netlify', 'edge-functions', 'manuals-meta.js')
+  fs.writeFileSync(metaOut, metaFile, 'utf8')
+  console.log(`Wrote ${path.relative(projectRoot, metaOut)}`)
 }
 
 main().catch((e) => {

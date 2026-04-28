@@ -2,7 +2,7 @@
 node_modules
 /dist
 /public/manual-assets
-/netlify/edge-functions/_manuals-meta.js
+/netlify/manuals-meta.js
 
 # local env files
 .env.local

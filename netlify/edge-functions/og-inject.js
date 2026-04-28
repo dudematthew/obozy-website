@@ -1,4 +1,4 @@
-import { manualsMeta } from './_manuals-meta.js'
+import { manualsMeta } from '../manuals-meta.js'
 
 export default async (request, context) => {
     const url = new URL(request.url);

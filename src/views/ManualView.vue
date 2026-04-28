@@ -1279,7 +1279,7 @@ $reader-font: 'Lato', sans-serif;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 8px;
+  padding: 8px 8px 8px 20px; /* left gutter = room for progress bar thumb */
   width: 100%;
 }
 
@@ -1288,9 +1288,10 @@ $reader-font: 'Lato', sans-serif;
    draggable; cursor: ns-resize signals vertical drag affordance. */
 .manual-reader__progress {
   position: absolute;
-  /* -4px = tile left edge (8px) minus half bar width (12px), so the bar straddles
-     the tile border: half in the gutter, half inside the tile. */
-  left: -4px;
+  /* Centre the bar on the tile's left edge.
+     tile left = stage padding-left (20px) from viewport.
+     bar half-width = 14px  →  left = 20 - 14 = 6px (always on-screen). */
+  left: 6px;
   /* 20px inset keeps the thumb circle from overflowing the tile corners */
   top: 20px;
   bottom: 20px;

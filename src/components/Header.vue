@@ -21,6 +21,13 @@ export default {
                 class="text-darken-2 green-text material-icons">local_fire_department</i>&nbsp; Zostań naszym
               Patronem</span></a></li>
       </ul>
+      
+      <ul class="right hide-on-med-and-down">
+        <li>
+          <router-link to="/instrukcja"><span class="valign-wrapper black-text"><i
+                class="text-darken-2 green-text material-icons">menu_book</i>&nbsp; Instrukcje</span></router-link>
+        </li>
+      </ul>
 
       <ul class="right hide-on-med-and-down">
         <li><a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank"><span
@@ -37,22 +44,16 @@ export default {
 
       <ul class="right hide-on-med-and-down">
         <li>
-          <router-link to="/dolacz-do-nas"><span class="valign-wrapper black-text"><i
-                class="text-darken-2 green-text material-icons">group_add</i>&nbsp; Dołącz do nas</span></router-link>
+          <router-link to="/o-nas"><span class="valign-wrapper black-text"><i
+                class="text-darken-2 green-text material-icons">lightbulb_circle</i>&nbsp; O Obozach</span></router-link>
         </li>
       </ul>
 
-      <ul class="right hide-on-med-and-down">
-        <li>
-          <router-link to="/o-nas"><span class="valign-wrapper black-text"><i
-                class="text-darken-2 green-text material-icons">lightbulb_circle</i>&nbsp; O
-              Obozach</span></router-link>
-        </li>
-      </ul>
 
       <ul id="nav-mobile" class="sidenav">
         <li><router-link to="/" class="sidenav-close">OBOZY</router-link></li>
         <li><router-link to="/o-nas" class="sidenav-close">O Obozach</router-link></li>
+        <li><router-link to="/instrukcja" class="sidenav-close">Instrukcje</router-link></li>
         <li><router-link to="/dolacz-do-nas" class="sidenav-close">Dołącz do nas</router-link></li>
         <li><router-link to="/powiadomienia" class="sidenav-close">Bądź na bieżąco</router-link></li>
         <li><a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank">Nasz Facebook</a></li>

@@ -5,10 +5,6 @@
       "source": "src/assets/game-manuals/obozy-mayhem-manual.md"
     },
     {
-      "id": "classic",
-      "source": "src/assets/game-manuals/obozy-classic-manual.md"
-    },
-    {
       "id": "authoring",
       "source": "src/assets/game-manuals/authoring-guide.md",
       "devOnly": true

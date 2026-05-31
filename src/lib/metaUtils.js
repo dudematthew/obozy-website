@@ -30,6 +30,10 @@ export function updateMetaTags(metaData) {
         updateMetaProperty('twitter:image', metaData.image);
     }
 
+    updateMetaProperty('og:type', 'website');
+    updateMetaProperty('twitter:card', 'summary_large_image');
+    updateMetaProperty('og:site_name', 'Obozy - Gra Terenowa');
+
     // Update image alt text
     if (metaData.imageAlt) {
         updateMetaProperty('og:image:alt', metaData.imageAlt);

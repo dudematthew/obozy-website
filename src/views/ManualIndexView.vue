@@ -52,6 +52,13 @@ export default {
     <div class="manual-index__hero">
       <div class="container" style="max-width: 820px">
 
+        <div class="manual-index__intro">
+          <h1 class="manual-index__title">Instrukcje</h1>
+          <p class="manual-index__lead">
+            Interaktywne instrukcje stworzone by ułatwić przyswajanie informacji. Czytaj szybciej - pomijaj nieistotne fragmenty.
+          </p>
+        </div>
+
         <div class="card manual-index__search">
           <div class="card-content">
             <div class="input-field" style="margin: 0">
@@ -89,6 +96,21 @@ export default {
               <p style="margin: 0">Brak wyników.</p>
             </div>
           </div>
+
+          <div v-if="!q.trim()" class="card manual-card manual-card--soon" aria-disabled="true">
+            <div class="card-content">
+              <div class="manual-card__row">
+                <div class="manual-card__left">
+                  <i class="material-icons manual-card__logo manual-card__logo--placeholder" aria-hidden="true">menu_book</i>
+                  <div>
+                    <div class="manual-card__title">Obozy – Gra Terenowa</div>
+                    <div class="manual-card__desc">Podstawowa gra terenowa Obozy.</div>
+                    <div class="text-darken-1 manual-card__meta grey-text">Niedługo</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -103,6 +125,23 @@ export default {
 
 .manual-index__hero {
   padding: 1rem 0 2rem;
+}
+
+.manual-index__intro {
+  margin-bottom: 1rem;
+}
+
+.manual-index__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #263238;
+}
+
+.manual-index__lead {
+  margin: 0;
+  color: #455a64;
+  line-height: 1.45;
 }
 
 .manual-index__search {
@@ -126,6 +165,19 @@ export default {
 
 .manual-card:hover {
   transform: translateY(-1px);
+}
+
+.manual-card--soon {
+  opacity: 0.72;
+  border-left-color: #90a4ae;
+  pointer-events: none;
+}
+
+.manual-card__logo--placeholder {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: #90a4ae;
 }
 
 .manual-card__row {

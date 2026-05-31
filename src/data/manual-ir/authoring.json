@@ -20,7 +20,7 @@
           "id": "front-matter-yaml",
           "title": "Front matter (YAML)",
           "tagKey": null,
-          "introHtml": "<pre><code class=\"language-yaml\">---\r\ntitle: \"Obozy – Mayhem\"\r\ndescription: \"Krótki opis dla wyszukiwarek i OG tagów.\"\r\nlogo: \"obozy-mayhem-manual.assets/ikona.png\"\r\nrelated:\r\n  - classic\r\ntags:\r\n  original:\r\n    icon: \"content_copy\"\r\n    label: \"Znane z podstawowej gry\"\r\n    description: \"Ten fragment jest identyczny z grą Obozy – Gra Terenowa.\"\r\n  advanced:\r\n    icon: \"psychology\"\r\n    label: \"Dla zaawansowanych\"\r\n    description: \"Zaawansowana mechanika – przy pierwszej lekturze można pominąć.\"\r\n  note:\r\n    icon: \"info\"\r\n    label: \"\"\r\n    description: \"Dodatkowa informacja.\"\r\nglossary:\r\n  eliminacja:\r\n    display: \"Eliminacja gracza\"\r\n    definition: \"Pełny opis terminu widoczny w panelu słownika.\"\r\n    link: \"eliminacja-i-wskrzeszenie\"\r\n  zwoj:\r\n    display: \"Zwój\"\r\n    definition: \"Jednorazowy przedmiot z efektem.\"\r\n    link: \"zwoje\"\r\n---\n</code></pre>",
+          "introHtml": "<pre><code class=\"language-yaml\">---\r\ntitle: \"Obozy – Mayhem\"\r\ndescription: \"Krótki opis dla wyszukiwarek i OG tagów.\"\r\nlogo: \"obozy-mayhem-manual.assets/ikona.png\"\r\nrelated:\r\n  - inna-gra\r\ntags:\r\n  original:\r\n    icon: \"content_copy\"\r\n    label: \"Znane z podstawowej gry\"\r\n    description: \"Ten fragment jest identyczny z grą Obozy – Gra Terenowa.\"\r\n  advanced:\r\n    icon: \"psychology\"\r\n    label: \"Dla zaawansowanych\"\r\n    description: \"Zaawansowana mechanika – przy pierwszej lekturze można pominąć.\"\r\n  note:\r\n    icon: \"info\"\r\n    label: \"\"\r\n    description: \"Dodatkowa informacja.\"\r\nglossary:\r\n  eliminacja:\r\n    display: \"Eliminacja gracza\"\r\n    definition: \"Pełny opis terminu widoczny w panelu słownika.\"\r\n    link: \"eliminacja-i-wskrzeszenie\"\r\n  zwoj:\r\n    display: \"Zwój\"\r\n    definition: \"Jednorazowy przedmiot z efektem.\"\r\n    link: \"zwoje\"\r\n---\n</code></pre>",
           "subsections": [
             {
               "id": "pola-front-matter",
@@ -77,7 +77,7 @@
           "tagKey": null,
           "introHtml": null,
           "subsections": null,
-          "contentHtml": "<pre><code class=\"language-md\">&#x3C;!-- manual:expand true -->\r\n#### Spis ołtarzy\n</code></pre>\n<p>Komentarz przed nagłówkiem H4+ sprawia, że akordeon jest domyślnie otwarty.</p>"
+          "contentHtml": "<pre><code class=\"language-md\">&#x3C;!-- manual:expand true -->\r\n### Spis ołtarzy\n</code></pre>\n<p>Komentarz przed nagłówkiem H4+ sprawia, że akordeon jest domyślnie otwarty.</p>"
         },
         {
           "id": "obrazki",
@@ -101,7 +101,7 @@
           "tagKey": null,
           "introHtml": null,
           "subsections": null,
-          "contentHtml": "<ol>\n<li>Dodaj wpis w <code>manuals.config.json</code>:</li>\n</ol>\n<pre><code class=\"language-json\">{ \"id\": \"moja-gra\", \"source\": \"src/assets/game-manuals/moja-gra.md\" }\n</code></pre>\n<p>Dla instrukcji widocznej tylko lokalnie (np. ten plik):</p>\n<pre><code class=\"language-json\">{ \"id\": \"authoring\", \"source\": \"src/assets/game-manuals/authoring-guide.md\", \"devOnly\": true }\n</code></pre>\n<ol start=\"2\">\n<li>Dodaj import w <code>src/data/manual-ir/registry.js</code>:</li>\n</ol>\n<pre><code class=\"language-js\">import mojaGra from './moja-gra.json'\r\n// ...\r\nconst manuals = { mayhem, classic, mojaGra }\n</code></pre>\n<ol start=\"3\">\n<li><code>npm run build:manuals</code>.</li>\n</ol>\n<p>Aplikacja udostępni instrukcję pod adresem <strong><code>/instrukcja/moja-gra</code></strong>.</p>"
+          "contentHtml": "<ol>\n<li>Dodaj wpis w <code>manuals.config.json</code>:</li>\n</ol>\n<pre><code class=\"language-json\">{ \"id\": \"moja-gra\", \"source\": \"src/assets/game-manuals/moja-gra.md\" }\n</code></pre>\n<p>Dla instrukcji widocznej tylko lokalnie (np. ten plik):</p>\n<pre><code class=\"language-json\">{ \"id\": \"authoring\", \"source\": \"src/assets/game-manuals/authoring-guide.md\", \"devOnly\": true }\n</code></pre>\n<ol start=\"2\">\n<li>Dodaj import w <code>src/data/manual-ir/registry.js</code>:</li>\n</ol>\n<pre><code class=\"language-js\">import mojaGra from './moja-gra.json'\r\n// ...\r\nconst manuals = { mayhem, mojaGra }\n</code></pre>\n<ol start=\"3\">\n<li><code>npm run build:manuals</code>.</li>\n</ol>\n<p>Aplikacja udostępni instrukcję pod adresem <strong><code>/instrukcja/moja-gra</code></strong>.</p>"
         },
         {
           "id": "url-i-udostępnianie",

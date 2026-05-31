@@ -260,8 +260,7 @@ export default {
       <div class="row">
         <div class="col s12 center" style="margin-bottom: -30px;">
           <h4 class="subtitle">Zasady gry i załączniki</h4>
-          <h5 class="header col s12 light">Poznaj udoskonalaną od {{yearsFromStart}} lat grę Obozy</h5>
-          <h6 class="header col s12 light" style="font-style: italic;">Zalecamy uproszczoną wersję</h6>
+          <h5 class="header col s12 light">Poznaj udoskonalaną od {{ yearsFromStart }} lat grę Obozy</h5>
         </div>
       </div>
       <div class="row">
@@ -271,25 +270,29 @@ export default {
             style="width:100%; height:400px; border:0; overflow: hidden;" title="Zasady Gry"></iframe>
         </div>
       </div>
-
-    </div>
-  </div>
-
-  <div class="container" style="margin-bottom: 100px;">
-    <div class="section">
       <div class="row">
-        <div class="col s12 center card" style="padding-bottom: 50px;">
-          <h4 class="subtitle">A Ty jak znasz zasady Chochlika?</h4>
-          <h5 class="header col s12 light">Mamy dla ciebie quiz!</h5>
-          <p class="flow-text">Przetestuj swoją znajomość zasad zamrożenia w naszej grze terenowej.
+        <div class="col s12 center card" style="padding-bottom: 50px; margin-top: 24px; margin-bottom: 100px;">
+          <h4 class="subtitle">A Ty jak znasz zasady gry?</h4>
+          <h5 class="header col s12 light">Przeczytaj interaktywnie albo sprawdź się w quizie</h5>
+          <p class="flow-text">
+            Stworzyliśmy interaktywne instrukcje by ułatwić przyswajanie informacji. Czytaj szybciej - pomijaj nieistotne fragmenty.
+            <br><br>
+            Możesz też przetestować swoją znajomość zasad zamrożenia Chochlika w quizie!
           </p>
           <br>
-          <router-link to="/quiz" class="btn-large waves-effect waves-light green darken-2">
-            <i class="left material-icons">quiz</i>
-            Sprawdź się
-          </router-link>
+          <div class="row center">
+            <router-link to="/instrukcja" class="btn-large waves-effect waves-light green darken-2" style="margin: 10px;">
+              <i class="left material-icons">menu_book</i>
+              Zobacz instrukcje
+            </router-link>
+            <router-link to="/quiz" class="btn-large waves-effect waves-light green darken-2" style="margin: 10px;">
+              <i class="left material-icons">quiz</i>
+              Sprawdź znajomość chochlika
+            </router-link>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 

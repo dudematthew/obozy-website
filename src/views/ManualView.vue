@@ -289,8 +289,10 @@ export default {
       if (!this.ir) return
       const t = `${this.documentTitle} | Instrukcja | Obozy - Gra Terenowa`
       const d = this.ir.meta?.description || 'Interaktywna instrukcja gry — Obozy Gra Terenowa'
+      const logo = this.ir.meta?.logoUrl
+      const image = logo ? `https://obozy.org.pl${logo}` : 'https://obozy.org.pl/og-image.png'
       document.title = t
-      updateMetaTags({ title: t, description: d, image: 'https://obozy.org.pl/og-image.png', imageAlt: t, url: window.location.href })
+      updateMetaTags({ title: t, description: d, image, imageAlt: t, url: window.location.href })
     },
     destroyDeck() {
       if (this.deck) {
@@ -780,6 +782,13 @@ export default {
                   <i class="material-icons" aria-hidden="true">chevron_right</i>
                 </router-link>
               </div>
+              <div v-else class="manual-finale__related">
+                <router-link to="/instrukcja" class="manual-finale__related-card">
+                  <i class="material-icons manual-finale__related-logo--fallback" aria-hidden="true">list</i>
+                  <span>Wróć do listy instrukcji</span>
+                  <i class="material-icons" aria-hidden="true">chevron_right</i>
+                </router-link>
+              </div>
             </div>
           </template>
           <template v-else-if="current && current.kind === 'part-end'">
@@ -804,6 +813,13 @@ export default {
                   <img v-if="m.logoUrl" :src="m.logoUrl" class="manual-finale__related-logo" width="36" height="36" alt="" />
                   <i v-else class="material-icons manual-finale__related-logo--fallback" aria-hidden="true">menu_book</i>
                   <span>{{ m.title }}</span>
+                  <i class="material-icons" aria-hidden="true">chevron_right</i>
+                </router-link>
+              </div>
+              <div v-else class="manual-part-end__related">
+                <router-link to="/instrukcja" class="manual-finale__related-card">
+                  <i class="material-icons manual-finale__related-logo--fallback" aria-hidden="true">list</i>
+                  <span>Lista instrukcji</span>
                   <i class="material-icons" aria-hidden="true">chevron_right</i>
                 </router-link>
               </div>
@@ -2555,7 +2571,7 @@ $reader-font: 'Lato', sans-serif;
   color: rgba(0, 0, 0, 0.55);
 }
 
-/* Navigation drawer — bottom sheet overlay */
+/* Navigation drawer — bottom sheet on mobile, centered panel on desktop */
 .manual-nav-drawer-backdrop {
   position: fixed;
   inset: 0;
@@ -2573,6 +2589,22 @@ $reader-font: 'Lato', sans-serif;
   max-height: 75dvh;
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+
+@media (min-width: 769px) {
+  .manual-nav-drawer-backdrop {
+    align-items: center;
+    justify-content: center;
+    padding: calc(#{$reader-nav-h} + 16px) 16px 16px;
+  }
+
+  .manual-nav-drawer {
+    max-width: 560px;
+    max-height: min(75dvh, 640px);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
 }
 
 .manual-nav-drawer__header {

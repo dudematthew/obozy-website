@@ -88,13 +88,25 @@ const router = createRouter({
 
 // Global navigation guard to update meta tags
 router.beforeEach((to) => {
-  // Update meta tags based on the route
-  const metaData = getMetaForRoute(to.name);
+  // ManualView sets per-manual title/description from IR after load
+  if (to.name === 'manual') return
 
-  // Use nextTick to ensure DOM is ready
-  setTimeout(() => {
-    updateMetaTags(metaData);
-  }, 0);
+  const base = {
+    url: `${window.location.origin}${to.fullPath}`,
+    image: 'https://obozy.org.pl/og-image.png'
+  }
+
+  if (to.meta?.title) {
+    updateMetaTags({
+      ...base,
+      title: to.meta.title,
+      description: to.meta.description,
+      imageAlt: to.meta.title
+    })
+    return
+  }
+
+  updateMetaTags({ ...getMetaForRoute(to.name), ...base, url: `${window.location.origin}${to.fullPath}` })
 });
 
 // Update meta tags on initial load

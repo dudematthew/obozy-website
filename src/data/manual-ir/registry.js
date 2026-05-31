@@ -3,11 +3,9 @@
  * Add an import for each entry in manuals.config.json
  */
 import mayhem from './mayhem.json'
-import classic from './classic.json'
 
 const manuals = {
-  mayhem,
-  classic
+  mayhem
 }
 
 // authoring.json is only built in dev mode (devOnly: true in manuals.config.json).

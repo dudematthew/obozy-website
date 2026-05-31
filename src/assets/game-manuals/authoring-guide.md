@@ -17,7 +17,7 @@ title: "Obozy – Mayhem"
 description: "Krótki opis dla wyszukiwarek i OG tagów."
 logo: "obozy-mayhem-manual.assets/ikona.png"
 related:
-  - classic
+  - inna-gra
 tags:
   original:
     icon: "content_copy"
@@ -122,7 +122,7 @@ Otwierają się w nowej karcie z `rel="noopener noreferrer"`. Wyświetlane na ni
 
 ```md
 <!-- manual:expand true -->
-#### Spis ołtarzy
+### Spis ołtarzy
 ```
 
 Komentarz przed nagłówkiem H4+ sprawia, że akordeon jest domyślnie otwarty.
@@ -188,7 +188,7 @@ Dla instrukcji widocznej tylko lokalnie (np. ten plik):
 ```js
 import mojaGra from './moja-gra.json'
 // ...
-const manuals = { mayhem, classic, mojaGra }
+const manuals = { mayhem, mojaGra }
 ```
 
 3. `npm run build:manuals`.

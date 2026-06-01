@@ -1,0 +1,567 @@
+{
+  "schemaVersion": 1,
+  "id": "classic",
+  "meta": {
+    "title": "Obozy – Gra Terenowa",
+    "description": "Dwóch obozów, flaga, punkty zwycięstwa i rozgrywka terenowa dla kilkunastu graczy — pełna instrukcja gry Obozy.",
+    "logo": "obozy-classic-manual.assets/logo.png",
+    "logoUrl": "/manual-assets/classic/logo.png",
+    "related": [
+      "mayhem"
+    ],
+    "tags": {
+      "reference_card": {
+        "icon": "style",
+        "label": "Karta pomocnicza",
+        "description": "Szczegóły mechaniki opisane na wydrukowanej karcie gry (np. Karta Właściwości Klas, Karta Zwojów). Pliki do druku są w folderze Google Drive organizatora."
+      },
+      "commander": {
+        "icon": "military_tech",
+        "label": "Dla dowódców",
+        "description": "Fragment istotny głównie dla dowódców obozów — negocjacje, handel, układ terenu."
+      },
+      "arbiter": {
+        "icon": "gavel",
+        "label": "Dla arbitrów",
+        "description": "Zasady sędziowania, bezpieczeństwa i rozstrzygania sporów."
+      },
+      "optional": {
+        "icon": "tour",
+        "label": "Opcjonalne",
+        "description": "Mechanika nieobowiązkowa w każdej rozgrywce (np. turnieje przerw, skarby zamiast zrzutów)."
+      },
+      "advanced": {
+        "icon": "psychology",
+        "label": "Dla zaawansowanych",
+        "description": "Złożona mechanika — przy pierwszej lekturze można wrócić po opanowaniu podstaw."
+      }
+    },
+    "glossary": {
+      "punkt_zwyciestwa": {
+        "definition": "Jednostka punktacji obozu. Przyznawany za dostarczenie flagi przeciwnika do własnego obozu lub (w skrajnych przypadkach) za eliminację wszystkich przeciwników. Dwa pół punkty dają jeden pełny punkt.",
+        "link": "cel-gry-i-punkty",
+        "display": "Punkt zwycięstwa"
+      },
+      "bibula": {
+        "definition": "Kolorowa tasiemka na nadgarstku (życie) lub srebrna na piersi (umiejętność klasy). Zerwanie ostatniej bibuły życia oznacza śmierć gracza.",
+        "link": "bibuły",
+        "display": "Bibuła"
+      },
+      "duch": {
+        "definition": "Gracz bez bibuły życia — wykluczony z rozgrywki do odrodzenia w cmentarzu. Sygnalizuje stan skrzyżowanymi rękami.",
+        "link": "sposób-walki-i-duch",
+        "display": "Duch (martwy gracz)"
+      },
+      "zamrozenie": {
+        "definition": "Pełne unieruchomienie — gracz nie rusza ciałem ani nie wydaje dźwięku, podnosi wyprostowaną rękę nad głowę. Inni zachowują ok. 20 cm dystansu.",
+        "link": "zamrożenie",
+        "display": "Stan zamrożenia"
+      },
+      "klasa": {
+        "definition": "Zestaw atrybutów wybierany na początku gry; zmiana tylko przez przeklasowanie za zgodą obu dowódców.",
+        "link": "klasy-i-przeklasowanie",
+        "display": "Klasa gracza"
+      },
+      "dowodca": {
+        "definition": "Gracz dowodzący obozem — tłumaczy zasady, pilnuje fair play i reprezentuje obóz w handlu.",
+        "link": "dowódca-i-poddowódca",
+        "display": "Dowódca"
+      },
+      "flaga": {
+        "definition": "Najważniejszy przedmiot gry na kiju powyżej 1,8 m. Dostarczenie flagi wroga do własnego obozu daje punkt zwycięstwa.",
+        "link": "flaga",
+        "display": "Flaga obozu"
+      },
+      "lockdown": {
+        "definition": "Stan, gdy obóz ma flagę w terenie, jest okupowany, a okupant ma własną flagę w obozie — odradzanie okupowanego jest zablokowane; po 20 minutach okupant zdobywa punkt i następuje reset.",
+        "link": "lockdown-i-reset",
+        "display": "Lockdown"
+      },
+      "reset": {
+        "definition": "Sytuacja jak zdobycie flagi, lecz żaden obóz nie otrzymuje punktu zwycięstwa — np. gdy obie flagi są w terenie.",
+        "link": "lockdown-i-reset",
+        "display": "Reset"
+      },
+      "okupacja": {
+        "definition": "Usunięcie wszystkich wrogów z wrogiego obozu i przebywanie w nim; kończy się, gdy ostatni okupant w pełni opuści obóz.",
+        "link": "lockdown-i-reset",
+        "display": "Okupacja"
+      },
+      "pojmanie": {
+        "definition": "Schwytanie zamrożonego gracza po 30-sekundowym odliczeniu z ręką z pętem na ramieniu; kończy się nałożeniem pęta na szyję.",
+        "link": "pojmanie-i-więzienie",
+        "display": "Pojmanie"
+      },
+      "peto": {
+        "definition": "Bibuła na szyi pojmanego — widoczny znak stanu schwytania.",
+        "link": "pojmanie-i-więzienie",
+        "display": "Pęto"
+      },
+      "oltarz_rytualny": {
+        "definition": "Neutralne jednoosobowe więzienie w równej odległości od obozów. Miejsce rytuału poświęcenia jeńca za pół punktu zwycięstwa — nie mylić z ołtarzami z wersji Mayhem.",
+        "link": "rytuał-na-ołtarzu",
+        "display": "Ołtarz (rytuał)"
+      },
+      "zwoj": {
+        "definition": "Jednorazowa kartka w stylu starego pergaminu; po aktywacji rozrywana na pół. Pełna lista na Karcie Zwojów.",
+        "link": "zwoje",
+        "display": "Zwój"
+      },
+      "strefa_neutralna": {
+        "definition": "Wyznaczone miejsce bez działań ofensywnych — handel dowódców, arena, zawieszenie broni.",
+        "link": "strefa-neutralna",
+        "display": "Strefa neutralna"
+      },
+      "paczka_specjalna": {
+        "definition": "Żółte pudełko na mapie ze zwojami i dodatkami; poziomy 1–3 różnią się zawartością.",
+        "link": "paczki-specjalne",
+        "display": "Paczka specjalna"
+      },
+      "arbiter": {
+        "definition": "Doświadczony gracz sędziujący rozgrywkę; jego decyzje są ostateczne.",
+        "link": "arbitrzy",
+        "display": "Arbiter"
+      }
+    }
+  },
+  "parts": [
+    {
+      "id": "obozy--gra-terenowa",
+      "title": "OBOZY – GRA TERENOWA",
+      "coverHtml": "<p><em><strong>INSTRUKCJA GRY</strong></em></p>\n<p>Obozy – Gra Terenowa to wielogodzinna gra terenowa dwóch obozów: flaga, punkty zwycięstwa, walka na bibuły, zwoje i negocjacje dowódców.</p>",
+      "tiles": [
+        {
+          "id": "teren-i-obozy",
+          "title": "Teren i obozy",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Gra odbywa się na terenie umożliwiającym rozłożenie dwóch <strong>obozów</strong> — każdy bez problemu pomieści połowę uczestników. Obozy na dwóch krańcach terenu, niewidoczne z obozu przeciwnego. Dojście normalnym tempem między obozami powinno trwać <strong>powyżej czterech minut</strong>; optymalna odległość to ok. <strong>350 metrów</strong>.</p>\n<p>Między obozami: zasłony terenowe, atrakcyjne miejsca na rozgrywkę oraz <span class=\"manual-glossary-term\" data-glossary=\"oltarz_rytualny\">ołtarz rytualny</span> (opisany później). Każdy obóz budowany jest tak, by możliwości były równe — zasada <em>fair play</em> w 100%.</p>\n<img src=\"/manual-assets/classic/terrain.png\" alt=\"Schemat rozmieszczenia obozów i terenu\" style=\"max-width:50%;height:auto\">"
+        },
+        {
+          "id": "rozłożenie-drużyn",
+          "title": "Rozłożenie drużyn",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Gracze ustawiają się przed dwoma <span class=\"manual-glossary-term\" data-glossary=\"dowodca\">dowódcami</span>, którzy na zmianę wybierają po jednej osobie, aż wyczerpią skład. Wybrani ustalają <strong>klasy</strong> (patrz <a href=\"#klasy-i-przeklasowanie\" class=\"manual-ref-link\">Klasy i przeklasowanie</a>).</p>\n<p>Powstają <strong>dwie drużyny</strong> w obozie zielonym lub brązowym. Wybór obozu należy do dowódcy, który jako drugi wybrał pierwszego członka.</p>"
+        },
+        {
+          "id": "cel-gry-i-punkty",
+          "title": "Cel gry i punkty",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Każdy obóz ma <strong>flagę</strong> w kolorze obozu. Celem jest zdobycie jak największej liczby <strong><span class=\"manual-glossary-term\" data-glossary=\"punkt_zwyciestwa\">punktów zwycięstwa</span></strong> — za <strong>odebranie flagi przeciwnika</strong> i dostarczenie jej do miejsca przechowywania we własnym obozie. Możliwe jest też zwycięstwo przez śmierć wszystkich graczy przeciwnika (wszyscy wracają do obozów; liczy się stan przy <strong>zakończeniu gry</strong>).</p>\n<div class=\"markdown-alert markdown-alert-note\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z\"></path></svg>Notatka</p>\n<p></p>\n<p>Można zdobyć <strong>pół punktu zwycięstwa</strong> (np. rytuał na ołtarzu). Dwa pół punkty dają jeden pełny punkt jak zwykły punkt zwycięstwa.</p>\n</div>"
+        },
+        {
+          "id": "sposób-walki-i-duch",
+          "title": "Sposób walki i Duch",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Gracze walczą przez <strong>kolorowe bibuły</strong> na rękach (kolor obozu). Aby unieszkodliwić przeciwnika, <strong>zerwij</strong> bibułę na jego ręce. Bez bibuły życia gracz jest <strong><span class=\"manual-glossary-term\" data-glossary=\"duch\">martwy</span></strong> (<span class=\"manual-glossary-term\" data-glossary=\"duch\">Duch</span>) i idzie do <a href=\"#cmentarz\" class=\"manual-ref-link\"><strong>cmentarza</strong></a>.</p>\n<p>Martwi upuszczają przedmioty rozgrywkowe (z wyjątkiem klasowych i prywatnych), trzymają <strong>skrzyżowane ręce</strong>, nie wpływają na grę ani nie przekazują informacji do odrodzenia. Szczegóły zależą od <span class=\"manual-glossary-term\" data-glossary=\"klasa\">klasy</span> — patrz Karta Właściwości Klas.</p>"
+        },
+        {
+          "id": "bibuły",
+          "title": "Bibuły",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Na rękach są bibuły życia (kolor obozu) i ewentualnie srebrna <strong>umiejętność klasy</strong> (agrafka na piersi). Gracz sam wybiera, na której ręce trzyma którą bibułę.</p>\n<ul>\n<li>Bibuły życia: zwykle nadgarstek, grubość min. <strong>3 cm</strong>, dwa okręcenia (połowy życia czasem na ramieniu — sznurek/agrafka zalecane).</li>\n<li>Bibuły można zastąpić biodegradowalnymi workami ciętymi w paski.</li>\n</ul>\n<img src=\"/manual-assets/classic/bibuly.png\" alt=\"Rozmieszczenie bibuł\" style=\"max-width:50%;height:auto\">"
+        },
+        {
+          "id": "cmentarz",
+          "title": "Cmentarz",
+          "tagKey": "reference_card",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p><strong>Cmentarz</strong> to wyraźnie oznaczone miejsce w każdym obozie (max. <strong>15%</strong> powierzchni obozu), rogi oznaczone fioletowymi <strong>palikami</strong>. <span class=\"manual-glossary-term\" data-glossary=\"duch\">Duch</span> powinien tam przebywać przez <strong>czas odradzania</strong> zależny od klasy (Karta Właściwości Klas).</p>\n<p>Jeśli żaden wróg nie jest w zasięgu wzroku, duch może poruszać się po swoim obozie ze skrzyżowanymi rękami na piersi.</p>"
+        },
+        {
+          "id": "zamrożenie",
+          "title": "Zamrożenie",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p><strong>Efekt zamrożenia</strong> nakładany jest m.in. zwojem lub umiejętnością klasy (Karta Zwojów / Karta Właściwości Klas). Zamrożony gracz <strong>nie rusza ciałem ani nie wydaje dźwięku</strong>; jeśli był w ruchu — szybko zatrzymuje się i podnosi <strong>wyprostowaną rękę nad głowę</strong>.</p>\n<p>Zamrożonego <strong>nie wolno dotykać</strong> (wyjątek: pojmanie, lekki dotyk Magiczną Laską bez siły). Inni trzymają ok. <strong>20 cm</strong> od ciała. Przed zamrożeniem osoby dotykające muszą się odsunąć. Nie wolno zrywać bibuł zamrożonym ani wywierać siły.</p>"
+        },
+        {
+          "id": "medyk-i-półżywy-duch",
+          "title": "Medyk i półżywy duch",
+          "tagKey": "advanced",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Jeśli w grze jest <strong>Medyk</strong>, może raz na jakiś czas wskrzesić <strong>Szturmowca</strong> (Karta Właściwości Klas). Duch idzie do Medyka i czeka na zawiązanie bibuły; do tego czasu jest „pomiędzy życiem a śmiercią”. Przerwanie: śmierć lub pojmanie Medyka, odejście Ducha z pola widzenia lub rezygnacja Ducha.</p>"
+        },
+        {
+          "id": "klasy-i-przeklasowanie",
+          "title": "Klasy i przeklasowanie",
+          "tagKey": "reference_card",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p><strong>Klasa</strong> to zestaw atrybutów na całą rozgrywkę (cztery klasy do wyboru na start). <strong>Przeklasowanie</strong> — obaj dowódcy zgadzają się na zmianę; wszyscy muszą wiedzieć. Nie przeklasowuje się <a href=\"#spos%C3%B3b-walki-i-duch\" class=\"manual-ref-link\">martwego</a> ani <a href=\"#pojmanie-i-wi%C4%99zienie\" class=\"manual-ref-link\">pojmanego</a>.</p>\n<p>Niektóre klasy (np. <strong>Tank</strong>) mają umiejętność klasy — powrót po ok. <strong>15 sekundach</strong> w swoim obozie. Pełny opis klas: <strong>Karta Właściwości Klas</strong>.</p>"
+        },
+        {
+          "id": "dowódca-i-poddowódca",
+          "title": "Dowódca i poddowódca",
+          "tagKey": "commander",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p><span class=\"manual-glossary-term\" data-glossary=\"dowodca\">Dowódcy</span> pilnują zasad i taktyki; mają klasę <strong>Dowódca</strong>. Gdy dowódca zginie lub zostanie pojmany, dowodzenie przejmuje <strong>poddowódca</strong> (nakładka na klasę — Karta Właściwości Klas). Zasady ustala nadal dowódca; poddowódca nie przeklasowuje dowódcy bez jego zgody.</p>"
+        },
+        {
+          "id": "flaga",
+          "title": "Flaga",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p><span class=\"manual-glossary-term\" data-glossary=\"flaga\">Flaga</span> na kiju <strong>powyżej 1,8 m</strong>, wbitym w grunt naturalny (nie doniczka). W promieniu <strong>1 m</strong> od flagi — nic nie może zasłaniać ani blokować dostępu.</p>\n<p>Odebranie flagi: przemieścić kij lub zerwać flagę i dostarczyć do miejsca przechowywania flag we własnym obozu. <strong>Nie można zdobyć punktu, jeśli własna flaga też nie jest w obozie</strong> — najpierw odzyskaj własną.</p>\n<div class=\"markdown-alert markdown-alert-warning\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z\"></path></svg>Ostrzeżenie</p>\n<p></p>\n<p><strong>Flaga zawsze musi być widoczna</strong> — nie wolno jej chować. Przy przenoszeniu — na wyciągniętej ręce, tak by każdy widział, że ją niesiesz.</p>\n</div>"
+        },
+        {
+          "id": "lockdown-i-reset",
+          "title": "Lockdown i reset",
+          "tagKey": "commander",
+          "introHtml": "<p>Czasem flaga ginie w akcji — przewidziano <strong>reset</strong> (jak zdobycie flagi, bez punktu) oraz <strong><span class=\"manual-glossary-term\" data-glossary=\"okupacja\">okupację</span></strong> (wszyscy wrogowie usunięci z obozu; trwa, dopóki okupant w pełni nie opuści obozu).</p>",
+          "subsections": [
+            {
+              "id": "lockdown",
+              "title": "Lockdown",
+              "tagKey": null,
+              "html": "<p><span class=\"manual-glossary-term\" data-glossary=\"lockdown\">Lockdown</span>: obóz ma flagę w terenie, jest okupowany, okupant ma flagę u siebie — <strong>odradzanie okupowanego zablokowane</strong>. Po <strong>20 minutach</strong> okupant zdobywa punkt i następuje <span class=\"manual-glossary-term\" data-glossary=\"reset\">reset</span>.</p>\n<details class=\"manual-accordion\"><summary class=\"manual-accordion__summary\">Lockdown — diagram</summary>\n<img src=\"/manual-assets/classic/lockdown.png\" alt=\"Schemat lockdownu\" style=\"max-width:50%;height:auto\"></details>"
+            },
+            {
+              "id": "pusty-reset",
+              "title": "Pusty reset",
+              "tagKey": null,
+              "html": "<p>Obie flagi w terenie, brak okupanta — po <strong>10 minutach</strong> <span class=\"manual-glossary-term\" data-glossary=\"reset\">reset</span>.</p>\n<details class=\"manual-accordion\"><summary class=\"manual-accordion__summary\">Pusty reset — diagram</summary>\n<img src=\"/manual-assets/classic/reset-pusty.png\" alt=\"Schemat pustego resetu\" style=\"max-width:50%;height:auto\"></details>"
+            },
+            {
+              "id": "okupowany-reset",
+              "title": "Okupowany reset",
+              "tagKey": null,
+              "html": "<p>Obie flagi w terenie, jeden okupant — po <strong>10 minutach</strong> reset.</p>\n<details class=\"manual-accordion\"><summary class=\"manual-accordion__summary\">Okupowany reset — diagram</summary>\n<img src=\"/manual-assets/classic/reset-okupowany.png\" alt=\"Schemat okupowanego resetu\" style=\"max-width:50%;height:auto\"></details>"
+            },
+            {
+              "id": "wymiana",
+              "title": "Wymiana",
+              "tagKey": null,
+              "html": "<p>Obie drużyny wymieniły się flagami, brak okupanta — <strong>natychmiastowy</strong> reset.</p>\n<details class=\"manual-accordion\"><summary class=\"manual-accordion__summary\">Wymiana — diagram</summary>\n<img src=\"/manual-assets/classic/reset-wymiana.png\" alt=\"Schemat wymiany flag\" style=\"max-width:50%;height:auto\"></details>"
+            }
+          ],
+          "contentHtml": null
+        },
+        {
+          "id": "pojmanie-i-więzienie",
+          "title": "Pojmanie i więzienie",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Aby <strong><span class=\"manual-glossary-term\" data-glossary=\"pojmanie\">pojmać</span></strong> wroga: <a href=\"#zamro%C5%BCenie\" class=\"manual-ref-link\">zamroź</a> go (zwój, laska itd.), połóż rękę z <strong>pętem</strong> na ramieniu, powiedz „<strong>pojmanie</strong>\", <strong>odlicz głośno do 30</strong>, nałóż <strong><span class=\"manual-glossary-term\" data-glossary=\"peto\">pęto</span></strong> (bibuła na szyi).</p>\n<p>Pojmany: ręce za plecami, bez używania rąk, bez manipulacji pętem; dotknięty przez wroga nie może się wyrwać, może uciec od swoich. Bez umiejętności klasy i bez samozerwania bibuły życia w schwytaniu. Inni mogą zerwać pęto — anuluje schwytanie.</p>\n<p>W obozie jest <strong>więzienie</strong> (żółte paliki w rogach). W więzieniu nie ucieka się samemu; wróg nie zrywa pęt bez <strong>sabotażu</strong> (wyciągnięcie ≥2 palików ramy). Palików nie kradnie się — odrzuca blisko w widoczne miejsce. Obóz zapewnia więźniom komfort.</p>\n<p>Więźniami handluje się jak walutą. Zerwanie bibuły życia więźnia = śmierć i utrata pęta. Po zdobyciu flagi przez dowolny obóz <strong>wszyscy więźniowie są zwalniani</strong>.</p>"
+        },
+        {
+          "id": "rytuał-na-ołtarzu",
+          "title": "Rytuał na ołtarzu",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Po <a href=\"#pojmanie-i-wi%C4%99zienie\" class=\"manual-ref-link\">pojmaniu</a> można poświęcić jeńca za <strong>pół <span class=\"manual-glossary-term\" data-glossary=\"punkt_zwyciestwa\">punktu zwycięstwa</span></strong>.</p>\n<p>Przetransportuj jeńca na <strong><span class=\"manual-glossary-term\" data-glossary=\"oltarz_rytualny\">ołtarz rytualny</span></strong> — neutralne jednoosobowe więzienie w równej odległości od obozów. <strong>Szaman</strong> (Chochlik z nakładką — Karta Właściwości Klas) dotyka jeńca Laską; jeniec odlicza na stoperze (zatrzymuje, gdy nie dotyka laska). Śmierć Szamana = rytuał od początku; wyciągnięcie dwóch palików ołtarza i uwolnienie jeńca = porażka.</p>\n<p>Rytuał ma być <strong>widoczny</strong>; jeniec na pytanie podaje pozostały czas. Po <strong>25 minutach</strong> rytuał się udaje — jeniec umiera, obóz Szamana dostaje pół punktu. <strong>Raz na dowolne zdobycie flagi</strong> przez obóz.</p>\n<div class=\"markdown-alert markdown-alert-note\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z\"></path></svg>Notatka</p>\n<p></p>\n<p>Ołtarz w tej grze służy rytuałowi — nie mylić z mechaniką ołtarzy w <a href=\"/instrukcja/mayhem\">Obozy – Mayhem</a>.</p>\n</div>"
+        },
+        {
+          "id": "handel-i-kradzież",
+          "title": "Handel i kradzież",
+          "tagKey": "commander",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Można <strong>kraść</strong> nieprywatne przedmioty z obozu wroga; wyznaczony obszar (<strong>max. 30%</strong> obozu) jest nietykalny (ustala dowódcy). Obozy muszą mieć m.in. <strong>siekierę</strong> i <strong>łopatę</strong> — skradzione narzędzia zwraca się niezwłocznie.</p>\n<p>O kradzieży zwojów: <a href=\"#zwoje\" class=\"manual-ref-link\">Zwoje</a>. O dropie przy śmierci: <a href=\"#spos%C3%B3b-walki-i-duch\" class=\"manual-ref-link\">Sposób walki</a>.</p>\n<p>Skradzionymi rzeczami, przywilejami i <strong>więźniami</strong> handlują <strong>dowódcy</strong> na <a href=\"#strefa-neutralna\" class=\"manual-ref-link\">Strefie neutralnej</a> po umówionym sygnale. Dowódcy i eskorta są chronieni do powrotu — powrót <strong>natychmiastowy</strong>.</p>\n<div class=\"markdown-alert markdown-alert-warning\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z\"></path></svg>Ostrzeżenie</p>\n<p></p>\n<p>Handel niematerialny jest chroniony zasadami gry — złamanie umowy to kara <strong>utratą punktu zwycięstwa</strong>.</p>\n</div>"
+        },
+        {
+          "id": "strefa-neutralna",
+          "title": "Strefa neutralna",
+          "tagKey": null,
+          "introHtml": "<p><span class=\"manual-glossary-term\" data-glossary=\"strefa_neutralna\">Strefa neutralna</span> łączy zasady <a href=\"#arena\" class=\"manual-ref-link\"><strong>Areny</strong></a>, <a href=\"#handel-i-kradzie%C5%BC\" class=\"manual-ref-link\"><strong>handlu</strong></a> i <a href=\"#pory-posi%C5%82k%C3%B3w-i-zawieszenia-broni\" class=\"manual-ref-link\"><strong>zawieszenia broni</strong></a>. W środku <strong>zakaz działań ofensywnych</strong>; w trakcie gry gracze nie wchodzą (wyjątki: arena, zawieszenie broni, przerwy). Nie wnosi się przedmiotów rozgrywkowych.</p>",
+          "subsections": [
+            {
+              "id": "pory-posiłków-i-zawieszenia-broni",
+              "title": "Pory posiłków i zawieszenia broni",
+              "tagKey": "reference_card",
+              "html": "<p>W porach obiadowych — <strong>zawieszenie broni</strong>: brak działań ofensywnych i istotnych dla gry; spotkanie w strefie neutralnej (Karta Pór Zawieszenia Broni). Zakaz przemieszczania po mapie — ewentualne dodatkowe punkty wyznaczają dowódcy.</p>"
+            },
+            {
+              "id": "arena",
+              "title": "Arena",
+              "tagKey": null,
+              "html": "<p><strong>Arena</strong> (~7 m średnicy, oświetlona, BHP) w strefie neutralnej — pojedynek na wyzwanie. Sposób walki wybiera wyzwający; brak odpowiedzi = oszustwo (<strong>pół punktu</strong> obozu oszusta). Tryby: na śmierć i życie, bez konsekwencji, o zakład (nie cały obóz / flaga bez zgody obu dowódców).</p>\n<p>Przykłady: walka na bibuły, bezpieczne miecze, szachy na czas, zapasy do przewrócenia butelki, siłowanie na rękę, zapasy do odklepania.</p>"
+            },
+            {
+              "id": "turnieje",
+              "title": "Turnieje",
+              "tagKey": "optional",
+              "html": "<p>W przerwach — nieobowiązkowe turnieje; reprezentanci obozów, zwycięzcy dostają <a href=\"#paczki-specjalne\" class=\"manual-ref-link\">Paczkę specjalną</a>.</p>\n<details class=\"manual-accordion\"><summary class=\"manual-accordion__summary\">Manczo</summary>\n<p>Gracze w dwóch polach połączonych korytarzami; nie wolno dotknąć linii (odpadnięcie). Cel: dotknąć rogu pola przeciwnika i krzyknąć <em>Mancho</em>. Wieże (rogi korytarzy) — nie wyciągać, chyba że wystawiona noga lub inna część ciała.</p>\n<img src=\"/manual-assets/classic/manczo.png\" alt=\"Pole gry Manczo\" style=\"max-width:50%;height:auto\">\n</details><details class=\"manual-accordion\"><summary class=\"manual-accordion__summary\">Flagrun</summary>\n<p>Dwie drużyny, dwie flagi 20 m od siebie — zabierz flagę wroga do swojej bazy; przeszkadzanie zapasami „do odklepania”.</p></details>"
+            }
+          ],
+          "contentHtml": null
+        },
+        {
+          "id": "zwoje",
+          "title": "Zwoje",
+          "tagKey": "reference_card",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p><strong><span class=\"manual-glossary-term\" data-glossary=\"zwoj\">Zwoje</span></strong> wyglądają jak stare kartki w sznurku; <strong>jednorazowe</strong> — po użyciu rozrywasz na pół.</p>\n<ul>\n<li>Na gracza: otwórz, trzymaj treść w zasięgu wzroku celu, dotknij drugą ręką, wypowiedz nazwę, porzuć resztkę.</li>\n<li>Bez wpływu na innych: rozryw i głośna nazwa.</li>\n<li>Kradzież z ręki możliwa; przy śmierci zwoje na ziemię.</li>\n<li><strong>Skrzynia na zwoje</strong> w obozie: do <strong>3</strong> zwojów (runa może podnieść do <strong>5</strong>) — nie do skradzenia.</li>\n</ul>\n<p>Pełna lista: <strong>Karta Zwojów</strong>. Znajdziesz je też w <a href=\"#paczki-specjalne\" class=\"manual-ref-link\">Paczkach specjalnych</a>.</p>"
+        },
+        {
+          "id": "paczki-specjalne",
+          "title": "Paczki specjalne",
+          "tagKey": null,
+          "introHtml": "<p><strong><span class=\"manual-glossary-term\" data-glossary=\"paczka_specjalna\">Paczki specjalne</span></strong> (żółte pudełka) na mapie — min. jedna widoczna ściana, <strong>ponad 40 m</strong> od obozu:</p>\n<ul>\n<li><strong>Poziom 1:</strong> 1 zwój + dodatki organizatora.</li>\n<li><strong>Poziom 2:</strong> 2 zwoje + dodatki (ok. połowa liczby poziomu 1).</li>\n<li><strong>Poziom 3:</strong> 3 zwoje + 1 runa + dodatki (tyle co <a href=\"#zrzuty\" class=\"manual-ref-link\">zrzutów</a> lub <a href=\"#skarby\" class=\"manual-ref-link\">skarbów</a>).</li>\n</ul>",
+          "subsections": [
+            {
+              "id": "ukryte-zasoby",
+              "title": "Ukryte zasoby",
+              "tagKey": null,
+              "html": "<p><a href=\"#paczki-specjalne\" class=\"manual-ref-link\">Paczki specjalne</a> ukryte przed grą przez osobę spoza rozgrywki — mała ilość zasobów między obozami.</p>"
+            }
+          ],
+          "contentHtml": null
+        },
+        {
+          "id": "mapa-terenu",
+          "title": "Mapa terenu",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Każdy obóz ma <strong>mapę</strong> — proporcjonalny obrys terenu z odległościami; uzupełniana w trakcie gry. Mapę można ukraść; kopii może być wiele.</p>\n<img src=\"/manual-assets/classic/mapa.jpeg\" alt=\"Przykładowa mapa terenu\" style=\"max-width:33%;height:auto\">"
+        },
+        {
+          "id": "zrzuty",
+          "title": "Zrzuty",
+          "tagKey": "commander",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p><strong>Zrzuty</strong> to <span class=\"manual-glossary-term\" data-glossary=\"paczka_specjalna\">paczki specjalne</span> w wyznaczonych godzinach; położenie wcześniej na mapie jako okręgi (większy okrąg = bogatsza zawartość).</p>\n<p><strong>10 minut</strong> przed zrzutem — powrót do obozów (kara +5 min wymarszu za naruszenie). Osoba spoza gry chowa paczkę w okręgu i odchodzi bez zdradzania miejsca. <strong>5 minut</strong> po zrzucie — wyruszenie obozów <strong>zsynchronizowane co do minuty</strong>.</p>"
+        },
+        {
+          "id": "skarby",
+          "title": "Skarby",
+          "tagKey": "optional",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Alternatywa lub uzupełnienie <a href=\"#zrzuty\" class=\"manual-ref-link\">zrzutów</a> — bez zatrzymywania całej gry. Zaufane osoby dostają paczki poziomu 3, kartki, mapę z sektorami (~20 m²), chowają paczkę w okręgu między obozami, rysują wskazówkę i kopię mapy (2 kopie dla arbitrów). <strong>2–3 skarby</strong> na grę. W wyznaczonej godzinie każdy obóz dostaje mapę skarbów.</p>"
+        }
+      ]
+    },
+    {
+      "id": "dla-organizatorów-i-arbitrów",
+      "title": "Dla organizatorów i arbitrów",
+      "coverHtml": "<p>Poniższe zasady nie muszą być znane każdemu graczowi na pamięć — kluczowe dla <strong>arbitrów</strong> i <strong>dowódców</strong>. Materiały do druku: <a href=\"https://drive.google.com/open?id=16IIbJyKMJ3rFsoJVpcLvLMqnK-d7y8Yl&#x26;usp=drive_fs\" class=\"manual-ext-link\" target=\"_blank\" rel=\"noopener noreferrer\">folder Google Drive</a>.</p>",
+      "tiles": [
+        {
+          "id": "arbitrzy",
+          "title": "Arbitrzy",
+          "tagKey": "arbiter",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p><strong><span class=\"manual-glossary-term\" data-glossary=\"arbiter\">Arbitrzy</span></strong> sędziują rozgrywkę: odblaski, latarki, krótkofalówki, <strong>żółte i czerwone kartki</strong>. Rozstrzygają spory, tłumaczą zasady, przydzielają punkty przy wątpliwościach. Decyzje arbitrów są <strong>ostateczne</strong>. Obraza arbitra lub celowe uderzenie — kartka (ostrzeżenie lub wykluczenie).</p>"
+        },
+        {
+          "id": "pax--stop-gra",
+          "title": "Pax – stop gra",
+          "tagKey": "arbiter",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Hasło <strong>Pax</strong> tylko przy realnym zagrożeniu zdrowia, bólu lub gdy gry nie da się kontynuować. Po krzyku — sprawdzenie powodu; bezpodstawne użycie może skończyć się karą.</p>\n<div class=\"markdown-alert markdown-alert-caution\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M4.47.22A.749.749 0 0 1 5 0h6c.199 0 .389.079.53.22l4.25 4.25c.141.14.22.331.22.53v6a.749.749 0 0 1-.22.53l-4.25 4.25A.749.749 0 0 1 11 16H5a.749.749 0 0 1-.53-.22L.22 11.53A.749.749 0 0 1 0 11V5c0-.199.079-.389.22-.53Zm.84 1.28L1.5 5.31v5.38l3.81 3.81h5.38l3.81-3.81V5.31L10.69 1.5ZM8 4a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z\"></path></svg>Ostrożnie</p>\n<p></p>\n<p>Pax przerywa całą rozgrywkę — używaj wyłącznie w sytuacjach opisanych w zasadach.</p>\n</div>"
+        },
+        {
+          "id": "bhp",
+          "title": "BHP",
+          "tagKey": "arbiter",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Przy możliwym starciu <strong>nie nosi się ostrych przedmiotów</strong>. Narzędzia poza użyciem — w wyznaczonym miejscu w obozie. W pościgu o skradzione narzędzie: podejdź i poproś o odłożenie; gracz powinien zostawić przedmiot i uciec lub walczyć o odzyskanie po zabiciu wroga.</p>\n<div class=\"markdown-alert markdown-alert-warning\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z\"></path></svg>Ostrzeżenie</p>\n<p></p>\n<p>Zaskoczenie przeciwnika z nożem w ręku może skończyć się poważnym urazem — dlatego ostrzeżenia są bezwzględne.</p>\n</div>"
+        },
+        {
+          "id": "karniak-i-fair-play",
+          "title": "Karniak i fair play",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Gra opiera się na <em>fair play</em> — pilnują <strong>arbitrzy</strong> i dowódcy. Bez czasu na spór: domniemany winny może wykonać <strong>Karniaka</strong> — leżenie na ziemi <strong>20 sekund</strong> z rękami za głową (nadal obowiązują zasady walki).</p>\n<img src=\"/manual-assets/classic/karniak.png\" alt=\"Ilustracja karniaka\" style=\"max-width:50%;height:auto\">\n<p>Odmowa Karniaka — gra toczy się dalej; po akcji <strong>arbiter</strong> lub dowódcy rozstrzygają. Przy udowodnionym oszustwie przeciwnik dostaje <strong>pół lub cały punkt zwycięstwa</strong> zależnie od wagi złamania.</p>"
+        },
+        {
+          "id": "rozpoczęcie-gry",
+          "title": "Rozpoczęcie gry",
+          "tagKey": "arbiter",
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Po podziale drużyn wspólnie tłumaczy się zasady graczom. Wiele szczegółów (handel, rozmieszczenie paczek, wymiary w cm) znają głównie <strong>arbitrzy</strong> i dowódcy — pytania najpierw do arbitrów, potem do dowódców.</p>\n<p>Kilka godzin na budowę baz (obozy nie przeszkadzają bez poważnego powodu). Na koniec dowódcy dają sygnał startu; <strong>arbitrzy</strong> muszą wiedzieć o rozpoczęciu.</p>"
+        }
+      ]
+    },
+    {
+      "id": "od-twórców",
+      "title": "Od twórców",
+      "coverHtml": "",
+      "tiles": [
+        {
+          "id": "kilka-słów-na-koniec",
+          "title": "Kilka słów na koniec",
+          "tagKey": null,
+          "introHtml": null,
+          "subsections": null,
+          "contentHtml": "<p>Gra ma dostarczać <strong>zabawy</strong> — niezależnie od wyniku traktujcie ją jak przyjacielską rywalizację. Coś nie gra? Dowódcy mogą porozmawiać i ustalić rozwiązanie.</p>\n<p>W <strong>cmentarzu</strong> lub <strong>więzieniu</strong> — odgrywajcie rolę; ratunek sojuszników i szacunek wrogów budują najlepsze wspomnienia.</p>\n<p>Mamy nadzieję, że Obozy sprawią Wam wiele przyjemności — spędziliśmy lata, by rozgrywka była jak najlepsza.</p>\n<p><em>Z podziękowaniami dla Karola i Jana Boguckich oraz wszystkich, którzy pomogli stworzyć Obozy.</em></p>\n<p>Mateusz i Miłosz Moczydłowscy, Jan i Karol Boguccy</p>"
+        }
+      ]
+    }
+  ],
+  "linkIndex": {
+    "teren-i-obozy": {
+      "part": 0,
+      "tile": 0
+    },
+    "rozłożenie-drużyn": {
+      "part": 0,
+      "tile": 1
+    },
+    "cel-gry-i-punkty": {
+      "part": 0,
+      "tile": 2
+    },
+    "sposób-walki-i-duch": {
+      "part": 0,
+      "tile": 3
+    },
+    "bibuły": {
+      "part": 0,
+      "tile": 4
+    },
+    "cmentarz": {
+      "part": 0,
+      "tile": 5
+    },
+    "zamrożenie": {
+      "part": 0,
+      "tile": 6
+    },
+    "medyk-i-półżywy-duch": {
+      "part": 0,
+      "tile": 7
+    },
+    "klasy-i-przeklasowanie": {
+      "part": 0,
+      "tile": 8
+    },
+    "dowódca-i-poddowódca": {
+      "part": 0,
+      "tile": 9
+    },
+    "flaga": {
+      "part": 0,
+      "tile": 10
+    },
+    "lockdown": {
+      "part": 0,
+      "tile": 11,
+      "subsection": 0
+    },
+    "pusty-reset": {
+      "part": 0,
+      "tile": 11,
+      "subsection": 1
+    },
+    "okupowany-reset": {
+      "part": 0,
+      "tile": 11,
+      "subsection": 2
+    },
+    "wymiana": {
+      "part": 0,
+      "tile": 11,
+      "subsection": 3
+    },
+    "lockdown-i-reset": {
+      "part": 0,
+      "tile": 11
+    },
+    "pojmanie-i-więzienie": {
+      "part": 0,
+      "tile": 12
+    },
+    "rytuał-na-ołtarzu": {
+      "part": 0,
+      "tile": 13
+    },
+    "handel-i-kradzież": {
+      "part": 0,
+      "tile": 14
+    },
+    "pory-posiłków-i-zawieszenia-broni": {
+      "part": 0,
+      "tile": 15,
+      "subsection": 0
+    },
+    "arena": {
+      "part": 0,
+      "tile": 15,
+      "subsection": 1
+    },
+    "turnieje": {
+      "part": 0,
+      "tile": 15,
+      "subsection": 2
+    },
+    "strefa-neutralna": {
+      "part": 0,
+      "tile": 15
+    },
+    "zwoje": {
+      "part": 0,
+      "tile": 16
+    },
+    "ukryte-zasoby": {
+      "part": 0,
+      "tile": 17,
+      "subsection": 0
+    },
+    "paczki-specjalne": {
+      "part": 0,
+      "tile": 17
+    },
+    "mapa-terenu": {
+      "part": 0,
+      "tile": 18
+    },
+    "zrzuty": {
+      "part": 0,
+      "tile": 19
+    },
+    "skarby": {
+      "part": 0,
+      "tile": 20
+    },
+    "arbitrzy": {
+      "part": 1,
+      "tile": 0
+    },
+    "pax--stop-gra": {
+      "part": 1,
+      "tile": 1
+    },
+    "bhp": {
+      "part": 1,
+      "tile": 2
+    },
+    "karniak-i-fair-play": {
+      "part": 1,
+      "tile": 3
+    },
+    "rozpoczęcie-gry": {
+      "part": 1,
+      "tile": 4
+    },
+    "kilka-słów-na-koniec": {
+      "part": 2,
+      "tile": 0
+    }
+  }
+}

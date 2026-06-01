@@ -103,13 +103,38 @@ export class SnapDeck {
 
   _onKey (e) {
     if (this._keyConsumes(e)) return
-    if (e.key === 'ArrowDown' || e.key === 'PageDown') {
-      e.preventDefault()
-      this._move(+1)
-    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-      e.preventDefault()
-      this._move(-1)
+    const el = this.opts.getScrollEl()
+    const downKeys = e.key === 'ArrowDown' || e.key === 'PageDown'
+    const upKeys = e.key === 'ArrowUp' || e.key === 'PageUp'
+    if (!downKeys && !upKeys) return
+
+    e.preventDefault()
+    if (!el) {
+      if (downKeys) this._move(+1)
+      else this._move(-1)
+      return
     }
+
+    const reduce = !!(window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    const behavior = reduce ? 'auto' : 'smooth'
+
+    if (downKeys) {
+      if (this._canScrollDown(el)) {
+        const step = e.key === 'PageDown' ? Math.max(120, el.clientHeight * 0.85) : 72
+        el.scrollBy({ top: step, behavior })
+        return
+      }
+      this._move(+1)
+      return
+    }
+
+    if (this._canScrollUp(el)) {
+      const step = e.key === 'PageUp' ? Math.max(120, el.clientHeight * 0.85) : 72
+      el.scrollBy({ top: -step, behavior })
+      return
+    }
+    this._move(-1)
   }
 
   _onTouchStart (e) {

@@ -16,7 +16,17 @@
       "advanced": {
         "icon": "psychology",
         "label": "Dla zaawansowanych",
-        "description": "Zaawansowana mechanika – przy pierwszej lekturze można pominąć."
+        "description": "Zaawansowana mechanika - przy pierwszej lekturze można pominąć."
+      },
+      "info-health": {
+        "icon": "update",
+        "label": "Punkty życia",
+        "description": "W przeciwieństwie do podstawowych zasad Obozów, nie istnieje mechanika \"połowy punktu życia\"."
+      },
+      "info-shaman": {
+        "icon": "psychology",
+        "label": "Szaman zamiast medyka",
+        "description": "Medyk znany z podstawowych zasad Obozów został zastąpiony przez Szamana, jednak sposób działania jest bardzo podobny."
       }
     },
     "glossary": {
@@ -26,27 +36,27 @@
         "display": "Eliminacja gracza"
       },
       "wskrzeszenie": {
-        "definition": "Przywrócenie wyeliminowanego gracza do gry. Możliwe wyłącznie Zwojem Zmartwychwstania lub umiejętnością Przywołanie klasy Szamana.",
+        "definition": "Przywrócenie wyeliminowanego gracza do gry. Możliwe wyłącznie za pomocą Zwoju Zmartwychwstania lub umiejętnością Przywołanie klasy Szamana.",
         "link": "eliminacja-i-wskrzeszenie",
         "display": "Wskrzeszenie gracza"
       },
       "zwoj": {
-        "definition": "Kartka papieru zawinięta w sznurek żeby nie było widać zawartości. Jednorazowy przedmiot z unikalnym efektem – aktywuje się przez wypowiedzenie nazwy i dotknięcie celu.",
+        "definition": "Kartka papieru zawinięta w sznurek żeby nie było widać zawartości. Jednorazowy przedmiot z unikalnym efektem – aktywuje się przez wypowiedzenie nazwy i często dotknięcie celu.",
         "link": "zwoje",
         "display": "Zwój"
       },
       "oltarz": {
         "definition": "Kluczowa strefa na terenie gry, z której można odbierać nagrody punktowe, klasy i zwoje. Ołtarz przejmuje się przez przebywanie w jego strefie przez określony czas.",
-        "link": "oltarze",
+        "link": "ołtarze",
         "display": "Ołtarz"
       },
       "nagroda": {
-        "definition": "Przedmiot, który można zdobyć przez przejęcie ołtarza: klasa, zwoje lub punkty. Drużyna zawsze odbiera najwyższą dostępną nagrodę.",
-        "link": "nagrody-oltarza",
+        "definition": "Benefit, który można zdobyć przez przejęcie ołtarza: klasa, zwoje lub punkty. Drużyna zawsze odbiera najwyższą dostępną nagrodę.",
+        "link": "nagrody-ołtarza",
         "display": "Nagroda z ołtarza"
       },
       "bibula": {
-        "definition": "Kolorowa tasiemka wiązana na nadgarstkach gracza, reprezentująca jeden punkt życia. Zerwanie ostatniej bibuły oznacza eliminację gracza.",
+        "definition": "Kolorowa tasiemka wiązana na nadgarstkach gracza, reprezentująca jeden punkt życia. Zerwanie ostatniej posiadanej bibuły oznacza eliminację gracza.",
         "link": "sposob-walki",
         "display": "Bibuła"
       },
@@ -61,8 +71,8 @@
         "display": "Stan zamrożenia"
       },
       "przejmowanie": {
-        "definition": "Proces zajmowania ołtarza – drużyna wpisuje się na kartę i przebywa w strefie przez wyznaczony czas. Przejęcie kończy się sukcesem jeśli nikt ze strefy nie wyjdzie przed czasem zakończenia.",
-        "link": "przejmowanie-oltarza",
+        "definition": "Proces zajmowania ołtarza – drużyna wpisuje się na kartę i przebywa w strefie przez wyznaczony czas. Przejęcie kończy się sukcesem jeśli wszyscy członkowie drużyny nie wyjdą przed czasem zakończenia lub nie zostaną wyeliminowani.",
+        "link": "przejmowanie-ołtarza",
         "display": "Przejmowanie ołtarza"
       }
     }
@@ -71,7 +81,7 @@
     {
       "id": "obozy--mayhem",
       "title": "OBOZY – MAYHEM",
-      "coverHtml": "<p><em><strong>INSTRUKCJA GRY</strong></em></p>\n<p>Obozy - Mayhem to alternatywna wersja gry terenowej - Obozy, zaprojektowana dla agresywniejszej dynamiki walki faworyzującej taktykę grupową.</p>",
+      "coverHtml": "<p><em><strong>INSTRUKCJA GRY</strong></em></p>\n<p>Obozy - Mayhem to alternatywna wersja gry terenowej - <a href=\"https://obozy.org.pl/o-nas\" class=\"manual-ext-link\" target=\"_blank\" rel=\"noopener noreferrer\">Obozy</a>, zaprojektowana dla agresywniejszej dynamiki walki faworyzującej taktykę grupową.</p>",
       "tiles": [
         {
           "id": "cel-gry",
@@ -79,7 +89,7 @@
           "tagKey": null,
           "introHtml": null,
           "subsections": null,
-          "contentHtml": "<p><em><strong>Mayhem</strong></em> to gra dla od 9 do 18 osób. Celem gry jest zdobycie jak największej liczby <strong>punktów</strong> przed zakończeniem rozgrywki. Punkty można zdobywać poprzez realizowanie <span class=\"manual-glossary-term\" data-glossary=\"nagroda\">nagród</span> <span class=\"manual-glossary-term\" data-glossary=\"oltarz\">ołtarzy</span> oraz <span class=\"manual-glossary-term\" data-glossary=\"eliminacja\">eliminowanie</span> przeciwników.</p>\n<p>Gra kończy się w momencie, gdy przy życiu pozostanie tylko jedna drużyna, upłynie <strong>30 minut</strong> od rozpoczęcia rozgrywki, lub wszyscy gracze zostaną wyeliminowani. Po zakończeniu gry następuje podliczenie punktów - ostatnia drużyna w grze nie wygrywa jej automatycznie.</p>"
+          "contentHtml": "<p><em><strong>Mayhem</strong></em> to gra dla od 9 do 18 osób. Celem gry jest zdobycie jak największej liczby <strong>punktów</strong> przed zakończeniem rozgrywki. Punkty można zdobywać poprzez realizowanie <span class=\"manual-glossary-term\" data-glossary=\"nagroda\">nagród</span> <span class=\"manual-glossary-term\" data-glossary=\"oltarz\">ołtarzy</span> oraz <span class=\"manual-glossary-term\" data-glossary=\"eliminacja\">eliminowanie</span> przeciwników.</p>\n<p>Gra kończy się w momencie, gdy pozostanie tylko jedna niewyeliminowana drużyna, upłynie <strong>30 minut</strong> od rozpoczęcia rozgrywki, lub wszyscy gracze zostaną wyeliminowani. Po zakończeniu gry następuje podliczenie punktów - ostatnia drużyna w grze nie wygrywa jej automatycznie.</p>"
         },
         {
           "id": "drużyny",
@@ -95,21 +105,21 @@
           "tagKey": null,
           "introHtml": null,
           "subsections": null,
-          "contentHtml": "<p>Drużyna zdobywa punkty na dwa sposoby:</p>\n<ul>\n<li>odbierając <span class=\"manual-glossary-term\" data-glossary=\"nagroda\">nagrody punktowe</span> z <span class=\"manual-glossary-term\" data-glossary=\"oltarz\">ołtarzy</span></li>\n<li><span class=\"manual-glossary-term\" data-glossary=\"eliminacja\">eliminując</span> przeciwników</li>\n</ul>\n<p>Za każde zabójstwo drużyna otrzymuje <strong>3 punkty</strong> - przyznawane tej drużynie, której członek zerwał ostatnią bibułę. Drużyny liczą ilość zabitych podczas gry, nie punkty za zabójstwa.</p>"
+          "contentHtml": "<p>Drużyna zdobywa punkty na dwa sposoby:</p>\n<ul>\n<li>odbierając <span class=\"manual-glossary-term\" data-glossary=\"nagroda\">nagrody punktowe</span> z <span class=\"manual-glossary-term\" data-glossary=\"oltarz\">ołtarzy</span></li>\n<li><span class=\"manual-glossary-term\" data-glossary=\"eliminacja\">eliminując</span> przeciwników</li>\n</ul>\n<p>Za każde zabójstwo drużyna otrzymuje <strong>3 punkty</strong> - przyznawane tej drużynie, której członek zerwał ostatnią bibułę danego gracza. Drużyny zapamiętują których przeciwników wyeliminowały podczas gry, nie punkty za zabójstwa.</p>"
         },
         {
           "id": "sposób-walki",
           "title": "Sposób walki",
-          "tagKey": "original",
+          "tagKey": null,
           "introHtml": null,
           "subsections": null,
-          "contentHtml": "<p>Gracze otrzymują kolorowe bibuły wiązane na nadgarstkach, reprezentujące ich <strong>punkty życia</strong>. Aby unieszkodliwić przeciwnika, należy zerwać jego bibułę.</p>\n<div class=\"markdown-alert markdown-alert-note\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z\"></path></svg>NOTE</p>\n<p></p>\n<p><em>Gracz który zerwał bibułę krzyczy <strong>zerwałem bibułę na danej ręce</strong>. Gracz który wie że zerwana mu bibuła była ostatnia krzyczy <strong>odpadam</strong>. Krzyczenie \"nie żyjesz\" nie jest wskazane ponieważ gracz może mieć wiele bibuł.</em></p>\n</div>\n<p>Gracz pozbawiony wszystkich bibuł zostaje <strong><span class=\"manual-glossary-term\" data-glossary=\"eliminacja\">wyeliminowany</span></strong> - upuszcza wówczas wszystkie posiadane <span class=\"manual-glossary-term\" data-glossary=\"zwoj\">zwoje</span>, po czym udaje się do miejsca wyeliminowanych graczy. Wyeliminowani gracze podróżujący po polu gry sygnalizują swój stan <strong>trzymając skrzyżowane ręce</strong> i nie mogą wykonywać żadnych działań mających wpływ na rozgrywkę. Wyeliminowanych graczy nie można śledzić.</p>"
+          "contentHtml": "<p>Gracze otrzymują kolorowe <span class=\"manual-tag-inline\" data-tag=\"info-health\" role=\"button\" tabindex=\"0\">bibuły wiązane na nadgarstkach<span class=\"material-icons manual-tag-inline__icon\">update</span></span>, reprezentujące ich <strong>punkty życia</strong>. Aby unieszkodliwić przeciwnika, należy zerwać jego bibułę.</p>\n<div class=\"markdown-alert markdown-alert-note\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z\"></path></svg>Notatka</p>\n<p></p>\n<p><em>Gracz który zerwał bibułę krzyczy <strong>zerwałem bibułę [na danej ręce]</strong>. Gracz który wie że zerwana mu bibuła była ostatnia krzyczy <strong>odpadam</strong>. Krzyczenie \"odpadasz\" nie jest wskazane ponieważ gracz może mieć dwie bibuły.</em></p>\n</div>\n<p>Gracz pozbawiony wszystkich bibuł zostaje <strong><span class=\"manual-glossary-term\" data-glossary=\"eliminacja\">wyeliminowany</span></strong> - upuszcza wówczas wszystkie posiadane <span class=\"manual-glossary-term\" data-glossary=\"zwoj\">zwoje</span>, po czym udaje się do miejsca wyeliminowanych graczy. Wyeliminowani gracze podróżujący po polu gry sygnalizują swój stan <strong>trzymając skrzyżowane ręce</strong> i nie mogą wykonywać żadnych działań mających wpływ na rozgrywkę. Wyeliminowanych graczy nie można śledzić.</p>"
         },
         {
           "id": "klasy",
           "title": "Klasy",
           "tagKey": null,
-          "introHtml": "<p>Klasa to zestaw atrybutów przyznawanych graczowi który ją posiada. Wyboru klasy <strong>nie można zmienić</strong> w trakcie gry inaczej niż zastępując ją <span class=\"manual-glossary-term\" data-glossary=\"klasa\">klasą</span> zdobytą z <span class=\"manual-glossary-term\" data-glossary=\"oltarz\">ołtarza</span>.</p>\n<p>Niektóre klasy posiadają umiejętność. Każda umiejętność może być użyta maksymalnie raz na odnowienie. <strong>Umiejętność klasy odnawia się w momencie odebrania dowolnej <span class=\"manual-glossary-term\" data-glossary=\"nagroda\">nagrody</span> z dowolnego <span class=\"manual-glossary-term\" data-glossary=\"oltarz\">ołtarza</span>.</strong> Gracz musi stać na ołtarzu w momencie odebrania nagrody.</p>",
+          "introHtml": "<p>Klasa to zestaw atrybutów przyznawanych graczowi który ją posiada. Wyboru klasy <strong>nie można zmienić</strong> w trakcie gry inaczej niż zastępując ją klasą zdobytą z <span class=\"manual-glossary-term\" data-glossary=\"oltarz\">ołtarza</span>.</p>\n<p>Niektóre klasy posiadają umiejętność. Większość umiejętności może być użyta maksymalnie raz na odnowienie. <strong>Umiejętność klasy odnawia się w momencie odebrania dowolnej <span class=\"manual-glossary-term\" data-glossary=\"nagroda\">nagrody</span> z dowolnego <span class=\"manual-glossary-term\" data-glossary=\"oltarz\">ołtarza</span>.</strong> Gracz musi stać na ołtarzu w momencie odebrania nagrody dla swojej drużyny.</p>",
           "subsections": [
             {
               "id": "szturmowiec",
@@ -127,7 +137,7 @@
               "id": "skaut",
               "title": "Skaut",
               "tagKey": null,
-              "html": "<p><strong>Skaut</strong> to klasa zwiadowcza, przydatna przy rekonesansie rozgrywki bez ryzykowania.</p>\n<ul>\n<li>Skaut posiada <strong>jeden punkt życia</strong>.</li>\n<li>Skaut posiada umiejętność <strong>Samobójstwo</strong> - jako jedyna klasa może spowodować własną śmierć, licząc głośno do trzech i zrywając bibułę życia. Raz rozpoczęte liczenie musi zakończyć się zerwaniem bibuły.</li>\n<li>Po użyciu Samobójstwa Skaut <strong>odradza się przy dowolnym przejętym ołtarzu</strong> zamiast w miejscu wyeliminowanych graczy, o ile żaden przeciwnik go nie dotyka w momencie użycia umiejętności.</li>\n</ul>"
+              "html": "<p><strong>Skaut</strong> to klasa zwiadowcza, przydatna przy rekonesansie rozgrywki bez ryzykowania.</p>\n<ul>\n<li>Skaut posiada <strong>jeden punkt życia</strong>.</li>\n<li>Skaut posiada umiejętność <strong>Samobójstwo</strong> - jako jedyna klasa może spowodować własną śmierć, licząc głośno do trzech i zrywając bibułę życia. Raz rozpoczęte liczenie musi zakończyć się zerwaniem bibuły.</li>\n<li>Po użyciu Samobójstwa Skaut <strong>odradza się przy dowolnym przejętym ołtarzu</strong> zamiast w miejscu wyeliminowanych graczy, o ile żaden przeciwnik go nie dotyka w momencie użycia umiejętności.</li>\n<li>Skaut może użyć umiejętności <strong>Samobójstwo</strong> dwa razy na odnowienie, nawet natychmiast po odrodzeniu.</li>\n</ul>"
             },
             {
               "id": "chochlik",
@@ -144,7 +154,7 @@
             {
               "id": "szaman",
               "title": "Szaman",
-              "tagKey": null,
+              "tagKey": "info-shaman",
               "html": "<p><strong>Szaman</strong> to klasa ściśle współpracująca z resztą drużyny. Jego umiejętności skupiają się na podtrzymywaniu sojuszników przy życiu i wspomaganiu ich w akcji.</p>\n<ul>\n<li>Szaman posiada <strong>jeden punkt życia</strong>.</li>\n<li>Szaman zawsze nosi ze sobą <strong>zapas bibuł życia</strong>.</li>\n<li>Szaman posiada umiejętność <strong>Przywołanie</strong> - przywrócenie wyeliminowanego Szturmowca do gry. Gdy dowolny Szturmowiec w drużynie ginie, może krzyknąć <em>„Szaman A!\"</em> (używając litery swojej drużyny). Szaman może odpowiedzieć <em>„Jestem\"</em> w ciągu trzech sekund. Wyeliminowany Szturmowiec kieruje się wówczas w stronę Szamana i czeka, aż ten zawiąże mu bibułę. Jeśli Szaman zostanie wyeliminowany lub wyeliminowany Szturmowiec opuści jego pole widzenia, użycie umiejętności przepada.</li>\n<li>Szaman posiada umiejętność <strong>Odnowa</strong> - może uzupełnić umiejętność dowolnego gracza w drużynie tak, jakby ten przejął ołtarz.</li>\n</ul>"
             }
           ],
@@ -153,7 +163,7 @@
         {
           "id": "magiczna-laska-i-zamrażanie",
           "title": "Magiczna Laska i Zamrażanie",
-          "tagKey": null,
+          "tagKey": "original",
           "introHtml": "<p>Poniżej znajdują się szczegółowe informacje o Magicznej Laski i jej odmianach.</p>",
           "subsections": [
             {
@@ -165,25 +175,25 @@
             {
               "id": "aktywna-i-nieaktywna-laska",
               "title": "Aktywna i nieaktywna Laska",
-              "tagKey": null,
+              "tagKey": "original",
               "html": "<p>Laska jest <strong>aktywna</strong>, gdy właściciel trzyma ją za wyznaczone miejsce (20-centymetrowy środek standardowej laski lub rączkę w odmianach) przynajmniej jedną ręką, a jednocześnie <strong>nie jest dotykany przez inną osobę</strong>. Aktywna Laska zamraża graczy poprzez dotyk ich ubrania lub skóry.</p>\n<p>Laska staje się <strong>nieaktywna</strong>, gdy właściciel zostanie dotknięty, puści laskę lub zginie. Nieaktywna Laska nie zamraża nikogo. Aby ją reaktywować, właściciel musi odliczyć głośno do trzech, spełniając warunki aktywności.</p>"
             },
             {
               "id": "mechanika-zamrażania",
               "title": "Mechanika zamrażania",
-              "tagKey": null,
+              "tagKey": "original",
               "html": "<p>Aktywna Laska dotykając gracza <strong>natychmiast go zamraża</strong> - dotyczy to również sojuszników. Właściciel może przemieszczać laskę po ciele zamrożonego i dotykać kolejnych graczy. Laska może zamrażać kilku graczy jednocześnie, jeśli dotyka ich wszystkich.</p>\n<p>Gdy Laska przestanie dotykać <strong>któregokolwiek</strong> z zamrożonych graczy, wszyscy zostają natychmiast zwolnieni, ponieważ Laska staje się nieaktywna.</p>\n<p>Aktywna Laska <strong>nie może zamrozić</strong> gracza, który sam kogoś aktywnie zamraża - taki gracz jest niewrażliwy na inne laski.</p>"
             },
             {
               "id": "zasady-dodatkowe",
               "title": "Zasady dodatkowe",
-              "tagKey": null,
+              "tagKey": "original",
               "html": "<p>Magiczna Laska jest <strong>nienaruszalna</strong> - nie można jej zabrać właścicielowi, nawet gdy leży na ziemi i nawet gdy jest nieaktywna. Jeśli zamrożony gracz przypadkowo złapał laskę, powinien rozluźnić chwyt.</p>\n<p>Gdy dwóch graczy z Laskami walczy, obowiązuje zasada pierwszeństwa - <strong>kto pierwszy zostanie dotknięty, zamraża się</strong>. Jeżeli dotkną się równocześnie, oboje odsuwają laski o 20 centymetrów i kontynuują walkę.</p>"
             },
             {
               "id": "odmiany-magicznej-laski",
               "title": "Odmiany Magicznej Laski",
-              "tagKey": null,
+              "tagKey": "original",
               "html": "<p>Standardowa <strong>Magiczna Laska</strong> ma długość <strong>1,4 metra</strong>.</p>\n<ul>\n<li><strong>Magiczny Nóż</strong> - krótsza wersja o długości około 20 cm, trzymana za 10-centymetrową rączkę. Ekskluzywna dla klasy Goblina.</li>\n<li><strong>Magiczny Miecz</strong> - wersja o długości 70 cm, trzymana za 10-centymetrową rączkę.</li>\n</ul>"
             }
           ],
@@ -193,7 +203,7 @@
           "id": "zwoje",
           "title": "Zwoje",
           "tagKey": "original",
-          "introHtml": "<p><strong>Zwoje</strong> to kartki papieru zawinięte w sznurek żeby nie było widać zawartości. Każdy zwój posiada swoją nazwę i opisane na nim działanie - są one <strong>jednorazowe</strong> i po aktywowaniu nie mogą być użyte już w rozgrywce.</p>\n<div class=\"markdown-alert markdown-alert-warning\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z\"></path></svg>WARNING</p>\n<p></p>\n<p>Jeśli zwój wpływa na innego gracza, należy otworzyć go i trzymać w jednej ręce tak, aby jego treść była widoczna dla osoby, na której jest używany, dotknąć jej drugą ręką i wypowiedzieć nazwę zwoju. Jeśli zwój nie wpływa na innych graczy, wystarczy wypowiedzieć głośno jego nazwę.</p>\n</div>\n<p>Każdy gracz zobowiązany jest do zapoznania się z nazwami i działaniem wszystkich zwojów przed rozpoczęciem gry.</p>",
+          "introHtml": "<p><strong>Zwoje</strong> to kartki papieru zawinięte w sznurek żeby nie było widać zawartości. Każdy zwój posiada swoją nazwę i opisane na nim działanie - są one <strong>jednorazowe</strong> i po aktywowaniu nie mogą być użyte już w rozgrywce.</p>\n<div class=\"markdown-alert markdown-alert-warning\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z\"></path></svg>Ostrzeżenie</p>\n<p></p>\n<p>Jeśli zwój wpływa na innego gracza, należy otworzyć go i trzymać w jednej ręce tak, aby jego treść była widoczna dla osoby, na której jest używany, dotknąć jej drugą ręką i wypowiedzieć nazwę zwoju. Jeśli zwój nie wpływa na innych graczy, wystarczy wypowiedzieć głośno jego nazwę.</p>\n</div>\n<p>Każdy gracz zobowiązany jest do zapoznania się z nazwami i działaniem wszystkich zwojów przed rozpoczęciem gry.</p>",
           "subsections": [
             {
               "id": "zmartwychwstanie",
@@ -262,19 +272,19 @@
               "id": "strefa-ołtarza-i-przejmowanie",
               "title": "Strefa ołtarza i przejmowanie",
               "tagKey": null,
-              "html": "<p>Każdy ołtarz posiada własną <strong>strefę</strong> wyznaczoną sznurkiem. <span class=\"manual-glossary-term\" data-glossary=\"przejmowanie\">Przejmowanie ołtarza</span> odbywa się po wpisaniu się na kartę a następnie poprzez przebywanie wewnątrz tej strefy. Opuszczenie strefy przez ostatniego członka drużyny natychmiast kończy przejmowanie.</p>\n<p>Każdy gracz otrzymuje <strong>własną mapę terenu</strong> – na niej nanosi numery miejsc, do których organizator przypisze ołtarze w danej rundzie. Legenda ołtarzy znajduje się na odwrocie mapy.</p>\n<img src=\"/manual-assets/mayhem/map.jpg\" alt=\"Przykładowa mapa terenu Obozy Mayhem\" style=\"max-width:50%;height:auto\">"
+              "html": "<p>Każdy ołtarz posiada własną <strong>strefę</strong> wyznaczoną sznurkiem. <span class=\"manual-glossary-term\" data-glossary=\"przejmowanie\">Przejmowanie ołtarza</span> odbywa się po wpisaniu się na kartę a następnie poprzez przebywanie wewnątrz tej strefy. Opuszczenie strefy przez ostatniego członka drużyny natychmiast kończy przejmowanie.</p>\n<p>Każdy gracz otrzymuje <strong>własną mapę terenu</strong> – na niej nanosi numery miejsc, do których organizator przypisze ołtarze w danej rundzie. Legenda ołtarzy znajduje się na odwrocie mapy.</p>\n<img src=\"/manual-assets/mayhem/map.jpg\" alt=\"Przykładowa mapa terenu Obozy Mayhem\">"
             },
             {
               "id": "nagrody-ołtarza",
               "title": "Nagrody ołtarza",
               "tagKey": null,
-              "html": "<p>Każdy ołtarz oferuje nagrody w ustalonej kolejności. Pierwsza drużyna, która skutecznie go przejmie, odbiera nagrodę na najwyższym miejscu - kolejne drużyny otrzymują to, co pozostało. Drużyna <strong>zawsze odbiera najwyższą dostępną nagrodę</strong> i wpisuje literę swojej drużyny przy odpowiedniej rubryce na karcie ołtarza.</p>\n<img src=\"/manual-assets/mayhem/altar_cards/sowa.jpg\" alt=\"Przykładowa karta ołtarza Sowa\" style=\"max-width:50%;height:auto\">\n<p>Ołtarz w którym skończyły się nagrody uznaje się za <strong>wykorzystany</strong> i nie może być przejmowany.</p>\n<p>Nagrody dzielą się na trzy rodzaje:</p>\n<ul>\n<li><strong>Klasa</strong> - unikalna, dostępna tylko raz na ołtarz.</li>\n<li><strong>Zwoje</strong> - dostępne w ograniczonej liczbie sztuk.</li>\n<li><strong>Punkty</strong> - niewyczerpalne; każda drużyna może odebrać je raz.</li>\n</ul>\n<p>Żadna drużyna <strong>nie może odebrać nagrody z tego samego ołtarza dwa razy</strong> z rzędu. Zachęca to do eksploracji mapy zamiast wielokrotnego korzystania z jednego miejsca.</p>\n<div class=\"markdown-alert markdown-alert-note\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z\"></path></svg>NOTE</p>\n<p></p>\n<p><em>Przykładowo ołtarz <strong>Sowa</strong> oferuje nagrody w poniższej kolejności:</em></p>\n<ol>\n<li><em>Zwoje</em></li>\n<li><em>Punkty</em></li>\n<li><em>Klasa</em></li>\n</ol>\n<p><em>Drużyna A może zabrać jedynie zwoje jeśli przejmie Sowę. Następna po niej drużyna B będzie mogła zabrać jedynie punkty bo zwoje są już zabrane. Drużyna A lub C mogą zabrać następnie jedynie klasę.</em></p>\n</div>"
+              "html": "<p>Każdy ołtarz oferuje nagrody w ustalonej kolejności. Pierwsza drużyna, która skutecznie go przejmie, odbiera nagrodę na najwyższym miejscu - kolejne drużyny otrzymują to, co pozostało. Drużyna <strong>zawsze odbiera najwyższą dostępną nagrodę</strong> i wpisuje literę swojej drużyny przy odpowiedniej rubryce na karcie ołtarza.</p>\n<img src=\"/manual-assets/mayhem/altar_cards/sowa.jpg\" alt=\"Przykładowa karta ołtarza Sowa\" style=\"max-width:50%;height:auto\">\n<p>Ołtarz w którym skończyły się nagrody uznaje się za <strong>wykorzystany</strong> i nie może być przejmowany.</p>\n<p>Nagrody dzielą się na trzy rodzaje:</p>\n<ul>\n<li><strong>Klasa</strong> - unikalna, dostępna tylko raz na ołtarz.</li>\n<li><strong>Zwoje</strong> - dostępne w określonej liczbie sztuk.</li>\n<li><strong>Punkty</strong> - dostępne w określonej ilości.</li>\n</ul>\n<p>Żadna drużyna <strong>nie może odebrać nagrody z tego samego ołtarza dwa razy</strong> z rzędu. Zachęca to do eksploracji mapy zamiast wielokrotnego korzystania z jednego miejsca.</p>\n<div class=\"markdown-alert markdown-alert-note\" dir=\"auto\">\n<p dir=\"auto\"><svg class=\"octicon\" viewBox=\"0 0 16 16\" width=\"16\" height=\"16\"><path d=\"M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z\"></path></svg>Notatka</p>\n<p></p>\n<p><em>Przykładowo ołtarz <strong>Sowa</strong> oferuje nagrody w poniższej kolejności:</em></p>\n<ol>\n<li><em>Zwoje</em></li>\n<li><em>Punkty</em></li>\n<li><em>Klasa</em></li>\n</ol>\n<p><em>Drużyna A może zabrać jedynie zwoje jeśli przejmie Sowę. Następna po niej drużyna B będzie mogła zabrać jedynie punkty bo zwoje są już zabrane. Drużyna A lub C mogą zabrać następnie jedynie klasę.</em></p>\n</div>"
             },
             {
               "id": "przejmowanie-ołtarza",
               "title": "Przejmowanie ołtarza",
               "tagKey": null,
-              "html": "<p>Aby rozpocząć przejmowanie, drużyna musi wejść do strefy, spełnić ewentualne wymagania ołtarza i wpisać się na karcie ołtarza podając <strong>literę drużyny, godzinę rozpoczęcia oraz planowaną godzinę zakończenia</strong>:</p>\n<ul>\n<li><strong>Drużyna</strong> - np. A</li>\n<li><strong>Koniec</strong> - suma godziny startu i czasu oczekiwania (<em>np. jeśli czas oczekiwania to trzy minuty a start to 13:29 to koniec to 13:32</em>). Start to zawsze następująca po aktualnej minuta (<em>np. jeśli start to 13:28:34 to start to 13:29</em>).</li>\n</ul>\n<p>Od momentu wpisania przejmowanie jest aktywne. Jeśli przejmująca drużyna przeżyje do godziny zakończenia, ołtarz zostaje przez nią przejęty i może ona odebrać nagrodę, niezależnie od obecności innych drużyn w strefie w tym momencie.</p>\n<p>Jeśli cała niewyeleminowana drużyna opuści strefę przed upływem czasu - dobrowolnie lub wskutek walki - <strong>przejmowanie zostaje anulowane</strong>. Nieukończone wpisy można przekreślić dla czytelności.</p>\n<p>Gdy drużyna przejmuje ołtarz, <strong>żadna inna drużyna nie może rozpocząć własnego przejmowania</strong> dopóki przejmowanie nie zostanie zakończone - sukcesem lub porażką.</p>\n<p>Drużyna B, chcąc nie dopuścić do przejęcia ołtarza przez drużynę A, musi wyeliminować wszystkich jej członków ze strefy <strong>przed godziną zakończenia</strong> wpisaną na karcie.</p>\n<p>Domyślnie do rozpoczęcia przejmowania wymagana jest <strong>jedna osoba</strong>, chyba że karta ołtarza stanowi inaczej. Jeśli ołtarz wymaga określonej liczby osób, wymóg ten dotyczy wyłącznie momentu rozpoczęcia - po wpisaniu się liczba obecnych graczy nie ma znaczenia.</p>"
+              "html": "<p>Aby rozpocząć przejmowanie, drużyna musi wejść do strefy, spełnić ewentualne wymagania ołtarza i wpisać się na karcie ołtarza podając <strong>literę drużyny oraz planowaną godzinę zakończenia przejmowania</strong>:</p>\n<ul>\n<li><strong>Drużyna</strong> - np. A</li>\n<li><strong>Koniec</strong> - suma godziny startu i czasu oczekiwania (<em>np. jeśli czas oczekiwania to trzy minuty a start to 13:29 to koniec to 13:32</em>). Start to zawsze następująca po aktualnej minuta (<em>np. jeśli drużyna rozpoczyna przejmowanie o 13:28:34 to start to 13:29</em>).</li>\n</ul>\n<p>Od momentu wpisania przejmowanie jest aktywne. Jeśli przejmująca drużyna przeżyje do godziny zakończenia, ołtarz zostaje przez nią przejęty i może ona odebrać nagrodę, niezależnie od obecności innych drużyn w strefie w tym momencie.</p>\n<p>Jeśli cała niewyeleminowana drużyna opuści strefę przed upływem czasu - dobrowolnie lub wskutek walki - <strong>przejmowanie zostaje anulowane</strong>. Nieukończone wpisy można przekreślić dla czytelności.</p>\n<p>Gdy drużyna przejmuje ołtarz, <strong>żadna inna drużyna nie może rozpocząć własnego przejmowania</strong> dopóki przejmowanie nie zostanie zakończone - sukcesem lub porażką.</p>\n<p>Drużyna B, chcąc nie dopuścić do przejęcia ołtarza przez drużynę A, musi wyeliminować wszystkich jej członków ze strefy <strong>przed godziną zakończenia</strong> wpisaną na karcie.</p>\n<p>Domyślnie do rozpoczęcia przejmowania wymagana jest <strong>jedna osoba</strong>, chyba że karta ołtarza stanowi inaczej. Jeśli ołtarz wymaga określonej liczby osób, wymóg ten dotyczy wyłącznie momentu rozpoczęcia - po wpisaniu się liczba obecnych graczy przestaje mieć znaczenie dla wymogu.</p>"
             },
             {
               "id": "rozpoczęcie-gry-i-ołtarze-startowe",
@@ -297,7 +307,7 @@
           "tagKey": null,
           "introHtml": null,
           "subsections": null,
-          "contentHtml": "<p>Gracz zostaje wyeliminowany w momencie utraty wszystkich bibuł życia i udaje się do <strong>wspólnego miejsca wyeliminowanych graczy</strong>. Gracz nie może wrócić do gry dopóki nie zostanie wskrzeszony.</p>\n<p>Wskrzeszenie jest możliwe wyłącznie przy użyciu <strong><span class=\"manual-glossary-term\" data-glossary=\"zwoj\">Zwoju Zmartwychwstania</span></strong> lub umiejętności <strong>Przywołanie</strong> klasy Szamana.</p>\n<p>Jeśli w danym momencie <strong>wszystkie drużyny oprócz jednej</strong> znajdują się w miejscu wyeliminowanych graczy, gra kończy się natychmiast.</p>"
+          "contentHtml": "<p>Gracz zostaje wyeliminowany w momencie utraty wszystkich bibuł życia i udaje się do <strong>wspólnego miejsca wyeliminowanych graczy</strong>. Gracz nie może wrócić do gry dopóki nie zostanie wskrzeszony.</p>\n<p>Wskrzeszenie jest możliwe wyłącznie przy użyciu <strong><span class=\"manual-glossary-term\" data-glossary=\"zwoj\">Zwoju Zmartwychwstania</span></strong> lub umiejętności <strong>Przywołanie</strong> klasy <a href=\"#szaman\" class=\"manual-ref-link\">Szamana</a>.</p>\n<p>Jeśli w danym momencie <strong>wszystkie drużyny oprócz jednej</strong> znajdują się w miejscu wyeliminowanych graczy, gra kończy się natychmiast.</p>"
         },
         {
           "id": "koniec-gry-i-liczenie-punktów",

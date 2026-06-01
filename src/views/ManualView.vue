@@ -4,6 +4,9 @@ import { getManual, manuals as allManuals } from '@/data/manual-ir/registry'
 import { updateMetaTags } from '@/lib/metaUtils.js'
 import { SnapDeck } from '@/lib/manual-reader/snapDeck'
 
+/** Half-height of progress-bar thumb — keeps drag hit area inside the track. */
+const PROGRESS_THUMB_R = 14
+
 /* global M */
 export default {
   name: 'ManualView',
@@ -111,6 +114,13 @@ export default {
       const n = this.verticalSlideCount
       if (n < 2) return 0
       return (this.activeSlide / (n - 1)) * 100
+    },
+    progressThumbStyle() {
+      const n = this.verticalSlideCount
+      const pad = PROGRESS_THUMB_R
+      if (n < 2) return { top: `${pad}px` }
+      const t = this.activeSlide / (n - 1)
+      return { top: `calc(${pad}px + (100% - ${pad * 2}px) * ${t})` }
     },
     partsCount() {
       return this.ir?.parts?.length || 0
@@ -372,6 +382,19 @@ export default {
               const desired = scrollEl.scrollTop + (dRect.top - sRect.top) - 8
               scrollEl.scrollTo({ top: Math.max(0, desired), behavior: 'smooth' })
             }
+            const reflow = () => {
+              const dRect2 = details.getBoundingClientRect()
+              const sRect2 = scrollEl.getBoundingClientRect()
+              if (dRect2.top < sRect2.top + 8) {
+                scrollEl.scrollTop = Math.max(0, scrollEl.scrollTop + (dRect2.top - sRect2.top) - 8)
+              }
+            }
+            details.querySelectorAll('img').forEach((img) => {
+              if (!img.complete) {
+                img.addEventListener('load', reflow, { once: true })
+                img.addEventListener('error', reflow, { once: true })
+              }
+            })
           })
         }
         return
@@ -383,35 +406,54 @@ export default {
         const href = refEl.getAttribute('href') || ''
         const slug = decodeURIComponent(href.replace(/^#/, ''))
         if (!slug || !this.ir) return
-        const entry = this.ir.linkIndex && this.ir.linkIndex[slug]
+        const entry = this.resolveLinkEntry(slug)
         if (!entry) return
-        const targetPart = entry.part ?? 0
-        const targetSlide = (entry.tile ?? 0) + ((this.ir.parts[targetPart]?.coverHtml) ? 1 : 0)
-        this.activePart = targetPart
-        this.$nextTick(() => {
-          this.activeSlide = targetSlide
-          if (entry.subsection != null) {
-            this.$nextTick(() => this.goToSub(entry.subsection))
-          }
-        })
+        this.navigateToLinkEntry(entry)
+        return
       }
     },
     jumpToGlossLink() {
       const slug = this.glossLink
       if (!slug || !this.ir) return
       this.glossOpen = false
-      const entry = this.ir.linkIndex && this.ir.linkIndex[slug]
+      const entry = this.resolveLinkEntry(slug)
       if (!entry) return
+      this.navigateToLinkEntry(entry)
+    },
+    resolveLinkEntry(slug) {
+      if (!slug || !this.ir?.linkIndex) return null
+      const idx = this.ir.linkIndex
+      if (idx[slug]) return idx[slug]
+      const polish = slug
+        .replace(/oltarze/g, 'ołtarze')
+        .replace(/oltarz/g, 'ołtarz')
+        .replace(/nagrody-oltarza/g, 'nagrody-ołtarza')
+        .replace(/przejmowanie-oltarza/g, 'przejmowanie-ołtarza')
+      if (polish !== slug && idx[polish]) return idx[polish]
+      return null
+    },
+    navigateToLinkEntry(entry) {
+      if (!entry || !this.ir) return
       const targetPart = entry.part ?? 0
       const coverOffset = this.ir.parts[targetPart]?.coverHtml ? 1 : 0
       const targetSlide = (entry.tile ?? 0) + coverOffset
-      this.activePart = targetPart
-      this.$nextTick(() => {
-        this.activeSlide = targetSlide
-        if (entry.subsection != null) {
-          this.$nextTick(() => this.goToSub(entry.subsection))
-        }
-      })
+      if (this.activePart !== targetPart) {
+        this.activePart = targetPart
+        this.$nextTick(() => {
+          this.rebuildDeck()
+          this.$nextTick(() => {
+            this.activeSlide = targetSlide
+            if (entry.subsection != null) {
+              this.$nextTick(() => this.goToSub(entry.subsection))
+            }
+          })
+        })
+        return
+      }
+      this.activeSlide = targetSlide
+      if (entry.subsection != null) {
+        this.$nextTick(() => this.goToSub(entry.subsection))
+      }
     },
     openSearch() {
       this.searchOpen = true
@@ -513,8 +555,7 @@ export default {
       this.subAnimated = true
       const tileId = this.current?.tile?.id
       if (tileId) this.subMemory = { ...this.subMemory, [tileId]: next }
-      clearTimeout(this._scrollTimer)
-      this._scrollTimer = setTimeout(this.scrollToActiveSubTop, 200)
+      this.alignSubAfterLayout()
     },
     /**
      * Scrolls the slide-scroll container so the active H3 card sits
@@ -574,6 +615,22 @@ export default {
       if (Math.abs(target - scrollEl.scrollTop) < 1) return
       scrollEl.scrollTo({ top: target, behavior: reduce ? 'auto' : 'smooth' })
     },
+    /** Scroll to active H3; re-run when images inside the tile finish loading. */
+    alignSubAfterLayout(delay = 200) {
+      clearTimeout(this._scrollTimer)
+      this._scrollTimer = setTimeout(() => {
+        const run = () => this.scrollToActiveSubTop()
+        run()
+        const scrollEl = this.$refs.slideScroll
+        if (!scrollEl) return
+        scrollEl.querySelectorAll('img').forEach((img) => {
+          if (!img.complete) {
+            img.addEventListener('load', run, { once: true })
+            img.addEventListener('error', run, { once: true })
+          }
+        })
+      }, delay)
+    },
     stepSub(dir) {
       this.goToSub(this.activeSub + dir)
     },
@@ -628,7 +685,9 @@ export default {
     },
     _jumpToSlideByY(clientY, bar) {
       const rect = bar.getBoundingClientRect()
-      const ratio = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height))
+      const pad = PROGRESS_THUMB_R
+      const usable = Math.max(1, rect.height - pad * 2)
+      const ratio = Math.max(0, Math.min(1, (clientY - rect.top - pad) / usable))
       const idx = Math.round(ratio * (this.verticalSlideCount - 1))
       if (idx !== this.activeSlide) {
         this.activeSlide = idx
@@ -720,7 +779,7 @@ export default {
       >
         <div class="manual-reader__progress-track" aria-hidden="true" />
         <div class="manual-reader__progress-fill" :style="{ height: vProgress + '%' }" aria-hidden="true" />
-        <div class="manual-reader__progress-thumb" :style="{ top: vProgress + '%' }">
+        <div class="manual-reader__progress-thumb" :style="progressThumbStyle">
           <i v-if="current && current.kind === 'finale'" class="material-icons" aria-hidden="true">check</i>
           <i v-else-if="current && current.kind === 'part-end'" class="material-icons" aria-hidden="true">arrow_forward</i>
           <span v-else>{{ remainingTiles }}</span>
@@ -758,7 +817,7 @@ export default {
                 <!-- mouse / keyboard -->
                 <span class="manual-cover__hint--mouse">
                   <i class="material-icons">keyboard_arrow_down</i>
-                  <span>przewiń w dół, by zacząć</span>
+                  <span>przewiń kółkiem myszy lub naciśnij ↓, by zacząć</span>
                 </span>
               </div>
             </div>
@@ -1000,7 +1059,7 @@ export default {
         </div>
         <p class="manual-gloss-text">{{ glossText }}</p>
         <button
-          v-if="glossLink"
+          v-if="glossLink && resolveLinkEntry(glossLink)"
           type="button"
           class="manual-gloss-jump"
           @click="jumpToGlossLink"
@@ -2361,15 +2420,6 @@ $reader-font: 'Lato', sans-serif;
   padding: 10px 14px 12px;
   font-size: 0.95rem;
   line-height: 1.55;
-}
-
-/* Cursor + selection hints when subsections exist (desktop discoverability). */
-.manual-slide__scroll.has-subs .manual-h3-wrap {
-  cursor: grab;
-}
-
-.manual-slide__scroll.has-subs .manual-h3-wrap:active {
-  cursor: grabbing;
 }
 
 /* Direction-aware H3 transitions. Both directions are 180ms, mode="out-in". */

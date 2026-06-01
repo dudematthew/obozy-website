@@ -11,7 +11,15 @@ tags:
   advanced:
     icon: "psychology"
     label: "Dla zaawansowanych"
-    description: "Zaawansowana mechanika – przy pierwszej lekturze można pominąć."
+    description: "Zaawansowana mechanika - przy pierwszej lekturze można pominąć."
+  info-health:
+    icon: "update"
+    label: "Punkty życia"
+    description: "W przeciwieństwie do podstawowych zasad Obozów, nie istnieje mechanika \"połowy punktu życia\"."
+  info-shaman:
+    icon: "psychology"
+    label: "Szaman zamiast medyka"
+    description: "Medyk znany z podstawowych zasad Obozów został zastąpiony przez Szamana, jednak sposób działania jest bardzo podobny."
 glossary:
   eliminacja:
     display: "Eliminacja gracza"
@@ -19,23 +27,23 @@ glossary:
     link: "eliminacja-i-wskrzeszenie"
   wskrzeszenie:
     display: "Wskrzeszenie gracza"
-    definition: "Przywrócenie wyeliminowanego gracza do gry. Możliwe wyłącznie Zwojem Zmartwychwstania lub umiejętnością Przywołanie klasy Szamana."
+    definition: "Przywrócenie wyeliminowanego gracza do gry. Możliwe wyłącznie za pomocą Zwoju Zmartwychwstania lub umiejętnością Przywołanie klasy Szamana."
     link: "eliminacja-i-wskrzeszenie"
   zwoj:
     display: "Zwój"
-    definition: "Kartka papieru zawinięta w sznurek żeby nie było widać zawartości. Jednorazowy przedmiot z unikalnym efektem – aktywuje się przez wypowiedzenie nazwy i dotknięcie celu."
+    definition: "Kartka papieru zawinięta w sznurek żeby nie było widać zawartości. Jednorazowy przedmiot z unikalnym efektem – aktywuje się przez wypowiedzenie nazwy i często dotknięcie celu."
     link: "zwoje"
   oltarz:
     display: "Ołtarz"
     definition: "Kluczowa strefa na terenie gry, z której można odbierać nagrody punktowe, klasy i zwoje. Ołtarz przejmuje się przez przebywanie w jego strefie przez określony czas."
-    link: "oltarze"
+    link: "ołtarze"
   nagroda:
     display: "Nagroda z ołtarza"
-    definition: "Przedmiot, który można zdobyć przez przejęcie ołtarza: klasa, zwoje lub punkty. Drużyna zawsze odbiera najwyższą dostępną nagrodę."
-    link: "nagrody-oltarza"
+    definition: "Benefit, który można zdobyć przez przejęcie ołtarza: klasa, zwoje lub punkty. Drużyna zawsze odbiera najwyższą dostępną nagrodę."
+    link: "nagrody-ołtarza"
   bibula:
     display: "Bibuła"
-    definition: "Kolorowa tasiemka wiązana na nadgarstkach gracza, reprezentująca jeden punkt życia. Zerwanie ostatniej bibuły oznacza eliminację gracza."
+    definition: "Kolorowa tasiemka wiązana na nadgarstkach gracza, reprezentująca jeden punkt życia. Zerwanie ostatniej posiadanej bibuły oznacza eliminację gracza."
     link: "sposob-walki"
   klasa:
     display: "Klasa gracza"
@@ -47,20 +55,20 @@ glossary:
     link: "magiczna-laska-i-zamrażanie"
   przejmowanie:
     display: "Przejmowanie ołtarza"
-    definition: "Proces zajmowania ołtarza – drużyna wpisuje się na kartę i przebywa w strefie przez wyznaczony czas. Przejęcie kończy się sukcesem jeśli nikt ze strefy nie wyjdzie przed czasem zakończenia."
-    link: "przejmowanie-oltarza"
+    definition: "Proces zajmowania ołtarza – drużyna wpisuje się na kartę i przebywa w strefie przez wyznaczony czas. Przejęcie kończy się sukcesem jeśli wszyscy członkowie drużyny nie wyjdą przed czasem zakończenia lub nie zostaną wyeliminowani."
+    link: "przejmowanie-ołtarza"
 ---
 # OBOZY – MAYHEM
 
 ***INSTRUKCJA GRY***
 
-Obozy - Mayhem to alternatywna wersja gry terenowej - Obozy, zaprojektowana dla agresywniejszej dynamiki walki faworyzującej taktykę grupową.
+Obozy - Mayhem to alternatywna wersja gry terenowej - [Obozy](https://obozy.org.pl/o-nas), zaprojektowana dla agresywniejszej dynamiki walki faworyzującej taktykę grupową.
 
 ## Cel gry
 
 ***Mayhem*** to gra dla od 9 do 18 osób. Celem gry jest zdobycie jak największej liczby **punktów** przed zakończeniem rozgrywki. Punkty można zdobywać poprzez realizowanie [nagród](glossary:nagroda) [ołtarzy](glossary:oltarz) oraz [eliminowanie](glossary:eliminacja) przeciwników.
 
-Gra kończy się w momencie, gdy przy życiu pozostanie tylko jedna drużyna, upłynie **30 minut** od rozpoczęcia rozgrywki, lub wszyscy gracze zostaną wyeliminowani. Po zakończeniu gry następuje podliczenie punktów - ostatnia drużyna w grze nie wygrywa jej automatycznie.
+Gra kończy się w momencie, gdy pozostanie tylko jedna niewyeliminowana drużyna, upłynie **30 minut** od rozpoczęcia rozgrywki, lub wszyscy gracze zostaną wyeliminowani. Po zakończeniu gry następuje podliczenie punktów - ostatnia drużyna w grze nie wygrywa jej automatycznie.
 
 ## Drużyny
 
@@ -75,24 +83,23 @@ Drużyna zdobywa punkty na dwa sposoby:
 - odbierając [nagrody punktowe](glossary:nagroda) z [ołtarzy](glossary:oltarz)
 - [eliminując](glossary:eliminacja) przeciwników
 
-Za każde zabójstwo drużyna otrzymuje **3 punkty** - przyznawane tej drużynie, której członek zerwał ostatnią bibułę. Drużyny liczą ilość zabitych podczas gry, nie punkty za zabójstwa.
+Za każde zabójstwo drużyna otrzymuje **3 punkty** - przyznawane tej drużynie, której członek zerwał ostatnią bibułę danego gracza. Drużyny zapamiętują których przeciwników wyeliminowały podczas gry, nie punkty za zabójstwa.
 
 ## Sposób walki
 
-<!-- manual:tag original -->
-Gracze otrzymują kolorowe bibuły wiązane na nadgarstkach, reprezentujące ich **punkty życia**. Aby unieszkodliwić przeciwnika, należy zerwać jego bibułę.
+Gracze otrzymują kolorowe [bibuły wiązane na nadgarstkach](tag:info-health), reprezentujące ich **punkty życia**. Aby unieszkodliwić przeciwnika, należy zerwać jego bibułę.
 
 > [!NOTE]
 >
-> *Gracz który zerwał bibułę krzyczy **zerwałem bibułę na danej ręce**. Gracz który wie że zerwana mu bibuła była ostatnia krzyczy **odpadam**. Krzyczenie "nie żyjesz" nie jest wskazane ponieważ gracz może mieć wiele bibuł.*
+> *Gracz który zerwał bibułę krzyczy **zerwałem bibułę [na danej ręce]**. Gracz który wie że zerwana mu bibuła była ostatnia krzyczy **odpadam**. Krzyczenie "odpadasz" nie jest wskazane ponieważ gracz może mieć dwie bibuły.*
 
 Gracz pozbawiony wszystkich bibuł zostaje **[wyeliminowany](glossary:eliminacja)** - upuszcza wówczas wszystkie posiadane [zwoje](glossary:zwoj), po czym udaje się do miejsca wyeliminowanych graczy. Wyeliminowani gracze podróżujący po polu gry sygnalizują swój stan **trzymając skrzyżowane ręce** i nie mogą wykonywać żadnych działań mających wpływ na rozgrywkę. Wyeliminowanych graczy nie można śledzić.
 
 ## Klasy
 
-Klasa to zestaw atrybutów przyznawanych graczowi który ją posiada. Wyboru klasy **nie można zmienić** w trakcie gry inaczej niż zastępując ją [klasą](glossary:klasa) zdobytą z [ołtarza](glossary:oltarz).
+Klasa to zestaw atrybutów przyznawanych graczowi który ją posiada. Wyboru klasy **nie można zmienić** w trakcie gry inaczej niż zastępując ją klasą zdobytą z [ołtarza](glossary:oltarz).
 
-Niektóre klasy posiadają umiejętność. Każda umiejętność może być użyta maksymalnie raz na odnowienie. **Umiejętność klasy odnawia się w momencie odebrania dowolnej [nagrody](glossary:nagroda) z dowolnego [ołtarza](glossary:oltarz).** Gracz musi stać na ołtarzu w momencie odebrania nagrody.
+Niektóre klasy posiadają umiejętność. Większość umiejętności może być użyta maksymalnie raz na odnowienie. **Umiejętność klasy odnawia się w momencie odebrania dowolnej [nagrody](glossary:nagroda) z dowolnego [ołtarza](glossary:oltarz).** Gracz musi stać na ołtarzu w momencie odebrania nagrody dla swojej drużyny.
 
 ### Szturmowiec
 
@@ -117,6 +124,7 @@ Niektóre klasy posiadają umiejętność. Każda umiejętność może być uży
 - Skaut posiada **jeden punkt życia**.
 - Skaut posiada umiejętność **Samobójstwo** - jako jedyna klasa może spowodować własną śmierć, licząc głośno do trzech i zrywając bibułę życia. Raz rozpoczęte liczenie musi zakończyć się zerwaniem bibuły.
 - Po użyciu Samobójstwa Skaut **odradza się przy dowolnym przejętym ołtarzu** zamiast w miejscu wyeliminowanych graczy, o ile żaden przeciwnik go nie dotyka w momencie użycia umiejętności.
+- Skaut może użyć umiejętności **Samobójstwo** dwa razy na odnowienie, nawet natychmiast po odrodzeniu.
 
 ### Chochlik
 
@@ -135,6 +143,7 @@ Niektóre klasy posiadają umiejętność. Każda umiejętność może być uży
 
 ### Szaman
 
+<!-- manual:tag info-shaman -->
 **Szaman** to klasa ściśle współpracująca z resztą drużyny. Jego umiejętności skupiają się na podtrzymywaniu sojuszników przy życiu i wspomaganiu ich w akcji.
 
 -  Szaman posiada **jeden punkt życia**.
@@ -143,6 +152,7 @@ Niektóre klasy posiadają umiejętność. Każda umiejętność może być uży
 - Szaman posiada umiejętność **Odnowa** - może uzupełnić umiejętność dowolnego gracza w drużynie tak, jakby ten przejął ołtarz.
 
 ## Magiczna Laska i Zamrażanie
+<!-- manual:tag original -->
 Poniżej znajdują się szczegółowe informacje o Magicznej Laski i jej odmianach.
 
 ### Magiczna Laska
@@ -152,12 +162,14 @@ Poniżej znajdują się szczegółowe informacje o Magicznej Laski i jej odmiana
 
 ### Aktywna i nieaktywna Laska
 
+<!-- manual:tag original -->
 Laska jest **aktywna**, gdy właściciel trzyma ją za wyznaczone miejsce (20-centymetrowy środek standardowej laski lub rączkę w odmianach) przynajmniej jedną ręką, a jednocześnie **nie jest dotykany przez inną osobę**. Aktywna Laska zamraża graczy poprzez dotyk ich ubrania lub skóry.
 
 Laska staje się **nieaktywna**, gdy właściciel zostanie dotknięty, puści laskę lub zginie. Nieaktywna Laska nie zamraża nikogo. Aby ją reaktywować, właściciel musi odliczyć głośno do trzech, spełniając warunki aktywności.
 
 ### Mechanika zamrażania
 
+<!-- manual:tag original -->
 Aktywna Laska dotykając gracza **natychmiast go zamraża** - dotyczy to również sojuszników. Właściciel może przemieszczać laskę po ciele zamrożonego i dotykać kolejnych graczy. Laska może zamrażać kilku graczy jednocześnie, jeśli dotyka ich wszystkich.
 
 Gdy Laska przestanie dotykać **któregokolwiek** z zamrożonych graczy, wszyscy zostają natychmiast zwolnieni, ponieważ Laska staje się nieaktywna.
@@ -166,12 +178,14 @@ Aktywna Laska **nie może zamrozić** gracza, który sam kogoś aktywnie zamraż
 
 ### Zasady dodatkowe
 
+<!-- manual:tag original -->
 Magiczna Laska jest **nienaruszalna** - nie można jej zabrać właścicielowi, nawet gdy leży na ziemi i nawet gdy jest nieaktywna. Jeśli zamrożony gracz przypadkowo złapał laskę, powinien rozluźnić chwyt.
 
 Gdy dwóch graczy z Laskami walczy, obowiązuje zasada pierwszeństwa - **kto pierwszy zostanie dotknięty, zamraża się**. Jeżeli dotkną się równocześnie, oboje odsuwają laski o 20 centymetrów i kontynuują walkę.
 
 ### Odmiany Magicznej Laski
 
+<!-- manual:tag original -->
 Standardowa **Magiczna Laska** ma długość **1,4 metra**.
 
 - **Magiczny Nóż** - krótsza wersja o długości około 20 cm, trzymana za 10-centymetrową rączkę. Ekskluzywna dla klasy Goblina.
@@ -260,7 +274,7 @@ Każdy ołtarz posiada własną **strefę** wyznaczoną sznurkiem. [Przejmowanie
 
 Każdy gracz otrzymuje **własną mapę terenu** – na niej nanosi numery miejsc, do których organizator przypisze ołtarze w danej rundzie. Legenda ołtarzy znajduje się na odwrocie mapy.
 
-<img src="./obozy-mayhem-manual.assets/map.jpg" alt="Przykładowa mapa terenu Obozy Mayhem" style="zoom:50%;" />
+<img src="./obozy-mayhem-manual.assets/map.jpg" alt="Przykładowa mapa terenu Obozy Mayhem" />
 
 ### Nagrody ołtarza
 
@@ -273,8 +287,8 @@ Ołtarz w którym skończyły się nagrody uznaje się za **wykorzystany** i nie
 Nagrody dzielą się na trzy rodzaje:
 
 - **Klasa** - unikalna, dostępna tylko raz na ołtarz.
-- **Zwoje** - dostępne w ograniczonej liczbie sztuk.
-- **Punkty** - niewyczerpalne; każda drużyna może odebrać je raz.
+- **Zwoje** - dostępne w określonej liczbie sztuk.
+- **Punkty** - dostępne w określonej ilości.
 
 Żadna drużyna **nie może odebrać nagrody z tego samego ołtarza dwa razy** z rzędu. Zachęca to do eksploracji mapy zamiast wielokrotnego korzystania z jednego miejsca.
 
@@ -290,10 +304,10 @@ Nagrody dzielą się na trzy rodzaje:
 
 ### Przejmowanie ołtarza
 
-Aby rozpocząć przejmowanie, drużyna musi wejść do strefy, spełnić ewentualne wymagania ołtarza i wpisać się na karcie ołtarza podając **literę drużyny, godzinę rozpoczęcia oraz planowaną godzinę zakończenia**:
+Aby rozpocząć przejmowanie, drużyna musi wejść do strefy, spełnić ewentualne wymagania ołtarza i wpisać się na karcie ołtarza podając **literę drużyny oraz planowaną godzinę zakończenia przejmowania**:
 
 - **Drużyna** - np. A
-- **Koniec** - suma godziny startu i czasu oczekiwania (*np. jeśli czas oczekiwania to trzy minuty a start to 13:29 to koniec to 13:32*). Start to zawsze następująca po aktualnej minuta (*np. jeśli start to 13:28:34 to start to 13:29*).
+- **Koniec** - suma godziny startu i czasu oczekiwania (*np. jeśli czas oczekiwania to trzy minuty a start to 13:29 to koniec to 13:32*). Start to zawsze następująca po aktualnej minuta (*np. jeśli drużyna rozpoczyna przejmowanie o 13:28:34 to start to 13:29*).
 
 Od momentu wpisania przejmowanie jest aktywne. Jeśli przejmująca drużyna przeżyje do godziny zakończenia, ołtarz zostaje przez nią przejęty i może ona odebrać nagrodę, niezależnie od obecności innych drużyn w strefie w tym momencie.
 
@@ -303,7 +317,7 @@ Gdy drużyna przejmuje ołtarz, **żadna inna drużyna nie może rozpocząć wł
 
 Drużyna B, chcąc nie dopuścić do przejęcia ołtarza przez drużynę A, musi wyeliminować wszystkich jej członków ze strefy **przed godziną zakończenia** wpisaną na karcie.
 
-Domyślnie do rozpoczęcia przejmowania wymagana jest **jedna osoba**, chyba że karta ołtarza stanowi inaczej. Jeśli ołtarz wymaga określonej liczby osób, wymóg ten dotyczy wyłącznie momentu rozpoczęcia - po wpisaniu się liczba obecnych graczy nie ma znaczenia.
+Domyślnie do rozpoczęcia przejmowania wymagana jest **jedna osoba**, chyba że karta ołtarza stanowi inaczej. Jeśli ołtarz wymaga określonej liczby osób, wymóg ten dotyczy wyłącznie momentu rozpoczęcia - po wpisaniu się liczba obecnych graczy przestaje mieć znaczenie dla wymogu.
 
 ### Rozpoczęcie gry i ołtarze startowe
 
@@ -644,7 +658,7 @@ Czas: 2:30
 
 Gracz zostaje wyeliminowany w momencie utraty wszystkich bibuł życia i udaje się do **wspólnego miejsca wyeliminowanych graczy**. Gracz nie może wrócić do gry dopóki nie zostanie wskrzeszony.
 
-Wskrzeszenie jest możliwe wyłącznie przy użyciu **[Zwoju Zmartwychwstania](glossary:zwoj)** lub umiejętności **Przywołanie** klasy Szamana.
+Wskrzeszenie jest możliwe wyłącznie przy użyciu **[Zwoju Zmartwychwstania](glossary:zwoj)** lub umiejętności **Przywołanie** klasy [Szamana](#szaman).
 
 Jeśli w danym momencie **wszystkie drużyny oprócz jednej** znajdują się w miejscu wyeliminowanych graczy, gra kończy się natychmiast.
 

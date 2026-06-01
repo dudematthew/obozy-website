@@ -307,6 +307,35 @@ function rehypeImageSize () {
 }
 
 /**
+ * Replaces English GitHub alert titles (NOTE, WARNING, …) with Polish labels.
+ */
+function rehypePolishAlertLabels () {
+  const labels = {
+    NOTE: 'Notatka',
+    TIP: 'Wskazówka',
+    IMPORTANT: 'Ważne',
+    WARNING: 'Ostrzeżenie',
+    CAUTION: 'Ostrożnie'
+  }
+  return (tree) => {
+    if (!tree || typeof tree !== 'object' || !('type' in tree)) return
+    visit(tree, 'element', (node) => {
+      const cls = node.properties?.className
+      const classes = Array.isArray(cls) ? cls : (cls ? [cls] : [])
+      if (!classes.some((c) => String(c).startsWith('markdown-alert'))) return
+      if (!Array.isArray(node.children)) return
+      const titleP = node.children.find((c) => c.type === 'element' && c.tagName === 'p')
+      if (!titleP || !Array.isArray(titleP.children)) return
+      for (const child of titleP.children) {
+        if (child.type !== 'text') continue
+        const key = child.value.trim()
+        if (labels[key]) child.value = labels[key]
+      }
+    })
+  }
+}
+
+/**
  * @param {import('hast').Root} tree
  * @param {{ sourceDir: string, destDir: string, publicPathPrefix: string }} ctx
  */
@@ -413,6 +442,7 @@ async function mdastToHtml (nodes, rewrite) {
       .use(rehypeGlossaryLinks)
       .use(rehypeImageSize)
       .use(rehypeRewriteLocalImgs, rewrite)
+      .use(rehypePolishAlertLabels)
       .use(rehypeSanitize, sanitizeSchema)
       .use(rehypeStringify)
       .process(vfile)

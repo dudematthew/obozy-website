@@ -7,6 +7,16 @@ import { SnapDeck } from '@/lib/manual-reader/snapDeck'
 /** Half-height of progress-bar thumb — keeps drag hit area inside the track. */
 const PROGRESS_THUMB_R = 14
 
+/** Extract img src URLs from manual HTML fragments (built IR). */
+function imageUrlsFromHtml(html) {
+  if (!html || typeof html !== 'string') return []
+  const urls = []
+  const re = /<img\b[^>]*\bsrc=["']([^"']+)["']/gi
+  let m
+  while ((m = re.exec(html)) !== null) urls.push(m[1])
+  return urls
+}
+
 /* global M */
 export default {
   name: 'ManualView',
@@ -33,7 +43,8 @@ export default {
       _routePushPending: false, // guard: don't re-act to our own router.replace
       navOpen: false,
       deck: null,
-      _swipe: null
+      _swipe: null,
+      _preloadedUrls: null
     }
   },
   computed: {
@@ -201,6 +212,7 @@ export default {
       this.subDir = 1
       this.subAnimated = false
       this.syncRouteFromSlide()
+      this.$nextTick(() => this.preloadCurrentTileImages())
     },
     '$route.params.manualId'() {
       this.loadData()
@@ -232,6 +244,7 @@ export default {
       }
       this.loadError = null
       this.ir = data
+      this._preloadedUrls = new Set()
       this.activePart = 0
       this.activeSlide = 0
       this.updatePageMeta()
@@ -614,6 +627,25 @@ export default {
       const target = Math.min(max, Math.max(0, Math.round(desired)))
       if (Math.abs(target - scrollEl.scrollTop) < 1) return
       scrollEl.scrollTo({ top: target, behavior: reduce ? 'auto' : 'smooth' })
+    },
+    /** Prefetch images for every subsection on this tile (only one is in the DOM at a time). */
+    preloadCurrentTileImages() {
+      const c = this.current
+      if (!c || c.kind !== 'tile' || !c.tile) return
+      if (!this._preloadedUrls) this._preloadedUrls = new Set()
+      const tile = c.tile
+      const urls = [
+        ...imageUrlsFromHtml(tile.introHtml),
+        ...imageUrlsFromHtml(tile.contentHtml),
+        ...(tile.subsections || []).flatMap((s) => imageUrlsFromHtml(s.html))
+      ]
+      for (const src of urls) {
+        if (!src || this._preloadedUrls.has(src)) continue
+        this._preloadedUrls.add(src)
+        const img = new Image()
+        img.decoding = 'async'
+        img.src = src
+      }
     },
     /** Scroll to active H3; re-run when images inside the tile finish loading. */
     alignSubAfterLayout(delay = 200) {

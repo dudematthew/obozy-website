@@ -44,7 +44,11 @@ export default {
       navOpen: false,
       deck: null,
       _swipe: null,
-      _preloadedUrls: null
+      _preloadedUrls: null,
+      /** Progress bar drag — keeps thumb/fill in sync and blocks release overshoot. */
+      _progressDragging: false,
+      _progressLastY: null,
+      _progressDragY: null
     }
   },
   computed: {
@@ -121,17 +125,40 @@ export default {
       })
       return hits.slice(0, 12)
     },
-    vProgress() {
+    progressFillStyle() {
       const n = this.verticalSlideCount
-      if (n < 2) return 0
-      return (this.activeSlide / (n - 1)) * 100
+      const pad = PROGRESS_THUMB_R
+      if (n < 2) return { height: '0' }
+      let t
+      if (this._progressDragY != null) {
+        const bar = this.$refs.progressBar
+        const rect = bar?.getBoundingClientRect()
+        const usable = rect ? Math.max(1, rect.height - pad * 2) : 1
+        t = this._progressDragY / usable
+      } else {
+        t = this.activeSlide / (n - 1)
+      }
+      const height = `calc(${pad}px + (100% - ${pad * 2}px) * ${t})`
+      return this._progressDragging
+        ? { height, transition: 'none' }
+        : { height }
     },
     progressThumbStyle() {
       const n = this.verticalSlideCount
       const pad = PROGRESS_THUMB_R
-      if (n < 2) return { top: `${pad}px` }
+      const noTransition = this._progressDragging ? { transition: 'none' } : {}
+      if (this._progressDragY != null && n >= 2) {
+        return {
+          top: `calc(${pad}px + ${this._progressDragY}px)`,
+          ...noTransition
+        }
+      }
+      if (n < 2) return { top: `${pad}px`, ...noTransition }
       const t = this.activeSlide / (n - 1)
-      return { top: `calc(${pad}px + (100% - ${pad * 2}px) * ${t})` }
+      return {
+        top: `calc(${pad}px + (100% - ${pad * 2}px) * ${t})`,
+        ...noTransition
+      }
     },
     partsCount() {
       return this.ir?.parts?.length || 0
@@ -699,28 +726,24 @@ export default {
     onSwipeCancel() {
       this._swipe = null
     },
-    /** Progress bar drag/click: converts pointer position to slide index. */
-    onProgressDown(e) {
-      e.preventDefault()
-      const bar = this.$refs.progressBar
-      if (!bar) return
-      this._jumpToSlideByY(e.clientY, bar)
-      const onMove = (ev) => {
-        this._jumpToSlideByY(ev.clientY, bar)
-      }
-      const onUp = () => {
-        window.removeEventListener('pointermove', onMove)
-        window.removeEventListener('pointerup', onUp)
-      }
-      window.addEventListener('pointermove', onMove)
-      window.addEventListener('pointerup', onUp)
-    },
-    _jumpToSlideByY(clientY, bar) {
+    /** Map pointer Y to slide index (inset track matches thumb). */
+    _slideIndexFromClientY(clientY, bar) {
+      const n = this.verticalSlideCount
+      if (n < 1) return 0
       const rect = bar.getBoundingClientRect()
       const pad = PROGRESS_THUMB_R
       const usable = Math.max(1, rect.height - pad * 2)
-      const ratio = Math.max(0, Math.min(1, (clientY - rect.top - pad) / usable))
-      const idx = Math.round(ratio * (this.verticalSlideCount - 1))
+      const y = Math.max(0, Math.min(usable, clientY - rect.top - pad))
+      if (n === 1) return 0
+      return Math.round((y / usable) * (n - 1))
+    },
+    _setProgressDragVisual(clientY, bar) {
+      const rect = bar.getBoundingClientRect()
+      const pad = PROGRESS_THUMB_R
+      const usable = Math.max(1, rect.height - pad * 2)
+      this._progressDragY = Math.max(0, Math.min(usable, clientY - rect.top - pad))
+    },
+    _commitProgressSlide(idx) {
       if (idx !== this.activeSlide) {
         this.activeSlide = idx
         this.$nextTick(() => {
@@ -728,6 +751,47 @@ export default {
           if (sc) sc.scrollTop = 0
         })
       }
+    },
+    /** Progress bar drag/click — pointer capture; final snap uses last move Y. */
+    onProgressDown(e) {
+      e.preventDefault()
+      const bar = this.$refs.progressBar
+      if (!bar) return
+      try {
+        bar.setPointerCapture(e.pointerId)
+      } catch {
+        /* unsupported */
+      }
+      this._progressDragging = true
+      this._progressLastY = e.clientY
+      this._setProgressDragVisual(e.clientY, bar)
+      this._commitProgressSlide(this._slideIndexFromClientY(e.clientY, bar))
+
+      const onMove = (ev) => {
+        if (ev.pointerId !== e.pointerId) return
+        this._progressLastY = ev.clientY
+        this._setProgressDragVisual(ev.clientY, bar)
+        this._commitProgressSlide(this._slideIndexFromClientY(ev.clientY, bar))
+      }
+      const onUp = (ev) => {
+        if (ev.pointerId !== e.pointerId) return
+        window.removeEventListener('pointermove', onMove)
+        window.removeEventListener('pointerup', onUp)
+        window.removeEventListener('pointercancel', onUp)
+        const y = this._progressLastY ?? ev.clientY
+        this._commitProgressSlide(this._slideIndexFromClientY(y, bar))
+        this._progressDragging = false
+        this._progressLastY = null
+        this._progressDragY = null
+        try {
+          bar.releasePointerCapture(e.pointerId)
+        } catch {
+          /* unsupported */
+        }
+      }
+      window.addEventListener('pointermove', onMove)
+      window.addEventListener('pointerup', onUp)
+      window.addEventListener('pointercancel', onUp)
     },
     /** Global keyboard: ←/→ navigate H3 inside a tile (↑/↓ are SnapDeck's). */
     onGlobalKey(e) {
@@ -808,9 +872,12 @@ export default {
         :aria-valuemin="0"
         :aria-valuemax="verticalSlideCount - 1"
         @pointerdown="onProgressDown"
+        @touchstart.stop
+        @touchend.stop
+        @touchcancel.stop
       >
         <div class="manual-reader__progress-track" aria-hidden="true" />
-        <div class="manual-reader__progress-fill" :style="{ height: vProgress + '%' }" aria-hidden="true" />
+        <div class="manual-reader__progress-fill" :style="progressFillStyle" aria-hidden="true" />
         <div class="manual-reader__progress-thumb" :style="progressThumbStyle">
           <i v-if="current && current.kind === 'finale'" class="material-icons" aria-hidden="true">check</i>
           <i v-else-if="current && current.kind === 'part-end'" class="material-icons" aria-hidden="true">arrow_forward</i>

@@ -12,40 +12,30 @@ export default {
 
 
 <template>
-  <nav class="white" role="navigation">
+  <nav class="white site-nav" role="navigation">
     <div class="nav-wrapper container">
       <router-link to="/" id="logo-container" href="#" class="brand-logo">OBOZY</router-link>
 
-      <ul class="right hide-on-med-and-down">
-        <li><a href="https://patronite.pl/obozy" target="_blank"><span class="valign-wrapper black-text"><i
-                class="text-darken-2 green-text material-icons">local_fire_department</i>&nbsp; Zostań naszym
-              Patronem</span></a></li>
-      </ul>
-      
-      <ul class="right hide-on-med-and-down">
-        <li>
-          <router-link to="/instrukcja"><span class="valign-wrapper black-text"><i
-                class="text-darken-2 green-text material-icons">menu_book</i>&nbsp; Instrukcje</span></router-link>
-        </li>
-      </ul>
-
-      <ul class="right hide-on-med-and-down">
-        <li><a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank"><span
-              class="valign-wrapper black-text"><i class="text-darken-2 green-text material-icons">public</i>&nbsp; Nasz
-              Facebook</span></a></li>
-      </ul>
-
-      <ul class="right hide-on-med-and-down">
-        <li><router-link to="/powiadomienia"><span class="valign-wrapper black-text"><i
-                class="text-darken-2 green-text material-icons">circle_notifications</i>&nbsp; Bądź na
-              bieżąco</span></router-link>
-        </li>
-      </ul>
-
-      <ul class="right hide-on-med-and-down">
+      <ul class="right hide-on-med-and-down site-nav__desktop">
         <li>
           <router-link to="/o-nas"><span class="valign-wrapper black-text"><i
-                class="text-darken-2 green-text material-icons">lightbulb_circle</i>&nbsp; O Obozach</span></router-link>
+                class="text-darken-2 green-text material-icons">lightbulb_circle</i> O Obozach</span></router-link>
+        </li>
+        <li>
+          <router-link to="/powiadomienia"><span class="valign-wrapper black-text"><i
+                class="text-darken-2 green-text material-icons">circle_notifications</i> Bądź na bieżąco</span></router-link>
+        </li>
+        <li>
+          <a href="https://www.facebook.com/ObozyGraTerenowa" target="_blank" rel="noopener noreferrer"><span
+              class="valign-wrapper black-text"><i class="text-darken-2 green-text material-icons">public</i> Nasz Facebook</span></a>
+        </li>
+        <li>
+          <router-link to="/instrukcja"><span class="valign-wrapper black-text"><i
+                class="text-darken-2 green-text material-icons">menu_book</i> Instrukcje</span></router-link>
+        </li>
+        <li>
+          <a href="https://patronite.pl/obozy" target="_blank" rel="noopener noreferrer"><span class="valign-wrapper black-text"><i
+                class="text-darken-2 green-text material-icons">local_fire_department</i> Zostań naszym Patronem</span></a>
         </li>
       </ul>
 
@@ -64,3 +54,21 @@ export default {
     </div>
   </nav>
 </template>
+
+<style lang="scss" scoped>
+/* Desktop only: slightly tighter nav links so they don't crowd the logo */
+@media only screen and (min-width: 993px) {
+  nav.site-nav ul.site-nav__desktop > li > a {
+    padding: 0 10px;
+    font-size: 0.9rem;
+  }
+
+  nav.site-nav ul.site-nav__desktop > li > a .valign-wrapper {
+    gap: 5px;
+  }
+
+  nav.site-nav ul.site-nav__desktop > li > a .material-icons {
+    font-size: 1.2rem;
+  }
+}
+</style>

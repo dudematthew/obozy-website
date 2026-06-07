@@ -317,7 +317,7 @@ export default {
 </script>
 
 <template>
-    <div class="index-banner parallax-container" style="width: 100vw">
+    <div class="index-banner parallax-container">
         <div class="no-pad-bot section">
             <div class="container">
                 <br /><br />

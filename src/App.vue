@@ -42,9 +42,14 @@ export default {
   --swiper-theme-color: #64f023;
 }
 
+html {
+  overflow-x: clip;
+}
+
 body,
 html {
   width: 100%;
+  max-width: 100%;
 }
 
 .swiper-pagination-bullet-active,
@@ -85,9 +90,10 @@ button.is-fullwidth span {
 
 // (third-party form helpers: keep flex rules local to those components if needed)
 
-// Fix index-banner not taking full width
+// Full-bleed hero banners — use 100%, not 100vw (vw ignores scrollbar and causes horizontal overflow)
 .index-banner {
-  width: 100vw !important;
+  width: 100%;
+  max-width: 100%;
 }
 
 nav ul a,

@@ -1,4 +1,7 @@
 const { defineConfig } = require('@vue/cli-service')
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
+const { sharpEncodeOptions, svgo } = require('./image-optimizer.config.js')
+
 module.exports = defineConfig({
   assetsDir: 'assets',
   transpileDependencies: true,
@@ -17,15 +20,40 @@ module.exports = defineConfig({
         "crypto": false,
         "url": false,
         "querystring": false
-      } 
+      }
     }
   },
   chainWebpack: config => {
     config
-        .plugin('html')
-        .tap(args => {
-            args[0].title = "OBOZY - Gra Terenowa";
-            return args;
-        })
-}
+      .plugin('html')
+      .tap(args => {
+        args[0].title = "OBOZY - Gra Terenowa"
+        return args
+      })
+
+    // Production only — same Sharp/SVGO stack as vite-plugin-image-optimizer
+    if (process.env.NODE_ENV === 'production') {
+      config.optimization
+        .minimizer('image-minimizer-raster')
+        .use(ImageMinimizerPlugin, [{
+          test: /\.(jpe?g|png|gif|tiff|webp|avif)$/i,
+          minimizer: {
+            implementation: ImageMinimizerPlugin.sharpMinify,
+            options: {
+              encodeOptions: sharpEncodeOptions
+            }
+          }
+        }])
+
+      config.optimization
+        .minimizer('image-minimizer-svg')
+        .use(ImageMinimizerPlugin, [{
+          test: /\.svg$/i,
+          minimizer: {
+            implementation: ImageMinimizerPlugin.svgoMinify,
+            options: svgo
+          }
+        }])
+    }
+  }
 })

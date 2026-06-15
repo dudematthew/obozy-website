@@ -270,24 +270,43 @@ export default {
             style="width:100%; height:400px; border:0; overflow: hidden;" title="Zasady Gry"></iframe>
         </div>
       </div>
-      <div class="row">
-        <div class="col s12 center card" style="padding-bottom: 50px; margin-top: 24px; margin-bottom: 100px;">
+      <div class="row learn-section" style="margin-top: 5em; margin-bottom: 5em;">
+        <div class="col s12 center learn-section__header">
           <h4 class="subtitle">A Ty jak znasz zasady gry?</h4>
-          <h5 class="header col s12 light">Przeczytaj interaktywnie albo sprawdź się w quizie</h5>
-          <p class="flow-text">
-            Stworzyliśmy interaktywne instrukcje by ułatwić przyswajanie informacji. Czytaj szybciej - pomijaj nieistotne fragmenty.
-            <br><br>
-            Możesz też przetestować swoją znajomość zasad zamrożenia Chochlika w quizie!
-          </p>
-          <br>
-          <div class="row center">
-            <router-link to="/instrukcja" class="btn-large waves-effect waves-light green darken-2" style="margin: 10px;">
-              <i class="left material-icons">menu_book</i>
-              Zobacz instrukcje
+          <h5 class="header light">Sprawdź się w quizie lub przeczytaj na specjalnym czytniku</h5>
+        </div>
+        <div class="col s12">
+          <div class="learn-options">
+            <router-link to="/instrukcja" class="learn-option learn-option--manual">
+              <div class="learn-option__icon" aria-hidden="true">
+                <i class="material-icons">menu_book</i>
+              </div>
+              <div class="learn-option__body">
+                <span class="learn-option__title">Interaktywne instrukcje</span>
+                <p class="learn-option__desc">
+                  Czytaj szybciej - pomijaj nieistotne fragmenty i wracaj do sekcji, które Cię interesują.
+                </p>
+                <span class="learn-option__link">
+                  Zobacz
+                  <i class="material-icons" aria-hidden="true">chevron_right</i>
+                </span>
+              </div>
             </router-link>
-            <router-link to="/quiz" class="btn-large waves-effect waves-light green darken-2" style="margin: 10px;">
-              <i class="left material-icons">quiz</i>
-              Sprawdź znajomość chochlika
+
+            <router-link to="/quiz" class="learn-option learn-option--quiz">
+              <div class="learn-option__icon" aria-hidden="true">
+                <i class="material-icons">quiz</i>
+              </div>
+              <div class="learn-option__body">
+                <span class="learn-option__title">Quiz o zamrożeniu</span>
+                <p class="learn-option__desc">
+                  Sprawdź, czy dobrze znasz zasady zamrożenia i Chochlika - krótki test wiedzy.
+                </p>
+                <span class="learn-option__link">
+                  Sprawdź
+                  <i class="material-icons" aria-hidden="true">chevron_right</i>
+                </span>
+              </div>
             </router-link>
           </div>
         </div>
@@ -323,6 +342,127 @@ h4 {
   margin-top: 70px;
 }
 
+.learn-section {
+  margin-top: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.learn-section__header {
+  margin-bottom: 0.5rem;
+
+  .subtitle {
+    margin-top: 0;
+  }
+
+  .header {
+    margin-top: 0.35rem;
+    margin-bottom: 0;
+  }
+}
+
+.learn-options {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+
+  @media only screen and (min-width: 601px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+
+.learn-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1rem 1rem 1.1rem;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-left-width: 4px;
+  color: inherit;
+  text-align: left;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.learn-option--manual {
+  border-left-color: #4caf50;
+}
+
+.learn-option--quiz {
+  border-left-color: #5785b6;
+}
+
+.learn-option__icon {
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .material-icons {
+    font-size: 1.35rem;
+  }
+}
+
+.learn-option--manual .learn-option__icon {
+  background: rgba(76, 175, 80, 0.12);
+  color: #388e3c;
+}
+
+.learn-option--quiz .learn-option__icon {
+  background: rgba(92, 107, 192, 0.12);
+  color: #3949ab;
+}
+
+.learn-option__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.learn-option__title {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #263238;
+  line-height: 1.25;
+}
+
+.learn-option__desc {
+  margin: 0.35rem 0 0.65rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: #546e7a;
+}
+
+.learn-option__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  .material-icons {
+    font-size: 1.1rem;
+  }
+}
+
+.learn-option--manual .learn-option__link {
+  color: #388e3c;
+}
+
+.learn-option--quiz .learn-option__link {
+  color: #3949ab;
+}
+
 @media only screen and (max-width : 1200px) {
   .carousel-container {
     width: 100%;
@@ -332,7 +472,7 @@ h4 {
     padding-right: 0;
   }
 
-  .col {
+  .carousel-container .col {
     padding-left: 0;
     padding-right: 0;
   }

@@ -1,6 +1,5 @@
 <script>
 import { manuals } from '@/data/manual-ir/registry'
-import { updateMetaTags } from '@/lib/metaUtils.js'
 
 export default {
   name: 'ManualIndexView',
@@ -32,17 +31,6 @@ export default {
         )
       })
     }
-  },
-  mounted() {
-    const t = 'Instrukcje | Obozy - Gra Terenowa'
-    document.title = t
-    updateMetaTags({
-      title: t,
-      description: 'Lista interaktywnych instrukcji do gier Obozy.',
-      image: 'https://obozy.org.pl/og-image.png',
-      imageAlt: t,
-      url: window.location.href
-    })
   }
 }
 </script>

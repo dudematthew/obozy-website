@@ -3,7 +3,6 @@ import {
 } from 'vue';
 import App from './App.vue';
 import router from './router';
-import { updateMetaTags, getMetaForRoute } from './lib/metaUtils.js';
 
 import 'publicalbum/embed-ui.min.js';
 
@@ -30,14 +29,5 @@ import 'publicalbum/embed-ui.min.js';
 
 const app = createApp(App);
 
-// Initialize app with router
 app.use(router);
-
-// Initialize meta tags after router is ready
-router.isReady().then(() => {
-    const currentRoute = router.currentRoute.value;
-    const metaData = getMetaForRoute(currentRoute.name);
-    updateMetaTags(metaData);
-});
-
 app.mount('#app');

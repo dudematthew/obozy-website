@@ -2,6 +2,7 @@
 import 'remark-github-blockquote-alert/alert.css'
 import { getManual, manuals as allManuals } from '@/data/manual-ir/registry'
 import { updateMetaTags } from '@/lib/metaUtils.js'
+import { DEFAULT_OG_IMAGE } from '@/lib/siteMeta.js'
 import { SnapDeck } from '@/lib/manual-reader/snapDeck'
 
 /** Half-height of progress-bar thumb — keeps drag hit area inside the track. */
@@ -339,10 +340,14 @@ export default {
       if (!this.ir) return
       const t = `${this.documentTitle} | Instrukcja | Obozy - Gra Terenowa`
       const d = this.ir.meta?.description || 'Interaktywna instrukcja gry — Obozy Gra Terenowa'
-      const logo = this.ir.meta?.logoUrl
-      const image = logo ? `https://obozy.org.pl${logo}` : 'https://obozy.org.pl/og-image.png'
       document.title = t
-      updateMetaTags({ title: t, description: d, image, imageAlt: t, url: window.location.href })
+      updateMetaTags({
+        title: t,
+        description: d,
+        image: DEFAULT_OG_IMAGE,
+        imageAlt: t,
+        url: window.location.href
+      })
     },
     destroyDeck() {
       if (this.deck) {

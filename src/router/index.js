@@ -4,7 +4,7 @@ import AboutUsView from '../views/AboutUsView.vue';
 import JoinUsView from '../views/JoinUsView.vue';
 import QuizView from '../views/QuizView.vue';
 import NotificationsView from '../views/NotificationsView.vue';
-import { updateMetaTags, getMetaForRoute } from '../lib/metaUtils.js';
+import { applyRouteMeta } from '../lib/metaUtils.js';
 
 // Remember to also set proper og tags in ./netlify/edge-functions/og-inject.js
 const routes = [
@@ -86,34 +86,10 @@ const router = createRouter({
   }
 });
 
-// Global navigation guard to update meta tags
 router.beforeEach((to) => {
-  // ManualView sets per-manual title/description from IR after load
+  // ManualView sets per-manual title/description after IR load
   if (to.name === 'manual') return
-
-  const base = {
-    url: `${window.location.origin}${to.fullPath}`,
-    image: 'https://obozy.org.pl/og-image.png'
-  }
-
-  if (to.meta?.title) {
-    updateMetaTags({
-      ...base,
-      title: to.meta.title,
-      description: to.meta.description,
-      imageAlt: to.meta.title
-    })
-    return
-  }
-
-  updateMetaTags({ ...getMetaForRoute(to.name), ...base, url: `${window.location.origin}${to.fullPath}` })
+  applyRouteMeta(to)
 });
-
-// Update meta tags on initial load
-router.onReady = () => {
-  const currentRoute = router.currentRoute.value;
-  const metaData = getMetaForRoute(currentRoute.name);
-  updateMetaTags(metaData);
-};
 
 export default router;

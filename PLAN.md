@@ -2,7 +2,7 @@
 
 This document is the **authoritative pre-implementation spec** for turning Markdown manuals into a **mobile-first, interactive reading experience** inside the existing Vue 3 app. **No application code should be written until this plan is reviewed and agreed upon.**
 
-The goals are: (1) **minimal surface area outside `.md` files**—authors edit Markdown, YAML front matter, and **HTML comment tags**; (2) a **reusable “manual engine”** that could be published as a separate package; (3) **UX that reduces fear of long docs** (chunking, progress, optional depth); (4) **architectural discipline** so the system does not “crumble” as features accrue.
+The goals are: (1) **minimal surface area outside `.md` files**—authors edit Markdown, YAML front matter, and **HTML comment tags**; (2) a **reusable “manual engine"** that could be published as a separate package; (3) **UX that reduces fear of long docs** (chunking, progress, optional depth); (4) **architectural discipline** so the system does not “crumble" as features accrue.
 
 **Scope note:** In-app and site-wide **links to instructions are out of scope** for this work—the team will update them manually when ready. GDrive **remains** the place for **downloadable** documents; the web manual is an **additional** reading path, not a replacement for hosted files.
 
@@ -23,7 +23,7 @@ The goals are: (1) **minimal surface area outside `.md` files**—authors edit M
 | **Further H1s (parts)** | A **second (and any further) H1** behaves like a **new chapter / part**—it may get its own **cover-style** intro tile, but the UI must make clear it is still the **same document** (shared chrome, **YAML `title`**, part label/breadcrumb, optional **logo** from metadata on each part title tile; see **§3.2**). |
 | **`logo` in front matter** | Optional path (or URL) to an image used to **identify the guide** (e.g. in **title/cover** tiles, nav, or list entries). Resolved like other assets at **build** time. |
 | **Build vs runtime** | **Markdown is not edited or parsed on the client.** The **unified/remark** pipeline runs **at build** only, producing **static IR** (e.g. JSON) shipped with the app. **Required** for the current **Netlify** static + SPA routing setup and predictable performance. |
-| H2 “gum” snap | **Product requirement:** when scrolling, the view **snaps** so **one H2** is always the “main” phone screen; users may **scroll faster**, but the dominant motion **settles** on a single H2. **§7.1** defines the mechanism: a small, in-house **SnapDeck** controller (no Swiper). |
+| H2 “gum" snap | **Product requirement:** when scrolling, the view **snaps** so **one H2** is always the “main" phone screen; users may **scroll faster**, but the dominant motion **settles** on a single H2. **§7.1** defines the mechanism: a small, in-house **SnapDeck** controller (no Swiper). |
 | Search | v1: **search UI in the app** (filter client-side from IR or plain text as available). Later: real **indexer** (build step or service) if needed. |
 | Authoring docs | A **dedicated `*.md` manual for authors** (conventions, comments, front matter) is a **deliverable** of the project. |
 
@@ -52,7 +52,7 @@ The goals are: (1) **minimal surface area outside `.md` files**—authors edit M
 
 ### 1.3 Links on the rest of the site
 
-**No automatic edits** to existing “instruction” links in views or footer. When the new reader ships, the team will **manually** point those links to the new route (or keep Drive links—**their** choice per surface).
+**No automatic edits** to existing “instruction" links in views or footer. When the new reader ships, the team will **manually** point those links to the new route (or keep Drive links—**their** choice per surface).
 
 ---
 
@@ -71,7 +71,7 @@ The goals are: (1) **minimal surface area outside `.md` files**—authors edit M
 - **Input:** `*.md` (and co-located assets) under `src/assets/...` as now.
 - **When:** the **unified** / **remark** / **rehype** engine runs **only in Node** during **`vue-cli-service build`** (and **`serve`** for dev, so the app matches production).
 - **Output:** versioned **IR** as **static data** (e.g. one JSON per manual, or a generated `.js` that exports IR)—**imported** by the manual Vue view. The **browser bundle does not** need to include the full parser stack (unless you deliberately keep a small dev-only path; default is **no**).
-- **Why:** manuals do **not** change at runtime; **Netlify** serves a **static** build; **client-side** parsing would bloat the bundle, duplicate work, and fight the “single static deploy” model.
+- **Why:** manuals do **not** change at runtime; **Netlify** serves a **static** build; **client-side** parsing would bloat the bundle, duplicate work, and fight the “single static deploy" model.
 - **Routing:** the SPA still uses **vue-router** (lazy view chunk); **data** is static assets produced at build, not fetched as raw `.md` for parsing on the device.
 
 ---
@@ -82,10 +82,10 @@ The goals are: (1) **minimal surface area outside `.md` files**—authors edit M
 
 | Markdown | Intended UI | Notes |
 |----------|-------------|--------|
-| **First H1 + following content** | **Cover / info tile** (first H2 in IR terms may be a synthetic “intro” or the H1 block maps to a **special first tile**—implementation detail) | YAML **`title`**: **short, simple** document name for chrome and **first-tile** heading. The **flesh under the first H1** (until the next heading) **fills** the first tile, styled **differently** (distinct hero/intro). |
-| **H1 (each occurrence)** | **Part / chapter** — each H1 starts a **new segment** and its own **vertical stack of H2** tiles. A **subsequent H1** can use a **second “cover”**-style block (text under that H1 until the first H2) so it reads like a **new chapter opening**, but global chrome (**document `title`**, **logo**, breadcrumb) keeps it **obviously the same guide**. The **first** H1 is still the **primary** document intro (strongest “hero” treatment if you want a visual hierarchy). |
-| **H2** | **One phone “screen”** — the **gum-snap** unit (§7.1) | In-scroll content **inside** the tile (nested scroll). |
-| **H3** | Subsection: horizontal Swiper strip **or** “show all” via **HTML comment** metadata | — |
+| **First H1 + following content** | **Cover / info tile** (first H2 in IR terms may be a synthetic “intro" or the H1 block maps to a **special first tile**—implementation detail) | YAML **`title`**: **short, simple** document name for chrome and **first-tile** heading. The **flesh under the first H1** (until the next heading) **fills** the first tile, styled **differently** (distinct hero/intro). |
+| **H1 (each occurrence)** | **Part / chapter** — each H1 starts a **new segment** and its own **vertical stack of H2** tiles. A **subsequent H1** can use a **second “cover"**-style block (text under that H1 until the first H2) so it reads like a **new chapter opening**, but global chrome (**document `title`**, **logo**, breadcrumb) keeps it **obviously the same guide**. The **first** H1 is still the **primary** document intro (strongest “hero" treatment if you want a visual hierarchy). |
+| **H2** | **One phone “screen"** — the **gum-snap** unit (§7.1) | In-scroll content **inside** the tile (nested scroll). |
+| **H3** | Subsection: horizontal Swiper strip **or** “show all" via **HTML comment** metadata | — |
 | **H4+** | Nested under parent; **no** extra nav by default | — |
 | **In-doc** `[text](#id)` | Jump to the correct **H2** / **H3** after IR lookup | Id algorithm **=** slug strategy used everywhere. |
 | **Tags** | **`<!-- manual:key value -->`** (or agreed keys) **above** a block/heading | **No** `^` prefix. **Configurable** tag vocabulary in engine schema. |
@@ -94,20 +94,20 @@ The goals are: (1) **minimal surface area outside `.md` files**—authors edit M
 
 ### 3.2 Multiple H1s (must not break)
 
-- Parsing produces **one ordered list of “parts”**. Each part starts at an **H1** and contains **H2…H6** content until the next H1.
-- A **second (or later) H1** = **new part** = **another** full vertical “deck” of H2 snaps (and its own H3 carousels as needed), optionally introduced by a **chapter-style** block (content under that H1 before the first H2)—same **cover-tile** pattern as the document open, with styling that signals **“next chapter, same book”** (not a different app).
+- Parsing produces **one ordered list of “parts"**. Each part starts at an **H1** and contains **H2…H6** content until the next H1.
+- A **second (or later) H1** = **new part** = **another** full vertical “deck" of H2 snaps (and its own H3 carousels as needed), optionally introduced by a **chapter-style** block (content under that H1 before the first H2)—same **cover-tile** pattern as the document open, with styling that signals **“next chapter, same book"** (not a different app).
 - The UI should **reuse** metadata across parts: **YAML `title`**, optional **`logo`**, and a **part index / name** (from the H1 text) so users never think they left the manual.
 - **IR** should mirror this: e.g. `parts[]`, each with `title`, `slug`, **`cover?`** (html or md slice for the intro), `tiles[]` (H2), and optional **`useCoverLayout: true`** if the H1 has body before first H2.
 
 ### 3.3 Title tile, `logo`, and `title` in YAML
 
-- **`title` (front matter):** **short** label for the **app bar** and for **document identity** across all parts (e.g. “Mayhem”, “Obozy – Mayhem”).
-- **`logo` (front matter, optional):** path under the manual’s asset folder (or absolute app path after build) to a **small** image—used on **cover / title** tiles, in a **list of guides**, or as a **visual anchor** so each part’s intro still “belongs” to the same document. If omitted, the UI may show **no** icon or a **text-only** title.
+- **`title` (front matter):** **short** label for the **app bar** and for **document identity** across all parts (e.g. “Mayhem", “Obozy – Mayhem").
+- **`logo` (front matter, optional):** path under the manual’s asset folder (or absolute app path after build) to a **small** image—used on **cover / title** tiles, in a **list of guides**, or as a **visual anchor** so each part’s intro still “belongs" to the same document. If omitted, the UI may show **no** icon or a **text-only** title.
 - **First H1 in the file:** typically the **long** human title (e.g. `# OBOZY – MAYHEM`). The **text and blocks until the first H2** are the **body of the first tile** (metadata / intro), **visually** distinct (hero spacing, **logo** if set, maybe subtitle).
 - **Later H1s:** the **same** `title` + `logo` (and same overall styling tokens) can introduce a **part cover** so chapter two **feels** like a new section while remaining **one** guide in one route.
 - If authors omit a first H1 and only use `##`, the engine can treat **`title` from YAML** as the only title for the first tile—**document the fallback** in the author guide.
 
-**Migration:** current manuals may use `##` for the first real section; editorial pass may add `#` for intro or restructure. **The interpreter** must not **crash** on “first heading is H2” (fallback: first tile = generated from `title` + first chunk).
+**Migration:** current manuals may use `##` for the first real section; editorial pass may add `#` for intro or restructure. **The interpreter** must not **crash** on “first heading is H2" (fallback: first tile = generated from `title` + first chunk).
 
 ---
 
@@ -122,7 +122,7 @@ The goals are: (1) **minimal surface area outside `.md` files**—authors edit M
 
 ### 4.2 Why not Pandoc / `:::` blocks (for this team)
 
-- **Not “line numbers”**—directives are **wrap markers** (`::: tag` … `:::`). The pain you want to avoid is **another syntax** to teach and to break previews.
+- **Not “line numbers"**—directives are **wrap markers** (`::: tag` … `:::`). The pain you want to avoid is **another syntax** to teach and to break previews.
 - **We skip `:::` in v1.** Tags use **HTML comments**; body stays **pure** `#` / `##` / lists / alerts / links.
 
 ```html
@@ -151,7 +151,7 @@ The goals are: (1) **minimal surface area outside `.md` files**—authors edit M
 | | **Front matter `glossary:` map** | **Markdown footnotes** `[^id]` + `[^id]: text` |
 |---|----------------------------------|-----------------------------------------------|
 | **Pros** | One place; easy to grep; good for many terms | Familiar to academic writers; **standard** in many MD flavors; can live **next to** first use in source |
-| **Cons** | Far from in-text usage; duplicating term string | Renders in some previews as “list at bottom”; on **mobile** footnote **numbers** can feel like **citations**, not “tap to define”; you must **unify** UX (both open the **same** bottom sheet) to avoid two behaviors |
+| **Cons** | Far from in-text usage; duplicating term string | Renders in some previews as “list at bottom"; on **mobile** footnote **numbers** can feel like **citations**, not “tap to define"; you must **unify** UX (both open the **same** bottom sheet) to avoid two behaviors |
 | **Verdict** | **Primary** store for a **canonical** glossary table the app reads | **Optional** for authors who prefer writing defs at the bottom; the **engine** can **ingest** `[^x]:` lines into the same glossary table as YAML entries—**if** you implement that merge rule |
 
 **Cons of mixing** without rules: the same term defined in **two** places. **Policy:** for each `slug`, **one** winning source (e.g. YAML overrides footnote, or first wins—**pick one** in implementation and document in author `*.md`).
@@ -199,11 +199,11 @@ The goals are: (1) **minimal surface area outside `.md` files**—authors edit M
 
 ---
 
-## 7. Layout engine: H2 “gum” snap and H3 (SnapDeck, no Swiper)
+## 7. Layout engine: H2 “gum" snap and H3 (SnapDeck, no Swiper)
 
 ### 7.1 Vertical: **SnapDeck** (in-house) + licensing notes
 
-**Product:** outer vertical motion ends **aligned** to exactly one H2 “screen”. Users can scroll within a tile; **changing tiles happens only when the inner content hits an edge** (top/bottom) and the user continues the gesture.
+**Product:** outer vertical motion ends **aligned** to exactly one H2 “screen". Users can scroll within a tile; **changing tiles happens only when the inner content hits an edge** (top/bottom) and the user continues the gesture.
 
 **Why not fullPage.js:** fullPage.js v4 is **GPLv3** unless you buy a commercial license. This project is not currently GPLv3, so fullPage.js is **not** the default option.
 
@@ -221,7 +221,7 @@ The goals are: (1) **minimal surface area outside `.md` files**—authors edit M
 
 - Use **native** horizontal scrolling:\n  - `overflow-x: auto; scroll-snap-type: x mandatory`\n  - each subsection: `scroll-snap-align: start`\n  - optional dots built with IntersectionObserver (later)
 
-### 7.3 Comment-driven “show all” for H3
+### 7.3 Comment-driven “show all" for H3
 
 - When **`<!-- manual:h3:mode list -->`** (or similar), list **H3** titles; tap opens the tile’s subsection—same IR, different view.
 
@@ -277,7 +277,7 @@ Bring official docs (or the GitHub repo README) for each. Placeholders use **eco
 |-------|--------|------------------------|
 | **0** | IR v1, **author’s `authoring-guide.md`**, 1 golden fixture | Heading + multi-H1 + comments + `logo` agreed |
 | **1** | **Build-time** **MD → IR** (Node) + tests + **webpack/CLI hook** to emit static files | GFM, alerts, `glossary:` link, no `^` |
-| **2** | Lazy **Vue** manual view + **SnapDeck** H2 + inner scroll | “Gum” feel on real devices |
+| **2** | Lazy **Vue** manual view + **SnapDeck** H2 + inner scroll | “Gum" feel on real devices |
 | **3** | H3 native scroll-snap, deep links, progress, **glossary** sheet | iOS + Android |
 | **4** | **Search** UI (client filter), `meta` / OG if needed | — |
 

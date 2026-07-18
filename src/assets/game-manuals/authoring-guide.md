@@ -50,7 +50,7 @@ glossary:
 - **`logo`** – ścieżka względem folderu `.md`; obraz jest kopiowany do `public/manual-assets/<id>/`.
 - **`related`** – lista `id` powiązanych instrukcji; wyświetlana na ekranach końcowych.
 - **`tags`** – słownik tagów dostępnych w tym pliku. Każdy tag: `icon` (Material Icons), `label` (tekst etykiety – pusty string = tylko ikona), `description` (treść w modalu). Klucze powinny być ASCII.
-- **`glossary`** – słownik terminów. Każdy wpis: `display` (pełna nazwa w modalu), `definition` (definicja), `link` (slug sekcji do której odsyła przycisk „przejdź"). Klucze MUSZĄ być ASCII – bez polskich liter (np. `zwoj`, nie `zwój`).
+- **`glossary`** – słownik terminów. Każdy wpis: `display` (pełna nazwa w modalu), `definition` (definicja), `link` (slug sekcji do której odsyła przycisk "przejdź"). Klucze MUSZĄ być ASCII – bez polskich liter (np. `zwoj`, nie `zwój`).
 
 ## Struktura nagłówków
 
@@ -100,7 +100,7 @@ Jeśli `label` tagu jest pustym stringiem, wyświetlana jest sama ikona (pill be
 Gracz traci [bibuły](glossary:bibula) i zostaje wyeliminowany.
 ```
 
-Klucz po `glossary:` musi być identyczny z kluczem w front matter (ASCII). Kliknięcie otwiera modal z definicją i przyciskiem „przejdź do sekcji" jeśli `link` jest podany.
+Klucz po `glossary:` musi być identyczny z kluczem w front matter (ASCII). Kliknięcie otwiera modal z definicją i przyciskiem "przejdź do sekcji" jeśli `link` jest podany.
 
 ## Linki wewnętrzne
 

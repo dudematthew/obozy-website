@@ -1,0 +1,13 @@
+{
+  "title": "ZNALAZŁEŚ ZADANIE",
+  "lead": "Witaj, graczu. Wraz z przeczytaniem tej kartki stajesz się częścią ukrytej gry na Obozach Festiwalowych. Igrzyska start.",
+  "body": "Na terenie festiwalu ukryte są zadania takie jak to, które właśnie trzymasz w rękach. Każde z nich rozwiązujesz za punkty, zależne od trudności. Wygrywają trzy osoby z największą liczbą punktów na koniec zabawy, więc współpraca z innymi wtajemniczonymi jak najbardziej wchodzi w grę.\n\n**MUSISZ UTRZYMYWAĆ GRĘ W TAJEMNICY.** Nie informuj nikogo, że gra istnieje. Nie tłumacz dziwnych czynności osobom spoza zabawy. Nie pokazuj treści zadań ludziom, którzy jeszcze nie zostali wtajemniczeni, chyba że konkretne zadanie tego wymaga.\n\nNa kartce są dwa kody QR:\n\n- **Przyjmij zadanie:** rezerwujesz je dla siebie. Inni nie wezmą tego samego zadania, dopóki nie wypadniesz z gry na tym zadaniu albo organizator go nie zwolni.\n- **Potwierdź zadanie:** pokazuje status zadania bez możliwości przyjęcia. Przydatne przy wymianie zadań albo gdy musisz kogoś wtajemniczyć.\n\nZaliczanie i pytania załatwiasz z organizatorami (lista poniżej). Chodzą po terenie z telefonami. Zwycięzcy dostaną tajną nagrodę. Powodzenia i baw się dobrze.",
+  "printBody": "Na terenie festiwalu ukryte są zadania takie jak to. Każde rozwiązujesz za punkty, zależne od trudności. Wygrywają trzy osoby z największą liczbą punktów, więc współpraca z innymi wtajemniczonymi jak najbardziej wchodzi w grę.\n\n**MUSISZ UTRZYMYWAĆ GRĘ W TAJEMNICY.** Nie informuj nikogo, że gra istnieje. Nie tłumacz dziwnych czynności osobom spoza zabawy. Nie pokazuj treści zadań ludziom, którzy jeszcze nie zostali wtajemniczeni, chyba że konkretne zadanie tego wymaga.\n\n**Kartka bez kodu QR nic nie znaczy.** Dopiero skan albo adres pod kodem otwiera treść zadania. Poniżej są dwa kody:\n\n- **Przyjmij** rezerwuje zadanie dla Ciebie.\n- **Potwierdź** pokazuje status bez możliwości przyjęcia.\n\nOrganizatorzy odpowiadają dyskretnie na pytania. Zwycięzcy dostaną tajną nagrodę. Powodzenia.",
+  "scannerHint": "Nie masz skanera QR? Pod kodem na kartce jest link do wpisania w przeglądarce. Często wystarczy Aparat albo Google Lens; w ostateczności dowolna darmowa aplikacja do skanowania QR.",
+  "organizers": [
+    "Mateusz",
+    "Karol",
+    "Janek",
+    "Bartosz (Moczydłowski)"
+  ]
+}

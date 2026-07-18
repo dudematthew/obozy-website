@@ -210,13 +210,13 @@ export default {
           items.push({ kind: 'tile', label: 'Strona tytułowa', part: pi, slide: 0 })
         }
         const coverOffset = p.coverHtml ? 1 : 0
-        ;(p.tiles || []).forEach((t, ti) => {
-          const slide = ti + coverOffset
-          items.push({ kind: 'tile', label: t.title || `Sekcja ${ti + 1}`, part: pi, slide })
-          ;(t.subsections || []).forEach((s, si) => {
-            items.push({ kind: 'sub', label: s.title || `Podsekcja ${si + 1}`, part: pi, slide, sub: si })
+          ; (p.tiles || []).forEach((t, ti) => {
+            const slide = ti + coverOffset
+            items.push({ kind: 'tile', label: t.title || `Sekcja ${ti + 1}`, part: pi, slide })
+              ; (t.subsections || []).forEach((s, si) => {
+                items.push({ kind: 'sub', label: s.title || `Podsekcja ${si + 1}`, part: pi, slide, sub: si })
+              })
           })
-        })
       })
       return items
     }
@@ -294,8 +294,8 @@ export default {
       const slug = slide.kind === 'cover'
         ? `${this.part?.id}-cover`
         : slide.kind === 'finale' ? '__finale__'
-        : slide.kind === 'part-end' ? '__part-end__'
-        : slide.tile?.id
+          : slide.kind === 'part-end' ? '__part-end__'
+            : slide.tile?.id
       if (!slug) return
       if (this.$route.params.tileSlug === slug) return
       this._routePushPending = true
@@ -825,39 +825,26 @@ export default {
   </div>
   <div v-else-if="ir" class="manual-reader">
     <div class="manual-reader-nav">
-      <div class="manual-reader-nav__zone manual-reader-nav__zone--left">
-        <router-link
-          to="/"
-          class="brand-logo manual-reader-nav__brand"
-          aria-label="Powrót na stronę Obozy"
-        >
+      <div class="manual-reader-nav__zone--left manual-reader-nav__zone">
+        <router-link to="/" class="brand-logo manual-reader-nav__brand" aria-label="Powrót na stronę Obozy">
           OBOZY
         </router-link>
       </div>
       <div class="manual-reader-nav__zone manual-reader-nav__zone--center">
-        <img
-          v-if="ir.meta.logoUrl"
-          :src="ir.meta.logoUrl"
-          class="manual-reader-nav__logo"
-          width="32"
-          height="32"
-          alt=""
-        />
-        <i v-else class="material-icons manual-reader-nav__logo manual-reader-nav__logo--fallback" aria-hidden="true">menu_book</i>
+        <img v-if="ir.meta.logoUrl" :src="ir.meta.logoUrl" class="manual-reader-nav__logo" width="32" height="32"
+          alt="" />
+        <i v-else class="material-icons manual-reader-nav__logo manual-reader-nav__logo--fallback"
+          aria-hidden="true">menu_book</i>
         <div class="manual-reader-nav__heading">
           <span class="manual-reader-nav__eyebrow">Instrukcja</span>
           <span class="manual-reader-nav__title">{{ documentTitle }}</span>
         </div>
       </div>
-      <div class="manual-reader-nav__zone manual-reader-nav__zone--right">
+      <div class="manual-reader-nav__zone--right manual-reader-nav__zone">
         <button class="btn-flat manual-reader-nav__icon" @click="openSearch" aria-label="Szukaj">
           <i class="material-icons">search</i>
         </button>
-        <button
-          class="btn-flat manual-reader-nav__icon"
-          @click="navOpen = true"
-          aria-label="Spis treści"
-        >
+        <button class="btn-flat manual-reader-nav__icon" @click="navOpen = true" aria-label="Spis treści">
           <i class="material-icons">toc</i>
         </button>
         <router-link to="/instrukcja" class="btn-flat manual-reader-nav__icon" aria-label="Lista instrukcji">
@@ -867,25 +854,16 @@ export default {
     </div>
 
     <div v-if="part" class="manual-reader__stage" ref="deckRoot">
-      <div
-        v-if="verticalSlideCount > 1"
-        ref="progressBar"
-        class="manual-reader__progress"
-        :aria-label="`Postęp czytania, ekran ${activeSlide + 1} z ${verticalSlideCount}`"
-        role="slider"
-        :aria-valuenow="activeSlide"
-        :aria-valuemin="0"
-        :aria-valuemax="verticalSlideCount - 1"
-        @pointerdown="onProgressDown"
-        @touchstart.stop
-        @touchend.stop
-        @touchcancel.stop
-      >
+      <div v-if="verticalSlideCount > 1" ref="progressBar" class="manual-reader__progress"
+        :aria-label="`Postęp czytania, ekran ${activeSlide + 1} z ${verticalSlideCount}`" role="slider"
+        :aria-valuenow="activeSlide" :aria-valuemin="0" :aria-valuemax="verticalSlideCount - 1"
+        @pointerdown="onProgressDown" @touchstart.stop @touchend.stop @touchcancel.stop>
         <div class="manual-reader__progress-track" aria-hidden="true" />
         <div class="manual-reader__progress-fill" :style="progressFillStyle" aria-hidden="true" />
         <div class="manual-reader__progress-thumb" :style="progressThumbStyle">
           <i v-if="current && current.kind === 'finale'" class="material-icons" aria-hidden="true">check</i>
-          <i v-else-if="current && current.kind === 'part-end'" class="material-icons" aria-hidden="true">arrow_forward</i>
+          <i v-else-if="current && current.kind === 'part-end'" class="material-icons"
+            aria-hidden="true">arrow_forward</i>
           <span v-else>{{ remainingTiles }}</span>
         </div>
       </div>
@@ -893,24 +871,15 @@ export default {
       <div class="manual-slide">
         <div ref="slideScroll" class="manual-slide__scroll"
           :class="{ 'cover-tile': current && current.kind === 'cover', 'has-subs': currentSubs.length > 0 }"
-          @click="onContentClick"
-          @touchstart.passive="onSwipeStart"
-          @touchend.passive="onSwipeEnd"
+          @click="onContentClick" @touchstart.passive="onSwipeStart" @touchend.passive="onSwipeEnd"
           @touchcancel.passive="onSwipeCancel">
           <template v-if="current && current.kind === 'cover'">
             <div class="manual-cover">
               <h1 class="manual-cover__title">{{ part.title || documentTitle }}</h1>
-              <img
-                v-if="ir.meta.logoUrl"
-                class="manual-cover__logo"
-                :src="ir.meta.logoUrl"
-                :alt="part.title || documentTitle"
-              />
-              <i
-                v-else
-                class="material-icons manual-cover__logo manual-cover__logo--fallback"
-                aria-hidden="true"
-              >menu_book</i>
+              <img v-if="ir.meta.logoUrl" class="manual-cover__logo" :src="ir.meta.logoUrl"
+                :alt="part.title || documentTitle" />
+              <i v-else class="material-icons manual-cover__logo manual-cover__logo--fallback"
+                aria-hidden="true">menu_book</i>
               <div v-if="part.coverHtml" class="manual-cover__body manual-body" v-html="part.coverHtml" />
               <div class="manual-cover__hint" aria-hidden="true">
                 <!-- touch devices -->
@@ -933,14 +902,12 @@ export default {
               <p class="manual-finale__sub">Znasz już zasady. Czas na grę.</p>
               <div v-if="relatedManuals.length" class="manual-finale__related">
                 <p class="manual-finale__related-label">Inne instrukcje</p>
-                <router-link
-                  v-for="m in relatedManuals"
-                  :key="m.id"
-                  :to="`/instrukcja/${m.id}`"
-                  class="manual-finale__related-card"
-                >
-                  <img v-if="m.logoUrl" :src="m.logoUrl" class="manual-finale__related-logo" width="36" height="36" alt="" />
-                  <i v-else class="material-icons manual-finale__related-logo--fallback" aria-hidden="true">menu_book</i>
+                <router-link v-for="m in relatedManuals" :key="m.id" :to="`/instrukcja/${m.id}`"
+                  class="manual-finale__related-card">
+                  <img v-if="m.logoUrl" :src="m.logoUrl" class="manual-finale__related-logo" width="36" height="36"
+                    alt="" />
+                  <i v-else class="material-icons manual-finale__related-logo--fallback"
+                    aria-hidden="true">menu_book</i>
                   <span>{{ m.title }}</span>
                   <i class="material-icons" aria-hidden="true">chevron_right</i>
                 </router-link>
@@ -967,14 +934,12 @@ export default {
               </button>
               <div v-if="relatedManuals.length" class="manual-part-end__related">
                 <p class="manual-part-end__related-label">Inne instrukcje</p>
-                <router-link
-                  v-for="m in relatedManuals"
-                  :key="m.id"
-                  :to="`/instrukcja/${m.id}`"
-                  class="manual-finale__related-card"
-                >
-                  <img v-if="m.logoUrl" :src="m.logoUrl" class="manual-finale__related-logo" width="36" height="36" alt="" />
-                  <i v-else class="material-icons manual-finale__related-logo--fallback" aria-hidden="true">menu_book</i>
+                <router-link v-for="m in relatedManuals" :key="m.id" :to="`/instrukcja/${m.id}`"
+                  class="manual-finale__related-card">
+                  <img v-if="m.logoUrl" :src="m.logoUrl" class="manual-finale__related-logo" width="36" height="36"
+                    alt="" />
+                  <i v-else class="material-icons manual-finale__related-logo--fallback"
+                    aria-hidden="true">menu_book</i>
                   <span>{{ m.title }}</span>
                   <i class="material-icons" aria-hidden="true">chevron_right</i>
                 </router-link>
@@ -991,50 +956,38 @@ export default {
           <template v-else-if="current && current.kind === 'tile'">
             <h2 class="manual-tile__h2">
               {{ current.tile.title }}
-              <span
-                v-if="current.tile.tagKey && ir.meta.tags && ir.meta.tags[current.tile.tagKey]"
-                class="manual-tag-badge"
-                role="button"
-                tabindex="0"
-                @click.stop="openTagModal(current.tile.tagKey)"
-              >
-                <i class="material-icons manual-tag-badge__icon" aria-hidden="true">{{ ir.meta.tags[current.tile.tagKey].icon }}</i>
-                <span v-if="ir.meta.tags[current.tile.tagKey].label" class="manual-tag-badge__label">{{ ir.meta.tags[current.tile.tagKey].label }}</span>
+              <span v-if="current.tile.tagKey && ir.meta.tags && ir.meta.tags[current.tile.tagKey]"
+                class="manual-tag-badge" role="button" tabindex="0" @click.stop="openTagModal(current.tile.tagKey)">
+                <i class="material-icons manual-tag-badge__icon" aria-hidden="true">{{
+                  ir.meta.tags[current.tile.tagKey].icon }}</i>
+                <span v-if="ir.meta.tags[current.tile.tagKey].label" class="manual-tag-badge__label">{{
+                  ir.meta.tags[current.tile.tagKey].label }}</span>
               </span>
             </h2>
             <div v-if="current.tile.introHtml" v-html="current.tile.introHtml" class="manual-body" />
             <div v-if="current.tile.contentHtml" v-html="current.tile.contentHtml" class="manual-body" />
             <div v-else class="manual-h3-wrap">
-              <span
-                v-if="currentSubs.length > 1"
-                class="manual-h3-edge manual-h3-edge--prev"
-                :class="{ 'is-hidden': !canPrevSub }"
-                aria-hidden="true"
-              ><i class="material-icons">chevron_left</i></span>
+              <span v-if="currentSubs.length > 1" class="manual-h3-edge manual-h3-edge--prev"
+                :class="{ 'is-hidden': !canPrevSub }" aria-hidden="true"><i
+                  class="material-icons">chevron_left</i></span>
               <Transition :name="subAnimated ? (subDir > 0 ? 'h3-next' : 'h3-prev') : ''" mode="out-in">
                 <article v-if="currentSub" :key="currentSub.id" class="manual-h3-card">
                   <h3 class="manual-tile__h3">
                     {{ currentSub.title }}
-                    <span
-                      v-if="currentSub.tagKey && ir.meta.tags && ir.meta.tags[currentSub.tagKey]"
-                      class="manual-tag-badge"
-                      role="button"
-                      tabindex="0"
-                      @click.stop="openTagModal(currentSub.tagKey)"
-                    >
-                      <i class="material-icons manual-tag-badge__icon" aria-hidden="true">{{ ir.meta.tags[currentSub.tagKey].icon }}</i>
-                      <span v-if="ir.meta.tags[currentSub.tagKey].label" class="manual-tag-badge__label">{{ ir.meta.tags[currentSub.tagKey].label }}</span>
+                    <span v-if="currentSub.tagKey && ir.meta.tags && ir.meta.tags[currentSub.tagKey]"
+                      class="manual-tag-badge" role="button" tabindex="0" @click.stop="openTagModal(currentSub.tagKey)">
+                      <i class="material-icons manual-tag-badge__icon" aria-hidden="true">{{
+                        ir.meta.tags[currentSub.tagKey].icon }}</i>
+                      <span v-if="ir.meta.tags[currentSub.tagKey].label" class="manual-tag-badge__label">{{
+                        ir.meta.tags[currentSub.tagKey].label }}</span>
                     </span>
                   </h3>
                   <div v-html="currentSub.html" class="manual-body" />
                 </article>
               </Transition>
-              <span
-                v-if="currentSubs.length > 1"
-                class="manual-h3-edge manual-h3-edge--next"
-                :class="{ 'is-hidden': !canNextSub }"
-                aria-hidden="true"
-              ><i class="material-icons">chevron_right</i></span>
+              <span v-if="currentSubs.length > 1" class="manual-h3-edge manual-h3-edge--next"
+                :class="{ 'is-hidden': !canNextSub }" aria-hidden="true"><i
+                  class="material-icons">chevron_right</i></span>
             </div>
           </template>
         </div>
@@ -1042,71 +995,33 @@ export default {
     </div>
 
     <div class="manual-reader-foot" role="navigation" aria-label="Nawigacja czytnika">
-      <button
-        type="button"
-        class="manual-foot-btn"
-        :disabled="!canPrevTile"
-        aria-label="Poprzedni ekran"
-        @click="stepTile(-1)"
-      >
+      <button type="button" class="manual-foot-btn" :disabled="!canPrevTile" aria-label="Poprzedni ekran"
+        @click="stepTile(-1)">
         <i class="material-icons">expand_less</i>
       </button>
       <div class="manual-foot-center">
-        <button
-          v-if="currentSubs.length > 0"
-          type="button"
-          class="manual-foot-btn manual-foot-btn--sub"
-          :disabled="!canPrevSub"
-          aria-label="Poprzednia podsekcja"
-          @click="stepSub(-1)"
-        >
+        <button v-if="currentSubs.length > 0" type="button" class="manual-foot-btn manual-foot-btn--sub"
+          :disabled="!canPrevSub" aria-label="Poprzednia podsekcja" @click="stepSub(-1)">
           <i class="material-icons">chevron_left</i>
         </button>
-        <div
-          v-if="currentSubs.length && currentSubs.length <= 14"
-          class="manual-foot-dots"
-          :style="dotsGridStyle"
-          role="tablist"
-          aria-label="Podsekcje"
-        >
-          <button
-            v-for="(sub, i) in currentSubs"
-            :key="sub.id"
-            type="button"
-            class="manual-foot-dot"
-            :class="{ 'is-active': i === activeSub }"
-            :aria-label="sub.title"
-            :aria-selected="i === activeSub"
-            @click="goToSub(i)"
-          />
+        <div v-if="currentSubs.length && currentSubs.length <= 14" class="manual-foot-dots" :style="dotsGridStyle"
+          role="tablist" aria-label="Podsekcje">
+          <button v-for="(sub, i) in currentSubs" :key="sub.id" type="button" class="manual-foot-dot"
+            :class="{ 'is-active': i === activeSub }" :aria-label="sub.title" :aria-selected="i === activeSub"
+            @click="goToSub(i)" />
         </div>
-        <div
-          v-else-if="currentSubs.length > 14"
-          class="manual-foot-counter"
-          aria-live="polite"
-        >
+        <div v-else-if="currentSubs.length > 14" class="manual-foot-counter" aria-live="polite">
           <span class="manual-foot-counter__num">{{ activeSub + 1 }}</span>
           <span class="manual-foot-counter__sep">/</span>
           <span class="manual-foot-counter__total">{{ currentSubs.length }}</span>
         </div>
-        <button
-          v-if="currentSubs.length > 0"
-          type="button"
-          class="manual-foot-btn manual-foot-btn--sub"
-          :disabled="!canNextSub"
-          aria-label="Następna podsekcja"
-          @click="stepSub(1)"
-        >
+        <button v-if="currentSubs.length > 0" type="button" class="manual-foot-btn manual-foot-btn--sub"
+          :disabled="!canNextSub" aria-label="Następna podsekcja" @click="stepSub(1)">
           <i class="material-icons">chevron_right</i>
         </button>
       </div>
-      <button
-        type="button"
-        class="manual-foot-btn"
-        :disabled="!canNextTile"
-        aria-label="Następny ekran"
-        @click="stepTile(1)"
-      >
+      <button type="button" class="manual-foot-btn" :disabled="!canNextTile" aria-label="Następny ekran"
+        @click="stepTile(1)">
         <i class="material-icons">expand_more</i>
       </button>
     </div>
@@ -1129,20 +1044,14 @@ export default {
             </a>
           </div>
           <div v-else class="grey-text" style="margin-top: 0.75rem">
-            Wpisz nazwę sekcji, np. „Klasy”.
+            Wpisz nazwę sekcji, np. "Klasy".
           </div>
         </div>
       </div>
     </div>
 
-    <div
-      v-show="glossOpen"
-      class="manual-gloss-backdrop"
-      role="dialog"
-      aria-modal="true"
-      :aria-label="glossTerm ? `Słownik: ${glossTerm}` : 'Słownik'"
-      @click.self="glossOpen = false"
-    >
+    <div v-show="glossOpen" class="manual-gloss-backdrop" role="dialog" aria-modal="true"
+      :aria-label="glossTerm ? `Słownik: ${glossTerm}` : 'Słownik'" @click.self="glossOpen = false">
       <div class="manual-gloss-card">
         <div class="manual-gloss-top">
           <div class="manual-gloss-heading">
@@ -1152,36 +1061,21 @@ export default {
             </span>
             <span class="manual-gloss-term">{{ glossTerm }}</span>
           </div>
-          <button
-            type="button"
-            class="manual-gloss-close"
-            aria-label="Zamknij słownik"
-            @click="glossOpen = false"
-          >
+          <button type="button" class="manual-gloss-close" aria-label="Zamknij słownik" @click="glossOpen = false">
             <i class="material-icons">close</i>
           </button>
         </div>
         <p class="manual-gloss-text">{{ glossText }}</p>
-        <button
-          v-if="glossLink && resolveLinkEntry(glossLink)"
-          type="button"
-          class="manual-gloss-jump"
-          @click="jumpToGlossLink"
-        >
+        <button v-if="glossLink && resolveLinkEntry(glossLink)" type="button" class="manual-gloss-jump"
+          @click="jumpToGlossLink">
           <i class="material-icons">north_east</i>
           Przejdź do sekcji
         </button>
       </div>
     </div>
 
-    <div
-      v-show="tagOpen"
-      class="manual-gloss-backdrop"
-      role="dialog"
-      aria-modal="true"
-      :aria-label="tagLabel || 'Informacja'"
-      @click.self="tagOpen = false"
-    >
+    <div v-show="tagOpen" class="manual-gloss-backdrop" role="dialog" aria-modal="true"
+      :aria-label="tagLabel || 'Informacja'" @click.self="tagOpen = false">
       <div class="manual-gloss-card manual-tag-card">
         <div class="manual-gloss-top">
           <div class="manual-gloss-heading">
@@ -1190,12 +1084,7 @@ export default {
               {{ tagLabel }}
             </span>
           </div>
-          <button
-            type="button"
-            class="manual-gloss-close"
-            aria-label="Zamknij"
-            @click="tagOpen = false"
-          >
+          <button type="button" class="manual-gloss-close" aria-label="Zamknij" @click="tagOpen = false">
             <i class="material-icons">close</i>
           </button>
         </div>
@@ -1205,44 +1094,29 @@ export default {
 
     <!-- Navigation drawer (bottom sheet) -->
     <Teleport to="body">
-      <div
-        v-show="navOpen"
-        class="manual-nav-drawer-backdrop"
-        @click.self="navOpen = false"
-      >
+      <div v-show="navOpen" class="manual-nav-drawer-backdrop" @click.self="navOpen = false">
         <div class="manual-nav-drawer" role="dialog" aria-modal="true" aria-label="Spis treści">
           <div class="manual-nav-drawer__header">
             <span class="manual-nav-drawer__title">Spis treści</span>
-            <button type="button" class="manual-nav-drawer__close btn-flat" aria-label="Zamknij" @click="navOpen = false">
+            <button type="button" class="manual-nav-drawer__close btn-flat" aria-label="Zamknij"
+              @click="navOpen = false">
               <i class="material-icons">close</i>
             </button>
           </div>
           <div class="manual-nav-drawer__body">
             <template v-for="(item, idx) in navTree" :key="idx">
-              <div
-                v-if="item.kind === 'part'"
-                class="manual-nav-item manual-nav-item--part"
-              >
+              <div v-if="item.kind === 'part'" class="manual-nav-item manual-nav-item--part">
                 <i class="material-icons manual-nav-item__icon" aria-hidden="true">bookmark</i>
                 {{ item.label }}
               </div>
-              <button
-                v-else-if="item.kind === 'tile'"
-                type="button"
-                class="manual-nav-item manual-nav-item--tile"
-                :class="{ 'is-active': activePart === item.part && activeSlide === item.slide }"
-                @click="navJump(item)"
-              >
+              <button v-else-if="item.kind === 'tile'" type="button" class="manual-nav-item manual-nav-item--tile"
+                :class="{ 'is-active': activePart === item.part && activeSlide === item.slide }" @click="navJump(item)">
                 <i class="material-icons manual-nav-item__icon" aria-hidden="true">article</i>
                 {{ item.label }}
               </button>
-              <button
-                v-else-if="item.kind === 'sub'"
-                type="button"
-                class="manual-nav-item manual-nav-item--sub"
+              <button v-else-if="item.kind === 'sub'" type="button" class="manual-nav-item manual-nav-item--sub"
                 :class="{ 'is-active': activePart === item.part && activeSlide === item.slide && activeSub === item.sub }"
-                @click="navJump(item)"
-              >
+                @click="navJump(item)">
                 <i class="material-icons manual-nav-item__icon" aria-hidden="true">subdirectory_arrow_right</i>
                 {{ item.label }}
               </button>
@@ -1444,6 +1318,7 @@ $reader-font: 'Lato', sans-serif;
     padding: 0 8px;
     gap: 8px;
   }
+
   .manual-reader-nav__brand.brand-logo {
     font-size: 1.3rem;
   }
@@ -1458,7 +1333,8 @@ $reader-font: 'Lato', sans-serif;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 8px 8px 8px 20px; /* left gutter = room for progress bar thumb */
+  padding: 8px 8px 8px 20px;
+  /* left gutter = room for progress bar thumb */
   width: 100%;
 }
 
@@ -1582,8 +1458,7 @@ $reader-font: 'Lato', sans-serif;
   height: 120px;
   object-fit: contain;
   margin: 0;
-  filter: drop-shadow(0 6px 16px rgba(46, 125, 50, 0.28))
-          drop-shadow(0 1px 3px rgba(0, 0, 0, 0.12));
+  filter: drop-shadow(0 6px 16px rgba(46, 125, 50, 0.28)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.12));
 }
 
 .manual-cover__logo--fallback {
@@ -1662,10 +1537,18 @@ $reader-font: 'Lato', sans-serif;
 
 /* Show touch variant on coarse-pointer devices (phones/tablets),
    mouse variant on fine-pointer devices (desktop). */
-.manual-cover__hint--mouse { display: none; }
+.manual-cover__hint--mouse {
+  display: none;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .manual-cover__hint--touch { display: none; }
-  .manual-cover__hint--mouse { display: flex; }
+  .manual-cover__hint--touch {
+    display: none;
+  }
+
+  .manual-cover__hint--mouse {
+    display: flex;
+  }
 }
 
 .manual-cover__hint .material-icons {
@@ -1673,8 +1556,17 @@ $reader-font: 'Lato', sans-serif;
 }
 
 @keyframes hint-pulse {
-  0%, 100% { opacity: 0.55; transform: translateY(0); }
-  50%       { opacity: 1;    transform: translateY(5px); }
+
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(5px);
+  }
 }
 
 /* End-of-guide completion screen */
@@ -1965,7 +1857,8 @@ $reader-font: 'Lato', sans-serif;
   gap: 8px;
 
   .manual-tag-badge {
-    margin: 0 0 0 auto; /* push badge to the far right */
+    margin: 0 0 0 auto;
+    /* push badge to the far right */
     flex-shrink: 0;
   }
 }
@@ -1978,7 +1871,8 @@ $reader-font: 'Lato', sans-serif;
   border: 1px solid rgba(76, 175, 80, 0.3);
   border-radius: 100px;
   padding: 2px 8px 2px 4px;
-  margin: 0 0 0 6px; /* inline — sits after the content */
+  margin: 0 0 0 6px;
+  /* inline — sits after the content */
   vertical-align: middle;
   cursor: pointer;
   user-select: none;
@@ -2018,7 +1912,8 @@ $reader-font: 'Lato', sans-serif;
   padding: 0 2px;
   border-radius: 2px;
   transition: background 0.12s ease;
-  white-space: nowrap; /* prevent the inline badge from line-breaking mid-tag */
+  white-space: nowrap;
+  /* prevent the inline badge from line-breaking mid-tag */
   display: inline-flex;
   align-items: center;
   gap: 2px;
@@ -2396,8 +2291,13 @@ $reader-font: 'Lato', sans-serif;
   box-shadow: none;
 }
 
-.manual-h3-edge--prev { left: -12px; }
-.manual-h3-edge--next { right: -12px; }
+.manual-h3-edge--prev {
+  left: -12px;
+}
+
+.manual-h3-edge--next {
+  right: -12px;
+}
 
 .manual-h3-edge.is-hidden {
   opacity: 0;
@@ -2556,6 +2456,7 @@ $reader-font: 'Lato', sans-serif;
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .h3-next-enter-active,
   .h3-next-leave-active,
   .h3-prev-enter-active,
@@ -2847,8 +2748,16 @@ $reader-font: 'Lato', sans-serif;
   flex: 0 0 18px;
   color: rgba(0, 0, 0, 0.35);
 
-  .manual-nav-item--tile & { color: $reader-green; }
-  .manual-nav-item--part & { color: rgba(0, 0, 0, 0.25); }
-  .is-active & { color: $reader-green-dark; }
+  .manual-nav-item--tile & {
+    color: $reader-green;
+  }
+
+  .manual-nav-item--part & {
+    color: rgba(0, 0, 0, 0.25);
+  }
+
+  .is-active & {
+    color: $reader-green-dark;
+  }
 }
 </style>

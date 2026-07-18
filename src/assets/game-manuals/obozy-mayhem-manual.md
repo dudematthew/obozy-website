@@ -148,7 +148,7 @@ Niektóre klasy posiadają umiejętność. Większość umiejętności może by�
 
 -  Szaman posiada **jeden punkt życia**.
 - Szaman zawsze nosi ze sobą **zapas bibuł życia**.
-- Szaman posiada umiejętność **Przywołanie** - przywrócenie wyeliminowanego Szturmowca do gry. Gdy dowolny Szturmowiec w drużynie ginie, może krzyknąć *„Szaman A!"* (używając litery swojej drużyny). Szaman może odpowiedzieć *„Jestem"* w ciągu trzech sekund. Wyeliminowany Szturmowiec kieruje się wówczas w stronę Szamana i czeka, aż ten zawiąże mu bibułę. Jeśli Szaman zostanie wyeliminowany lub wyeliminowany Szturmowiec opuści jego pole widzenia, użycie umiejętności przepada.
+- Szaman posiada umiejętność **Przywołanie** - przywrócenie wyeliminowanego Szturmowca do gry. Gdy dowolny Szturmowiec w drużynie ginie, może krzyknąć *"Szaman A!"* (używając litery swojej drużyny). Szaman może odpowiedzieć *"Jestem"* w ciągu trzech sekund. Wyeliminowany Szturmowiec kieruje się wówczas w stronę Szamana i czeka, aż ten zawiąże mu bibułę. Jeśli Szaman zostanie wyeliminowany lub wyeliminowany Szturmowiec opuści jego pole widzenia, użycie umiejętności przepada.
 - Szaman posiada umiejętność **Odnowa** - może uzupełnić umiejętność dowolnego gracza w drużynie tak, jakby ten przejął ołtarz.
 
 ## Magiczna Laska i Zamrażanie

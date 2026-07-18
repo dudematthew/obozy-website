@@ -72,13 +72,105 @@ const routes = [
       description: 'Sprawdź, jak dobrze znasz zasady Stanu Zamrożenia! Rozwiąż quiz i dowiedz się, czy jesteś gotowy na pole bitwy.'
     }
   },
+  {
+    path: '/gra',
+    name: 'gra-intro',
+    component: () => import('../views/gra/GraIntroView.vue'),
+    meta: {
+      title: 'Tajna Gra | Obozy Festiwal',
+      description: 'Znalazłeś zadanie. Tajna zabawa festiwalu.',
+      hideChrome: true
+    }
+  },
+  {
+    path: '/gra/gracz',
+    name: 'gra-gracz',
+    component: () => import('../views/gra/GraGraczView.vue'),
+    meta: {
+      title: 'Twój postęp | Obozy Festiwal',
+      description: 'Twój wynik i tożsamość w tajnej zabawie festiwalu.',
+      hideChrome: true
+    }
+  },
+  {
+    path: '/gra/gracze',
+    name: 'gra-gracze',
+    component: () => import('../views/gra/GraGraczeView.vue'),
+    meta: {
+      title: 'Ranking | Obozy Festiwal',
+      description: 'Ranking punktowy tajnej zabawy.',
+      hideChrome: true
+    }
+  },
+  {
+    path: '/gra/konto',
+    redirect: { name: 'gra-gracz' }
+  },
+  {
+    path: '/gra/ja',
+    redirect: { name: 'gra-gracz' }
+  },
+  {
+    path: '/gra/t/:acceptToken',
+    name: 'gra-play',
+    component: () => import('../views/gra/GraPlayView.vue'),
+    meta: {
+      title: 'Zadanie | Gra tajna',
+      description: 'Przyjmij i wykonaj zadanie festiwalowe.',
+      hideChrome: true
+    }
+  },
+  {
+    path: '/gra/v/:verifyToken',
+    name: 'gra-verify',
+    component: () => import('../views/gra/GraVerifyView.vue'),
+    meta: {
+      title: 'Potwierdzenie | Gra tajna',
+      description: 'Podgląd statusu zadania bez możliwości akceptacji.',
+      hideChrome: true
+    }
+  },
+  {
+    path: '/gra/host',
+    name: 'gra-host',
+    component: () => import('../views/gra/GraHostView.vue'),
+    meta: {
+      title: 'CMR Organizatorów | Gra tajna',
+      description: 'Panel organizatorów.',
+      hideChrome: true
+    }
+  },
+  {
+    path: '/gra/host/zadania/nowe',
+    name: 'gra-host-new',
+    component: () => import('../views/gra/GraHostNewView.vue'),
+    meta: {
+      title: 'Nowe zadanie | Host',
+      description: 'Utwórz zadanie festiwalowe.',
+      hideChrome: true
+    }
+  },
+  {
+    path: '/gra/host/zadania/:id',
+    name: 'gra-host-task',
+    component: () => import('../views/gra/GraHostTaskView.vue'),
+    meta: {
+      title: 'Zadanie | Host',
+      description: 'Edycja zadania i kody QR.',
+      hideChrome: true
+    }
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   scrollBehavior(to) {
-    if (to.name === 'manual' || to.name === 'manual-index') {
+    if (
+      to.name === 'manual' ||
+      to.name === 'manual-index' ||
+      (typeof to.name === 'string' && to.name.startsWith('gra-'))
+    ) {
       return { left: 0, top: 0 }
     }
     const app = document.getElementById('app')

@@ -1,0 +1,1263 @@
+// Alternate chrome for /gra: ManualView-like bar, no Materialize <nav> leaks.
+// Mobile-first: brand + links first; desktop adds center meta.
+
+$nav-h: 52px;
+$green: #4CAF50;
+$green-dark: #388E3C;
+
+.gra-app {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #fafafa;
+  padding-top: $nav-h;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+// Materialize .parallax uses z-index: -1. Without a local stacking context,
+// that paints behind .gra-app's background (white banner, invisible image).
+.gra-app .parallax-container {
+  z-index: 0;
+  isolation: isolate;
+}
+
+// Avoid Materialize .row negative margins blowing out phone width
+.gra-page {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 1rem 2.5rem;
+  box-sizing: border-box;
+}
+
+.gra-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $nav-h;
+  z-index: 1200;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.gra-nav__left,
+.gra-nav__right {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 100%;
+}
+
+.gra-nav__left {
+  flex: 0 0 auto;
+  justify-content: flex-start;
+}
+
+// Desktop-only brand context; phones need the link strip
+.gra-nav__center {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 0;
+  height: 100%;
+}
+
+.gra-nav__right {
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 2px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.gra-nav__brand {
+  font-family: 'M PLUS Rounded 1c', 'Lato', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1;
+  color: #444;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  height: 100%;
+  gap: 0.4rem;
+  white-space: nowrap;
+
+  &:hover {
+    color: $green-dark;
+  }
+}
+
+.gra-nav__stamp {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  object-position: center;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.gra-nav__brand-text {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  height: 32px;
+}
+
+.gra-nav__badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(76, 175, 80, 0.12);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.gra-nav__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1;
+}
+
+.gra-nav__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: $green-dark;
+}
+
+.gra-nav__title {
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #263238;
+  white-space: nowrap;
+}
+
+.gra-nav__link {
+  color: #37474f;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0 10px;
+  text-decoration: none;
+  height: $nav-h;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    color: $green-dark;
+  }
+
+  &.router-link-active {
+    color: $green-dark;
+  }
+}
+
+@media (min-width: 700px) {
+  .gra-nav {
+    height: 56px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    padding: 0 16px;
+    gap: 12px;
+  }
+
+  .gra-app {
+    padding-top: 56px;
+  }
+
+  .gra-nav__brand {
+    font-size: 1.35rem;
+  }
+
+  .gra-nav__stamp {
+    width: 36px;
+    height: 36px;
+  }
+
+  .gra-nav__brand-text {
+    height: 36px;
+  }
+
+  .gra-nav__center {
+    display: flex;
+  }
+
+  .gra-nav__right {
+    overflow: visible;
+  }
+
+  .gra-nav__link {
+    height: 56px;
+    font-size: 0.8rem;
+    padding: 0 6px;
+  }
+}
+
+.gra-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+}
+
+.gra-stats__item {
+  background: #eceff1;
+  border-radius: 4px;
+  padding: 0.75rem 0.35rem;
+  text-align: center;
+  box-shadow: none;
+}
+
+.gra-stats__label {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #78909c;
+  margin-bottom: 0.2rem;
+  line-height: 1.2;
+}
+
+.gra-stats__value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #263238;
+  line-height: 1.1;
+}
+
+.gra-mode-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+
+  .btn {
+    width: 100%;
+    padding: 0 0.25rem;
+    height: 36px;
+    line-height: 36px;
+    font-size: 0.75rem;
+    margin: 0;
+  }
+}
+
+.gra-score {
+  margin: 0 0 1rem;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.gra-score__label {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.gra-score__value {
+  font-size: 2.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0.2rem 0 0;
+}
+
+// Festival progress + ranking panels (Twój postęp / Gracze)
+.gra-fest {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1rem 0.85rem 2.5rem;
+  box-sizing: border-box;
+}
+
+.gra-fest__panel {
+  position: relative;
+  box-sizing: border-box;
+  padding: 1.5rem 1.15rem 1.35rem;
+  border-radius: 8px;
+  overflow: hidden;
+  color: #1b1b1b;
+  background-color: rgba(255, 252, 248, 0.92);
+  background-image: linear-gradient(rgba(255, 252, 248, 0.78), rgba(255, 252, 248, 0.88)),
+    var(--gra-fest-bg);
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 10px 28px rgba(80, 40, 60, 0.12);
+  animation: gra-quest-in 0.55s ease-out both;
+}
+
+.gra-fest__hero {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.gra-fest__seal {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 0.55rem;
+  object-fit: contain;
+  animation: gra-quest-seal 0.7s ease-out 0.12s both;
+}
+
+.gra-fest__eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #1b5e20;
+}
+
+.gra-fest__name {
+  margin: 0;
+  font-family: 'M PLUS Rounded 1c', 'Lato', sans-serif;
+  font-size: clamp(1.45rem, 5.5vw, 1.95rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1b5e20;
+  word-break: break-word;
+}
+
+.gra-fest__rename-toggle {
+  display: inline-block;
+  margin-top: 0.35rem;
+  padding: 0 0.5rem;
+  height: auto;
+  line-height: 1.4;
+  text-transform: none;
+  color: #607d8b !important;
+  font-size: 0.88rem;
+}
+
+.gra-fest__rename {
+  margin: 0.75rem auto 0;
+  max-width: 18rem;
+  text-align: left;
+}
+
+.gra-fest__rename-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #607d8b;
+  margin-bottom: 0.35rem;
+}
+
+.gra-fest__rename .gra-field {
+  margin-bottom: 0.5rem;
+}
+
+.gra-fest__rename-error {
+  margin: 0 0 0.5rem;
+  color: #c62828;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.gra-fest__rename-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.gra-fest__blurb {
+  margin: 0 auto 1rem;
+  max-width: 34em;
+  text-align: center;
+  color: #546e7a;
+  line-height: 1.55;
+  font-size: 0.98rem;
+}
+
+.gra-fest__blurb--tight {
+  margin-top: 0.55rem;
+  margin-bottom: 0;
+  font-weight: 600;
+  color: #37474f;
+}
+
+.gra-fest__muted {
+  text-align: center;
+  color: #78909c;
+  padding: 1.25rem 0.5rem;
+  line-height: 1.55;
+}
+
+.gra-fest__alert {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  background: #ffebee;
+  color: #b71c1c;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.gra-fest__score {
+  margin: 0 auto 1rem;
+  max-width: 22rem;
+  padding: 1.1rem 1rem 0.95rem;
+  text-align: center;
+  border-radius: 10px;
+  color: #fff;
+  background: linear-gradient(145deg, #43a047 0%, #2e7d32 55%, #1b5e20 100%);
+  box-shadow: 0 8px 18px rgba(46, 125, 50, 0.28);
+}
+
+.gra-fest__score--win {
+  background: linear-gradient(145deg, #f9a825 0%, #f57f17 45%, #e65100 100%);
+  box-shadow: 0 8px 18px rgba(230, 81, 0, 0.28);
+}
+
+.gra-fest__score-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.gra-fest__score-block {
+  min-width: 0;
+}
+
+.gra-fest__score-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.92;
+}
+
+.gra-fest__score-value {
+  font-family: 'M PLUS Rounded 1c', 'Lato', sans-serif;
+  font-size: 2.55rem;
+  font-weight: 700;
+  line-height: 1.05;
+  margin-top: 0.15rem;
+}
+
+.gra-fest__rank-line {
+  margin: 0.75rem 0 0;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.4;
+  opacity: 0.95;
+}
+
+.gra-fest__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 0 0 1.1rem;
+}
+
+.gra-fest__stat {
+  text-align: center;
+  padding: 0.75rem 0.4rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(46, 125, 50, 0.12);
+}
+
+.gra-fest__stat-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #78909c;
+  margin-bottom: 0.25rem;
+}
+
+.gra-fest__stat-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1b5e20;
+  line-height: 1.1;
+}
+
+.gra-fest__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.gra-fest__hero--compact {
+  margin-bottom: 0.65rem;
+}
+
+.gra-fest__seal--sm {
+  width: 52px;
+  height: 52px;
+}
+
+.gra-rank__table-wrap {
+  margin-top: 0.35rem;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.gra-rank__table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+.gra-rank__table th,
+.gra-rank__table td {
+  padding: 0.7rem 0.85rem;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.gra-rank__table thead th {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #607d8b;
+  background: rgba(232, 245, 233, 0.65);
+  border-bottom: 1px solid rgba(46, 125, 50, 0.12);
+}
+
+.gra-rank__th-place,
+.gra-rank__td-place {
+  width: 2.5rem;
+  text-align: center;
+  font-weight: 700;
+  color: #388e3c;
+}
+
+.gra-rank__th-pts,
+.gra-rank__td-pts {
+  text-align: right;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.gra-rank__td-name {
+  word-break: break-word;
+  color: #263238;
+}
+
+.gra-rank__table tbody tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.gra-rank__table tbody tr:last-child {
+  border-bottom: 0;
+}
+
+.gra-rank__tr--top .gra-rank__td-place {
+  color: #1b5e20;
+}
+
+.gra-rank__tr--me {
+  background: rgba(200, 230, 201, 0.45);
+}
+
+.gra-rank__you {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  background: #43a047;
+  vertical-align: middle;
+}
+
+@media (min-width: 700px) {
+  .gra-fest {
+    padding: 1.35rem 1rem 3rem;
+  }
+
+  .gra-fest__panel {
+    padding: 1.85rem 1.75rem 1.6rem;
+  }
+
+  .gra-fest__seal {
+    width: 76px;
+    height: 76px;
+  }
+
+  .gra-fest__seal--sm {
+    width: 58px;
+    height: 58px;
+  }
+}
+
+// CSS hero text lives scoped on GraIntroView (parallax banner)
+.gra-md h1,
+.gra-md h2,
+.gra-md h3 {
+  font-size: 1.15rem !important;
+  font-weight: 700;
+  margin: 1rem 0 0.5rem;
+  line-height: 1.35;
+  color: #263238;
+}
+
+.gra-md p {
+  margin: 0 0 0.75rem;
+  line-height: 1.65;
+  font-size: 1rem;
+}
+
+// Lists also get class "browser-default" from graMarkdown.js (Materialize escape hatch)
+.gra-md ul,
+.gra-md ol {
+  padding-left: 1.35rem;
+  margin: 0 0 0.75rem;
+}
+
+.gra-md ul {
+  list-style-type: disc;
+}
+
+.gra-md ol {
+  list-style-type: decimal;
+}
+
+.gra-md li {
+  margin-bottom: 0.35rem;
+}
+
+.gra-task-title {
+  font-size: 1.45rem !important;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0.25rem 0 0.5rem;
+  color: #212121;
+}
+
+@media (min-width: 700px) {
+  .gra-task-title {
+    font-size: 1.65rem !important;
+  }
+}
+
+.gra-task-summary {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: #546e7a;
+  margin: 0 0 1rem;
+}
+
+.gra-field {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  margin: 0.35rem 0 0.85rem;
+  background: #fff;
+}
+
+.gra-md a {
+  color: $green-dark;
+}
+
+.gra-app .card-action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+
+  &.center-align {
+    justify-content: center;
+  }
+}
+
+.gra-app .card .card-content {
+  padding: 1rem;
+}
+
+@media (min-width: 700px) {
+  .gra-app .card .card-content {
+    padding: 24px;
+  }
+}
+
+// Play route (/gra/t/...): festival quest sheet — atmosphere washed in from the bottom
+.gra-quest {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1rem 0.85rem 2.5rem;
+  box-sizing: border-box;
+}
+
+.gra-quest__loading {
+  text-align: center;
+  color: #78909c;
+  padding: 2.5rem 1rem;
+}
+
+.gra-quest__alert {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.gra-quest__alert--bad {
+  background: #ffebee;
+  color: #b71c1c;
+}
+
+.gra-quest__sheet {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 4px;
+  color: #1b1b1b;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(80, 40, 60, 0.12);
+  animation: gra-quest-in 0.55s ease-out both;
+}
+
+// Full atmosphere art, pinned to the bottom; white veil kills empty sky at the top
+.gra-quest__sheet::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--gra-quest-atmosphere);
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  opacity: 0.55;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 12%,
+    rgba(0, 0, 0, 0.2) 32%,
+    rgba(0, 0, 0, 0.55) 55%,
+    rgba(0, 0, 0, 0.85) 78%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 12%,
+    rgba(0, 0, 0, 0.2) 32%,
+    rgba(0, 0, 0, 0.55) 55%,
+    rgba(0, 0, 0, 0.85) 78%,
+    #000 100%
+  );
+}
+
+@keyframes gra-quest-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gra-quest__inner {
+  position: relative;
+  z-index: 1;
+  padding: 1.35rem 1.15rem 1.25rem;
+  box-sizing: border-box;
+}
+
+.gra-quest__hero {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.gra-quest__seal {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 0.55rem;
+  object-fit: contain;
+  animation: gra-quest-seal 0.7s ease-out 0.12s both;
+}
+
+@keyframes gra-quest-seal {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.gra-quest__eyebrow {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #1b5e20;
+}
+
+.gra-quest__brand {
+  margin: 0 0 0.5rem;
+  font-family: 'M PLUS Rounded 1c', 'Lato', sans-serif;
+  font-size: clamp(1.35rem, 5.5vw, 1.85rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1b5e20;
+}
+
+.gra-quest__lead {
+  margin: 0 auto 0.75rem;
+  max-width: 32em;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #37474f;
+}
+
+.gra-quest__meta {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 0.85rem;
+  color: #546e7a;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.gra-quest__meta li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.gra-quest__meta .material-icons {
+  font-size: 1rem;
+  color: #388e3c;
+}
+
+.gra-quest__status {
+  margin: 0 0 0.85rem;
+  padding: 0.7rem 0.9rem;
+  text-align: center;
+  font-weight: 700;
+  line-height: 1.4;
+  border: 1.5px solid transparent;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.gra-quest__status--active {
+  color: #e65100;
+  border-color: #ffb74d;
+  background: rgba(255, 243, 224, 0.9);
+}
+
+.gra-quest__status--ok {
+  color: #1b5e20;
+  border-color: #81c784;
+  background: rgba(232, 245, 233, 0.92);
+}
+
+.gra-quest__status--bad {
+  color: #b71c1c;
+  border-color: #ef9a9a;
+  background: rgba(255, 235, 238, 0.92);
+}
+
+.gra-quest__hint {
+  margin: 0 0 0.85rem;
+  text-align: center;
+  color: #607d8b;
+  line-height: 1.55;
+}
+
+.gra-quest__timer {
+  margin: 0 0 0.85rem;
+  text-align: center;
+}
+
+.gra-quest__timer-note {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+  color: #78909c;
+  line-height: 1.4;
+}
+
+.gra-quest__body {
+  margin: 0 auto 0.15rem;
+  padding: 0.15rem 0.15rem 0;
+  max-width: 34em;
+  text-align: center;
+}
+
+.gra-quest__body .gra-md,
+.gra-quest__body .gra-md p,
+.gra-quest__body .gra-md li {
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.gra-quest__body .gra-md ul,
+.gra-quest__body .gra-md ol {
+  display: inline-block;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gra-quest__body .gra-md img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0.75rem auto;
+}
+
+.gra-quest__cta {
+  margin-top: 1.1rem;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.gra-quest__cta .btn-large {
+  animation: gra-quest-cta 0.55s ease-out 0.28s both;
+}
+
+@keyframes gra-quest-cta {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gra-quest__side {
+  margin-top: 1.15rem;
+  padding: 1rem 1.05rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+}
+
+.gra-quest__side-lead {
+  margin: 0 0 0.85rem;
+  color: #546e7a;
+  line-height: 1.55;
+}
+
+.gra-quest__player {
+  margin: 1rem 0 0;
+  text-align: center;
+  color: #607d8b;
+  line-height: 1.5;
+}
+
+.gra-quest__rules {
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 700px) {
+  .gra-quest {
+    padding: 1.35rem 1rem 3rem;
+  }
+
+  .gra-quest__inner {
+    padding: 0.2rem 1.75rem 0.1rem;
+  }
+
+  .gra-quest__frame--top {
+    margin-bottom: -0.45rem;
+  }
+
+  .gra-quest__frame--bottom {
+    margin-top: -1rem;
+  }
+
+  .gra-quest__seal {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+// Screen: print sheet lives in body via Teleport, never shown on screen
+.gra-print-sheet {
+  display: none;
+}
+
+// A4 quest sheet — only when html.gra-printing (set around window.print)
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+
+  html.gra-printing,
+  html.gra-printing body {
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    overflow: hidden !important;
+  }
+
+  // Kill empty pages: hide the whole app tree, show only the teleported sheet
+  html.gra-printing body > *:not(.gra-print-sheet) {
+    display: none !important;
+  }
+
+  html.gra-printing .gra-print-sheet {
+    display: block !important;
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    max-width: 190mm;
+    margin: 0 auto;
+    box-sizing: border-box;
+    color: #111;
+    font-family: 'Lato', 'Segoe UI', sans-serif;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: #fff;
+  }
+
+  // Atmosphere pinned to bottom; strong top fade so empty sky dissolves into paper
+  html.gra-printing .gra-print-sheet::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: var(--gra-print-atmosphere);
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 10%,
+      rgba(0, 0, 0, 0.15) 28%,
+      rgba(0, 0, 0, 0.45) 50%,
+      rgba(0, 0, 0, 0.8) 75%,
+      #000 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 10%,
+      rgba(0, 0, 0, 0.15) 28%,
+      rgba(0, 0, 0, 0.45) 50%,
+      rgba(0, 0, 0, 0.8) 75%,
+      #000 100%
+    );
+  }
+
+  html.gra-printing .gra-print-sheet__frame {
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    border: none;
+    min-height: 0;
+    padding: 14mm 11mm 12mm;
+    background: transparent;
+  }
+
+  html.gra-printing .gra-print-sheet__hero {
+    text-align: center;
+    margin-bottom: 3.5mm;
+  }
+
+  html.gra-printing .gra-print-sheet__seal {
+    display: block;
+    width: 20mm;
+    height: 20mm;
+    margin: 0 auto 2mm;
+    object-fit: contain;
+  }
+
+  html.gra-printing .gra-print-sheet__eyebrow {
+    margin: 0 0 2mm;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #1b5e20;
+  }
+
+  html.gra-printing .gra-print-sheet__brand {
+    margin: 0 0 2.5mm;
+    font-family: 'M PLUS Rounded 1c', 'Lato', sans-serif;
+    font-size: 18pt;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #1b5e20;
+    text-transform: none;
+  }
+
+  html.gra-printing .gra-print-sheet__lead {
+    margin: 0;
+    font-size: 10pt;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  html.gra-printing .gra-print-sheet__hook {
+    margin: 0 0 4mm;
+    padding: 3mm 3.5mm;
+    text-align: center;
+    font-size: 10pt;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #1b5e20;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1.5pt solid #388E3C;
+  }
+
+  html.gra-printing .gra-print-sheet__rules {
+    margin-bottom: 5mm;
+    font-size: 10pt;
+    line-height: 1.45;
+  }
+
+  html.gra-printing .gra-print-sheet__rules .gra-md,
+  html.gra-printing .gra-print-sheet__rules .gra-md p,
+  html.gra-printing .gra-print-sheet__rules .gra-md li {
+    font-size: 10pt !important;
+    line-height: 1.45;
+  }
+
+  html.gra-printing .gra-print-sheet__rules .gra-md p,
+  html.gra-printing .gra-print-sheet__rules .gra-md ul,
+  html.gra-printing .gra-print-sheet__rules .gra-md ol {
+    margin: 0 0 2.5mm;
+  }
+
+  html.gra-printing .gra-print-sheet__rules .gra-md ul,
+  html.gra-printing .gra-print-sheet__rules .gra-md ol {
+    padding-left: 5mm;
+    list-style-type: disc;
+  }
+
+  html.gra-printing .gra-print-sheet__rules .gra-md li {
+    margin-bottom: 1.5mm;
+  }
+
+  html.gra-printing .gra-print-sheet__rules .gra-md strong {
+    color: #1b5e20;
+  }
+
+  html.gra-printing .gra-print-sheet__codes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5mm;
+    margin-top: 2mm;
+  }
+
+  html.gra-printing .gra-print-sheet__code {
+    text-align: center;
+    border: 2pt solid #2e7d32;
+    padding: 4mm 3mm;
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+  html.gra-printing .gra-print-sheet__code img {
+    width: 42mm;
+    height: 42mm;
+    display: block;
+    margin: 0 auto 2mm;
+  }
+
+  html.gra-printing .gra-print-sheet__code h3 {
+    margin: 0 0 1mm;
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: #1b5e20;
+  }
+
+  html.gra-printing .gra-print-sheet__code p {
+    margin: 0;
+    font-size: 8.5pt;
+    line-height: 1.3;
+    color: #37474f;
+  }
+
+  html.gra-printing .gra-print-sheet__url-label {
+    margin: 2.5mm 0 1mm !important;
+    font-size: 7pt !important;
+    font-weight: 700;
+    color: #78909c !important;
+  }
+
+  html.gra-printing .gra-print-sheet__url {
+    display: block;
+    margin: 0 1mm 1mm;
+    font-family: ui-monospace, 'Cascadia Mono', 'Consolas', monospace;
+    font-size: 5.5pt;
+    line-height: 1.4;
+    word-break: break-all;
+    color: #78909c;
+    text-decoration: underline;
+  }
+
+  html.gra-printing .gra-print-sheet__scan-tip {
+    margin: 4mm 0 0;
+    text-align: center;
+    font-size: 8pt;
+    line-height: 1.35;
+    color: #455a64;
+  }
+}
+

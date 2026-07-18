@@ -55,7 +55,7 @@ glossary:
     link: "magiczna-laska-i-zamrażanie"
   przejmowanie:
     display: "Przejmowanie ołtarza"
-    definition: "Proces zajmowania ołtarza – drużyna wpisuje się na kartę i przebywa w strefie przez wyznaczony czas. Przejęcie kończy się sukcesem jeśli wszyscy członkowie drużyny nie wyjdą przed czasem zakończenia lub nie zostaną wyeliminowani."
+    definition: "Proces zajmowania ołtarza – drużyna wpisuje się na kartę i przebywa w strefie przez wyznaczony czas. Przejęcie kończy się sukcesem jeśli członkowie drużyny nie opuszczą strefy w pełni (całym ciałem poza sznurkiem) przed czasem zakończenia i nie zostaną wyeliminowani."
     link: "przejmowanie-ołtarza"
 ---
 # OBOZY – MAYHEM
@@ -191,6 +191,15 @@ Standardowa **Magiczna Laska** ma długość **1,4 metra**.
 - **Magiczny Nóż** - krótsza wersja o długości około 20 cm, trzymana za 10-centymetrową rączkę. Ekskluzywna dla klasy Goblina.
 - **Magiczny Miecz** - wersja o długości 70 cm, trzymana za 10-centymetrową rączkę.
 
+## Jak walczyć z Chochlikiem
+
+Jeśli walczysz z Chochlikiem i nie masz pewności na co jeszcze możesz sobie pozwolić, trzymaj się tych czterech punktów:
+
+- **Nie walcz sam** - statystycznie Chochlik ma największe szanse na zwycięstwo, jeśli jego przeciwnik nie ma nikogo do pomocy. Atakując we dwoje będziecie mieli o wiele więcej możliwości.
+- **Dotknij go pierwszy i trzymaj** - Dotykany Chochlik jest bezbronny. Nie może zamrażać, dopóki go nie puścisz a ten odliczy do trzech. Nie może również ściągnąć ci bibuły.
+- **Odpędzaj Chochliki** - Chochliki które aktualnie zamrażają od razu wołają po pomoc. Nie są w stanie zrobić za dużo same. Dlatego czasami wystarczy sama próba zbliżenia się by te odpuściły zamrożenie.
+- **Obserwuj, czy stosują się do zasad** - patrz uważnie czy ręka znajduje się pomiędzy oznaczeniami, czy kij choć na chwileczkę nie odsunął się od twojego ciała i czy laska Chochlika nie jest aktualnie nieaktywna. Pamiętaj jednak, że jeśli nie jesteś pewien, możesz narazić Obóz na utratę połowy punktu zwycięstwa.
+
 ## Zwoje
 
 <!-- manual:tag original -->
@@ -272,6 +281,8 @@ Ołtarz nazywamy **przejętym** przez daną drużynę, jeśli odebrała z niego 
 
 Każdy ołtarz posiada własną **strefę** wyznaczoną sznurkiem. [Przejmowanie ołtarza](glossary:przejmowanie) odbywa się po wpisaniu się na kartę a następnie poprzez przebywanie wewnątrz tej strefy. Opuszczenie strefy przez ostatniego członka drużyny natychmiast kończy przejmowanie.
 
+**Wyjście ze strefy** w pełni liczy się dopiero wtedy, gdy gracz **całym ciałem** znajduje się poza sznurkiem: żadna część ciała **nie może** stykać się z gruntem strefy ani z sznurkiem od strony wewnętrznej.
+
 Każdy gracz otrzymuje **własną mapę terenu** – na niej nanosi numery miejsc, do których organizator przypisze ołtarze w danej rundzie. Legenda ołtarzy znajduje się na odwrocie mapy.
 
 <img src="./obozy-mayhem-manual.assets/map.jpg" alt="Przykładowa mapa terenu Obozy Mayhem" />
@@ -311,7 +322,7 @@ Aby rozpocząć przejmowanie, drużyna musi wejść do strefy, spełnić ewentua
 
 Od momentu wpisania przejmowanie jest aktywne. Jeśli przejmująca drużyna przeżyje do godziny zakończenia, ołtarz zostaje przez nią przejęty i może ona odebrać nagrodę, niezależnie od obecności innych drużyn w strefie w tym momencie.
 
-Jeśli cała niewyeleminowana drużyna opuści strefę przed upływem czasu - dobrowolnie lub wskutek walki - **przejmowanie zostaje anulowane**. Nieukończone wpisy można przekreślić dla czytelności.
+Jeśli cała niewyeleminowana drużyna **opuści strefę** przed upływem czasu - dobrowolnie lub wskutek walki - **przejmowanie zostaje anulowane**. Opuszczenie oznacza pełne wyjście opisane w [Strefa ołtarza i przejmowanie](#strefa-ołtarza-i-przejmowanie): całe ciało poza strefą, bez dotykania wnętrza. Nieukończone wpisy można przekreślić dla czytelności.
 
 Gdy drużyna przejmuje ołtarz, **żadna inna drużyna nie może rozpocząć własnego przejmowania** dopóki przejmowanie nie zostanie zakończone - sukcesem lub porażką. 
 
@@ -319,9 +330,14 @@ Drużyna B, chcąc nie dopuścić do przejęcia ołtarza przez drużynę A, musi
 
 Domyślnie do rozpoczęcia przejmowania wymagana jest **jedna osoba**, chyba że karta ołtarza stanowi inaczej. Jeśli ołtarz wymaga określonej liczby osób, wymóg ten dotyczy wyłącznie momentu rozpoczęcia - po wpisaniu się liczba obecnych graczy przestaje mieć znaczenie dla wymogu.
 
+> [!WARNING]
+> Osoba która jako **jedyna w drużynie nie jest wyeliminowana** liczy się jak **dwie osoby** do wymogu przejmowania ołtarzy. Ta zasada umożliwia samotnym graczom kontynuowanie zdobywania punktów.
+
 ### Rozpoczęcie gry i ołtarze startowe
 
-Na początku rozgrywki każda drużyna ma **2–3 minuty** na omówienie taktyki z dostępną mapą. Następnie dzieli się na **dwie *części*** - dwie osoby i jedna osoba - każda z tych części otrzymuje losową kartę ołtarza. Obie części wyruszają do przydzielonych ołtarzy i przymocowują karty na miejscu. 
+Po wylosowaniu ołtarzy grających w danej rundzie i naniesieniu ich na mapy drużyny mają **krótki moment na przeczytanie** opisów tych ołtarzy (legenda na odwrocie mapy oraz ewentualnie karty pokazane przez organizatora). Chodzi o to, by przed taktyką nie było wątpliwości co do wymogów, czasu i specjalnych mechanik.
+
+Następnie każda drużyna ma **2–3 minuty** na omówienie taktyki z dostępną mapą. Potem dzieli się na **dwie *części*** - dwie osoby i jedna osoba - każda z tych części otrzymuje losową kartę ołtarza. Obie części wyruszają do przydzielonych ołtarzy i przymocowują karty na miejscu.
 
 Żaden z ołtarzy startowych **nie może być pierwszym ołtarzem przejętym przez daną drużynę**. Drużyna może do niego wrócić i przejąć go na normalnych zasadach, jeśli wcześniej przejęła już inny ołtarz.
 
@@ -362,7 +378,7 @@ Wymóg: 3 osoby
 Czas: 4:00
 
 Mechanika:
-Zamiast trzech osób wystarczy jeden Tank by rozpocząć przejmowanie. Ostatnia nagroda wymaga jedynie 30 sekund poświęcenia.
+Zamiast trzech osób wystarczy jeden Tank by rozpocząć przejmowanie. Ostatnia nagroda wymaga jedynie sekundy przejmowania (zaczynając od pełnej minuty).
 ```
 
 ##### Królik <img src="./obozy-mayhem-manual.assets/icons8-rabbit-100.png" alt="icons8-rabbit-100" style="zoom:25%;" />
@@ -413,7 +429,7 @@ Kolejność:
 klasa
 
 Wymóg: 1 osoba
-Czas: 2:30
+Czas: 2:00
 
 Mechanika:
 Można rozpocząć przejmowanie tylko jeśli w zasięgu wzroku jest przeciwnik.
@@ -431,7 +447,7 @@ Kolejność:
 Klasa
 
 Wymóg: 2 osoby
-Czas: 4:30
+Czas: 5:00
 
 Mechanika:
 Jeśli w trakcie przejmowania dowolny gracz z poza drużyny zostanie wyeliminowany znajdując się w strefie przejmowanie natychmiast zakańcza się sukcesem.
@@ -447,7 +463,7 @@ Klasa
 2 zwoje
 
 Wymóg: 2 osoby
-Czas: 3:30
+Czas: 3:00
 
 Mechanika:
 Jeśli ołtarz zacznie być przejmowany do 4 minut po ostatnim przejęciu Sępa, nagrody zmieniają się:
@@ -465,10 +481,10 @@ Kolejność:
 klasa
 
 Wymóg: 2 osoby
-Czas: 3:30
+Czas: 4:00
 
 Mechanika:
-Po przejęciu jeden z graczy nie może opuścić strefy aż zegar pokaże następną pełną minutę.
+Po przejęciu jeden z graczy nie może opuścić strefy aż zegar pokaże następną pełną minutę, inaczej zostaje wyeliminowany.
 ```
 
 ##### Lis <img src="./obozy-mayhem-manual.assets/icons8-fox-100.png" alt="icons8-fox-100" style="zoom:25%;" />
@@ -531,7 +547,7 @@ klasa
 3 zwoje
 
 Wymóg: 3 osoby
-Czas: 4:30
+Czas: 5:00
 
 Mechanika:
 Po przejęciu wybrany członek drużyny z obecnych w strefie zostaje wyeliminowany.
@@ -543,14 +559,14 @@ Po przejęciu wybrany członek drużyny z obecnych w strefie zostaje wyeliminowa
 Kolejność:
 
 klasa
-6 punktów
+5 punktów
 1 zwój
 
 Wymóg: 2 osoby
 Czas: 4:00
 
 Mechanika:
-Jeśli drużyna rozpocznie przejmowanie z pełnym składem może wybrać następną nagrodę jeśli jest dostępna. Cała drużyna musi być jednak obecna na koniec przejęcia.
+Jeśli drużyna przejmuje Łosia z pełnym składem, nie opuszczając ołtarza przez całe przejmowanie, może wybrać następną nagrodę jeśli jest dostępna. W innym przypadku odbiera nagrodę w standardowy sposób.
 ```
 
 ##### Rekin <img src="./obozy-mayhem-manual.assets/icons8-shark-100.png" alt="icons8-shark-100" style="zoom:25%;" />
@@ -566,7 +582,7 @@ Wymóg: 2 osoby
 Czas: 3:00
 
 Mechanika:
-Jeśli w trakcie przejmowania w strefie znajdzie się przeciwnik - czas skraca się jednorazowo o 30 sekund. Dopisz gwiazdkę przy godzinie zakończenia.
+Jeśli w trakcie przejmowania w strefie znajdzie się przeciwnik - czas skraca się jednorazowo o minutę. Dopisz gwiazdkę przy godzinie zakończenia.
 ```
 
 ##### Borsuk <img src="./obozy-mayhem-manual.assets/icons8-badger-100.png" alt="icons8-badger-100" style="zoom:25%;" />
@@ -579,7 +595,7 @@ Klasa
 1 zwój
 
 Wymóg: 2 osoby
-Czas: 3:30
+Czas: 3:00
 
 Mechanika:
 Jeśli gracz jest ostatnią niewyeliminowaną na stałe osobą w drużynie, wymóg zmniejsza się do jednej osoby a także czas zmniejsza się do 2:00 dla tego gracza. Zwój osłabienia nie zmienia tej zasady.
@@ -625,7 +641,7 @@ Kolejność:
 Klasa
 
 Wymóg: 1 osoba
-Czas: 1:30
+Czas: 1:00
 ```
 
 ##### Baran <img src="./obozy-mayhem-manual.assets/icons8-ram-100.png" alt="icons8-ram-100" style="zoom:25%;" />
@@ -638,7 +654,7 @@ Klasa
 1 zwój
 
 Wymóg: 3 osoby
-Czas: 3:30
+Czas: 4:00
 ```
 
 ##### Żuraw <img src="./obozy-mayhem-manual.assets/icons8-crane-100.png" alt="icons8-crane-100" style="zoom:25%;" />
@@ -651,7 +667,7 @@ Kolejność:
 klasa
 
 Wymóg: 2 osoby
-Czas: 2:30
+Czas: 2:00
 ```
 
 ## Eliminacja i wskrzeszenie
@@ -661,6 +677,10 @@ Gracz zostaje wyeliminowany w momencie utraty wszystkich bibuł życia i udaje s
 Wskrzeszenie jest możliwe wyłącznie przy użyciu **[Zwoju Zmartwychwstania](glossary:zwoj)** lub umiejętności **Przywołanie** klasy [Szamana](#szaman).
 
 Jeśli w danym momencie **wszystkie drużyny oprócz jednej** znajdują się w miejscu wyeliminowanych graczy, gra kończy się natychmiast.
+
+### Grabież
+
+Gracz który zostanie wyeliminowany **nie ma obowiązku** oddać trzymanych przedmiotów takich jak zwoje. Jeśli jednak gracz chce ograbić pokonanego gracza, musi użyć hasła **"grabież"** - wyeliminowany gracz który usłyszy to hasło musi wyrzucić wszystkie zwoje pod swoje nogi, a następnie kontynuować bycie wyeliminowanym.
 
 ## Koniec gry i liczenie punktów
 
@@ -681,7 +701,7 @@ Organizator przed rozpoczęciem rozgrywki powinien przygotować następujące ma
 - **Bibuły** (lub pokrojone biodegradowalne worki na śmieci) w kolorach drużyn - po dwie na gracza, wiązane na nadgarstkach. Dodatkowe bibuły dla Szamanów oraz dla Tanków jako zapasowe punkty życia.
 - **Karty ołtarzy** - po jednej na każdy typ ołtarza (12), wydrukowane i zabezpieczone przed warunkami atmosferycznymi (np. w koszulce foliowej).
 - **Mapy terenu** z legendą ołtarzy na odwrocie - po jednej na gracza.
-- **Sznurek** (najlepiej elastyczny budowlany do wyznaczania) - do wyznaczenia stref ołtarzy.
+- **Sznurek** (najlepiej elastyczny budowlany do wyznaczania) - do wyznaczenia stref ołtarzy. Bardzo dobrym pomysłem jest przechowywanie sznurka nawiniętego na jakiś obiekt, np. kij, ponieważ lubią się plątać.
 - **Długopisy** (lub zmazywalne markery jeśli używane są koszulki) - po jednym przy każdym ołtarzu, najlepiej przywiązane do karty lub sznurka.
 - **Zwoje** - przygotowane i zwinięte, gotowe do rozdania lub rozłożenia na terenie gry.
 - **Magiczne Laski, Noże i Miecze** - po jednym na każdego potencjalnie uczestniczącego Chochlika i Goblina.
@@ -696,9 +716,11 @@ Liczba użytych ołtarzy powinna wynosić dokładnie dwa razy więcej niż liczb
 
 Organizator losuje ołtarze pomiędzy numerami interesujących miejsc (*np. ołtarz Sowa znajduje się na numerze 3, przy wielkim drzewie*). Nadwyżka kart ołtarzy pozostaje niewykorzystana i nie uczestniczą one w grze.
 
+Po wylosowaniu organizator ogłasza skład ołtarzy grających w rundzie i **daje drużynom czas na ich przeczytanie** (legenda na mapie; w razie potrzeby pokazuje karty ołtarzy). Dopiero potem przechodzi do mapowania i taktyki — bez tego kroku łatwo o konfuzję przy wymogach i mechanikach.
+
 ### Przygotowanie drużyn
 
-Organizator przydziela każdej drużynie literę alfabetu, po jednej bibule na gracza oraz **mapę każdemu graczowi**. Gracze w drużynie nanoszą ustalone ołtarze na numery na mapie a następnie ustalają między sobą taktykę na co mają **2 minuty**.
+Organizator przydziela każdej drużynie literę alfabetu, po jednej bibule na gracza oraz **mapę każdemu graczowi**. Gracze w drużynie nanoszą ustalone ołtarze na numery na mapie. Jeśli nie przeczytali jeszcze opisów wylosowanych ołtarzy, robią to teraz. Następnie ustalają między sobą taktykę - na to mają **2 minuty**.
 
 Następnie każda drużyna dzieli się na dwie części i otrzymuje przydziały ołtarzy startowych - losowo, tak aby żadna drużyna nie otrzymała ołtarza, który chciałaby przejąć jako pierwszy.
 

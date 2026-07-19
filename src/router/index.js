@@ -73,6 +73,15 @@ const routes = [
     }
   },
   {
+    path: '/mayhem/generator-miejsc',
+    name: 'mayhem-spot-generator',
+    component: () => import('../views/MayhemSpotGeneratorView.vue'),
+    meta: {
+      title: 'Generator miejsc startowych | Mayhem',
+      description: 'Losuj każdej drużynie Mayhem dwa sąsiadujące miejsca (1–12) na ołtarze startowe.'
+    }
+  },
+  {
     path: '/gra',
     name: 'gra-intro',
     component: () => import('../views/gra/GraIntroView.vue'),

@@ -22,6 +22,7 @@
                 arbitrów</a>
             </li>
             <li><router-link to="/quiz" class="white-text">Quiz o zamrożeniu</router-link></li>
+            <li><router-link to="/mayhem/generator-miejsc" class="white-text">Generator miejsc Mayhem</router-link></li>
           </ul>
         </div>
         <div class="col l3 s12">

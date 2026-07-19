@@ -18,8 +18,8 @@
             <li><router-link to="/instrukcja" class="white-text">Instrukcje gier</router-link></li>
             <li><router-link to="/powiadomienia" class="white-text">Bądź na bieżąco</router-link></li>
             <li>
-              <a href="#narzedzia-arbitrow" class="white-text" @click.prevent="openToolsModal">Narzędzia dla
-                arbitrów</a>
+              <a href="#narzedzia-organizatorow" class="white-text" @click.prevent="openToolsModal">Narzędzia dla
+                organizatorów</a>
             </li>
             <li><router-link to="/quiz" class="white-text">Quiz o zamrożeniu</router-link></li>
           </ul>
@@ -49,7 +49,7 @@
       <div class="footer-tools-modal__panel card">
         <div class="card-content">
           <div class="footer-tools-modal__head">
-            <h2 id="footer-tools-title" class="footer-tools-modal__title">Narzędzia dla arbitrów</h2>
+            <h2 id="footer-tools-title" class="footer-tools-modal__title">Narzędzia dla organizatorów</h2>
             <button type="button" class="btn-flat" aria-label="Zamknij" @click="closeToolsModal">
               <i class="material-icons">close</i>
             </button>

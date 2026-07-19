@@ -13,6 +13,8 @@ const MESSAGE_PL = {
   'Missing player token': 'Brak tokenu gracza. Zaloguj się ponownie.',
   'Invalid player token': 'Nieprawidłowy token gracza. Zaloguj się ponownie.',
   'Invalid host credentials': 'Błędne hasło hosta.',
+  'Invalid master key': 'Błędny klucz master.',
+  'Master key is not configured': 'Klucz master nie jest skonfigurowany na serwerze.',
   'Task not found': 'Nie znaleziono zadania.',
   'Assignment not found': 'Nie znaleziono przyjęcia.',
   'Task is already completed': 'Zadanie jest już ukończone.',
@@ -31,10 +33,14 @@ const MESSAGE_PL = {
   'stake is required': 'Podaj stawkę.',
   'won is required': 'Podaj wynik stawki.',
   'winnerPlayerId is required': 'Wybierz zwycięzcę.',
+  'winnerPlayerId or winnerTeam is required': 'Wybierz zwycięzcę lub drużynę.',
+  'No accepted assignment on winning team': 'Brak przyjętych graczy w tej drużynie.',
   'Task is not a versus task': 'To nie jest zadanie versus.',
   'Winner must have an accepted assignment on this task':
     'Zwycięzca musi mieć aktywne przyjęcie tego zadania.',
-  'title is required': 'Tytuł jest wymagany.',
+  'Timer already started': 'Zegar już wystartował.',
+  'This task has no soft timer': 'To zadanie nie ma miękkiego zegara.',
+  'timerStart must be accept or manual': 'timerStart musi być accept albo manual.',
   'maxAssignees must be at least 1': 'Liczba miejsc musi być co najmniej 1.',
   'Request body must be valid JSON object': 'Niepoprawne ciało żądania JSON.'
 }

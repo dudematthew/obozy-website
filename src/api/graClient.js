@@ -14,6 +14,7 @@ export async function api (path, {
   body,
   playerToken,
   hostToken,
+  masterKey,
   signal
 } = {}) {
   const headers = new Headers()
@@ -25,6 +26,9 @@ export async function api (path, {
   }
   if (hostToken) {
     headers.set('Authorization', `Bearer ${hostToken}`)
+  }
+  if (masterKey) {
+    headers.set('X-Host-Master-Key', masterKey)
   }
 
   let res

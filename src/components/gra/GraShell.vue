@@ -1,5 +1,6 @@
 <script>
 import { getActiveAccount } from '@/lib/graAccounts'
+import { getHostToken } from '@/lib/graHostSession'
 import '@/assets/gra/gra-shell.scss'
 
 export default {
@@ -9,11 +10,16 @@ export default {
     showHostLink: { type: Boolean, default: false }
   },
   data() {
-    return { account: null }
+    return {
+      account: null,
+      hostLoggedIn: false
+    }
   },
   computed: {
     showHost() {
-      return this.showHostLink || String(this.$route.name || '').startsWith('gra-host')
+      return this.showHostLink ||
+        this.hostLoggedIn ||
+        String(this.$route.name || '').startsWith('gra-host')
     }
   },
   mounted() {
@@ -27,6 +33,7 @@ export default {
   methods: {
     refresh() {
       this.account = getActiveAccount()
+      this.hostLoggedIn = Boolean(getHostToken())
     }
   }
 }

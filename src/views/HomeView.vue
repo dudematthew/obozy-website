@@ -158,7 +158,7 @@ export default {
 		</div>
 	</div>
 
-	<div class="container" style="max-width: 100%; width: 100%; margin: 0 auto">
+	<div class="container">
 		<div class="section">
 			<div class="row">
 				<div class="center col" style="margin-bottom: -30px">

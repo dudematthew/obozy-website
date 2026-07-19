@@ -4,7 +4,7 @@ import intro from '@/data/gra-intro.json'
 export default {
   name: 'GraOrganizersNote',
   computed: {
-    line () {
+    line() {
       const list = intro.organizers || []
       return list.length ? list.join(', ') : ''
     }
@@ -14,9 +14,8 @@ export default {
 
 <template>
   <p v-if="line" class="gra-organizers-note">
-    Zaliczanie i pytania u organizatorów:
+    Organizatorzy:
     <strong>{{ line }}</strong>.
-    Chodzą po terenie z telefonami.
   </p>
 </template>
 
@@ -25,11 +24,11 @@ export default {
   margin: 1rem 0 0;
   font-size: 0.95rem;
   line-height: 1.55;
-  color: #455a64;
+  color: #1a1a1a;
 }
 
 .gra-organizers-note strong {
-  color: #2e7d32;
-  font-weight: 700;
+  color: #0d3d12;
+  font-weight: 800;
 }
 </style>

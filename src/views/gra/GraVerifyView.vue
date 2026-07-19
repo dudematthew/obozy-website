@@ -3,34 +3,68 @@ import GraShell from '@/components/gra/GraShell.vue'
 import GraIntroRules from '@/components/gra/GraIntroRules.vue'
 import GraOrganizersNote from '@/components/gra/GraOrganizersNote.vue'
 import { verifyTask } from '@/api/graTasks'
-import { graIconName } from '@/lib/graIcons'
 import { logicLabel } from '@/lib/graLabels'
+import { isUsableToken } from '@/lib/graUrls'
+import stampUrl from '@/assets/images/festival-stamp.png'
+import atmosphereUrl from '@/assets/images/backgrounds/background-festival-atmosphere.png'
 
 export default {
   name: 'GraVerifyView',
   components: { GraShell, GraIntroRules, GraOrganizersNote },
-  data () {
-    return { loading: true, error: null, task: null }
+  data() {
+    return {
+      loading: true,
+      error: null,
+      task: null,
+      stampUrl,
+      atmosphereUrl
+    }
   },
   computed: {
-    verifyToken () {
+    sheetStyle() {
+      return { '--gra-quest-atmosphere': `url(${this.atmosphereUrl})` }
+    },
+    verifyToken() {
       return this.$route.params.verifyToken
+    },
+    hasValidToken() {
+      return isUsableToken(this.verifyToken)
+    },
+    questHeadline() {
+      const name = this.task && (this.task.title || '').trim()
+      return name ? `ZADANIE: ${name}` : 'ZADANIE'
+    },
+    availabilityTone() {
+      if (!this.task) return ''
+      return this.task.isAvailable ? 'ok' : 'bad'
+    },
+    availabilityText() {
+      if (!this.task) return null
+      return this.task.isAvailable
+        ? 'Dostępne do przyjęcia (przez kod „Przyjmij”).'
+        : 'Zadanie niedostępne - zajęte, pełne, zamknięte albo poza oknem czasowym.'
     }
   },
   watch: {
     verifyToken: {
       immediate: true,
-      handler () {
+      handler() {
         this.load()
       }
     }
   },
   methods: {
-    graIconName,
     logicLabel,
-    async load () {
+    async load() {
       this.loading = true
       this.error = null
+      if (!this.hasValidToken) {
+        this.task = null
+        this.error =
+          'Ten link jest uszkodzony (brak kodu zadania). Zeskanuj QR jeszcze raz z kartki albo z panelu hosta.'
+        this.loading = false
+        return
+      }
       try {
         this.task = await verifyTask(this.verifyToken)
       } catch (err) {
@@ -45,38 +79,55 @@ export default {
 </script>
 
 <template>
-  <GraShell page-title="Potwierdzenie">
-    <div class="gra-page">
-      <p class="center grey-text" style="line-height: 1.55; max-width: 34em; margin-left: auto; margin-right: auto">
-        To jest kod potwierdzenia: pokazuje status zadania bez możliwości przyjęcia.
-        Przydatny przy wymianie albo gdy musisz kogoś wtajemniczyć.
-      </p>
-      <p v-if="loading" class="center grey-text">Sprawdzanie…</p>
-      <div v-else-if="error" class="card-panel red lighten-4 red-text text-darken-2">{{ error }}</div>
+  <GraShell page-title="Sprawdź status">
+    <div class="gra-quest">
+      <p v-if="loading" class="gra-quest__loading">Sprawdzanie…</p>
 
-      <template v-if="task">
-        <div class="card">
-          <div class="card-content">
-            <div style="margin-bottom: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.35rem">
-              <span class="chip green lighten-4 green-text text-darken-2" style="margin: 0">
-                <i class="material-icons" style="font-size: 1rem; vertical-align: middle">{{ graIconName(task.icon) }}</i>
-                {{ logicLabel(task.logicType) }}
-              </span>
-              <span class="chip" style="margin: 0">{{ task.points }} pkt</span>
-              <span
-                class="chip"
-                style="margin: 0"
-                :class="task.isAvailable ? 'green lighten-4' : 'red lighten-4'"
-              >
-                {{ task.isAvailable ? 'Dostępne' : 'Niedostępne' }}
-              </span>
+      <template v-else>
+        <div v-if="error" class="gra-quest__alert gra-quest__alert--bad">{{ error }}</div>
+
+        <template v-if="task">
+          <article class="gra-quest__sheet" :style="sheetStyle">
+            <div class="gra-quest__inner">
+              <header class="gra-quest__hero">
+                <img class="gra-quest__seal" :src="stampUrl" alt="">
+                <p class="gra-quest__eyebrow">OBOZY Festiwal · status zadania</p>
+                <h1 class="gra-quest__brand">{{ questHeadline }}</h1>
+                <p v-if="task.summary" class="gra-quest__lead">{{ task.summary }}</p>
+
+                <ul class="gra-quest__meta">
+                  <li>
+                    <span class="gra-quest__meta-label">Typ zadania</span>
+                    <span class="gra-quest__meta-value">{{ logicLabel(task.logicType) }}</span>
+                  </li>
+                  <li>
+                    <span class="gra-quest__meta-label">Punkty</span>
+                    <span class="gra-quest__meta-value">{{ task.points }}</span>
+                  </li>
+                  <li>
+                    <span class="gra-quest__meta-label">Gracze</span>
+                    <span class="gra-quest__meta-value">{{ task.assigneeCount }}/{{ task.maxAssignees }}</span>
+                  </li>
+                </ul>
+              </header>
+
+              <div class="gra-quest__status" :class="'gra-quest__status--' + availabilityTone">
+                {{ availabilityText }}
+              </div>
+
+              <p class="gra-quest__hint">
+                Teraz patrzysz tylko na <strong>status zadania</strong>. Nie możesz go przyjąć. Używa się tej strony
+                przy wymianie zadań albo gdy musisz kogoś wtajemniczyć.
+              </p>
+
+              <GraOrganizersNote />
             </div>
-            <h1 class="gra-task-title">{{ task.title }}</h1>
-            <p class="gra-task-summary">{{ task.summary }}</p>
-            <GraOrganizersNote />
+          </article>
+
+          <div class="gra-quest__rules">
+            <GraIntroRules collapsible />
           </div>
-        </div>
-        <GraIntroRules collapsible />
+        </template>
       </template>
     </div>
   </GraShell>

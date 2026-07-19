@@ -8,7 +8,6 @@ import GraOrganizersNote from '@/components/gra/GraOrganizersNote.vue'
 import { acceptTask, getTask } from '@/api/graTasks'
 import { getActiveAccount, getActiveToken } from '@/lib/graAccounts'
 import { logicLabel } from '@/lib/graLabels'
-import { graIconName } from '@/lib/graIcons'
 import { isUsableToken } from '@/lib/graUrls'
 import stampUrl from '@/assets/images/festival-stamp.png'
 import atmosphereUrl from '@/assets/images/backgrounds/background-festival-atmosphere.png'
@@ -47,7 +46,7 @@ export default {
     },
     statusText() {
       const map = {
-        accepted: 'Przyjęte. Działaj.',
+        accepted: 'Zadanie zaakceptowane. Działaj.',
         completed: 'Ukończone',
         failed: 'Nieudane. Możesz spróbować ponownie.',
         lost: 'Przegrana (versus)'
@@ -69,9 +68,19 @@ export default {
       return (
         this.task &&
         this.task.playerAssignmentStatus === 'accepted' &&
-        this.task.softMinutes &&
-        this.task.acceptedAt
+        this.task.softMinutes
       )
+    },
+    timerNote() {
+      if (!this.task) return ''
+      if (!this.task.timerStartedAt) {
+        return this.task.timerStart === 'accept'
+          ? 'Czas powinien ruszyć przy przyjęciu — odśwież widok.'
+          : 'Czas ruszy gdy organizator naciśnie „Start zegar”.'
+      }
+      return this.task.timerStart === 'accept'
+        ? 'Czas biegnie od przyjęcia zadania.'
+        : 'Czas biegnie od startu u organizatora.'
     },
     takenHint() {
       if (!this.task || this.task.playerAssignmentStatus) return null
@@ -106,7 +115,6 @@ export default {
     }
   },
   methods: {
-    graIconName,
     logicLabel,
     syncAuth() {
       this.playerToken = getActiveToken()
@@ -166,18 +174,22 @@ export default {
             <div class="gra-quest__inner">
               <header class="gra-quest__hero">
                 <img class="gra-quest__seal" :src="stampUrl" alt="">
-                <p class="gra-quest__eyebrow">OBOZY Festiwal</p>
+                <p class="gra-quest__eyebrow">OBOZY Festiwal · zadanie</p>
                 <h1 class="gra-quest__brand">{{ questHeadline }}</h1>
                 <p class="gra-quest__lead">{{ task.summary }}</p>
 
                 <ul class="gra-quest__meta">
                   <li>
-                    <i class="material-icons" aria-hidden="true">{{ graIconName(task.icon) }}</i>
-                    {{ logicLabel(task.logicType) }}
+                    <span class="gra-quest__meta-label">Typ zadania</span>
+                    <span class="gra-quest__meta-value">{{ logicLabel(task.logicType) }}</span>
                   </li>
-                  <li>{{ task.points }} pkt</li>
-                  <li v-if="task.maxAssignees > 1">
-                    {{ task.assigneeCount }}/{{ task.maxAssignees }} graczy
+                  <li>
+                    <span class="gra-quest__meta-label">Punkty</span>
+                    <span class="gra-quest__meta-value">{{ task.points }}</span>
+                  </li>
+                  <li>
+                    <span class="gra-quest__meta-label">Gracze</span>
+                    <span class="gra-quest__meta-value">{{ task.assigneeCount }}/{{ task.maxAssignees }}</span>
                   </li>
                 </ul>
               </header>
@@ -188,8 +200,8 @@ export default {
               <p v-if="takenHint" class="gra-quest__hint">{{ takenHint }}</p>
 
               <p v-if="showTimer" class="gra-quest__timer">
-                <GraSoftTimer :accepted-at="task.acceptedAt" :soft-minutes="task.softMinutes" />
-                <span class="gra-quest__timer-note">Czas biegnie od przyjęcia zadania.</span>
+                <GraSoftTimer :started-at="task.timerStartedAt" :soft-minutes="task.softMinutes" />
+                <span class="gra-quest__timer-note">{{ timerNote }}</span>
               </p>
 
               <div v-if="bodyRevealed && task.bodyMarkdown.trim()" class="gra-quest__body gra-md">

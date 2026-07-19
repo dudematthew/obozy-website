@@ -22,7 +22,6 @@
                 arbitrów</a>
             </li>
             <li><router-link to="/quiz" class="white-text">Quiz o zamrożeniu</router-link></li>
-            <li><router-link to="/mayhem/generator-miejsc" class="white-text">Generator miejsc Mayhem</router-link></li>
           </ul>
         </div>
         <div class="col l3 s12">
@@ -63,6 +62,13 @@
               <span class="footer-tools-modal__choice-name">Host festiwalu</span>
               <span class="footer-tools-modal__choice-desc">
                 Panel zadań i graczy na /gra/host (igrzyska festiwalowe).
+              </span>
+            </router-link>
+            <router-link class="footer-tools-modal__choice" :to="{ name: 'mayhem-spot-generator' }"
+              @click="closeToolsModal">
+              <span class="footer-tools-modal__choice-name">Generator miejsc Mayhem</span>
+              <span class="footer-tools-modal__choice-desc">
+                Losuje każdej drużynie dwa sąsiadujące miejsca (1–12) na ołtarze startowe.
               </span>
             </router-link>
             <a class="footer-tools-modal__choice" href="http://obozy.dudematthew.smallhost.pl/" target="_blank"

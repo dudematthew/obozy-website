@@ -2,20 +2,26 @@
 export default {
   name: 'GraSoftTimer',
   props: {
-    acceptedAt: { type: String, required: true },
+    /** UTC datetime when the soft clock started; null = waiting for host. */
+    startedAt: { type: String, default: null },
     softMinutes: { type: Number, required: true }
   },
   data () {
     return { now: Date.now(), timerId: null }
   },
   computed: {
+    waiting () {
+      return !this.startedAt
+    },
     remainingMs () {
-      const iso = String(this.acceptedAt).replace(' ', 'T') + 'Z'
+      if (this.waiting) return null
+      const iso = String(this.startedAt).replace(' ', 'T') + 'Z'
       const start = Date.parse(iso)
       if (Number.isNaN(start)) return null
       return start + this.softMinutes * 60 * 1000 - this.now
     },
     label () {
+      if (this.waiting) return 'Czas jeszcze nie ruszył'
       if (this.remainingMs == null) return ''
       if (this.remainingMs <= 0) return 'Czas miękki minął'
       const sec = Math.floor(this.remainingMs / 1000)
@@ -25,6 +31,11 @@ export default {
     },
     overdue () {
       return this.remainingMs != null && this.remainingMs <= 0
+    },
+    chipClass () {
+      if (this.waiting) return 'grey lighten-3 grey-text text-darken-2'
+      if (this.overdue) return 'red lighten-4 red-text text-darken-2'
+      return 'orange lighten-4'
     }
   },
   mounted () {
@@ -40,7 +51,7 @@ export default {
   <span
     v-if="label"
     class="chip"
-    :class="overdue ? 'red lighten-4 red-text text-darken-2' : 'orange lighten-4'"
+    :class="chipClass"
   >
     <i class="material-icons" style="font-size: 1rem; vertical-align: middle">timer</i>
     {{ label }}

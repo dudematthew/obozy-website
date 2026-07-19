@@ -68,76 +68,123 @@ function applyMeta (html, meta) {
 }
 
 function resolveMeta (pathname) {
+  const path = (pathname.replace(/\/+$/, '') || '/')
+
+  const entry = (title, description, urlPath = path) => ({
+    title,
+    description,
+    url: `${SITE_URL}${urlPath}`,
+    image: DEFAULT_OG_IMAGE,
+    imageAlt: DEFAULT_IMAGE_ALT
+  })
+
   const metaMap = {
-    '/': {
-      title: 'Obozy - Gra Terenowa | Prawdziwa przygoda w lesie',
-      description: 'Spędź dwa dni na łonie natury tocząc wspólnie zaciekły bój o flagę. Odkryj intensywną grę terenową pełną strategii, pracy zespołowej i prawdziwej adrenaliny.',
-      url: `${SITE_URL}/`,
-      image: DEFAULT_OG_IMAGE,
-      imageAlt: DEFAULT_IMAGE_ALT
-    },
-    '/o-nas': {
-      title: 'O nas - Historia i Pasja | Obozy - Gra Terenowa',
-      description: 'Czym są Obozy? - od prostej gry w berka do złożonego systemu pełnego strategii.',
-      url: `${SITE_URL}/o-nas`,
-      image: DEFAULT_OG_IMAGE,
-      imageAlt: DEFAULT_IMAGE_ALT
-    },
-    '/dolacz-do-nas': {
-      title: 'Dołącz do nas | Obozy - Gra Terenowa',
-      description: 'Chcesz dołączyć do Obozów? Poznaj naszą ekipę i dowiedz się jak zostać obozowiczem.',
-      url: `${SITE_URL}/dolacz-do-nas`,
-      image: DEFAULT_OG_IMAGE,
-      imageAlt: DEFAULT_IMAGE_ALT
-    },
-    '/powiadomienia': {
-      title: 'Bądź na bieżąco - Powiadomienia | Obozy - Gra Terenowa',
-      description: 'Zapisz się i dowiedz się porządnie o terminach i najważniejszych informacjach.',
-      url: `${SITE_URL}/powiadomienia`,
-      image: DEFAULT_OG_IMAGE,
-      imageAlt: DEFAULT_IMAGE_ALT
-    },
-    '/quiz': {
-      title: 'Quiz o Zamrożeniu | Obozy - Gra Terenowa',
-      description: 'Sprawdź jak dobrze znasz zasady Stanu Zamrożenia!',
-      url: `${SITE_URL}/quiz`,
-      image: DEFAULT_OG_IMAGE,
-      imageAlt: DEFAULT_IMAGE_ALT
-    },
-    '/instrukcja': {
-      title: 'Instrukcje | Obozy - Gra Terenowa',
-      description: 'Lista interaktywnych instrukcji do gier Obozy.',
-      url: `${SITE_URL}/instrukcja`,
-      image: DEFAULT_OG_IMAGE,
-      imageAlt: DEFAULT_IMAGE_ALT
-    },
-    '/mayhem/generator-miejsc': {
-      title: 'Generator miejsc startowych | Mayhem',
-      description: 'Losuj każdej drużynie Mayhem dwa sąsiadujące miejsca (1–12) na ołtarze startowe.',
-      url: `${SITE_URL}/mayhem/generator-miejsc`,
-      image: DEFAULT_OG_IMAGE,
-      imageAlt: DEFAULT_IMAGE_ALT
-    }
+    '/': entry(
+      'Obozy - Gra Terenowa | Prawdziwa przygoda w lesie',
+      'Spędź dwa dni na łonie natury tocząc wspólnie zaciekły bój o flagę. Odkryj intensywną grę terenową pełną strategii, pracy zespołowej i prawdziwej adrenaliny.',
+      '/'
+    ),
+    '/o-nas': entry(
+      'O nas - Historia i Pasja | Obozy - Gra Terenowa',
+      'Czym są Obozy? - od prostej gry w berka do złożonego systemu pełnego strategii.'
+    ),
+    '/dolacz-do-nas': entry(
+      'Dołącz do nas | Obozy - Gra Terenowa',
+      'Chcesz dołączyć do Obozów? Poznaj naszą ekipę i dowiedz się jak zostać obozowiczem.'
+    ),
+    '/powiadomienia': entry(
+      'Bądź na bieżąco - Powiadomienia | Obozy - Gra Terenowa',
+      'Zapisz się i dowiedz się porządnie o terminach i najważniejszych informacjach.'
+    ),
+    '/quiz': entry(
+      'Quiz o Zamrożeniu | Obozy - Gra Terenowa',
+      'Sprawdź jak dobrze znasz zasady Stanu Zamrożenia!'
+    ),
+    '/instrukcja': entry(
+      'Instrukcje | Obozy - Gra Terenowa',
+      'Lista interaktywnych instrukcji do gier Obozy.'
+    ),
+    '/mayhem/generator-miejsc': entry(
+      'Generator miejsc startowych | Mayhem',
+      'Losuj każdej drużynie Mayhem dwa sąsiadujące miejsca (1–12) na ołtarze startowe.'
+    ),
+    '/gra': entry(
+      'Tajna Gra | Obozy Festiwal',
+      'Znalazłeś zadanie. Tajna zabawa festiwalu.'
+    ),
+    '/gra/gracz': entry(
+      'Twój postęp | Obozy Festiwal',
+      'Twój wynik i tożsamość w tajnej zabawie festiwalu.'
+    ),
+    '/gra/gracze': entry(
+      'Ranking | Obozy Festiwal',
+      'Ranking punktowy tajnej zabawy.'
+    ),
+    '/gra/konto': entry(
+      'Twój postęp | Obozy Festiwal',
+      'Twój wynik i tożsamość w tajnej zabawie festiwalu.',
+      '/gra/gracz'
+    ),
+    '/gra/ja': entry(
+      'Twój postęp | Obozy Festiwal',
+      'Twój wynik i tożsamość w tajnej zabawie festiwalu.',
+      '/gra/gracz'
+    ),
+    '/gra/host': entry(
+      'CMR Organizatorów | Gra tajna',
+      'Panel organizatorów.'
+    ),
+    '/gra/host/zadania/nowe': entry(
+      'Nowe zadanie | Host',
+      'Utwórz zadanie festiwalowe.'
+    )
   }
 
-  let meta = metaMap[pathname] ?? metaMap['/']
+  if (metaMap[path]) return metaMap[path]
 
-  if (pathname.startsWith('/instrukcja/')) {
-    const manualId = pathname.split('/')[2]
+  if (path.startsWith('/instrukcja/')) {
+    const manualId = path.split('/')[2]
     const manual = manualId && manualsMeta[manualId]
     if (manual) {
-      meta = {
+      return {
         title: manual.title,
         description: manual.description,
-        url: `${SITE_URL}${pathname}`,
+        url: `${SITE_URL}${path}`,
         image: DEFAULT_OG_IMAGE,
         imageAlt: manual.imageAlt || manual.title
       }
     }
   }
 
-  return meta
+  // Dynamic festival routes (tokens / task ids) — keep full URL for shareable links
+  if (path.startsWith('/gra/t/')) {
+    return entry(
+      'Zadanie | Gra tajna',
+      'Przyjmij i wykonaj zadanie festiwalowe.'
+    )
+  }
+  if (path.startsWith('/gra/v/')) {
+    return entry(
+      'Potwierdzenie | Gra tajna',
+      'Podgląd statusu zadania bez możliwości akceptacji.'
+    )
+  }
+  if (path.startsWith('/gra/host/zadania/')) {
+    return entry(
+      'Zadanie | Host',
+      'Edycja zadania i kody QR.'
+    )
+  }
+  if (path.startsWith('/gra/')) {
+    return entry(
+      'Tajna Gra | Obozy Festiwal',
+      'Tajna zabawa festiwalu Obozy.'
+    )
+  }
+
+  return metaMap['/']
 }
+
 
 export default async (request, context) => {
   if (request.method !== 'GET') {

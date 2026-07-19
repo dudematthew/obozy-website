@@ -110,6 +110,13 @@ function resolveMeta (pathname) {
       url: `${SITE_URL}/instrukcja`,
       image: DEFAULT_OG_IMAGE,
       imageAlt: DEFAULT_IMAGE_ALT
+    },
+    '/mayhem/generator-miejsc': {
+      title: 'Generator miejsc startowych | Mayhem',
+      description: 'Losuj każdej drużynie Mayhem dwa sąsiadujące miejsca (1–12) na ołtarze startowe.',
+      url: `${SITE_URL}/mayhem/generator-miejsc`,
+      image: DEFAULT_OG_IMAGE,
+      imageAlt: DEFAULT_IMAGE_ALT
     }
   }
 

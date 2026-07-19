@@ -72,6 +72,15 @@ const routes = [
       description: 'Sprawdź, jak dobrze znasz zasady Stanu Zamrożenia! Rozwiąż quiz i dowiedz się, czy jesteś gotowy na pole bitwy.'
     }
   },
+  {
+    path: '/mayhem/generator-miejsc',
+    name: 'mayhem-spot-generator',
+    component: () => import('../views/MayhemSpotGeneratorView.vue'),
+    meta: {
+      title: 'Generator miejsc startowych | Mayhem',
+      description: 'Losuj każdej drużynie Mayhem dwa sąsiadujące miejsca (1–12) na ołtarze startowe.'
+    }
+  },
 ];
 
 const router = createRouter({

@@ -1,5 +1,8 @@
 import { polishApiMessage } from '@/lib/graErrors'
 
+// API contract (published by the backend, no auth):
+//   https://festiwal.dudematthew.smallhost.pl/docs
+//   https://festiwal.dudematthew.smallhost.pl/docs/api.http
 const API_BASE = (process.env.VUE_APP_API_BASE_URL || 'http://127.0.0.1:8090').replace(/\/$/, '')
 
 /**

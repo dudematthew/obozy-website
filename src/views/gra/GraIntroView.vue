@@ -8,18 +8,18 @@ import { getActiveAccount } from '@/lib/graAccounts'
 export default {
   name: 'GraIntroView',
   components: { GraShell, GraMarkdown },
-  data () {
+  data() {
     return {
       intro,
       account: null
     }
   },
   computed: {
-    organizers () {
+    organizers() {
       const list = this.intro.organizers || []
       return list.length ? list.join(', ') : null
     },
-    bodyMarkdown () {
+    bodyMarkdown() {
       if (typeof this.intro.body === 'string' && this.intro.body.trim()) {
         return this.intro.body
       }
@@ -27,7 +27,7 @@ export default {
       return Array.isArray(parts) ? parts.join('\n\n') : ''
     }
   },
-  mounted () {
+  mounted() {
     this.account = getActiveAccount()
     try {
       localStorage.setItem('obozy-gra-rules-seen', '1')
@@ -37,7 +37,7 @@ export default {
     const parallaxElems = document.querySelectorAll('.parallax')
     M.Parallax.init(parallaxElems)
   },
-  beforeUnmount () {
+  beforeUnmount() {
     document.querySelectorAll('.parallax').forEach((el) => {
       const instance = M.Parallax.getInstance(el)
       if (instance) instance.destroy()
@@ -59,28 +59,22 @@ export default {
         </div>
       </div>
       <div class="parallax">
-        <img
-          src="@/assets/images/backgrounds/background-festival-atmosphere.png"
-          alt="Tło festiwalu"
-          style="filter: brightness(60%)"
-        >
+        <img src="@/assets/images/backgrounds/background-festival-atmosphere.png" alt="Tło festiwalu"
+          style="filter: brightness(60%)">
       </div>
     </div>
 
     <div class="gra-page">
-      <div class="card z-depth-2">
+      <div class="z-depth-2 card">
         <div class="card-content gra-intro-copy">
           <GraMarkdown :source="bodyMarkdown" />
           <p v-if="organizers">
-            Organizatorzy (z nimi załatwiasz zaliczenia; chodzą po terenie):
-            <strong class="green-text text-darken-2">{{ organizers }}</strong>.
+            Organizatorzy:
+            <strong class="text-darken-2 green-text">{{ organizers }}</strong>.
           </p>
         </div>
         <div class="card-action center-align" style="padding: 1.25rem">
-          <router-link
-            class="btn-large green waves-effect waves-light"
-            :to="{ name: 'gra-gracz' }"
-          >
+          <router-link class="btn-large green waves-effect waves-light" :to="{ name: 'gra-gracz' }">
             {{ account ? 'Twój wynik' : 'Wejdź do gry' }}
           </router-link>
         </div>

@@ -58,9 +58,9 @@ export default {
       }
       if (this.isWinning) {
         if (this.rankPlace === 1) {
-          return 'Miejsce 1 - prowadzisz. Top 3 wygrywa tajną nagrodę.'
+          return 'Miejsce 1 - prowadzisz. Top 3 wygrywa specjalną nagrodę.'
         }
-        return `Miejsce ${this.rankPlace} - jesteś w czołówce. Top 3 wygrywa tajną nagrodę.`
+        return `Miejsce ${this.rankPlace} - jesteś w czołówce. Top 3 wygrywa specjalną nagrodę.`
       }
       return `Miejsce ${this.rankPlace}. Do wygranej potrzebujesz top 3.`
     }
@@ -189,42 +189,19 @@ export default {
             <img class="gra-fest__seal" :src="stampUrl" alt="">
             <p class="gra-fest__eyebrow">Twój postęp</p>
             <h1 class="gra-fest__name">{{ summary.player.displayName }}</h1>
-            <button
-              v-if="!renameOpen"
-              type="button"
-              class="btn-flat gra-fest__rename-toggle"
-              @click="openRename"
-            >
+            <button v-if="!renameOpen" type="button" class="btn-flat gra-fest__rename-toggle" @click="openRename">
               Zmień imię
             </button>
             <div v-else class="gra-fest__rename">
               <label class="gra-fest__rename-label" for="gra-rename">Nowe imię / ksywa</label>
-              <input
-                id="gra-rename"
-                v-model="renameDraft"
-                type="text"
-                class="browser-default gra-field"
-                maxlength="64"
-                autocomplete="nickname"
-                :disabled="renaming"
-                @keyup.enter="saveRename"
-              >
+              <input id="gra-rename" v-model="renameDraft" type="text" class="browser-default gra-field" maxlength="64"
+                autocomplete="nickname" :disabled="renaming" @keyup.enter="saveRename">
               <p v-if="renameError" class="gra-fest__rename-error">{{ renameError }}</p>
               <div class="gra-fest__rename-actions">
-                <button
-                  type="button"
-                  class="btn green waves-effect"
-                  :disabled="renaming"
-                  @click="saveRename"
-                >
+                <button type="button" class="btn green waves-effect" :disabled="renaming" @click="saveRename">
                   Zapisz
                 </button>
-                <button
-                  type="button"
-                  class="btn-flat grey-text"
-                  :disabled="renaming"
-                  @click="cancelRename"
-                >
+                <button type="button" class="btn-flat grey-text" :disabled="renaming" @click="cancelRename">
                   Anuluj
                 </button>
               </div>
@@ -264,10 +241,10 @@ export default {
 
           <p class="gra-fest__blurb">
             Treści i status zadań zobaczysz z kartki na terenie (zeskanuj QR albo link pod kodem).
-            Tutaj widzisz wynik, miejsce i liczbę przyjęć.
+            Tutaj widzisz wynik, miejsce i liczbę przyjętych zadań.
           </p>
           <p v-if="organizersLine" class="gra-fest__blurb gra-fest__blurb--tight" style="margin-bottom: 0.5rem">
-            Organizatorzy (zaliczanie w terenie):
+            Organizatorzy:
             <strong>{{ organizersLine }}</strong>.
           </p>
 

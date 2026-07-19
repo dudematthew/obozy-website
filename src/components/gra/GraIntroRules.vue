@@ -13,30 +13,30 @@ export default {
     /** Force open regardless of localStorage (e.g. print). */
     forceOpen: { type: Boolean, default: false }
   },
-  data () {
+  data() {
     return {
       intro,
       open: true
     }
   },
   computed: {
-    bodyMarkdown () {
+    bodyMarkdown() {
       if (typeof this.intro.body === 'string' && this.intro.body.trim()) {
         return this.intro.body
       }
       const parts = this.intro.paragraphs
       return Array.isArray(parts) ? parts.join('\n\n') : ''
     },
-    organizers () {
+    organizers() {
       const list = this.intro.organizers || []
       return list.length ? list.join(', ') : null
     },
-    showBody () {
+    showBody() {
       if (this.forceOpen || !this.collapsible) return true
       return this.open
     }
   },
-  created () {
+  created() {
     if (!this.collapsible || this.forceOpen) {
       this.open = true
       return
@@ -49,7 +49,7 @@ export default {
     }
   },
   methods: {
-    toggle () {
+    toggle() {
       this.open = !this.open
       if (!this.open) {
         try {
@@ -57,7 +57,7 @@ export default {
         } catch { /* ignore */ }
       }
     },
-    markSeen () {
+    markSeen() {
       try {
         localStorage.setItem(SEEN_KEY, '1')
       } catch { /* ignore */ }
@@ -68,13 +68,8 @@ export default {
 
 <template>
   <section class="gra-intro-rules">
-    <button
-      v-if="collapsible"
-      type="button"
-      class="gra-intro-rules__toggle"
-      :aria-expanded="showBody ? 'true' : 'false'"
-      @click="toggle"
-    >
+    <button v-if="collapsible" type="button" class="gra-intro-rules__toggle"
+      :aria-expanded="showBody ? 'true' : 'false'" @click="toggle">
       <span>Zasady gry</span>
       <i class="material-icons" aria-hidden="true">{{ showBody ? 'expand_less' : 'expand_more' }}</i>
     </button>
@@ -84,8 +79,8 @@ export default {
       <p v-if="collapsible" class="gra-intro-rules__lead">{{ intro.lead }}</p>
       <GraMarkdown :source="bodyMarkdown" />
       <p v-if="organizers">
-        Organizatorzy (z nimi załatwiasz zaliczenia; chodzą po terenie):
-        <strong class="green-text text-darken-2">{{ organizers }}</strong>.
+        Organizatorzy:
+        <strong class="text-darken-2 green-text">{{ organizers }}</strong>.
       </p>
       <p v-if="intro.scannerHint" class="gra-intro-rules__scanner">{{ intro.scannerHint }}</p>
     </div>

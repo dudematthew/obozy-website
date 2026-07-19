@@ -8,7 +8,7 @@ import festivalUrl from '@/assets/images/backgrounds/background-festival.png'
 export default {
   name: 'GraGraczeView',
   components: { GraShell },
-  data () {
+  data() {
     return {
       loading: true,
       error: null,
@@ -19,16 +19,16 @@ export default {
     }
   },
   computed: {
-    festStyle () {
+    festStyle() {
       return { '--gra-fest-bg': `url(${this.festivalUrl})` }
     }
   },
-  created () {
+  created() {
     this.me = getActiveAccount()
     this.load()
   },
   methods: {
-    async load () {
+    async load() {
       this.loading = true
       this.error = null
       try {
@@ -40,11 +40,11 @@ export default {
         this.loading = false
       }
     },
-    isMe (row) {
+    isMe(row) {
       return this.me && this.me.displayName &&
         String(this.me.displayName).toLowerCase() === String(row.displayName).toLowerCase()
     },
-    isTopThree (index) {
+    isTopThree(index) {
       return index < 3
     }
   }
@@ -62,7 +62,7 @@ export default {
         </header>
 
         <p class="gra-fest__blurb gra-fest__blurb--tight">
-          Trzy najwyższe wyniki wygrywają tajną nagrodę.
+          Trzy najwyższe wyniki wygrywają specjalną nagrodę.
         </p>
         <p class="gra-fest__blurb">
           Ci gracze są już w grze i zostali wtajemniczeni. Możesz spróbować wymienić się z nimi
@@ -82,14 +82,10 @@ export default {
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(p, i) in players"
-                :key="p.id"
-                :class="{
+              <tr v-for="(p, i) in players" :key="p.id" :class="{
                   'gra-rank__tr--me': isMe(p),
                   'gra-rank__tr--top': isTopThree(i)
-                }"
-              >
+                }">
                 <td class="gra-rank__td-place">{{ i + 1 }}</td>
                 <td class="gra-rank__td-name">
                   {{ p.displayName }}

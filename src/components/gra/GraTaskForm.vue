@@ -1,5 +1,6 @@
 <script>
 import { LOGIC_LABELS, TASK_STATUS_LABELS } from '@/lib/graLabels'
+import { GRA_ICON_KEYS } from '@/lib/graIcons'
 
 const TYPES = ['instant', 'gated', 'coop', 'versus']
 const STATUSES = ['available', 'active', 'completed']
@@ -18,13 +19,14 @@ export default {
     loading: { type: Boolean, default: false }
   },
   emits: ['submit'],
-  data () {
+  data() {
     return {
       types: TYPES,
       statuses: STATUSES,
       bodyReveals: BODY_REVEALS,
       logicLabels: LOGIC_LABELS,
       statusLabels: TASK_STATUS_LABELS,
+      iconKeys: GRA_ICON_KEYS,
       title: '',
       icon: '',
       summary: '',
@@ -37,6 +39,7 @@ export default {
       acceptOpensAt: '',
       acceptClosesAt: '',
       softMinutes: '',
+      timerStart: '',
       stakeMin: '',
       stakeMax: '',
       bodyReveal: '',
@@ -49,7 +52,7 @@ export default {
   watch: {
     initial: {
       immediate: true,
-      handler (val) {
+      handler(val) {
         if (!val) return
         this.title = val.title || ''
         this.icon = val.icon || ''
@@ -64,6 +67,7 @@ export default {
         this.acceptClosesAt = val.acceptClosesAt || ''
         const cfg = val.logicConfig || {}
         this.softMinutes = cfg.softMinutes != null ? cfg.softMinutes : ''
+        this.timerStart = cfg.timerStart || ''
         this.stakeMin = cfg.stakeMin != null ? cfg.stakeMin : ''
         this.stakeMax = cfg.stakeMax != null ? cfg.stakeMax : ''
         this.bodyReveal = cfg.bodyReveal || ''
@@ -71,16 +75,16 @@ export default {
         this.organizerPoolText = Array.isArray(cfg.organizerPool) ? cfg.organizerPool.join('\n') : ''
         this.itemPoolText = Array.isArray(cfg.itemPool) ? cfg.itemPool.join('\n') : ''
         const rest = { ...cfg }
-        ;['softMinutes', 'nicknamePool', 'organizerPool', 'itemPool', 'stakeMin', 'stakeMax', 'bodyReveal'].forEach((k) => delete rest[k])
+          ;['softMinutes', 'timerStart', 'nicknamePool', 'organizerPool', 'itemPool', 'stakeMin', 'stakeMax', 'bodyReveal'].forEach((k) => delete rest[k])
         this.logicConfigExtra = Object.keys(rest).length ? JSON.stringify(rest, null, 2) : ''
       }
     }
   },
   methods: {
-    lines (text) {
+    lines(text) {
       return String(text || '').split(/\r?\n/).map((s) => s.trim()).filter(Boolean)
     },
-    onSubmit () {
+    onSubmit() {
       try {
         if (!this.title.trim()) {
           this.$emit('submit', null, new Error('Tytuł jest wymagany.'))
@@ -88,6 +92,7 @@ export default {
         }
         const logicConfig = {}
         if (this.softMinutes !== '' && this.softMinutes != null) logicConfig.softMinutes = Number(this.softMinutes)
+        if (this.timerStart) logicConfig.timerStart = this.timerStart
         if (this.stakeMin !== '' && this.stakeMin != null) logicConfig.stakeMin = Number(this.stakeMin)
         if (this.stakeMax !== '' && this.stakeMax != null) logicConfig.stakeMax = Number(this.stakeMax)
         if (this.bodyReveal) logicConfig.bodyReveal = this.bodyReveal
@@ -129,10 +134,20 @@ export default {
       <div class="col s12">
         <label>Tytuł</label>
         <input v-model="title" class="browser-default gra-field" required maxlength="200">
+        <p class="grey-text" style="margin: 0.25rem 0 0; font-size: 0.85rem">
+          Kartka A4, CMR i nagłówek po skanie.
+        </p>
       </div>
       <div class="col s12 m6">
         <label>Ikona</label>
-        <input v-model="icon" class="browser-default gra-field" placeholder="map, raccoon…">
+        <input v-model="icon" class="browser-default gra-field" list="gra-icon-keys"
+          :placeholder="iconKeys.slice(0, 6).join(', ') + '…'">
+        <datalist id="gra-icon-keys">
+          <option v-for="k in iconKeys" :key="k" :value="k" />
+        </datalist>
+        <p class="grey-text" style="margin: 0.25rem 0 0; font-size: 0.85rem">
+          Material Icons — lista CMR, strona zadania, ikona w środku QR na A4.
+        </p>
       </div>
       <div class="col s12 m6">
         <label>Typ</label>
@@ -141,17 +156,26 @@ export default {
         </select>
       </div>
       <div class="col s12">
-        <label>Krótki opis (publiczny, na kartce)</label>
-        <textarea v-model="summary" class="browser-default gra-field" rows="3" />
+        <label>Krótki opis</label>
+        <textarea v-model="summary" class="browser-default gra-field gra-field--lg" rows="6" />
+        <p class="grey-text" style="margin: 0.25rem 0 0; font-size: 0.85rem">
+          Widoczny po zeskanowaniu kodu QR a także w liście w CMR.
+        </p>
       </div>
       <div class="col s12">
-        <label>Treść (markdown, w aplikacji)</label>
-        <textarea v-model="bodyMarkdown" class="browser-default gra-field" rows="8" />
+        <label>Treść (markdown)</label>
+        <textarea v-model="bodyMarkdown" class="browser-default gra-field gra-field--xl" rows="16" />
+        <p class="grey-text" style="margin: 0.25rem 0 0; font-size: 0.85rem">
+          Pełna treść zadania w aplikacji. Widoczność zależy od „Kiedy widać treść” poniżej.
+        </p>
       </div>
       <div class="col s12">
-        <label>Notatki hosta / przygotowanie (tylko CMR)</label>
-        <textarea v-model="hostNotes" class="browser-default gra-field" rows="4"
+        <label>Notatki hosta / przygotowanie</label>
+        <textarea v-model="hostNotes" class="browser-default gra-field gra-field--lg" rows="8"
           placeholder="Np. schować flagę, mapa, okulary…" />
+        <p class="grey-text" style="margin: 0.25rem 0 0; font-size: 0.85rem">
+          Tylko CMR: checklista „Przygotowania” i karta zadania u organizatora. Gracze tego nie widzą.
+        </p>
       </div>
       <div class="col s4">
         <label>Punkty</label>
@@ -177,7 +201,7 @@ export default {
         <input v-model="acceptClosesAt" class="browser-default gra-field" placeholder="YYYY-MM-DD HH:MM:SS">
       </div>
       <div class="col s12 m6">
-        <label>Kiedy widać treść</label>
+        <label>Kiedy widać treść (markdown)</label>
         <select v-model="bodyReveal" class="browser-default gra-field">
           <option v-for="o in bodyReveals" :key="o.value || 'default'" :value="o.value">{{ o.label }}</option>
         </select>
@@ -185,6 +209,14 @@ export default {
       <div class="col s4">
         <label>Miękki limit (min)</label>
         <input v-model="softMinutes" type="number" min="0" class="browser-default gra-field">
+      </div>
+      <div class="col s4">
+        <label>Start zegara</label>
+        <select v-model="timerStart" class="browser-default gra-field">
+          <option value="">Domyślnie (manual)</option>
+          <option value="manual">Host: Start zegar</option>
+          <option value="accept">Przy przyjęciu</option>
+        </select>
       </div>
       <div class="col s4">
         <label>Stawka min</label>
@@ -196,19 +228,19 @@ export default {
       </div>
       <div class="col s12 m4">
         <label>Pula ksyw (linie)</label>
-        <textarea v-model="nicknamePoolText" class="browser-default gra-field" rows="3" />
+        <textarea v-model="nicknamePoolText" class="browser-default gra-field gra-field--lg" rows="6" />
       </div>
       <div class="col s12 m4">
         <label>Pula organizatorów (linie)</label>
-        <textarea v-model="organizerPoolText" class="browser-default gra-field" rows="3" />
+        <textarea v-model="organizerPoolText" class="browser-default gra-field gra-field--lg" rows="6" />
       </div>
       <div class="col s12 m4">
         <label>Pula przedmiotów (linie, placeholder item)</label>
-        <textarea v-model="itemPoolText" class="browser-default gra-field" rows="3" />
+        <textarea v-model="itemPoolText" class="browser-default gra-field gra-field--lg" rows="6" />
       </div>
       <div class="col s12">
         <label>Dodatkowa konfiguracja (JSON)</label>
-        <textarea v-model="logicConfigExtra" class="browser-default gra-field" rows="3" placeholder="{}" />
+        <textarea v-model="logicConfigExtra" class="browser-default gra-field gra-field--lg" rows="6" placeholder="{}" />
       </div>
       <div class="col s12">
         <button type="submit" class="btn-large green waves-effect waves-light" :disabled="loading">

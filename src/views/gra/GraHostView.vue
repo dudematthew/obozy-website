@@ -1,8 +1,11 @@
 <script>
 import GraShell from '@/components/gra/GraShell.vue'
 import GraSoftTimer from '@/components/gra/GraSoftTimer.vue'
+import GraQuestPrintBatch from '@/components/gra/GraQuestPrintBatch.vue'
 import {
   hostComplete,
+  hostDeletePlayer,
+  hostDeleteTask,
   hostFail,
   hostListTasks,
   hostPlayerAssignments,
@@ -10,7 +13,9 @@ import {
   hostResolveStake,
   hostResolveVersus,
   hostRevokeCompletion,
-  hostSetStake
+  hostSetStake,
+  hostStartTimer,
+  hostVerifyMaster
 } from '@/api/graHost'
 import { listPlayers } from '@/api/graPlayers'
 import {
@@ -19,18 +24,31 @@ import {
   taskStatusLabel,
   taskSupportsStake
 } from '@/lib/graLabels'
-import { clearHostToken, getHostToken, setHostToken } from '@/lib/graHostSession'
+import {
+  clearHostMasterKey,
+  clearHostToken,
+  getHostHelpOpen,
+  getHostMasterKey,
+  getHostToken,
+  setHostHelpOpen,
+  setHostMasterKey,
+  setHostToken
+} from '@/lib/graHostSession'
 import { graIconName } from '@/lib/graIcons'
+import { isUsableToken } from '@/lib/graUrls'
 
 const POLL_MS = 20000
 
 export default {
   name: 'GraHostView',
-  components: { GraShell, GraSoftTimer },
+  components: { GraShell, GraSoftTimer, GraQuestPrintBatch },
   data() {
     return {
       password: '',
       hostToken: null,
+      masterKey: null,
+      masterDraft: '',
+      masterBusy: false,
       loading: false,
       error: null,
       tasks: [],
@@ -38,7 +56,7 @@ export default {
       stakeDraft: {},
       versusDraft: {},
       busy: null,
-      showHelp: true,
+      showHelp: getHostHelpOpen(),
       showPrep: true,
       pollId: null,
       lookupQuery: '',
@@ -46,10 +64,16 @@ export default {
       lookupProfile: null,
       lookupLoading: false,
       taskFilter: '',
-      statusFilter: 'all'
+      statusFilter: 'all',
+      selectedTaskIds: [],
+      bulkPrinting: false,
+      bulkPrintError: null
     }
   },
   computed: {
+    masterUnlocked() {
+      return Boolean(this.masterKey)
+    },
     prepTasks() {
       return (this.tasks || []).filter((t) => String(t.hostNotes || '').trim())
     },
@@ -69,10 +93,33 @@ export default {
         ].join(' ').toLowerCase()
         return hay.includes(q)
       })
+    },
+    selectedIdSet() {
+      return new Set((this.selectedTaskIds || []).map((id) => Number(id)))
+    },
+    selectedTasks() {
+      const set = this.selectedIdSet
+      return (this.tasks || []).filter((t) => set.has(Number(t.id)) && this.canPrintTask(t))
+    },
+    selectedDeleteTasks() {
+      const set = this.selectedIdSet
+      return (this.tasks || []).filter((t) => set.has(Number(t.id)))
+    },
+    selectedPrintCount() {
+      return this.selectedTasks.length
+    },
+    selectedDeleteCount() {
+      return this.selectedDeleteTasks.length
+    },
+    allFilteredSelected() {
+      const list = this.filteredTasks
+      const set = this.selectedIdSet
+      return list.length > 0 && list.every((t) => set.has(Number(t.id)))
     }
   },
   created() {
     this.hostToken = getHostToken()
+    this.masterKey = getHostMasterKey()
     if (this.hostToken) {
       this.load()
       this.startPoll()
@@ -98,6 +145,7 @@ export default {
       if (p.organizerName) bits.push(String(p.organizerName))
       if (p.organizer) bits.push(String(p.organizer))
       if (p.item) bits.push(String(p.item))
+      if (p.team) bits.push('drużyna ' + String(p.team))
       if (p.displayName) bits.push(String(p.displayName))
       return bits.length ? bits.join(' · ') : null
     },
@@ -105,10 +153,70 @@ export default {
       const m = task && task.logicConfig && task.logicConfig.softMinutes
       return m != null ? Number(m) : null
     },
+    needsTimerStart(task, a) {
+      return a.status === 'accepted' &&
+        this.softMinutes(task) != null &&
+        !a.timerStartedAt
+    },
     canRelease(task) {
       return task.status !== 'completed' &&
         Array.isArray(task.assignments) &&
         task.assignments.length > 0
+    },
+    canPrintTask(task) {
+      return Boolean(task && isUsableToken(task.acceptToken) && isUsableToken(task.verifyToken))
+    },
+    selectAllFiltered() {
+      const set = new Set((this.selectedTaskIds || []).map((id) => Number(id)))
+      this.filteredTasks.forEach((t) => {
+        set.add(Number(t.id))
+      })
+      this.selectedTaskIds = [...set]
+    },
+    deselectFiltered() {
+      const remove = new Set(this.filteredTasks.map((t) => Number(t.id)))
+      this.selectedTaskIds = (this.selectedTaskIds || [])
+        .map((id) => Number(id))
+        .filter((id) => !remove.has(id))
+      this.bulkPrintError = null
+    },
+    clearSelection() {
+      this.selectedTaskIds = []
+      this.bulkPrintError = null
+    },
+    toggleSelectAllFiltered() {
+      if (this.allFilteredSelected) this.deselectFiltered()
+      else this.selectAllFiltered()
+    },
+    async printSelected() {
+      if (this.bulkPrinting || !this.selectedPrintCount) return
+      this.bulkPrinting = true
+      this.bulkPrintError = null
+      try {
+        const result = await this.$refs.printBatch.printTasks(this.selectedTasks)
+        if (!result || !result.ok) {
+          this.bulkPrintError = (result && result.error) || 'Nie udało się wydrukować.'
+        }
+      } catch (err) {
+        this.bulkPrintError = (err && err.message) || 'Nie udało się wydrukować.'
+      } finally {
+        this.bulkPrinting = false
+      }
+    },
+    deleteSelected() {
+      if (!this.masterUnlocked || !this.selectedDeleteCount) return
+      const list = this.selectedDeleteTasks
+      const ok = window.confirm(
+        `Usunąć ${list.length} zaznaczonych zadań z bazy?\n\n` +
+        'Kasuje zadania i wszystkie ich przyjęcia. Nie da się cofnąć.'
+      )
+      if (!ok) return
+      return this.act('del-selected', async () => {
+        for (const task of list) {
+          await hostDeleteTask(this.hostToken, task.id, this.masterKey)
+        }
+        this.clearSelection()
+      })
     },
     acceptedCount(task) {
       return (task.assignments || []).filter((a) => a.status === 'accepted').length
@@ -170,10 +278,65 @@ export default {
       this.stopPoll()
       clearHostToken()
       this.hostToken = null
+      this.masterKey = null
+      this.masterDraft = ''
       this.tasks = []
       this.error = null
       this.lookupProfile = null
       this.busy = null
+    },
+    async unlockMaster() {
+      const key = this.masterDraft.trim()
+      if (!key) {
+        this.error = 'Podaj klucz master.'
+        return
+      }
+      this.masterBusy = true
+      this.error = null
+      try {
+        await hostVerifyMaster(this.hostToken, key)
+        setHostMasterKey(key)
+        this.masterKey = key
+        this.masterDraft = ''
+      } catch (err) {
+        clearHostMasterKey()
+        this.masterKey = null
+        this.error = (err && err.message) || 'Błędny klucz master.'
+      } finally {
+        this.masterBusy = false
+      }
+    },
+    lockMaster() {
+      clearHostMasterKey()
+      this.masterKey = null
+      this.masterDraft = ''
+    },
+    deleteTask(task) {
+      if (!this.masterUnlocked) return
+      const ok = window.confirm(
+        `Usunąć zadanie "${task.title}" z bazy?\n\n` +
+        'Kasuje zadanie i wszystkie jego przyjęcia. Nie da się cofnąć.'
+      )
+      if (!ok) return
+      return this.act(`del-t-${task.id}`, () => hostDeleteTask(this.hostToken, task.id, this.masterKey))
+    },
+    deleteLookupPlayer() {
+      if (!this.masterUnlocked || !this.lookupProfile) return
+      const p = this.lookupProfile.player
+      const ok = window.confirm(
+        `Usunąć gracza "${p.displayName}" z bazy?\n\n` +
+        'Kasuje gracza i wszystkie jego przyjęcia. Punkty znikają. Nie da się cofnąć.'
+      )
+      if (!ok) return
+      return this.act(`del-p-${p.id}`, async () => {
+        await hostDeletePlayer(this.hostToken, p.id, this.masterKey)
+        this.lookupProfile = null
+        this.lookupQuery = ''
+      })
+    },
+    toggleHelp() {
+      this.showHelp = !this.showHelp
+      setHostHelpOpen(this.showHelp)
     },
     async load(opts = {}) {
       if (!opts.quiet) this.loading = true
@@ -236,6 +399,9 @@ export default {
     },
     resolveStake(a, won) {
       return this.act(`rs-${a.id}`, () => hostResolveStake(this.hostToken, a.id, won))
+    },
+    startTimer(a) {
+      return this.act(`t-${a.id}`, () => hostStartTimer(this.hostToken, a.id))
     },
     resolveVersus(task) {
       const winnerPlayerId = Number(this.versusDraft[task.id])
@@ -315,21 +481,24 @@ export default {
             <div
               style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.75rem">
               <span class="card-title" style="font-size: 1.2rem; margin: 0">Jak używać CMR</span>
-              <button type="button" class="btn-flat" @click="showHelp = !showHelp">
+              <button type="button" class="btn-flat" @click="toggleHelp">
                 {{ showHelp ? 'Zwiń' : 'Pokaż' }}
               </button>
             </div>
             <div v-if="showHelp" class="gra-host-help">
               <p>
                 CMR służy do <strong>prowadzenia zadań w terenie</strong>: hostowie chodzą z telefonami,
-                widzą kto przyjął zadanie, uznają wynik i poprawiają pomyłki. Nie siedzicie przy biurku.
+                widzą kto przyjął zadanie, uznają wynik i poprawiają pomyłki.
                 Tworzenie i drukowanie kartek zwykle robisz wcześniej; sekcja na dole jest na wypadek
                 gdy trzeba coś dopisać w trakcie.
               </p>
               <p>
-                Gdy gracz zeskanuje kod <strong>Przyjmij</strong>, jego imię pojawia się pod zadaniem.
-                Wtedy słuchasz, co zrobił, i wybierasz decyzję. Przy zadaniach z limitem czasu
-                (miękki timer) zegar startuje w chwili przyjęcia.
+                Gdy gracz zeskanuje kod <strong>Przyjmij</strong> i przyjmie zadanie, jego imię pojawia się pod
+                zadaniem.
+                Gdy skończył, czytasz czy podołał opisowi zadania, i zatwierdzasz, odrzucasz lub informujesz że nie
+                możesz zaliczyć. Przy zadaniach z limitem czasu (miękki timer) naciśnij
+                <strong>Start zegar</strong> gdy wyzwanie naprawdę startuje — chyba że zadanie ma start
+                przy przyjęciu (np. Krzykacz).
               </p>
               <p>
                 <strong>Ukończ</strong> przyznaje punkty z karty zadania do wyniku gracza.
@@ -342,15 +511,23 @@ export default {
               </p>
               <p>
                 <strong>Odblokuj zadanie</strong> kasuje wszystkie przyjęcia tego zadania i znowu
-                otwiera QR dla każdego. Nie odejmuje już przyznanych punktów.
+                otwiera QR do użytku. Nie odejmuje już przyznanych punktów.
               </p>
               <p>
                 Jeśli przez pomyłkę kliknąłeś <strong>Ukończ</strong>, użyj
                 <strong>Cofnij ukończenie</strong>: odejmie przyznane punkty i wróci status "Przyjęte".
               </p>
               <p>
-                Lista <strong>Przygotowania</strong> zbiera notatki hosta (co schować, mapa, rekwizyty)
+                Lista <strong>Przygotowania</strong> zawiera notatki organizatora (jakie przedmioty, mapa, co trzeba,
+                rekwizyty)
                 z wszystkich zadań. Kliknij tytuł albo "Otwórz zadanie", żeby zobaczyć pełną treść i QR.
+              </p>
+              <p>
+                Możesz samodzielnie stworzyć nowe zadanie (po odblokowaniu klucza master). Zadania
+                <strong>Zadanie organizatora nr. 1–7</strong> nie mają kartek z kodem QR.
+                Zamiast tego możesz werbalnie opisać zadanie i pokazać kod QR graczowi na swoim
+                telefonie. Jeśli takie zadanie jest już przyjęte, prawdopodobnie inny organizator go używa — użyj
+                innego numeru.
               </p>
             </div>
           </div>
@@ -394,6 +571,10 @@ export default {
                   <template v-if="a.pointsAwarded != null"> · {{ a.pointsAwarded }} pkt</template>
                 </li>
               </ul>
+              <button v-if="masterUnlocked" type="button" class="btn red waves-effect" style="margin-top: 0.75rem"
+                :disabled="busy === `del-p-${lookupProfile.player.id}`" @click="deleteLookupPlayer">
+                Usuń gracza z bazy
+              </button>
             </div>
           </div>
         </div>
@@ -412,24 +593,52 @@ export default {
                 <option value="completed">Ukończone</option>
               </select>
             </div>
+            <div class="gra-host-print-bar">
+              <label class="gra-host-print-bar__check">
+                <input type="checkbox" :checked="allFilteredSelected" :disabled="!filteredTasks.length"
+                  @click.prevent="toggleSelectAllFiltered">
+                Zaznacz widoczne
+              </label>
+              <button type="button" class="btn green waves-effect waves-light"
+                :disabled="!selectedPrintCount || bulkPrinting || busy === 'del-selected'" @click="printSelected">
+                <i class="left material-icons">print</i>
+                {{ bulkPrinting ? 'Przygotowywanie…' : `Drukuj zaznaczone (${selectedPrintCount})` }}
+              </button>
+              <button v-if="masterUnlocked" type="button" class="btn red waves-effect"
+                :disabled="!selectedDeleteCount || bulkPrinting || busy === 'del-selected'" @click="deleteSelected">
+                {{ busy === 'del-selected' ? 'Usuwanie…' : `Usuń zaznaczone (${selectedDeleteCount})` }}
+              </button>
+              <button v-if="selectedDeleteCount" type="button" class="btn-flat"
+                :disabled="bulkPrinting || busy === 'del-selected'" @click="clearSelection">
+                Wyczyść
+              </button>
+            </div>
+            <p v-if="bulkPrintError" class="text-darken-2 red-text" style="margin: 0.5rem 0 0">{{ bulkPrintError }}</p>
           </div>
         </div>
+
+        <GraQuestPrintBatch ref="printBatch" />
 
         <p v-if="loading && !tasks.length" class="center grey-text">Ładowanie…</p>
 
         <div v-for="task in filteredTasks" :key="task.id" class="card gra-host-task-card"
           style="margin-bottom: 1.25rem">
           <div class="card-content">
-            <p style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem">
-              <span class="chip green lighten-4" style="margin: 0">
-                <i class="material-icons" style="font-size: 1rem; vertical-align: middle">{{ graIconName(task.icon)
-                  }}</i>
-                {{ logicLabel(task.logicType) }}
-              </span>
-              <span class="chip" style="margin: 0">{{ taskStatusLabel(task.status) }}</span>
-              <span class="chip" style="margin: 0">{{ task.points }} pkt</span>
-              <span class="chip" style="margin: 0" :class="occupancyClass(task)">{{ occupancyLabel(task) }}</span>
-            </p>
+            <div class="gra-host-task-card__top">
+              <label class="gra-host-task-card__select" title="Zaznacz do druku / usunięcia">
+                <input v-model="selectedTaskIds" type="checkbox" :value="Number(task.id)">
+              </label>
+              <p style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0; flex: 1">
+                <span class="chip green lighten-4" style="margin: 0">
+                  <i class="material-icons" style="font-size: 1rem; vertical-align: middle">{{ graIconName(task.icon)
+                    }}</i>
+                  {{ logicLabel(task.logicType) }}
+                </span>
+                <span class="chip" style="margin: 0">{{ taskStatusLabel(task.status) }}</span>
+                <span class="chip" style="margin: 0">{{ task.points }} pkt</span>
+                <span class="chip" style="margin: 0" :class="occupancyClass(task)">{{ occupancyLabel(task) }}</span>
+              </p>
+            </div>
 
             <button type="button" class="gra-host-task-title" @click="goTask(task)">
               {{ task.title }}
@@ -446,6 +655,10 @@ export default {
                 @click="release(task)">
                 Odblokuj zadanie
               </button>
+              <button v-if="masterUnlocked" type="button" class="btn-flat red-text"
+                :disabled="busy === `del-t-${task.id}`" @click="deleteTask(task)">
+                Usuń z bazy
+              </button>
             </div>
 
             <div v-if="!(task.assignments && task.assignments.length)" class="gra-host-empty">
@@ -460,15 +673,18 @@ export default {
                   style="margin-left: 0.35rem">
                   +{{ a.pointsAwarded }} pkt
                 </span>
-                <GraSoftTimer v-if="a.status === 'accepted' && softMinutes(task)" :accepted-at="a.acceptedAt"
+                <GraSoftTimer v-if="a.status === 'accepted' && softMinutes(task)" :started-at="a.timerStartedAt"
                   :soft-minutes="softMinutes(task)" style="margin-left: 0.35rem" />
                 <br>
                 <small class="grey-text">
                   #{{ a.id }} · {{ a.acceptedAt }}
+                  <template v-if="a.timerStartedAt"> · zegar {{ a.timerStartedAt }}</template>
                   <template v-if="taskSupportsStake(task) && a.stake != null"> · stawka {{ a.stake }}</template>
                   <template v-if="payloadHint(a)"> · {{ payloadHint(a) }}</template>
                 </small>
                 <div v-if="a.status === 'accepted'" class="gra-host-toolbar" style="margin-top: 0.65rem">
+                  <button v-if="needsTimerStart(task, a)" type="button" class="btn orange waves-effect"
+                    :disabled="busy === `t-${a.id}`" @click="startTimer(a)">Start zegar</button>
                   <button v-if="task.logicType !== 'versus'" type="button" class="btn green waves-effect"
                     :disabled="busy === `c-${a.id}`" @click="complete(a)">Ukończ</button>
                   <button type="button" class="btn red waves-effect" :disabled="busy === `f-${a.id}`"
@@ -521,11 +737,17 @@ export default {
               <p class="gra-host-prep__text">
                 Tworzenie questów i druk kartek zwykle robisz przed startem zabawy.
                 Tutaj możesz dodać nowe zadanie, jeśli coś wypadło w trakcie festiwalu.
+                Wymaga odblokowanego klucza master.
               </p>
             </div>
-            <router-link class="btn green waves-effect waves-light gra-host-prep__btn" :to="{ name: 'gra-host-new' }">
+            <router-link v-if="masterUnlocked" class="btn green waves-effect waves-light gra-host-prep__btn"
+              :to="{ name: 'gra-host-new' }">
               Nowe zadanie
             </router-link>
+            <button v-else type="button" class="btn grey waves-effect gra-host-prep__btn" disabled
+              title="Najpierw odblokuj klucz master">
+              Nowe zadanie (zablokowane)
+            </button>
           </div>
         </div>
 
@@ -548,9 +770,34 @@ export default {
                     @click="goTask(t)">
                     {{ t.title }}
                   </button>
-                  <p style="margin: 0.35rem 0 0; white-space: pre-wrap; line-height: 1.45; color: #37474f">{{ t.hostNotes }}</p>
+                  <p style="margin: 0.35rem 0 0; white-space: pre-wrap; line-height: 1.45; color: #37474f">{{
+                    t.hostNotes }}</p>
                 </li>
               </ul>
+            </template>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 1.5rem; margin-bottom: 0.5rem">
+          <div class="card-content">
+            <span class="card-title" style="font-size: 1.15rem">Klucz master</span>
+            <p class="grey-text" style="margin-top: 0; line-height: 1.55">
+              Drugie hasło z serwera (<code>HOST_MASTER_KEY</code>). Odblokowuje tworzenie i usuwanie zadań
+              oraz usuwanie graczy. Zwykłe CMR (ukończ / odrzuć / odblokuj) działa bez niego.
+            </p>
+            <template v-if="!masterUnlocked">
+              <label for="master-pass">Klucz master</label>
+              <input id="master-pass" v-model="masterDraft" type="password" class="browser-default gra-field"
+                autocomplete="off" @keyup.enter="unlockMaster">
+              <button type="button" class="btn orange waves-effect" :disabled="masterBusy" @click="unlockMaster">
+                Odblokuj zaawansowane czynności
+              </button>
+            </template>
+            <template v-else>
+              <p class="text-darken-2 green-text" style="margin: 0 0 0.75rem">
+                Destrukcyjne akcje odblokowane na tej sesji.
+              </p>
+              <button type="button" class="btn-flat" @click="lockMaster">Zablokuj ponownie</button>
             </template>
           </div>
         </div>
@@ -582,6 +829,63 @@ export default {
   flex-wrap: wrap;
   gap: 0.5rem;
   margin: 0.75rem 0 0.25rem;
+}
+
+.gra-host-print-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  margin: 0.85rem 0 0.25rem;
+}
+
+.gra-host-print-bar__check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  cursor: pointer;
+  user-select: none;
+  color: #455a64;
+  font-size: 0.95rem;
+}
+
+/* Materialize hides native checkboxes (opacity:0; position:absolute; pointer-events:none).
+   Per-task labels then collapse — select-all still works via its text. Force real boxes. */
+.gra-host-print-bar__check input[type='checkbox'],
+.gra-host-task-card__select input[type='checkbox'] {
+  position: static !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  flex: 0 0 auto;
+  cursor: pointer;
+  accent-color: #2e7d32;
+}
+
+.gra-host-task-card__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+.gra-host-task-card__select {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.2rem 0 0;
+  padding: 0.35rem;
+  cursor: pointer;
+  min-width: 2rem;
+  min-height: 2rem;
+}
+
+.gra-host-task-card__select input {
+  width: 1.15rem;
+  height: 1.15rem;
 }
 
 .gra-host-task-title {

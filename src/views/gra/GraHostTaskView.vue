@@ -6,6 +6,7 @@ import GraMarkdown from '@/components/gra/GraMarkdown.vue'
 import GraSoftTimer from '@/components/gra/GraSoftTimer.vue'
 import {
   hostComplete,
+  hostDeleteTask,
   hostFail,
   hostListTasks,
   hostRelease,
@@ -13,6 +14,7 @@ import {
   hostResolveVersus,
   hostRevokeCompletion,
   hostSetStake,
+  hostStartTimer,
   hostUpdateTask
 } from '@/api/graHost'
 import { listPlayers } from '@/api/graPlayers'
@@ -22,7 +24,7 @@ import {
   taskStatusLabel,
   taskSupportsStake
 } from '@/lib/graLabels'
-import { getHostToken } from '@/lib/graHostSession'
+import { getHostMasterKey, getHostToken } from '@/lib/graHostSession'
 import { graIconName } from '@/lib/graIcons'
 
 export default {
@@ -31,6 +33,7 @@ export default {
   data() {
     return {
       hostToken: null,
+      masterKey: null,
       task: null,
       playerMap: {},
       loading: true,
@@ -46,6 +49,9 @@ export default {
     taskId() {
       return Number(this.$route.params.id)
     },
+    masterUnlocked() {
+      return Boolean(this.masterKey)
+    },
     canRelease() {
       return this.task &&
         this.task.status !== 'completed' &&
@@ -59,6 +65,7 @@ export default {
   },
   created() {
     this.hostToken = getHostToken()
+    this.masterKey = getHostMasterKey()
     if (!this.hostToken) {
       this.$router.replace({ name: 'gra-host' })
       return
@@ -71,6 +78,9 @@ export default {
     taskStatusLabel,
     assignmentStatusLabel,
     taskSupportsStake,
+    needsTimerStart(a) {
+      return a.status === 'accepted' && this.softMinutes != null && !a.timerStartedAt
+    },
     nameOf(id) {
       return this.playerMap[id] || `#${id}`
     },
@@ -108,11 +118,15 @@ export default {
         this.error = err.message || String(err)
         return
       }
+      if (!this.masterUnlocked) {
+        this.error = 'Edycja wymaga odblokowanego klucza master na tablicy CMR.'
+        return
+      }
       this.saving = true
       this.error = null
       this.okMsg = null
       try {
-        await hostUpdateTask(this.hostToken, this.taskId, payload)
+        await hostUpdateTask(this.hostToken, this.taskId, payload, this.masterKey)
         this.okMsg = 'Zapisano.'
         await this.load()
       } catch (e) {
@@ -157,6 +171,9 @@ export default {
     resolveStake(a, won) {
       return this.act(`rs-${a.id}`, () => hostResolveStake(this.hostToken, a.id, won))
     },
+    startTimer(a) {
+      return this.act(`t-${a.id}`, () => hostStartTimer(this.hostToken, a.id))
+    },
     resolveVersus() {
       const winnerPlayerId = Number(this.versusWinner)
       if (!winnerPlayerId) {
@@ -173,6 +190,18 @@ export default {
       )
       if (!ok) return
       return this.act('release', () => hostRelease(this.hostToken, this.taskId))
+    },
+    deleteTask() {
+      if (!this.masterUnlocked || !this.task) return
+      const ok = window.confirm(
+        `Usunąć zadanie "${this.task.title}" z bazy?\n\n` +
+        'Kasuje zadanie i wszystkie przyjęcia. Nie da się cofnąć.'
+      )
+      if (!ok) return
+      return this.act('delete', async () => {
+        await hostDeleteTask(this.hostToken, this.taskId, this.masterKey)
+        this.$router.replace({ name: 'gra-host' })
+      })
     }
   }
 }
@@ -198,8 +227,15 @@ export default {
           <span class="chip" style="margin: 0">{{ task.points }} pkt</span>
         </p>
 
-        <GraQrPanel :accept-token="task.acceptToken" :verify-token="task.verifyToken" :title="task.title"
-          :summary="task.summary" :points="task.points" :logic-type="task.logicType" />
+        <GraQrPanel
+          :accept-token="task.acceptToken"
+          :verify-token="task.verifyToken"
+          :title="task.title"
+          :summary="task.summary"
+          :points="task.points"
+          :logic-type="task.logicType"
+          :icon="task.icon"
+        />
 
         <div class="card" style="margin-top: 1.25rem">
           <div class="card-content">
@@ -227,11 +263,22 @@ export default {
                   style="margin-left: 0.35rem">
                   +{{ a.pointsAwarded }} pkt
                 </span>
-                <GraSoftTimer v-if="a.status === 'accepted' && softMinutes" :accepted-at="a.acceptedAt"
-                  :soft-minutes="softMinutes" style="margin-left: 0.35rem" />
+                <GraSoftTimer
+                  v-if="a.status === 'accepted' && softMinutes"
+                  :started-at="a.timerStartedAt"
+                  :soft-minutes="softMinutes"
+                  style="margin-left: 0.35rem"
+                />
                 <small v-if="payloadHint(a)" class="grey-text" style="display: block">{{ payloadHint(a) }}</small>
                 <div v-if="a.status === 'accepted'"
                   style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem">
+                  <button
+                    v-if="needsTimerStart(a)"
+                    type="button"
+                    class="btn orange waves-effect"
+                    :disabled="busy === `t-${a.id}`"
+                    @click="startTimer(a)"
+                  >Start zegar</button>
                   <button v-if="task.logicType !== 'versus'" type="button" class="btn green waves-effect"
                     @click="complete(a)">Ukończ</button>
                   <button type="button" class="btn red waves-effect" @click="fail(a)">Odrzuć</button>
@@ -269,10 +316,19 @@ export default {
               <button type="button" class="btn green waves-effect" @click="resolveVersus">Rozstrzygnij versus</button>
             </div>
 
-            <p style="margin-top: 1rem">
+            <p style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem">
               <button type="button" class="btn red waves-effect" :disabled="!canRelease || busy === 'release'"
                 @click="release">
                 Zwolnij zadanie
+              </button>
+              <button
+                v-if="masterUnlocked"
+                type="button"
+                class="btn-flat red-text"
+                :disabled="busy === 'delete'"
+                @click="deleteTask"
+              >
+                Usuń z bazy
               </button>
             </p>
           </div>
@@ -281,7 +337,13 @@ export default {
         <div class="card" style="margin-top: 1.25rem">
           <div class="card-content">
             <span class="card-title">Edycja</span>
-            <GraTaskForm :initial="task" submit-label="Zapisz zmiany" :loading="saving" @submit="onSubmit" />
+            <template v-if="masterUnlocked">
+              <GraTaskForm :initial="task" submit-label="Zapisz zmiany" :loading="saving" @submit="onSubmit" />
+            </template>
+            <p v-else class="grey-text" style="margin: 0; line-height: 1.55">
+              Edycja treści zadania wymaga odblokowanego klucza master.
+              <router-link :to="{ name: 'gra-host' }">Odblokuj na tablicy CMR</router-link>.
+            </p>
           </div>
         </div>
       </template>

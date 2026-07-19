@@ -2,7 +2,7 @@
 import GraShell from '@/components/gra/GraShell.vue'
 import GraTaskForm from '@/components/gra/GraTaskForm.vue'
 import { hostCreateTask } from '@/api/graHost'
-import { getHostToken } from '@/lib/graHostSession'
+import { getHostMasterKey, getHostToken } from '@/lib/graHostSession'
 
 export default {
   name: 'GraHostNewView',
@@ -11,7 +11,13 @@ export default {
     return { loading: false, error: null }
   },
   created () {
-    if (!getHostToken()) this.$router.replace({ name: 'gra-host' })
+    if (!getHostToken()) {
+      this.$router.replace({ name: 'gra-host' })
+      return
+    }
+    if (!getHostMasterKey()) {
+      this.$router.replace({ name: 'gra-host' })
+    }
   },
   methods: {
     async onSubmit (payload, err) {
@@ -19,10 +25,15 @@ export default {
         this.error = err.message || String(err)
         return
       }
+      const masterKey = getHostMasterKey()
+      if (!masterKey) {
+        this.error = 'Najpierw odblokuj klucz master na tablicy CMR.'
+        return
+      }
       this.loading = true
       this.error = null
       try {
-        const task = await hostCreateTask(getHostToken(), payload)
+        const task = await hostCreateTask(getHostToken(), payload, masterKey)
         this.$router.replace({ name: 'gra-host-task', params: { id: task.id } })
       } catch (e) {
         this.error = (e && e.message) || 'Nie udało się utworzyć.'

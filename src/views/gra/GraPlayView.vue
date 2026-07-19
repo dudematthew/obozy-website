@@ -6,8 +6,7 @@ import GraAccountGate from '@/components/gra/GraAccountGate.vue'
 import GraIntroRules from '@/components/gra/GraIntroRules.vue'
 import GraOrganizersNote from '@/components/gra/GraOrganizersNote.vue'
 import { acceptTask, getTask } from '@/api/graTasks'
-import { getActiveAccount, getActiveToken } from '@/lib/graAccounts'
-import { logicLabel } from '@/lib/graLabels'
+import { getActiveAccount, getActiveToken, getAccounts } from '@/lib/graAccounts'
 import { isUsableToken } from '@/lib/graUrls'
 import stampUrl from '@/assets/images/festival-stamp.png'
 import atmosphereUrl from '@/assets/images/backgrounds/background-festival-atmosphere.png'
@@ -23,6 +22,8 @@ export default {
       task: null,
       account: null,
       playerToken: null,
+      pendingAccept: false,
+      gateKey: 0,
       stampUrl,
       atmosphereUrl
     }
@@ -39,6 +40,9 @@ export default {
     },
     hasToken() {
       return Boolean(this.playerToken)
+    },
+    preferRegister() {
+      return !this.hasToken && getAccounts().length === 0
     },
     questHeadline() {
       const name = this.task && (this.task.title || '').trim()
@@ -61,8 +65,9 @@ export default {
       if (s === 'accepted') return 'active'
       return ''
     },
+    /** Real accept when logged in; mock CTA when anonymous and task is free. */
     showAccept() {
-      return this.task && this.task.canAccept === true && this.hasToken
+      return this.task && this.task.canAccept === true
     },
     showTimer() {
       return (
@@ -75,7 +80,7 @@ export default {
       if (!this.task) return ''
       if (!this.task.timerStartedAt) {
         return this.task.timerStart === 'accept'
-          ? 'Czas powinien ruszyć przy przyjęciu — odśwież widok.'
+          ? 'Czas powinien ruszyć przy przyjęciu, odśwież widok.'
           : 'Czas ruszy gdy organizator naciśnie „Start zegar”.'
       }
       return this.task.timerStart === 'accept'
@@ -110,12 +115,12 @@ export default {
     acceptToken: {
       immediate: true,
       handler() {
+        this.pendingAccept = false
         this.load()
       }
     }
   },
   methods: {
-    logicLabel,
     syncAuth() {
       this.playerToken = getActiveToken()
       this.account = getActiveAccount()
@@ -141,11 +146,16 @@ export default {
       }
     },
     async onAccept() {
+      if (!this.hasToken) {
+        this.promptAccountThenAccept()
+        return
+      }
       this.accepting = true
       this.error = null
       this.syncAuth()
       try {
         this.task = await acceptTask(this.acceptToken, this.playerToken)
+        this.pendingAccept = false
       } catch (err) {
         this.error = (err && err.message) || 'Nie udało się przyjąć zadania.'
         await this.load()
@@ -153,9 +163,24 @@ export default {
         this.accepting = false
       }
     },
-    onAccountReady() {
+    promptAccountThenAccept() {
+      this.pendingAccept = true
+      this.gateKey += 1
+      this.$nextTick(() => {
+        const el = this.$refs.accountGate
+        if (el && typeof el.scrollIntoView === 'function') {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      })
+    },
+    async onAccountReady() {
       this.syncAuth()
-      this.load()
+      await this.load()
+      if (this.pendingAccept && this.hasToken && this.task && this.task.canAccept) {
+        await this.onAccept()
+      } else {
+        this.pendingAccept = false
+      }
     }
   }
 }
@@ -179,10 +204,6 @@ export default {
                 <p class="gra-quest__lead">{{ task.summary }}</p>
 
                 <ul class="gra-quest__meta">
-                  <li>
-                    <span class="gra-quest__meta-label">Typ zadania</span>
-                    <span class="gra-quest__meta-value">{{ logicLabel(task.logicType) }}</span>
-                  </li>
                   <li>
                     <span class="gra-quest__meta-label">Punkty</span>
                     <span class="gra-quest__meta-value">{{ task.points }}</span>
@@ -214,17 +235,33 @@ export default {
                   @click="onAccept">
                   {{ task.playerAssignmentStatus === 'failed' ? 'Spróbuj ponownie' : 'Przyjmij zadanie' }}
                 </button>
+                <p v-if="!hasToken" class="gra-quest__cta-note">
+                  {{ pendingAccept
+                    ? 'Najpierw załóż lub wybierz gracza poniżej, potem przyjmiemy zadanie za Ciebie.'
+                    : 'Po kliknięciu założysz gracza (albo wejdziesz jako istniejący) i od razu przyjmiesz zadanie.' }}
+                </p>
               </div>
 
               <GraOrganizersNote />
             </div>
           </article>
 
-          <section v-if="!hasToken" class="gra-quest__side">
+          <section v-if="!hasToken" ref="accountGate" class="gra-quest__side"
+            :class="{ 'gra-quest__side--pending': pendingAccept }">
             <p class="gra-quest__side-lead">
-              Zaloguj się jako gracz, żeby przyjąć to zadanie i zbierać punkty.
+              <template v-if="pendingAccept">
+                Żeby przyjąć zadanie, załóż nową ksywę albo wejdź jako istniejący gracz.
+              </template>
+              <template v-else>
+                Żeby zbierać punkty, załóż gracza albo wejdź na istniejące konto.
+              </template>
             </p>
-            <GraAccountGate compact @ready="onAccountReady" />
+            <GraAccountGate
+              :key="gateKey"
+              compact
+              :prefer-register="preferRegister"
+              @ready="onAccountReady"
+            />
           </section>
           <p v-else class="gra-quest__player">
             Jako <strong>{{ account && account.displayName }}</strong>

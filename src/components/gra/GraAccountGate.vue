@@ -7,12 +7,14 @@ export default {
   props: {
     compact: { type: Boolean, default: false },
     /** Hide local "Na tym telefonie" when parent already manages that list. */
-    hideLocalList: { type: Boolean, default: false }
+    hideLocalList: { type: Boolean, default: false },
+    /** Prefer "Nowy gracz" tab (e.g. first scan with empty device). */
+    preferRegister: { type: Boolean, default: false }
   },
   emits: ['ready'],
   data() {
     return {
-      mode: 'pick',
+      mode: 'register',
       localAccounts: [],
       remotePlayers: [],
       query: '',
@@ -34,14 +36,31 @@ export default {
       return 'Tworzy nowe konto. Jeśli nazwa zajęta, zaproponujemy przełączenie na Już gram.'
     }
   },
+  watch: {
+    preferRegister: {
+      immediate: true,
+      handler(prefer) {
+        this.applyDefaultMode(prefer)
+      }
+    }
+  },
   mounted() {
     this.localAccounts = getAccounts()
+    this.applyDefaultMode(this.preferRegister)
     this.fetchPlayers()
   },
   beforeUnmount() {
     if (this.searchTimer) clearTimeout(this.searchTimer)
   },
   methods: {
+    applyDefaultMode(preferRegister) {
+      const locals = getAccounts()
+      if (preferRegister || !locals.length) {
+        this.mode = 'register'
+      } else {
+        this.mode = 'pick'
+      }
+    },
     msg(err) {
       return (err && err.message) || 'Coś poszło nie tak.'
     },
@@ -145,13 +164,13 @@ export default {
     </p>
 
     <div class="gra-mode-tabs">
-      <button type="button" class="btn waves-effect" :class="mode === 'pick' ? 'green' : 'grey lighten-1 black-text'"
-        @click="setMode('pick')">Lista</button>
-      <button type="button" class="btn waves-effect" :class="mode === 'resume' ? 'green' : 'grey lighten-1 black-text'"
-        @click="setMode('resume')">Już gram</button>
       <button type="button" class="btn waves-effect"
         :class="mode === 'register' ? 'green' : 'grey lighten-1 black-text'" @click="setMode('register')">Nowy
         gracz</button>
+      <button type="button" class="btn waves-effect" :class="mode === 'resume' ? 'green' : 'grey lighten-1 black-text'"
+        @click="setMode('resume')">Już gram</button>
+      <button type="button" class="btn waves-effect" :class="mode === 'pick' ? 'green' : 'grey lighten-1 black-text'"
+        @click="setMode('pick')">Lista</button>
     </div>
 
     <p class="grey-text" style="margin: 0 0 1rem; font-size: 0.9rem">{{ modeHint }}</p>

@@ -1,13 +1,12 @@
 <script>
 import GraMarkdown from '@/components/gra/GraMarkdown.vue'
-import GraOrganizersNote from '@/components/gra/GraOrganizersNote.vue'
 import intro from '@/data/gra-intro.json'
 import stampUrl from '@/assets/images/festival-stamp.png'
 import atmosphereUrl from '@/assets/images/backgrounds/background-festival-atmosphere.png'
 
 export default {
   name: 'GraQuestPrintSheet',
-  components: { GraMarkdown, GraOrganizersNote },
+  components: { GraMarkdown },
   props: {
     title: { type: String, default: '' },
     playPrintSrc: { type: String, default: '' },
@@ -29,11 +28,7 @@ export default {
       if (typeof this.intro.printBody === 'string' && this.intro.printBody.trim()) {
         return this.intro.printBody
       }
-      if (typeof this.intro.body === 'string' && this.intro.body.trim()) {
-        return this.intro.body
-      }
-      const parts = this.intro.paragraphs
-      return Array.isArray(parts) ? parts.join('\n\n') : ''
+      return ''
     },
     sheetStyle() {
       return { '--gra-print-atmosphere': `url(${this.atmosphereUrl})` }
@@ -59,7 +54,6 @@ export default {
 
       <section class="gra-print-sheet__rules gra-md">
         <GraMarkdown :source="printBodyMarkdown" />
-        <GraOrganizersNote />
       </section>
 
       <section class="gra-print-sheet__codes">

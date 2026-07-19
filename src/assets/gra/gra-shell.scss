@@ -1069,6 +1069,20 @@ textarea.gra-field--xl {
   animation: gra-quest-cta 0.55s ease-out 0.28s both;
 }
 
+.gra-quest__cta-note {
+  margin: 0.75rem auto 0;
+  max-width: 26rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: #455a64;
+}
+
+.gra-quest__side--pending {
+  outline: 2px solid rgba(46, 125, 50, 0.45);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.08);
+}
+
 @keyframes gra-quest-cta {
   from {
     opacity: 0;

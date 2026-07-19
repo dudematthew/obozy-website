@@ -1,6 +1,6 @@
 <script>
 import GraMarkdown from '@/components/gra/GraMarkdown.vue'
-import intro from '@/data/gra-intro.json'
+import { loadFestivalSettings, organizersLine } from '@/lib/graFestivalSettings'
 
 const SEEN_KEY = 'obozy-gra-rules-seen'
 
@@ -15,21 +15,25 @@ export default {
   },
   data() {
     return {
-      intro,
+      settings: null,
       open: true
     }
   },
   computed: {
+    title() {
+      return (this.settings && this.settings.title) || ''
+    },
+    lead() {
+      return (this.settings && this.settings.lead) || ''
+    },
     bodyMarkdown() {
-      if (typeof this.intro.body === 'string' && this.intro.body.trim()) {
-        return this.intro.body
-      }
-      const parts = this.intro.paragraphs
-      return Array.isArray(parts) ? parts.join('\n\n') : ''
+      return (this.settings && this.settings.body) || ''
+    },
+    scannerHint() {
+      return (this.settings && this.settings.scannerHint) || ''
     },
     organizers() {
-      const list = this.intro.organizers || []
-      return list.length ? list.join(', ') : null
+      return organizersLine(this.settings)
     },
     showBody() {
       if (this.forceOpen || !this.collapsible) return true
@@ -37,11 +41,13 @@ export default {
     }
   },
   created() {
+    loadFestivalSettings().then((s) => {
+      this.settings = s
+    })
     if (!this.collapsible || this.forceOpen) {
       this.open = true
       return
     }
-    // First visit: open; after they have seen rules, start collapsed
     try {
       this.open = localStorage.getItem(SEEN_KEY) !== '1'
     } catch {
@@ -75,21 +81,21 @@ export default {
     </button>
 
     <div v-show="showBody" class="gra-intro-rules__body gra-intro-copy">
-      <h3 v-if="collapsible" class="gra-intro-rules__title">{{ intro.title }}</h3>
-      <p v-if="collapsible" class="gra-intro-rules__lead">{{ intro.lead }}</p>
-      <GraMarkdown :source="bodyMarkdown" />
+      <h3 v-if="collapsible && title" class="gra-intro-rules__title">{{ title }}</h3>
+      <p v-if="collapsible && lead" class="gra-intro-rules__lead">{{ lead }}</p>
+      <GraMarkdown v-if="bodyMarkdown" :source="bodyMarkdown" />
       <p v-if="organizers">
         Organizatorzy:
         <strong class="text-darken-2 green-text">{{ organizers }}</strong>.
       </p>
-      <p v-if="intro.scannerHint" class="gra-intro-rules__scanner">{{ intro.scannerHint }}</p>
+      <p v-if="scannerHint" class="gra-intro-rules__scanner">{{ scannerHint }}</p>
     </div>
   </section>
 </template>
 
 <style scoped>
 .gra-intro-rules {
-  margin-top: 1.25rem;
+  margin: 0;
 }
 
 .gra-intro-rules__toggle {
@@ -99,14 +105,13 @@ export default {
   justify-content: space-between;
   gap: 0.5rem;
   padding: 0.85rem 1rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  background: #fff;
-  font-size: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  cursor: pointer;
+  font: inherit;
   font-weight: 700;
   color: #1b5e20;
-  cursor: pointer;
-  text-align: left;
 }
 
 .gra-intro-rules__toggle:hover {
@@ -115,51 +120,42 @@ export default {
 
 .gra-intro-rules__body {
   margin-top: 0.75rem;
-  padding: 1rem;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
 }
 
 .gra-intro-rules__title {
-  margin: 0 0 0.75rem;
-  font-size: 1.25rem;
-  font-weight: 700;
+  margin: 0 0 0.35rem;
+  font-size: 1.15rem;
 }
 
 .gra-intro-rules__lead {
-  margin: 0 0 0.5rem;
-  font-weight: 700;
-  color: #37474f;
+  margin: 0 0 0.85rem;
+  color: #455a64;
+  line-height: 1.5;
 }
 
 .gra-intro-copy :deep(.gra-md) {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #263238;
+  line-height: 1.55;
 }
 
 .gra-intro-copy :deep(.gra-md p),
 .gra-intro-copy :deep(.gra-md ul),
 .gra-intro-copy :deep(.gra-md ol) {
-  margin: 0 0 1rem;
+  margin: 0 0 0.75rem;
 }
 
 .gra-intro-copy :deep(.gra-md strong) {
-  color: #1b5e20;
+  font-weight: 800;
 }
 
 .gra-intro-copy :deep(.gra-md ul),
 .gra-intro-copy :deep(.gra-md ol) {
-  padding-left: 1.35rem;
+  padding-left: 1.25rem;
 }
 
 .gra-intro-rules__scanner {
-  margin: 1rem 0 0;
-  padding-top: 0.75rem;
-  border-top: 1px solid #eceff1;
-  color: #90a4ae;
-  font-size: 0.8rem;
-  line-height: 1.5;
+  margin: 0.85rem 0 0;
+  color: #546e7a;
+  font-size: 0.92rem;
+  line-height: 1.45;
 }
 </style>

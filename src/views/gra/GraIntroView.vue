@@ -2,38 +2,44 @@
 /* global M */
 import GraShell from '@/components/gra/GraShell.vue'
 import GraMarkdown from '@/components/gra/GraMarkdown.vue'
-import intro from '@/data/gra-intro.json'
 import { getActiveAccount } from '@/lib/graAccounts'
+import { loadFestivalSettings, organizersLine } from '@/lib/graFestivalSettings'
 
 export default {
   name: 'GraIntroView',
   components: { GraShell, GraMarkdown },
   data() {
     return {
-      intro,
+      settings: null,
       account: null
     }
   },
   computed: {
+    title() {
+      return (this.settings && this.settings.title) || ''
+    },
+    lead() {
+      return (this.settings && this.settings.lead) || ''
+    },
     organizers() {
-      const list = this.intro.organizers || []
-      return list.length ? list.join(', ') : null
+      return organizersLine(this.settings)
     },
     bodyMarkdown() {
-      if (typeof this.intro.body === 'string' && this.intro.body.trim()) {
-        return this.intro.body
-      }
-      const parts = this.intro.paragraphs
-      return Array.isArray(parts) ? parts.join('\n\n') : ''
+      return (this.settings && this.settings.body) || ''
+    },
+    scannerHint() {
+      return (this.settings && this.settings.scannerHint) || ''
     }
   },
   mounted() {
     this.account = getActiveAccount()
+    loadFestivalSettings().then((s) => {
+      this.settings = s
+    })
     try {
       localStorage.setItem('obozy-gra-rules-seen', '1')
     } catch { /* ignore */ }
 
-    // Same as AboutUsView.vue
     const parallaxElems = document.querySelectorAll('.parallax')
     M.Parallax.init(parallaxElems)
   },
@@ -53,8 +59,8 @@ export default {
         <div class="container">
           <br><br>
           <p class="center gra-hero__eyebrow">Tajna zabawa festiwalu</p>
-          <h1 class="center title gra-hero__title">{{ intro.title }}</h1>
-          <p class="center subtitle gra-hero__lead">{{ intro.lead }}</p>
+          <h1 class="center title gra-hero__title">{{ title || '…' }}</h1>
+          <p class="center subtitle gra-hero__lead">{{ lead }}</p>
           <br><br>
         </div>
       </div>
@@ -67,7 +73,7 @@ export default {
     <div class="gra-page">
       <div class="z-depth-2 card">
         <div class="card-content gra-intro-copy">
-          <GraMarkdown :source="bodyMarkdown" />
+          <GraMarkdown v-if="bodyMarkdown" :source="bodyMarkdown" />
           <p v-if="organizers">
             Organizatorzy:
             <strong class="text-darken-2 green-text">{{ organizers }}</strong>.
@@ -83,7 +89,7 @@ export default {
         Zadań nie znajdziesz na liście w aplikacji. Przyjmujesz je z kartki na terenie:
         skan QR albo link pod kodem, gdy telefon nie skanuje.
       </p>
-      <p v-if="intro.scannerHint" class="gra-intro-scanner">{{ intro.scannerHint }}</p>
+      <p v-if="scannerHint" class="gra-intro-scanner">{{ scannerHint }}</p>
     </div>
   </GraShell>
 </template>

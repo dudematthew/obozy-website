@@ -1,13 +1,22 @@
 <script>
-import intro from '@/data/gra-intro.json'
+import { loadFestivalSettings, organizersLine } from '@/lib/graFestivalSettings'
 
 export default {
   name: 'GraOrganizersNote',
+  data() {
+    return {
+      settings: null
+    }
+  },
   computed: {
     line() {
-      const list = intro.organizers || []
-      return list.length ? list.join(', ') : ''
+      return organizersLine(this.settings)
     }
+  },
+  created() {
+    loadFestivalSettings().then((s) => {
+      this.settings = s
+    })
   }
 }
 </script>

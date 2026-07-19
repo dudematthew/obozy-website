@@ -146,7 +146,7 @@ export default {
           <option v-for="k in iconKeys" :key="k" :value="k" />
         </datalist>
         <p class="grey-text" style="margin: 0.25rem 0 0; font-size: 0.85rem">
-          Material Icons — lista CMR, strona zadania, ikona w środku QR na A4.
+          Material Icons: lista CMR, strona zadania, ikona w środku QR na A4.
         </p>
       </div>
       <div class="col s12 m6">

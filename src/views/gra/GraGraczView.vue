@@ -12,7 +12,7 @@ import {
 } from '@/lib/graAccounts'
 import stampUrl from '@/assets/images/festival-stamp.png'
 import atmosphereUrl from '@/assets/images/backgrounds/background-festival-atmosphere.png'
-import intro from '@/data/gra-intro.json'
+import { loadFestivalSettings, organizersLine as formatOrganizersLine } from '@/lib/graFestivalSettings'
 
 export default {
   name: 'GraGraczView',
@@ -35,7 +35,8 @@ export default {
       renameDraft: '',
       renameError: null,
       stampUrl,
-      atmosphereUrl
+      atmosphereUrl,
+      festivalSettings: null
     }
   },
   computed: {
@@ -43,8 +44,7 @@ export default {
       return { '--gra-fest-bg': `url(${this.atmosphereUrl})` }
     },
     organizersLine() {
-      const list = intro.organizers || []
-      return list.length ? list.join(', ') : null
+      return formatOrganizersLine(this.festivalSettings)
     },
     isWinning() {
       return this.rankPlace != null && this.rankPlace <= 3
@@ -68,6 +68,9 @@ export default {
   created() {
     this.redirect = this.$route.query.redirect || null
     this.refreshLocal()
+    loadFestivalSettings().then((s) => {
+      this.festivalSettings = s
+    })
     if (getActiveToken()) this.loadSummary()
   },
   methods: {

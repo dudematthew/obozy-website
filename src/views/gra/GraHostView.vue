@@ -15,8 +15,10 @@ import {
   hostRevokeCompletion,
   hostSetStake,
   hostStartTimer,
+  hostUpdateFestivalSettings,
   hostVerifyMaster
 } from '@/api/graHost'
+import { getFestivalSettings } from '@/api/graFestival'
 import { listPlayers } from '@/api/graPlayers'
 import {
   assignmentStatusLabel,
@@ -36,6 +38,17 @@ import {
 } from '@/lib/graHostSession'
 import { graIconName } from '@/lib/graIcons'
 import { isUsableToken } from '@/lib/graUrls'
+import {
+  advanceHostSnapshot,
+  ingestHostPoll,
+  latestUnreadAtForTask,
+  loadHostAlertsState,
+  markHostAlertsSeen,
+  markTaskAlertsSeen,
+  taskIdsWithUnreadAlerts,
+  unreadHostAlertCount
+} from '@/lib/graHostAlerts'
+import { clearFestivalSettingsCache } from '@/lib/graFestivalSettings'
 
 const POLL_MS = 20000
 
@@ -67,7 +80,21 @@ export default {
       statusFilter: 'all',
       selectedTaskIds: [],
       bulkPrinting: false,
-      bulkPrintError: null
+      bulkPrintError: null,
+      hostAlerts: [],
+      hostAlertsLastSeenAt: null,
+      hostAlertsSeenTaskAt: {},
+      showAlertsPanel: false,
+      settingsDraft: {
+        title: '',
+        lead: '',
+        body: '',
+        scannerHint: '',
+        organizersText: ''
+      },
+      settingsLoading: false,
+      settingsSaving: false,
+      settingsMsg: null
     }
   },
   computed: {
@@ -77,9 +104,22 @@ export default {
     prepTasks() {
       return (this.tasks || []).filter((t) => String(t.hostNotes || '').trim())
     },
+    alertsState() {
+      return {
+        alerts: this.hostAlerts || [],
+        lastSeenAt: this.hostAlertsLastSeenAt,
+        seenTaskAt: this.hostAlertsSeenTaskAt || {}
+      }
+    },
+    unreadAlertCount() {
+      return unreadHostAlertCount(this.alertsState)
+    },
+    unreadTaskIds() {
+      return taskIdsWithUnreadAlerts(this.alertsState)
+    },
     filteredTasks() {
       const q = this.taskFilter.trim().toLowerCase()
-      return (this.tasks || []).filter((task) => {
+      const list = (this.tasks || []).filter((task) => {
         if (this.statusFilter !== 'all' && task.status !== this.statusFilter) return false
         if (!q) return true
         const hay = [
@@ -92,6 +132,15 @@ export default {
           String(task.points)
         ].join(' ').toLowerCase()
         return hay.includes(q)
+      })
+      const unread = this.unreadTaskIds
+      if (!unread.size) return list
+      return [...list].sort((a, b) => {
+        const ua = unread.has(Number(a.id))
+        const ub = unread.has(Number(b.id))
+        if (ua !== ub) return ua ? -1 : 1
+        if (!ua) return 0
+        return latestUnreadAtForTask(this.alertsState, b.id) - latestUnreadAtForTask(this.alertsState, a.id)
       })
     },
     selectedIdSet() {
@@ -120,9 +169,13 @@ export default {
   created() {
     this.hostToken = getHostToken()
     this.masterKey = getHostMasterKey()
+    this.syncAlertsFromStorage()
     if (this.hostToken) {
       this.load()
       this.startPoll()
+    }
+    if (this.masterUnlocked) {
+      this.loadFestivalSettingsForm()
     }
   },
   beforeUnmount() {
@@ -134,6 +187,32 @@ export default {
     taskStatusLabel,
     assignmentStatusLabel,
     taskSupportsStake,
+    syncAlertsFromStorage() {
+      const state = loadHostAlertsState()
+      this.hostAlerts = state.alerts || []
+      this.hostAlertsLastSeenAt = state.lastSeenAt
+      this.hostAlertsSeenTaskAt = state.seenTaskAt || {}
+    },
+    applyAlertsState(state) {
+      this.hostAlerts = (state && state.alerts) || []
+      this.hostAlertsLastSeenAt = state && state.lastSeenAt
+      this.hostAlertsSeenTaskAt = (state && state.seenTaskAt) || {}
+    },
+    taskHasUnread(taskId) {
+      return this.unreadTaskIds.has(Number(taskId))
+    },
+    toggleAlertsPanel() {
+      this.showAlertsPanel = !this.showAlertsPanel
+      if (this.showAlertsPanel) {
+        this.applyAlertsState(markHostAlertsSeen())
+      }
+    },
+    focusAlert(alert) {
+      this.showAlertsPanel = false
+      this.applyAlertsState(markTaskAlertsSeen(alert.taskId))
+      const task = (this.tasks || []).find((t) => Number(t.id) === Number(alert.taskId))
+      if (task) this.goTask(task)
+    },
     nameOf(id) {
       return this.playerMap[id] || `#${id}`
     },
@@ -284,6 +363,7 @@ export default {
       this.error = null
       this.lookupProfile = null
       this.busy = null
+      this.showAlertsPanel = false
     },
     async unlockMaster() {
       const key = this.masterDraft.trim()
@@ -298,6 +378,7 @@ export default {
         setHostMasterKey(key)
         this.masterKey = key
         this.masterDraft = ''
+        await this.loadFestivalSettingsForm()
       } catch (err) {
         clearHostMasterKey()
         this.masterKey = null
@@ -310,6 +391,57 @@ export default {
       clearHostMasterKey()
       this.masterKey = null
       this.masterDraft = ''
+      this.settingsMsg = null
+    },
+    async loadFestivalSettingsForm() {
+      if (!this.masterUnlocked) return
+      this.settingsLoading = true
+      this.settingsMsg = null
+      try {
+        const s = await getFestivalSettings()
+        this.settingsDraft = {
+          title: s.title || '',
+          lead: s.lead || '',
+          body: s.body || '',
+          scannerHint: s.scannerHint || '',
+          organizersText: Array.isArray(s.organizers) ? s.organizers.join('\n') : ''
+        }
+      } catch (err) {
+        this.settingsMsg = (err && err.message) || 'Nie udało się wczytać ustawień.'
+      } finally {
+        this.settingsLoading = false
+      }
+    },
+    async saveFestivalSettings() {
+      if (!this.masterUnlocked || this.settingsSaving) return
+      this.settingsSaving = true
+      this.settingsMsg = null
+      try {
+        const organizers = String(this.settingsDraft.organizersText || '')
+          .split(/\r?\n/)
+          .map((n) => n.trim())
+          .filter(Boolean)
+        const updated = await hostUpdateFestivalSettings(this.hostToken, this.masterKey, {
+          title: this.settingsDraft.title,
+          lead: this.settingsDraft.lead,
+          body: this.settingsDraft.body,
+          scannerHint: this.settingsDraft.scannerHint,
+          organizers
+        })
+        clearFestivalSettingsCache()
+        this.settingsDraft = {
+          title: updated.title || '',
+          lead: updated.lead || '',
+          body: updated.body || '',
+          scannerHint: updated.scannerHint || '',
+          organizersText: Array.isArray(updated.organizers) ? updated.organizers.join('\n') : ''
+        }
+        this.settingsMsg = 'Zapisano. Gracze zobaczą zmiany od razu (po odświeżeniu strony).'
+      } catch (err) {
+        this.settingsMsg = (err && err.message) || 'Nie udało się zapisać.'
+      } finally {
+        this.settingsSaving = false
+      }
     },
     deleteTask(task) {
       if (!this.masterUnlocked) return
@@ -350,6 +482,11 @@ export default {
         const map = {}
           ; (playersRes.players || []).forEach((p) => { map[p.id] = p.displayName })
         this.playerMap = map
+        if (opts.quiet) {
+          this.applyAlertsState(ingestHostPoll(this.tasks, this.playerMap))
+        } else {
+          this.applyAlertsState(advanceHostSnapshot(this.tasks))
+        }
       } catch (err) {
         if (err && err.error === 'unauthorized') {
           this.logout()
@@ -449,6 +586,7 @@ export default {
       }
     },
     goTask(task) {
+      this.applyAlertsState(markTaskAlertsSeen(task.id))
       this.$router.push({ name: 'gra-host-task', params: { id: task.id } })
     }
   }
@@ -497,7 +635,7 @@ export default {
                 zadaniem.
                 Gdy skończył, czytasz czy podołał opisowi zadania, i zatwierdzasz, odrzucasz lub informujesz że nie
                 możesz zaliczyć. Przy zadaniach z limitem czasu (miękki timer) naciśnij
-                <strong>Start zegar</strong> gdy wyzwanie naprawdę startuje — chyba że zadanie ma start
+                <strong>Start zegar</strong> gdy wyzwanie naprawdę startuje, chyba że zadanie ma start
                 przy przyjęciu (np. Krzykacz).
               </p>
               <p>
@@ -524,9 +662,9 @@ export default {
               </p>
               <p>
                 Możesz samodzielnie stworzyć nowe zadanie (po odblokowaniu klucza master). Zadania
-                <strong>Zadanie organizatora nr. 1–7</strong> nie mają kartek z kodem QR.
+                <strong>Zadanie organizatora nr. 1-7</strong> nie mają kartek z kodem QR.
                 Zamiast tego możesz werbalnie opisać zadanie i pokazać kod QR graczowi na swoim
-                telefonie. Jeśli takie zadanie jest już przyjęte, prawdopodobnie inny organizator go używa — użyj
+                telefonie. Jeśli takie zadanie jest już przyjęte, prawdopodobnie inny organizator go używa: użyj
                 innego numeru.
               </p>
             </div>
@@ -537,7 +675,36 @@ export default {
           <button type="button" class="btn grey waves-effect" :disabled="loading" @click="load()">
             Odśwież
           </button>
+          <button
+            type="button"
+            class="btn waves-effect gra-host-bell"
+            :class="unreadAlertCount ? 'orange' : 'grey lighten-1 black-text'"
+            :title="unreadAlertCount ? `${unreadAlertCount} nowych zdarzeń` : 'Powiadomienia CMR'"
+            @click="toggleAlertsPanel"
+          >
+            <i class="material-icons left" style="margin-right: 0.35rem">notifications</i>
+            <span v-if="unreadAlertCount" class="gra-host-bell__badge">{{ unreadAlertCount > 99 ? '99+' : unreadAlertCount }}</span>
+            <span v-else>Alerty</span>
+          </button>
           <button type="button" class="btn-flat" @click="logout">Wyloguj</button>
+        </div>
+
+        <div v-if="showAlertsPanel" class="card gra-host-alerts" style="margin-bottom: 1.25rem">
+          <div class="card-content" style="padding-bottom: 0.75rem">
+            <span class="card-title" style="font-size: 1.1rem; margin-bottom: 0.65rem">Ostatnie zdarzenia</span>
+            <p v-if="!(hostAlerts && hostAlerts.length)" class="grey-text" style="margin: 0; line-height: 1.5">
+              Brak zapisanych zmian. Pojawią się po kolejnych cichych odświeżeniach (co 20 s), gdy ktoś przyjmie lub
+              rozliczy zadanie.
+            </p>
+            <ul v-else class="collection gra-host-alerts__list">
+              <li v-for="a in hostAlerts.slice(0, 30)" :key="a.id" class="collection-item gra-host-alerts__item">
+                <button type="button" class="gra-host-alerts__btn" @click="focusAlert(a)">
+                  <span class="gra-host-alerts__text">{{ a.text }}</span>
+                  <small class="grey-text">{{ a.at }}</small>
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <div class="card" style="margin-bottom: 1.5rem">
@@ -621,8 +788,13 @@ export default {
 
         <p v-if="loading && !tasks.length" class="center grey-text">Ładowanie…</p>
 
-        <div v-for="task in filteredTasks" :key="task.id" class="card gra-host-task-card"
-          style="margin-bottom: 1.25rem">
+        <div
+          v-for="task in filteredTasks"
+          :key="task.id"
+          class="card gra-host-task-card"
+          :class="{ 'gra-host-task-card--unread': taskHasUnread(task.id) }"
+          style="margin-bottom: 1.25rem"
+        >
           <div class="card-content">
             <div class="gra-host-task-card__top">
               <label class="gra-host-task-card__select" title="Zaznacz do druku / usunięcia">
@@ -637,6 +809,7 @@ export default {
                 <span class="chip" style="margin: 0">{{ taskStatusLabel(task.status) }}</span>
                 <span class="chip" style="margin: 0">{{ task.points }} pkt</span>
                 <span class="chip" style="margin: 0" :class="occupancyClass(task)">{{ occupancyLabel(task) }}</span>
+                <span v-if="taskHasUnread(task.id)" class="chip orange lighten-4" style="margin: 0">Nowe</span>
               </p>
             </div>
 
@@ -782,8 +955,9 @@ export default {
           <div class="card-content">
             <span class="card-title" style="font-size: 1.15rem">Klucz master</span>
             <p class="grey-text" style="margin-top: 0; line-height: 1.55">
-              Drugie hasło z serwera (<code>HOST_MASTER_KEY</code>). Odblokowuje tworzenie i usuwanie zadań
-              oraz usuwanie graczy. Zwykłe CMR (ukończ / odrzuć / odblokuj) działa bez niego.
+              Drugie hasło z serwera (<code>HOST_MASTER_KEY</code>). Odblokowuje tworzenie i usuwanie zadań,
+              usuwanie graczy oraz edycję organizatorów / zasad. Zwykłe CMR (ukończ / odrzuć / odblokuj) działa bez
+              niego.
             </p>
             <template v-if="!masterUnlocked">
               <label for="master-pass">Klucz master</label>
@@ -798,6 +972,37 @@ export default {
                 Destrukcyjne akcje odblokowane na tej sesji.
               </p>
               <button type="button" class="btn-flat" @click="lockMaster">Zablokuj ponownie</button>
+            </template>
+          </div>
+        </div>
+
+        <div v-if="masterUnlocked" class="card" style="margin-top: 1.5rem; margin-bottom: 0.5rem">
+          <div class="card-content">
+            <span class="card-title" style="font-size: 1.15rem">Ustawienia zabawy</span>
+            <p class="grey-text" style="margin-top: 0; line-height: 1.55">
+              Organizatorzy i treść zasad w aplikacji (źródło: API). Kartki A4 tego nie zmieniają.
+            </p>
+            <p v-if="settingsLoading" class="grey-text">Ładowanie…</p>
+            <template v-else>
+              <label for="fest-org">Organizatorzy (jeden na linię)</label>
+              <textarea id="fest-org" v-model="settingsDraft.organizersText"
+                class="browser-default gra-field gra-field--lg" rows="5" />
+              <label for="fest-title">Tytuł</label>
+              <input id="fest-title" v-model="settingsDraft.title" type="text" class="browser-default gra-field">
+              <label for="fest-lead">Lead</label>
+              <textarea id="fest-lead" v-model="settingsDraft.lead" class="browser-default gra-field gra-field--lg"
+                rows="3" />
+              <label for="fest-body">Treść zasad (markdown)</label>
+              <textarea id="fest-body" v-model="settingsDraft.body" class="browser-default gra-field gra-field--xl"
+                rows="12" />
+              <label for="fest-hint">Podpowiedź o skanerze</label>
+              <textarea id="fest-hint" v-model="settingsDraft.scannerHint"
+                class="browser-default gra-field gra-field--lg" rows="3" />
+              <p v-if="settingsMsg" class="grey-text" style="margin: 0.75rem 0">{{ settingsMsg }}</p>
+              <button type="button" class="btn green waves-effect" :disabled="settingsSaving"
+                @click="saveFestivalSettings">
+                {{ settingsSaving ? 'Zapisywanie…' : 'Zapisz ustawienia' }}
+              </button>
             </template>
           </div>
         </div>
@@ -822,6 +1027,62 @@ export default {
   flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
+}
+
+.gra-host-bell {
+  position: relative;
+  padding-left: 0.85rem;
+  padding-right: 0.85rem;
+}
+
+.gra-host-bell__badge {
+  display: inline-block;
+  min-width: 1.35rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #e65100;
+  font-weight: 700;
+  font-size: 0.85rem;
+  line-height: 1.35rem;
+}
+
+.gra-host-alerts__list {
+  margin: 0;
+  max-height: 18rem;
+  overflow: auto;
+}
+
+.gra-host-alerts__item {
+  padding: 0 !important;
+}
+
+.gra-host-alerts__btn {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.gra-host-alerts__btn:hover {
+  background: #f5f5f5;
+}
+
+.gra-host-alerts__text {
+  line-height: 1.4;
+}
+
+.gra-host-task-card--unread {
+  border: 2px solid rgba(239, 108, 0, 0.55);
+  box-shadow: 0 0 0 3px rgba(239, 108, 0, 0.12);
 }
 
 .gra-host-filters {
@@ -851,7 +1112,7 @@ export default {
 }
 
 /* Materialize hides native checkboxes (opacity:0; position:absolute; pointer-events:none).
-   Per-task labels then collapse — select-all still works via its text. Force real boxes. */
+   Per-task labels then collapse; select-all still works via its text. Force real boxes. */
 .gra-host-print-bar__check input[type='checkbox'],
 .gra-host-task-card__select input[type='checkbox'] {
   position: static !important;

@@ -114,3 +114,12 @@ export function hostDeletePlayer (hostToken, playerId, masterKey) {
     masterKey
   })
 }
+
+export function hostUpdateFestivalSettings (hostToken, masterKey, payload) {
+  return api('/host/festival/settings', {
+    method: 'PUT',
+    body: payload,
+    hostToken,
+    masterKey
+  })
+}

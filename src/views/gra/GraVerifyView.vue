@@ -3,7 +3,6 @@ import GraShell from '@/components/gra/GraShell.vue'
 import GraIntroRules from '@/components/gra/GraIntroRules.vue'
 import GraOrganizersNote from '@/components/gra/GraOrganizersNote.vue'
 import { verifyTask } from '@/api/graTasks'
-import { logicLabel } from '@/lib/graLabels'
 import { isUsableToken } from '@/lib/graUrls'
 import stampUrl from '@/assets/images/festival-stamp.png'
 import atmosphereUrl from '@/assets/images/backgrounds/background-festival-atmosphere.png'
@@ -41,7 +40,7 @@ export default {
     availabilityText() {
       if (!this.task) return null
       return this.task.isAvailable
-        ? 'Dostępne do przyjęcia (przez kod „Przyjmij”).'
+        ? 'Dostępne do przyjęcia.'
         : 'Zadanie niedostępne - zajęte, pełne, zamknięte albo poza oknem czasowym.'
     }
   },
@@ -54,7 +53,6 @@ export default {
     }
   },
   methods: {
-    logicLabel,
     async load() {
       this.loading = true
       this.error = null
@@ -96,10 +94,6 @@ export default {
                 <p v-if="task.summary" class="gra-quest__lead">{{ task.summary }}</p>
 
                 <ul class="gra-quest__meta">
-                  <li>
-                    <span class="gra-quest__meta-label">Typ zadania</span>
-                    <span class="gra-quest__meta-value">{{ logicLabel(task.logicType) }}</span>
-                  </li>
                   <li>
                     <span class="gra-quest__meta-label">Punkty</span>
                     <span class="gra-quest__meta-value">{{ task.points }}</span>

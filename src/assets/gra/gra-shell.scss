@@ -49,19 +49,18 @@ $green-dark: #388E3C;
   isolation: isolate;
 }
 
-// Festive strip behind chrome — whisper only, tinted toward gra green
+// Festive strip behind chrome — visible watercolor wash, soft enough for link contrast
 .gra-nav::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image: url('../images/additionals/festival-qr-border-top.png');
+  background-image: url('../images/additionals/festival-header-background.png');
   background-repeat: no-repeat;
-  background-position: center 35%;
-  background-size: 115% 165%;
-  opacity: 0.18;
-  filter: saturate(0.55) hue-rotate(75deg) brightness(1.08);
+  background-position: center center;
+  background-size: 100% 100%;
+  opacity: 0.20;
 }
 
 .gra-nav::after {
@@ -70,13 +69,11 @@ $green-dark: #388E3C;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.72) 0%,
-    rgba(255, 255, 255, 0.35) 40%,
-    rgba(232, 245, 233, 0.28) 55%,
-    rgba(255, 255, 255, 0.55) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0.55) 0%,
+      rgba(255, 255, 255, 0.28) 35%,
+      rgba(255, 255, 255, 0.18) 65%,
+      rgba(255, 255, 255, 0.4) 100%);
 }
 
 .gra-nav__left,
@@ -827,24 +824,20 @@ textarea.gra-field--xl {
   background-position: center bottom;
   background-repeat: no-repeat;
   opacity: 0.72;
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent 8%,
-    rgba(0, 0, 0, 0.18) 28%,
-    rgba(0, 0, 0, 0.5) 50%,
-    rgba(0, 0, 0, 0.85) 76%,
-    #000 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent 8%,
-    rgba(0, 0, 0, 0.18) 28%,
-    rgba(0, 0, 0, 0.5) 50%,
-    rgba(0, 0, 0, 0.85) 76%,
-    #000 100%
-  );
+  -webkit-mask-image: linear-gradient(to bottom,
+      transparent 0%,
+      transparent 8%,
+      rgba(0, 0, 0, 0.18) 28%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.85) 76%,
+      #000 100%);
+  mask-image: linear-gradient(to bottom,
+      transparent 0%,
+      transparent 8%,
+      rgba(0, 0, 0, 0.18) 28%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.85) 76%,
+      #000 100%);
 }
 
 // Light top veil only — leave the bottom art mostly open
@@ -854,13 +847,11 @@ textarea.gra-field--xl {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.88) 0%,
-    rgba(255, 255, 255, 0.55) 28%,
-    rgba(255, 255, 255, 0.18) 55%,
-    rgba(255, 255, 255, 0.06) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.88) 0%,
+      rgba(255, 255, 255, 0.55) 28%,
+      rgba(255, 255, 255, 0.18) 55%,
+      rgba(255, 255, 255, 0.06) 100%);
 }
 
 @keyframes gra-quest-in {
@@ -868,6 +859,7 @@ textarea.gra-field--xl {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -900,6 +892,7 @@ textarea.gra-field--xl {
     opacity: 0;
     transform: scale(0.86);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -1081,6 +1074,7 @@ textarea.gra-field--xl {
     opacity: 0;
     transform: translateY(6px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1177,7 +1171,7 @@ textarea.gra-field--xl {
   }
 
   // Kill empty pages: hide the whole app tree, show only print sheet(s)
-  html.gra-printing body > *:not(.gra-print-sheet):not(.gra-print-batch) {
+  html.gra-printing body>*:not(.gra-print-sheet):not(.gra-print-batch) {
     display: none !important;
   }
 
@@ -1221,24 +1215,20 @@ textarea.gra-field--xl {
     background-position: center bottom;
     background-repeat: no-repeat;
     opacity: 0.25;
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      transparent 10%,
-      rgba(0, 0, 0, 0.15) 28%,
-      rgba(0, 0, 0, 0.45) 50%,
-      rgba(0, 0, 0, 0.8) 75%,
-      #000 100%
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      transparent 10%,
-      rgba(0, 0, 0, 0.15) 28%,
-      rgba(0, 0, 0, 0.45) 50%,
-      rgba(0, 0, 0, 0.8) 75%,
-      #000 100%
-    );
+    -webkit-mask-image: linear-gradient(to bottom,
+        transparent 0%,
+        transparent 10%,
+        rgba(0, 0, 0, 0.15) 28%,
+        rgba(0, 0, 0, 0.45) 50%,
+        rgba(0, 0, 0, 0.8) 75%,
+        #000 100%);
+    mask-image: linear-gradient(to bottom,
+        transparent 0%,
+        transparent 10%,
+        rgba(0, 0, 0, 0.15) 28%,
+        rgba(0, 0, 0, 0.45) 50%,
+        rgba(0, 0, 0, 0.8) 75%,
+        #000 100%);
   }
 
   html.gra-printing .gra-print-sheet__frame {
@@ -1396,4 +1386,3 @@ textarea.gra-field--xl {
     color: #455a64;
   }
 }
-

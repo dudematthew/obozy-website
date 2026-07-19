@@ -26,7 +26,7 @@
               "id": "pola-front-matter",
               "title": "Pola front matter",
               "tagKey": null,
-              "html": "<ul>\n<li><strong><code>title</code></strong> – tytuł wyświetlany w nagłówku czytnika i tytule karty przeglądarki.</li>\n<li><strong><code>description</code></strong> – tekst dla wyszukiwarek; trafia też do OG tagów generowanych przez <code>og-inject.js</code>.</li>\n<li><strong><code>logo</code></strong> – ścieżka względem folderu <code>.md</code>; obraz jest kopiowany do <code>public/manual-assets/&#x3C;id>/</code>.</li>\n<li><strong><code>related</code></strong> – lista <code>id</code> powiązanych instrukcji; wyświetlana na ekranach końcowych.</li>\n<li><strong><code>tags</code></strong> – słownik tagów dostępnych w tym pliku. Każdy tag: <code>icon</code> (Material Icons), <code>label</code> (tekst etykiety – pusty string = tylko ikona), <code>description</code> (treść w modalu). Klucze powinny być ASCII.</li>\n<li><strong><code>glossary</code></strong> – słownik terminów. Każdy wpis: <code>display</code> (pełna nazwa w modalu), <code>definition</code> (definicja), <code>link</code> (slug sekcji do której odsyła przycisk \"przejdź\"). Klucze MUSZĄ być ASCII – bez polskich liter (np. <code>zwoj</code>, nie <code>zwój</code>).</li>\n</ul>"
+              "html": "<ul>\n<li><strong><code>title</code></strong> – tytuł wyświetlany w nagłówku czytnika i tytule karty przeglądarki.</li>\n<li><strong><code>description</code></strong> – tekst dla wyszukiwarek; trafia też do OG tagów generowanych przez <code>og-inject.js</code>.</li>\n<li><strong><code>logo</code></strong> – ścieżka względem folderu <code>.md</code>; obraz jest kopiowany do <code>public/manual-assets/&#x3C;id>/</code>.</li>\n<li><strong><code>related</code></strong> – lista <code>id</code> powiązanych instrukcji; wyświetlana na ekranach końcowych.</li>\n<li><strong><code>tags</code></strong> – słownik tagów dostępnych w tym pliku. Każdy tag: <code>icon</code> (Material Icons), <code>label</code> (tekst etykiety – pusty string = tylko ikona), <code>description</code> (treść w modalu). Klucze powinny być ASCII.</li>\n<li><strong><code>glossary</code></strong> – słownik terminów. Każdy wpis: <code>display</code> (pełna nazwa w modalu), <code>definition</code> (definicja), <code>link</code> (slug sekcji do której odsyła przycisk „przejdź\"). Klucze MUSZĄ być ASCII – bez polskich liter (np. <code>zwoj</code>, nie <code>zwój</code>).</li>\n</ul>"
             }
           ],
           "contentHtml": null
@@ -53,7 +53,7 @@
           "tagKey": null,
           "introHtml": null,
           "subsections": null,
-          "contentHtml": "<pre><code class=\"language-md\">Gracz traci [bibuły](glossary:bibula) i zostaje wyeliminowany.\n</code></pre>\n<p>Klucz po <code>glossary:</code> musi być identyczny z kluczem w front matter (ASCII). Kliknięcie otwiera modal z definicją i przyciskiem \"przejdź do sekcji\" jeśli <code>link</code> jest podany.</p>"
+          "contentHtml": "<pre><code class=\"language-md\">Gracz traci [bibuły](glossary:bibula) i zostaje wyeliminowany.\n</code></pre>\n<p>Klucz po <code>glossary:</code> musi być identyczny z kluczem w front matter (ASCII). Kliknięcie otwiera modal z definicją i przyciskiem „przejdź do sekcji\" jeśli <code>link</code> jest podany.</p>"
         },
         {
           "id": "linki-wewnętrzne",

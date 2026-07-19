@@ -35,7 +35,7 @@ glossary:
     link: "zwoje"
   oltarz:
     display: "Ołtarz"
-    definition: "Kluczowa strefa na terenie gry, z której można odbierać nagrody punktowe, klasy i zwoje. Ołtarz przejmuje się przez przebywanie w jego strefie przez określony czas."
+    definition: "Kluczowa strefa na terenie gry, ograniczona linką (sznurkiem). Z ołtarza odbiera się nagrody punktowe, klasy i zwoje; przejmuje się go przez przebywanie w strefie przez określony czas."
     link: "ołtarze"
   nagroda:
     display: "Nagroda z ołtarza"
@@ -57,6 +57,10 @@ glossary:
     display: "Przejmowanie ołtarza"
     definition: "Proces zajmowania ołtarza – drużyna wpisuje się na kartę i przebywa w strefie przez wyznaczony czas. Przejęcie kończy się sukcesem jeśli członkowie drużyny nie opuszczą strefy w pełni (całym ciałem poza sznurkiem) przed czasem zakończenia i nie zostaną wyeliminowani."
     link: "przejmowanie-ołtarza"
+  wybor-druzyn:
+    display: "Wybór drużyn"
+    definition: "Sposób składania drużyn przed grą: kapitanowie o podobnych umiejętnościach dobierają graczy w dwóch rundach (najpierw w wylosowanej kolejności, potem w odwróconej), aż każda drużyna ma trzech graczy. Pełny opis jest w poradach dla organizatora."
+    link: "przygotowanie-drużyn"
 ---
 # OBOZY – MAYHEM
 
@@ -72,7 +76,7 @@ Gra kończy się w momencie, gdy pozostanie tylko jedna niewyeliminowana drużyn
 
 ## Drużyny
 
-Gracze biorą udział w grze w **drużynach trzech osób**. Każda drużyna posiada przydzieloną literę alfabetu, używaną jako identyfikator przy oznaczaniu się na [kartach ołtarzy](glossary:oltarz).
+Gracze biorą udział w grze w **drużynach trzech osób**. Każda drużyna posiada przydzieloną literę alfabetu, używaną jako identyfikator przy oznaczaniu się na [kartach ołtarzy](glossary:oltarz). Skład drużyn ustala się przed grą przez [wybór drużyn](glossary:wybor-druzyn).
 
 [Eliminacja](glossary:eliminacja) członków drużyny osłabia jej możliwości działania, lecz nie kończy jej udziału w grze, dopóki przynajmniej jeden członek pozostaje przy życiu.
 
@@ -114,7 +118,7 @@ Niektóre klasy posiadają umiejętność. Większość umiejętności może by�
 **Tank** jest klasą trudną do zabicia, przydatną wszędzie tam, gdzie trzeba dłużej wytrzymać lub powalić silnych przeciwników.
 
 - Tank posiada **dwa punkty życia**, wiązane na obu nadgarstkach. Jeśli straci jedno z nich, może je odnowić przy ołtarzu w którym jego drużyna odbiera nagrodę.
-- Tank **nie może samotnie przejmować ołtarzy**, lecz wlicza się do wymaganej liczby osób przy przejmowaniu.
+- Tank **nie może samotnie przejmować ołtarzy**, lecz wlicza się do wymaganej liczby osób przy przejmowaniu, nawet jeśli jest ostatnim niewyeliminowanym członkiem drużyny.
 - Tank posiada umiejętność **Powalenie** - dotykając dowolnego gracza zmusza go do położenia się na ziemi. Dobrze jest ustalić hasło wykrzykiwane przy użyciu, np. *gleba*. Powalony gracz musi dotknąć korpusem podłoża, lecz może podczas tego bronić swojego życia.
 
 ### Skaut
@@ -267,7 +271,9 @@ Każdy gracz zobowiązany jest do zapoznania się z nazwami i działaniem wszyst
 
 ## Ołtarze
 
-Ołtarze są kluczowymi strefami na terenie gry wielkości wahającej się od 4 do 8 metrów szerokości. Liczba ołtarzy w jednej rundzie wynosi **dwa razy więcej niż liczba drużyn**.
+Ołtarze są kluczowymi strefami na terenie gry. Liczba ołtarzy w jednej rundzie wynosi **dwa razy więcej niż liczba drużyn**.
+
+Każdy ołtarz ma **strefę** ograniczoną linką (sznurkiem) - ta linka wyznacza czy gracz znajduje się w środku czy na zewnątrz ołtarza (patrz [Strefa ołtarza i przejmowanie](#strefa-ołtarza-i-przejmowanie)).
 
 Każdy typ ołtarza (*Dzik, Sowa, Niedźwiedź, ...*) posiada własną **kartę ołtarza** - wywieszoną w widocznym miejscu w środku strefy - zawiera ona nazwę ołtarza, czas wymagany do przejęcia, dostępne nagrody w danej kolejności oraz ewentualne własne mechaniki czy wymagania.  
 
@@ -447,7 +453,7 @@ Kolejność:
 Klasa
 
 Wymóg: 2 osoby
-Czas: 5:00
+Czas: 6:00
 
 Mechanika:
 Jeśli w trakcie przejmowania dowolny gracz z poza drużyny zostanie wyeliminowany znajdując się w strefie przejmowanie natychmiast zakańcza się sukcesem.
@@ -542,7 +548,7 @@ Karta ołtarza musi być cały czas dotykana przez przynajmniej jednego przejmuj
 ```
 Kolejność:
 
-7 punktów
+6 punktów
 klasa
 3 zwoje
 
@@ -598,7 +604,7 @@ Wymóg: 2 osoby
 Czas: 3:00
 
 Mechanika:
-Jeśli gracz jest ostatnią niewyeliminowaną na stałe osobą w drużynie, wymóg zmniejsza się do jednej osoby a także czas zmniejsza się do 2:00 dla tego gracza. Zwój osłabienia nie zmienia tej zasady.
+Jeśli gracz jest ostatnią niewyeliminowaną na stałe osobą w drużynie, czas zmniejsza się do 2:00 dla tego gracza. Zwój osłabienia nie zmienia tej zasady.
 ````
 
 ##### Świnia <img src="./obozy-mayhem-manual.assets/icons8-pig-100.png" alt="icons8-pig-100" style="zoom:25%;" />
@@ -701,7 +707,7 @@ Organizator przed rozpoczęciem rozgrywki powinien przygotować następujące ma
 - **Bibuły** (lub pokrojone biodegradowalne worki na śmieci) w kolorach drużyn - po dwie na gracza, wiązane na nadgarstkach. Dodatkowe bibuły dla Szamanów oraz dla Tanków jako zapasowe punkty życia.
 - **Karty ołtarzy** - po jednej na każdy typ ołtarza (12), wydrukowane i zabezpieczone przed warunkami atmosferycznymi (np. w koszulce foliowej).
 - **Mapy terenu** z legendą ołtarzy na odwrocie - po jednej na gracza.
-- **Sznurek** (najlepiej elastyczny budowlany do wyznaczania) - do wyznaczenia stref ołtarzy. Bardzo dobrym pomysłem jest przechowywanie sznurka nawiniętego na jakiś obiekt, np. kij, ponieważ lubią się plątać.
+- **Sznurek / linka** (najlepiej elastyczny budowlany) - do wyznaczania granic stref. Przygotuj odcinki o długościach **12 m (S)**, **14 m (M)** i **16 m (L)** — tyle wynosi **obwód** każdej wielkości ołtarza. Bardzo dobrym pomysłem jest przechowywanie sznurka nawiniętego na jakiś obiekt, np. kij, ponieważ lubią się plątać.
 - **Długopisy** (lub zmazywalne markery jeśli używane są koszulki) - po jednym przy każdym ołtarzu, najlepiej przywiązane do karty lub sznurka.
 - **Zwoje** - przygotowane i zwinięte, gotowe do rozdania lub rozłożenia na terenie gry.
 - **Magiczne Laski, Noże i Miecze** - po jednym na każdego potencjalnie uczestniczącego Chochlika i Goblina.
@@ -710,19 +716,38 @@ Organizator przed rozpoczęciem rozgrywki powinien przygotować następujące ma
 
 Aby wyznaczyć położenie ołtarzy, organizator powinien wcześniej znaleźć na terenie gry **12 interesujących miejsc** (*większe drzewo, polana, zagłębienie, stary płot itd.*) - następnie nanieść je na mapę terenu i ponumerować na mapie każde z nich.
 
-Organizator wyznacza strefy wszystkich ołtarzy przy użyciu sznurka, tak aby granica każdej strefy była jednoznaczna i dobrze widoczna. Przy każdym ołtarzu wiesza się kartę ołtarza w widocznym miejscu wewnątrz strefy oraz przywiązuje długopis.
+Dla każdego miejsca wyznacz **wielkość strefy** według odsłonięcia terenu (nie według typu ołtarza z karty):
+
+- **L (16 m obwodu)** — miejsce **bardzo odsłonięte** (łatwy dostęp z wielu stron, mało osłony).
+- **M (14 m obwodu)** — miejsce **średnio** osłonięte.
+- **S (12 m obwodu)** — miejsce **bardzo osłonięte** (ciasne, trudne podejście, dużo naturalnej osłony).
+
+Organizator wyznacza strefę linką o odpowiednim obwodzie, tak aby granica była jednoznaczna i dobrze widoczna. Przy każdym ołtarzu wiesza się kartę ołtarza w widocznym miejscu wewnątrz strefy oraz przywiązuje długopis.
 
 Liczba użytych ołtarzy powinna wynosić dokładnie dwa razy więcej niż liczba drużyn. Ołtarze rozmieszcza się równomiernie na terenie gry tak, aby żaden nie znajdował się zbyt blisko miejsca wyeliminowanych graczy ani bezpośrednio na trasie między skrajnymi punktami mapy.
 
-Organizator losuje ołtarze pomiędzy numerami interesujących miejsc (*np. ołtarz Sowa znajduje się na numerze 3, przy wielkim drzewie*). Nadwyżka kart ołtarzy pozostaje niewykorzystana i nie uczestniczą one w grze.
+Organizator losuje ołtarze pomiędzy numerami interesujących miejsc (*np. ołtarz Sowa znajduje się na numerze 3, przy wielkim drzewie*). Nadwyżka kart ołtarzy pozostaje niewykorzystana i nie uczestniczą one w grze. Wielkość **S / M / L** zostaje przy numerze miejsca — nie zmienia się przy losowaniu typu ołtarza.
 
 Po wylosowaniu organizator ogłasza skład ołtarzy grających w rundzie i **daje drużynom czas na ich przeczytanie** (legenda na mapie; w razie potrzeby pokazuje karty ołtarzy). Dopiero potem przechodzi do mapowania i taktyki — bez tego kroku łatwo o konfuzję przy wymogach i mechanikach.
 
 ### Przygotowanie drużyn
 
+Z grających graczy wybiera się **tylu wybierających (kapitanów), ile ma być drużyn** — osoby o **podobnym poziomie umiejętności**, żeby start był możliwie wyrównany. Przy typowej rozgrywce na trzy drużyny wybiera się trzech kapitanów.
+
+Następnie **losuje się**, który kapitan wybiera jako pierwszy. Dalej kapitanowie dobierają pozostałych graczy na przemian:
+
+1. **Pierwsza runda** — w wylosowanej kolejności (pierwszy, drugi, …, ostatni): każdy kapitan wybiera po jednym członku drużyny.
+2. **Druga runda** — w **odwróconej** kolejności (ostatni, …, drugi, pierwszy): każdy kapitan wybiera po jednym kolejnym członku.
+
+W ten sposób powstają drużyny po **trzech graczy** (kapitan + dwóch wybranych). Odwrócona druga runda wyrównuje przewagę wczesnego wyboru.
+
+> [!NOTE]
+>
+> *Przykład przy trzech kapitanach A, B, C, gdy los wskaże kolejność A → B → C: najpierw A, B, C wybierają po jednej osobie; potem C, B, A wybierają po drugiej. Każda drużyna ma wtedy trzech graczy.*
+
 Organizator przydziela każdej drużynie literę alfabetu, po jednej bibule na gracza oraz **mapę każdemu graczowi**. Gracze w drużynie nanoszą ustalone ołtarze na numery na mapie. Jeśli nie przeczytali jeszcze opisów wylosowanych ołtarzy, robią to teraz. Następnie ustalają między sobą taktykę - na to mają **2 minuty**.
 
-Następnie każda drużyna dzieli się na dwie części i otrzymuje przydziały ołtarzy startowych - losowo, tak aby żadna drużyna nie otrzymała ołtarza, który chciałaby przejąć jako pierwszy.
+Następnie każda drużyna dzieli się na dwie części i otrzymuje przydziały ołtarzy startowych - losowo, tak aby żadna drużyna nie otrzymała ołtarza, który chciałaby przejąć jako pierwszy. Do losowania **dwóch sąsiadujących numerów miejsc** na drużynę możesz użyć [generatora miejsc startowych](/mayhem/generator-miejsc).
 
 ### Przygotowanie kart ołtarzy
 

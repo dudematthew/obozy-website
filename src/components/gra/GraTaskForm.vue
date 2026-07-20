@@ -166,7 +166,8 @@ export default {
         <label>Treść (markdown)</label>
         <textarea v-model="bodyMarkdown" class="browser-default gra-field gra-field--xl" rows="16" />
         <p class="grey-text" style="margin: 0.25rem 0 0; font-size: 0.85rem">
-          Pełna treść zadania w aplikacji. Widoczność zależy od „Kiedy widać treść” poniżej.
+          Pełna treść w aplikacji — tylko gdy jest coś ponad krótki opis (mapa, sekret po przyjęciu, placeholdery).
+          Zostaw puste, jeśli treść = krótki opis; wtedy gracz widzi tylko opis.
         </p>
       </div>
       <div class="col s12">
@@ -174,7 +175,7 @@ export default {
         <textarea v-model="hostNotes" class="browser-default gra-field gra-field--lg" rows="8"
           placeholder="Np. schować flagę, mapa, okulary…" />
         <p class="grey-text" style="margin: 0.25rem 0 0; font-size: 0.85rem">
-          Tylko CMR: checklista „Przygotowania” i karta zadania u organizatora. Gracze tego nie widzą.
+          Tylko CMR: checklista "Przygotowania" i karta zadania u organizatora. Gracze tego nie widzą.
         </p>
       </div>
       <div class="col s4">
@@ -240,7 +241,8 @@ export default {
       </div>
       <div class="col s12">
         <label>Dodatkowa konfiguracja (JSON)</label>
-        <textarea v-model="logicConfigExtra" class="browser-default gra-field gra-field--lg" rows="6" placeholder="{}" />
+        <textarea v-model="logicConfigExtra" class="browser-default gra-field gra-field--lg" rows="6"
+          placeholder="{}" />
       </div>
       <div class="col s12">
         <button type="submit" class="btn-large green waves-effect waves-light" :disabled="loading">

@@ -9,6 +9,7 @@ import { acceptTask, getTask } from '@/api/graTasks'
 import { getMe } from '@/api/graPlayers'
 import { getActiveAccount, getActiveToken, getAccounts } from '@/lib/graAccounts'
 import { isUsableToken } from '@/lib/graUrls'
+import { isTaskBodyRedundant } from '@/lib/graTaskText'
 import stampUrl from '@/assets/images/festival-stamp.png'
 import atmosphereUrl from '@/assets/images/backgrounds/background-festival-atmosphere.png'
 
@@ -91,24 +92,29 @@ export default {
       if (!this.task) return ''
       if (!this.task.timerStartedAt) {
         return this.task.timerStart === 'accept'
-          ? 'Czas powinien ruszyć przy przyjęciu, odśwież widok.'
-          : 'Czas ruszy gdy organizator naciśnie „Start zegar”.'
+          ? 'Czas powinien ruszyć przy przyjęciu, odśwież stronę.'
+          : 'Czas ruszy gdy organizator naciśnie "Start zegar".'
       }
       return this.task.timerStart === 'accept'
-        ? 'Czas biegnie od przyjęcia zadania.'
-        : 'Czas biegnie od startu u organizatora.'
+        ? 'Czas wystartował od przyjęcia zadania.'
+        : 'Czas wystartowuje od rozpoczęcia przez organizatora.'
     },
     takenHint() {
       if (!this.task || this.task.playerAssignmentStatus) return null
       if (this.task.status === 'completed') return 'Zadanie zamknięte.'
       if (!this.task.canAccept && this.hasToken) {
-        return 'Niedostępne (zajęte, pełne lub poza oknem czasowym).'
+        return 'Niedostępne (zajęte, zapełnione lub poza oknem czasowym).'
       }
       return null
     },
     /** API: null = still hidden; string (even empty) = revealed. */
     bodyRevealed() {
       return this.task != null && this.task.bodyMarkdown != null
+    },
+    /** Skip body block when it only repeats the short summary. */
+    showBody() {
+      if (!this.bodyRevealed || !this.task) return false
+      return !isTaskBodyRedundant(this.task.summary, this.task.bodyMarkdown)
     },
     bodyPendingHint() {
       if (!this.task || this.bodyRevealed) return null
@@ -143,7 +149,7 @@ export default {
       if (!this.hasValidAcceptToken) {
         this.task = null
         this.error =
-          'Ten link jest uszkodzony (brak kodu zadania). Zeskanuj QR jeszcze raz z kartki albo z panelu hosta.'
+          'Ten link jest uszkodzony (brak takiego zadania). Zeskanuj QR jeszcze raz z kartki albo z panelu hosta.'
         this.loading = false
         return
       }
@@ -254,7 +260,7 @@ export default {
                 <span class="gra-quest__timer-note">{{ timerNote }}</span>
               </p>
 
-              <div v-if="bodyRevealed && task.bodyMarkdown.trim()" class="gra-quest__body gra-md">
+              <div v-if="showBody" class="gra-quest__body gra-md">
                 <GraMarkdown :source="task.bodyMarkdown" />
               </div>
               <p v-else-if="bodyPendingHint" class="gra-quest__hint">{{ bodyPendingHint }}</p>
@@ -284,11 +290,12 @@ export default {
     </div>
 
     <!-- Identity modal: shown when anonymous user clicks Accept -->
-    <div v-if="identityModalOpen" class="gra-modal" role="dialog" aria-modal="true"
-      aria-labelledby="gra-identity-title" @click.self="closeIdentityModal">
+    <div v-if="identityModalOpen" class="gra-modal" role="dialog" aria-modal="true" aria-labelledby="gra-identity-title"
+      @click.self="closeIdentityModal">
       <div class="gra-modal__panel card">
         <div class="card-content">
-          <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem">
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem">
             <span id="gra-identity-title" class="card-title" style="font-size: 1.15rem; margin: 0">Kim jesteś?</span>
             <button type="button" class="btn-flat" aria-label="Zamknij" @click="closeIdentityModal">
               <i class="material-icons">close</i>

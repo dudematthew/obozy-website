@@ -170,8 +170,9 @@ export default {
       <div v-if="error" class="text-darken-2 card-panel red lighten-4 red-text">{{ error }}</div>
 
       <p v-if="offerResume" class="gra-offer-resume">
-        <button type="button" class="btn-large green waves-effect waves-light gra-offer-resume__btn" :disabled="loading" @click="doResume">
-          Wejdź jako „{{ displayName.trim() }}"
+        <button type="button" class="btn-large green waves-effect waves-light gra-offer-resume__btn" :disabled="loading"
+          @click="doResume">
+          Wejdź jako "{{ displayName.trim() }}"
         </button>
       </p>
 
@@ -231,8 +232,9 @@ export default {
       </div>
 
       <p v-if="offerResume" class="gra-offer-resume">
-        <button type="button" class="btn-large green waves-effect waves-light gra-offer-resume__btn" :disabled="loading" @click="doResume">
-          Wejdź jako „{{ displayName.trim() }}"
+        <button type="button" class="btn-large green waves-effect waves-light gra-offer-resume__btn" :disabled="loading"
+          @click="doResume">
+          Wejdź jako "{{ displayName.trim() }}"
         </button>
       </p>
 

@@ -26,6 +26,7 @@ import {
 } from '@/lib/graLabels'
 import { getHostMasterKey, getHostToken } from '@/lib/graHostSession'
 import { graIconName } from '@/lib/graIcons'
+import { isTaskBodyRedundant } from '@/lib/graTaskText'
 
 export default {
   name: 'GraHostTaskView',
@@ -61,6 +62,9 @@ export default {
     softMinutes() {
       const m = this.task && this.task.logicConfig && this.task.logicConfig.softMinutes
       return m != null ? Number(m) : null
+    },
+    showPreviewBody() {
+      return this.task && !isTaskBodyRedundant(this.task.summary, this.task.bodyMarkdown)
     }
   },
   created() {
@@ -241,7 +245,7 @@ export default {
           <div class="card-content">
             <span class="card-title">Podgląd</span>
             <p class="grey-text">{{ task.summary }}</p>
-            <GraMarkdown v-if="task.bodyMarkdown" :source="task.bodyMarkdown" />
+            <GraMarkdown v-if="showPreviewBody" :source="task.bodyMarkdown" />
           </div>
         </div>
 

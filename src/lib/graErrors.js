@@ -26,7 +26,7 @@ const MESSAGE_PL = {
   'Only completed assignments can be revoked': 'Można cofnąć tylko ukończone zadanie.',
   'Assignment is already resolved': 'To przyjęcie jest już rozstrzygnięte.',
   'Failed assignments cannot be completed': 'Nieudanych przyjęć nie można ukończyć.',
-  'Assignment is not in accepted state': 'Przyjęcie nie jest w stanie „przyjęte”.',
+  'Assignment is not in accepted state': 'Przyjęcie nie jest w stanie "przyjęte".',
   'Completed tasks cannot be released': 'Ukończonych zadań nie można odblokować.',
   'This task does not use stake scoring': 'To zadanie nie używa stawek.',
   'Stake must be set before resolve': 'Najpierw ustaw stawkę.',
@@ -55,7 +55,7 @@ const STALE_PLAYER_MESSAGES = new Set([
  * Only meaningful when the request actually sent a playerToken; the `sentToken`
  * guard prevents false positives on routes that require no auth.
  */
-export function isStalePlayerTokenError (err, sentToken) {
+export function isStalePlayerTokenError(err, sentToken) {
   if (!sentToken) return false
   if (!err) return false
   const raw = err._rawMessage || ''
@@ -65,7 +65,7 @@ export function isStalePlayerTokenError (err, sentToken) {
   )
 }
 
-export function polishApiMessage (message) {
+export function polishApiMessage(message) {
   if (message == null || message === '') return message
   const key = String(message)
   if (MESSAGE_PL[key]) return MESSAGE_PL[key]

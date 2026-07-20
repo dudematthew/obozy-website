@@ -101,7 +101,14 @@ export default {
         this.summary = null
         this.rankPlace = null
         this.rankBoardSize = 0
-        this.error = (err && err.message) || 'Nie udało się wczytać wyniku.'
+        if (err && err.playerSessionExpired) {
+          // Token was wiped by graClient; refresh local state and show the gate.
+          this.refreshLocal()
+          this.gateKey += 1
+          this.error = null
+        } else {
+          this.error = (err && err.message) || 'Nie udało się wczytać wyniku.'
+        }
       } finally {
         this.loading = false
       }
@@ -159,7 +166,14 @@ export default {
         }
         this.renameOpen = false
       } catch (err) {
-        this.renameError = (err && err.message) || 'Nie udało się zmienić imienia.'
+        if (err && err.playerSessionExpired) {
+          this.refreshLocal()
+          this.gateKey += 1
+          this.summary = null
+          this.renameOpen = false
+        } else {
+          this.renameError = (err && err.message) || 'Nie udało się zmienić imienia.'
+        }
       } finally {
         this.renaming = false
       }

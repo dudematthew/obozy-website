@@ -88,3 +88,14 @@ export function clearAllAccounts () {
   localStorage.removeItem(STORAGE_KEY)
   localStorage.removeItem(ACTIVE_KEY)
 }
+
+/**
+ * Remove the active player token and their local entry when the API reports
+ * the token is no longer valid (player deleted server-side).
+ * Falls back gracefully: if no active token exists this is a no-op.
+ */
+export function invalidateActivePlayerSession () {
+  const token = getActiveToken()
+  if (!token) return
+  removeAccount(token)
+}

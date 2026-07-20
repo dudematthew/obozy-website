@@ -6,6 +6,7 @@ import GraAccountGate from '@/components/gra/GraAccountGate.vue'
 import GraIntroRules from '@/components/gra/GraIntroRules.vue'
 import GraOrganizersNote from '@/components/gra/GraOrganizersNote.vue'
 import { acceptTask, getTask } from '@/api/graTasks'
+import { getMe } from '@/api/graPlayers'
 import { getActiveAccount, getActiveToken, getAccounts } from '@/lib/graAccounts'
 import { isUsableToken } from '@/lib/graUrls'
 import stampUrl from '@/assets/images/festival-stamp.png'
@@ -24,6 +25,7 @@ export default {
       playerToken: null,
       pendingAccept: false,
       gateKey: 0,
+      identityModalOpen: false,
       stampUrl,
       atmosphereUrl
     }
@@ -65,9 +67,18 @@ export default {
       if (s === 'accepted') return 'active'
       return ''
     },
-    /** Real accept when logged in; mock CTA when anonymous and task is free. */
+    /**
+     * Show Accept when the API says so, or when logged out and the task still looks open.
+     * (API historically sets canAccept=false without a player token — identity comes after click.)
+     */
     showAccept() {
-      return this.task && this.task.canAccept === true
+      if (!this.task) return false
+      if (this.task.canAccept === true) return true
+      if (this.hasToken) return false
+      if (this.task.status === 'completed') return false
+      const slotsFree = this.task.assigneeCount < this.task.maxAssignees
+      const openStatus = this.task.status === 'available' || this.task.status === 'active'
+      return slotsFree && openStatus
     },
     showTimer() {
       return (
@@ -136,6 +147,18 @@ export default {
         this.loading = false
         return
       }
+      // Proactively validate a stored token so we don't show "Jako <stale name>".
+      if (this.playerToken) {
+        try {
+          await getMe(this.playerToken)
+        } catch (err) {
+          if (err && err.playerSessionExpired) {
+            this.syncAuth() // token cleared by graClient; re-read cleared state
+          }
+          // Any other getMe error (network, etc.) is non-fatal; load task anyway.
+        }
+      }
+
       try {
         this.task = await getTask(this.acceptToken, this.playerToken || undefined)
       } catch (err) {
@@ -157,8 +180,14 @@ export default {
         this.task = await acceptTask(this.acceptToken, this.playerToken)
         this.pendingAccept = false
       } catch (err) {
-        this.error = (err && err.message) || 'Nie udało się przyjąć zadania.'
-        await this.load()
+        if (err && err.playerSessionExpired) {
+          // Token was wiped; reload so the UI shows the identity modal for re-auth.
+          this.pendingAccept = true
+          await this.load()
+        } else {
+          this.error = (err && err.message) || 'Nie udało się przyjąć zadania.'
+          await this.load()
+        }
       } finally {
         this.accepting = false
       }
@@ -166,14 +195,14 @@ export default {
     promptAccountThenAccept() {
       this.pendingAccept = true
       this.gateKey += 1
-      this.$nextTick(() => {
-        const el = this.$refs.accountGate
-        if (el && typeof el.scrollIntoView === 'function') {
-          el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }
-      })
+      this.identityModalOpen = true
+    },
+    closeIdentityModal() {
+      this.identityModalOpen = false
+      this.pendingAccept = false
     },
     async onAccountReady() {
+      this.identityModalOpen = false
       this.syncAuth()
       await this.load()
       if (this.pendingAccept && this.hasToken && this.task && this.task.canAccept) {
@@ -235,35 +264,13 @@ export default {
                   @click="onAccept">
                   {{ task.playerAssignmentStatus === 'failed' ? 'Spróbuj ponownie' : 'Przyjmij zadanie' }}
                 </button>
-                <p v-if="!hasToken" class="gra-quest__cta-note">
-                  {{ pendingAccept
-                    ? 'Najpierw załóż lub wybierz gracza poniżej, potem przyjmiemy zadanie za Ciebie.'
-                    : 'Po kliknięciu założysz gracza (albo wejdziesz jako istniejący) i od razu przyjmiesz zadanie.' }}
-                </p>
               </div>
 
               <GraOrganizersNote />
             </div>
           </article>
 
-          <section v-if="!hasToken" ref="accountGate" class="gra-quest__side"
-            :class="{ 'gra-quest__side--pending': pendingAccept }">
-            <p class="gra-quest__side-lead">
-              <template v-if="pendingAccept">
-                Żeby przyjąć zadanie, załóż nową ksywę albo wejdź jako istniejący gracz.
-              </template>
-              <template v-else>
-                Żeby zbierać punkty, załóż gracza albo wejdź na istniejące konto.
-              </template>
-            </p>
-            <GraAccountGate
-              :key="gateKey"
-              compact
-              :prefer-register="preferRegister"
-              @ready="onAccountReady"
-            />
-          </section>
-          <p v-else class="gra-quest__player">
+          <p v-if="hasToken" class="gra-quest__player">
             Jako <strong>{{ account && account.displayName }}</strong>
             ·
             <router-link :to="{ name: 'gra-gracz', query: { redirect: $route.fullPath } }">Zmień</router-link>
@@ -275,5 +282,49 @@ export default {
         </template>
       </template>
     </div>
+
+    <!-- Identity modal: shown when anonymous user clicks Accept -->
+    <div v-if="identityModalOpen" class="gra-modal" role="dialog" aria-modal="true"
+      aria-labelledby="gra-identity-title" @click.self="closeIdentityModal">
+      <div class="gra-modal__panel card">
+        <div class="card-content">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem">
+            <span id="gra-identity-title" class="card-title" style="font-size: 1.15rem; margin: 0">Kim jesteś?</span>
+            <button type="button" class="btn-flat" aria-label="Zamknij" @click="closeIdentityModal">
+              <i class="material-icons">close</i>
+            </button>
+          </div>
+          <GraAccountGate :key="gateKey" variant="accept" @ready="onAccountReady" />
+        </div>
+      </div>
+    </div>
   </GraShell>
 </template>
+
+<style scoped>
+.gra-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.gra-modal__panel {
+  width: 100%;
+  max-width: 520px;
+  max-height: min(90vh, 640px);
+  overflow: auto;
+  margin: 0;
+}
+
+@media (min-width: 600px) {
+  .gra-modal {
+    align-items: center;
+  }
+}
+</style>

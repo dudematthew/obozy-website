@@ -45,6 +45,26 @@ const MESSAGE_PL = {
   'Request body must be valid JSON object': 'Niepoprawne ciało żądania JSON.'
 }
 
+const STALE_PLAYER_MESSAGES = new Set([
+  'Invalid player token',
+  'Missing player token'
+])
+
+/**
+ * Returns true when the API responded with a "token no longer valid" error.
+ * Only meaningful when the request actually sent a playerToken; the `sentToken`
+ * guard prevents false positives on routes that require no auth.
+ */
+export function isStalePlayerTokenError (err, sentToken) {
+  if (!sentToken) return false
+  if (!err) return false
+  const raw = err._rawMessage || ''
+  return (
+    err.error === 'unauthorized' &&
+    (STALE_PLAYER_MESSAGES.has(raw) || STALE_PLAYER_MESSAGES.has(err.message))
+  )
+}
+
 export function polishApiMessage (message) {
   if (message == null || message === '') return message
   const key = String(message)

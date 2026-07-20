@@ -1,4 +1,5 @@
-import { polishApiMessage } from '@/lib/graErrors'
+import { polishApiMessage, isStalePlayerTokenError } from '@/lib/graErrors'
+import { invalidateActivePlayerSession } from '@/lib/graAccounts'
 
 // API contract (published by the backend, no auth):
 //   https://festiwal.dudematthew.smallhost.pl/docs
@@ -64,10 +65,16 @@ export async function api (path, {
       error: 'internal_error',
       message: `Błąd HTTP ${res.status}`
     }
-    throw {
+    const err = {
       ...payload,
+      _rawMessage: payload.message,
       message: polishApiMessage(payload.message) || payload.message
     }
+    if (isStalePlayerTokenError(err, playerToken)) {
+      invalidateActivePlayerSession()
+      throw { ...err, playerSessionExpired: true }
+    }
+    throw err
   }
 
   return data

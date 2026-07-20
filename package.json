@@ -9,6 +9,12 @@
     "serve": "vue-cli-service serve",
     "build": "npm run build:manuals && vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "test": "npm run test:unit",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:gra": "npm run test:unit && npm run test:e2e",
     "deploy": "deploy.sh"
   },
   "dependencies": {
@@ -44,6 +50,9 @@
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
     "lint-staged": "^11.1.2",
+    "@playwright/test": "^1.51.0",
+    "jsdom": "^26.0.0",
+    "vitest": "^3.0.5",
     "mdast-util-to-string": "^4.0.0",
     "rehype-raw": "^7.0.0",
     "rehype-sanitize": "^6.0.0",

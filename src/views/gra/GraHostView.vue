@@ -661,10 +661,10 @@ export default {
                 z wszystkich zadań. Kliknij tytuł albo "Otwórz zadanie", żeby zobaczyć pełną treść i QR.
               </p>
               <p>
-                Możesz samodzielnie stworzyć nowe zadanie (po odblokowaniu klucza master). Zadania
-                <strong>Zadanie organizatora nr. 1-7</strong> nie mają kartek z kodem QR.
-                Zamiast tego możesz werbalnie opisać zadanie i pokazać kod QR graczowi na swoim
-                telefonie. Jeśli takie zadanie jest już przyjęte, prawdopodobnie inny organizator go używa: użyj
+                Możesz samodzielnie stworzyć nowe zadanie (po odblokowaniu klucza master). Sloty
+                <strong>Zadanie organizatora nr. 1–7</strong> nie mają kartek z kodem QR na terenie
+                (tylko QR z telefonu). Każdy numer ma inny typ: werbalne, versus, coop, gated, stawka,
+                timer — wybierz slot pasujący do sytuacji. Jeśli dany slot jest już przyjęty, użyj
                 innego numeru.
               </p>
             </div>

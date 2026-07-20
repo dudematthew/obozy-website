@@ -1,47 +1,78 @@
-const SESSION_KEY = 'obozy-gra-host-token'
+const TOKEN_KEY = 'obozy-gra-host-token'
 const MASTER_KEY = 'obozy-gra-host-master-key'
 const HELP_KEY = 'obozy-gra-host-help-open'
 
+function readPersisted (key) {
+  try {
+    const fromLocal = localStorage.getItem(key)
+    if (fromLocal != null && fromLocal !== '') return fromLocal
+    const fromSession = sessionStorage.getItem(key)
+    if (fromSession != null && fromSession !== '') {
+      localStorage.setItem(key, fromSession)
+      sessionStorage.removeItem(key)
+      return fromSession
+    }
+  } catch {
+    // private mode / blocked storage
+  }
+  return null
+}
+
+function writePersisted (key, value) {
+  try {
+    if (value == null || value === '') {
+      localStorage.removeItem(key)
+      sessionStorage.removeItem(key)
+      return
+    }
+    localStorage.setItem(key, value)
+    sessionStorage.removeItem(key)
+  } catch {
+    // ignore
+  }
+}
+
+function removePersisted (key) {
+  try {
+    localStorage.removeItem(key)
+    sessionStorage.removeItem(key)
+  } catch {
+    // ignore
+  }
+}
+
 export function getHostToken () {
-  return sessionStorage.getItem(SESSION_KEY) || null
+  return readPersisted(TOKEN_KEY)
 }
 
 export function setHostToken (token) {
-  if (!token) {
-    sessionStorage.removeItem(SESSION_KEY)
-    return
-  }
-  sessionStorage.setItem(SESSION_KEY, token)
+  writePersisted(TOKEN_KEY, token || null)
 }
 
 export function clearHostToken () {
-  sessionStorage.removeItem(SESSION_KEY)
+  removePersisted(TOKEN_KEY)
   clearHostMasterKey()
 }
 
 export function getHostMasterKey () {
-  return sessionStorage.getItem(MASTER_KEY) || null
+  return readPersisted(MASTER_KEY)
 }
 
 export function setHostMasterKey (key) {
-  if (!key) {
-    sessionStorage.removeItem(MASTER_KEY)
-    return
-  }
-  sessionStorage.setItem(MASTER_KEY, key)
+  writePersisted(MASTER_KEY, key || null)
 }
 
 export function clearHostMasterKey () {
-  sessionStorage.removeItem(MASTER_KEY)
+  removePersisted(MASTER_KEY)
 }
 
 /** CMR help panel open/closed; default open when unset. */
 export function getHostHelpOpen () {
-  const raw = sessionStorage.getItem(HELP_KEY)
+  const raw = readPersisted(HELP_KEY)
   if (raw === null) return true
   return raw === '1'
 }
 
 export function setHostHelpOpen (open) {
-  sessionStorage.setItem(HELP_KEY, open ? '1' : '0')
+  writePersisted(HELP_KEY, open ? '1' : '0')
 }

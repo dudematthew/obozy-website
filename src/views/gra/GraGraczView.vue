@@ -285,10 +285,6 @@ export default {
               <p class="gra-fest__eyebrow">Twój postęp</p>
               <h1 class="gra-fest__name">Kim jesteś?</h1>
             </header>
-            <p class="gra-fest__blurb">
-              Wybierz lub załóż gracza, żeby zbierać punkty. Zadań nie przegląda się z listy
-              w aplikacji. Przyjmujesz je z kartki: skan QR albo link pod kodem.
-            </p>
             <GraAccountGate :key="gateKey" :hide-local-list="false" @ready="onReady" />
           </template>
         </template>

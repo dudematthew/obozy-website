@@ -231,20 +231,13 @@ export default {
           <span class="chip" style="margin: 0">{{ task.points }} pkt</span>
         </p>
 
-        <GraQrPanel
-          :accept-token="task.acceptToken"
-          :verify-token="task.verifyToken"
-          :title="task.title"
-          :summary="task.summary"
-          :points="task.points"
-          :logic-type="task.logicType"
-          :icon="task.icon"
-        />
+        <GraQrPanel :accept-token="task.acceptToken" :verify-token="task.verifyToken" :title="task.title"
+          :summary="task.summary" :points="task.points" :logic-type="task.logicType" :icon="task.icon" />
 
         <div class="card" style="margin-top: 1.25rem">
           <div class="card-content">
-            <span class="card-title">Podgląd</span>
-            <p class="grey-text">{{ task.summary }}</p>
+            <span class="card-title">Treść zadania</span>
+            <p class="gra-host-preview__lead">{{ task.summary }}</p>
             <GraMarkdown v-if="showPreviewBody" :source="task.bodyMarkdown" />
           </div>
         </div>
@@ -267,22 +260,13 @@ export default {
                   style="margin-left: 0.35rem">
                   +{{ a.pointsAwarded }} pkt
                 </span>
-                <GraSoftTimer
-                  v-if="a.status === 'accepted' && softMinutes"
-                  :started-at="a.timerStartedAt"
-                  :soft-minutes="softMinutes"
-                  style="margin-left: 0.35rem"
-                />
+                <GraSoftTimer v-if="a.status === 'accepted' && softMinutes" :started-at="a.timerStartedAt"
+                  :soft-minutes="softMinutes" style="margin-left: 0.35rem" />
                 <small v-if="payloadHint(a)" class="grey-text" style="display: block">{{ payloadHint(a) }}</small>
                 <div v-if="a.status === 'accepted'"
                   style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem">
-                  <button
-                    v-if="needsTimerStart(a)"
-                    type="button"
-                    class="btn orange waves-effect"
-                    :disabled="busy === `t-${a.id}`"
-                    @click="startTimer(a)"
-                  >Start zegar</button>
+                  <button v-if="needsTimerStart(a)" type="button" class="btn orange waves-effect"
+                    :disabled="busy === `t-${a.id}`" @click="startTimer(a)">Start zegar</button>
                   <button v-if="task.logicType !== 'versus'" type="button" class="btn green waves-effect"
                     @click="complete(a)">Ukończ</button>
                   <button type="button" class="btn red waves-effect" @click="fail(a)">Odrzuć</button>
@@ -325,13 +309,8 @@ export default {
                 @click="release">
                 Zwolnij zadanie
               </button>
-              <button
-                v-if="masterUnlocked"
-                type="button"
-                class="btn-flat red-text"
-                :disabled="busy === 'delete'"
-                @click="deleteTask"
-              >
+              <button v-if="masterUnlocked" type="button" class="btn-flat red-text" :disabled="busy === 'delete'"
+                @click="deleteTask">
                 Usuń z bazy
               </button>
             </p>
@@ -354,3 +333,12 @@ export default {
     </div>
   </GraShell>
 </template>
+
+<style scoped>
+.gra-host-preview__lead {
+  margin: 0 0 1rem;
+  line-height: 1.55;
+  color: #263238;
+  font-size: 1.05rem;
+}
+</style>

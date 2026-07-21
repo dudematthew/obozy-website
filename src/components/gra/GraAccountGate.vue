@@ -163,10 +163,11 @@ export default {
     <!-- ── Default variant ── -->
     <template v-if="variant !== 'accept'">
       <p v-if="!compact" class="grey-text" style="line-height: 1.55">
-        Wybierz lub załóż gracza. Zadań nie przegląda się z listy w aplikacji.
-        Przyjmujesz je z kartki na terenie: zeskanuj QR albo użyj linku pod kodem.
+        Wybierz istniejącego lub załóż nowego gracza aby przyjmować zadania. Żadnych haseł ani maili, po prostu wpisz
+        coś
+        unikatowego i
+        rozpoznawalnego.
       </p>
-
       <div v-if="error" class="text-darken-2 card-panel red lighten-4 red-text">{{ error }}</div>
 
       <p v-if="offerResume" class="gra-offer-resume">

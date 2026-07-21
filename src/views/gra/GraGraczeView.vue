@@ -66,7 +66,7 @@ export default {
         </p>
         <p class="gra-fest__blurb">
           Ci gracze są już w grze i zostali wtajemniczeni. Możesz spróbować wymienić się z nimi
-          zadaniami, jeśli reguły konkretnego zadania na to pozwalają.
+          zadaniami, jeśli uważasz że inne zadanie zrobisz lepiej.
         </p>
 
         <p v-if="loading" class="gra-fest__muted">Ładowanie…</p>

@@ -25,17 +25,32 @@ export default {
 			M.Parallax.init(parallaxElems);
 		});
 
+		const parseFacebook = () => {
+			if (window.FB && window.FB.XFBML && typeof window.FB.XFBML.parse === 'function') {
+				window.FB.XFBML.parse()
+				return true
+			}
+			return false
+		}
+
+		// SDK may finish init after the script tag loads; hook before injecting.
+		const previousFbAsyncInit = window.fbAsyncInit
+		window.fbAsyncInit = function () {
+			if (typeof previousFbAsyncInit === 'function') previousFbAsyncInit()
+			parseFacebook()
+		}
+
 		loadScript(
 			"https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v14.0&appId=1757113121299063&autoLogAppEvents=1"
 		)
 			.then(() => {
 				this.$nextTick(() => {
-					window.FB.XFBML.parse();
-				});
+					parseFacebook()
+				})
 			})
 			.catch(() => {
-				console.error("Can't load Facebook script.");
-			});
+				console.error("Can't load Facebook script.")
+			})
 	},
 	computed: {
 		yearsFromStart() {

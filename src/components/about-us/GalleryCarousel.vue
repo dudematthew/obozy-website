@@ -27,11 +27,8 @@
         },
         methods: {},
         mounted() {
-            // let materialboxedElems = document.querySelectorAll('.materialboxed');
-            // M.Materialbox.init(materialboxedElems, {
-            //     inDuration: 0,
-            //     outDuration: 0
-            // });
+            // Gallery uses Swiper zoom, not Materialbox.
+            // Site-wide Materialbox helper: @/lib/materialbox (Gra / O-nas / Quiz).
 
             this.swiper = new Swiper('.swiper', {
                 navigation: {

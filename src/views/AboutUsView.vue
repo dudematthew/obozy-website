@@ -1,5 +1,7 @@
 <script>
+/* global M */
 import GalleryCarousel from '@/components/about-us/GalleryCarousel.vue'
+import { initMaterialbox } from '@/lib/materialbox'
 
 export default {
   name: "HomeView",
@@ -57,13 +59,8 @@ export default {
     }
   },
   mounted() {
-    let parallaxElems = document.querySelectorAll(".parallax");
-    let materialboxedElems = document.querySelectorAll(".materialboxed");
-    M.Parallax.init(parallaxElems);
-    M.Materialbox.init(materialboxedElems, {
-      inDuration: 0,
-      outDuration: 0
-    })
+    M.Parallax.init(document.querySelectorAll('.parallax'))
+    initMaterialbox(this.$el)
   },
 }
 </script>

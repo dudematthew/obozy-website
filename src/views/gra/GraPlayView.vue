@@ -260,7 +260,7 @@ export default {
                 <span class="gra-quest__timer-note">{{ timerNote }}</span>
               </p>
 
-              <div v-if="showBody" class="gra-quest__body gra-md">
+              <div v-if="showBody" class="gra-quest__body">
                 <GraMarkdown :source="task.bodyMarkdown" />
               </div>
               <p v-else-if="bodyPendingHint" class="gra-quest__hint">{{ bodyPendingHint }}</p>

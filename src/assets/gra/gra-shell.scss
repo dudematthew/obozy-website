@@ -677,6 +677,36 @@ $green-dark: #388E3C;
   font-size: 1rem;
 }
 
+.gra-md__figure {
+  margin: 0.75rem 0;
+  text-align: center;
+}
+
+.gra-md img {
+  display: block;
+  max-width: 100%;
+  max-height: min(42vh, 260px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin: 0.75rem auto;
+  border-radius: 4px;
+}
+
+.gra-md img.materialboxed {
+  cursor: zoom-in;
+}
+
+/* Expanded Materialbox must escape quest sheet clipping / stacking */
+.gra-md .material-placeholder {
+  max-width: 100%;
+}
+
+.gra-quest__sheet .materialboxed.active,
+.gra-quest__sheet #materialbox-overlay {
+  z-index: 4000 !important;
+}
+
 // Lists also get class "browser-default" from graMarkdown.js (Materialize escape hatch)
 .gra-md ul,
 .gra-md ol {
@@ -1051,13 +1081,6 @@ textarea.gra-field--xl {
   text-align: left;
   margin-left: auto;
   margin-right: auto;
-}
-
-.gra-quest__body .gra-md img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 0.75rem auto;
 }
 
 .gra-quest__cta {

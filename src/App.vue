@@ -57,6 +57,39 @@ html {
   background: #64f023 !important;
 }
 
+/* Site-wide Materialbox close (see @/lib/materialbox.js) */
+.obozy-materialbox-close {
+  position: fixed;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
+  z-index: 10050;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(33, 33, 33, 0.72);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.obozy-materialbox-close:hover,
+.obozy-materialbox-close:focus {
+  background: rgba(33, 33, 33, 0.9);
+  outline: none;
+}
+
+.obozy-materialbox-close .material-icons {
+  font-size: 26px;
+  line-height: 1;
+}
+
 .brand-logo,
 .main-title {
 

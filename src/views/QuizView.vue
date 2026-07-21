@@ -1,6 +1,7 @@
 <script>
 import MarkdownIt from 'markdown-it';
 import originalQuestions from '@/data/quiz-questions.json';
+import { initMaterialbox } from '@/lib/materialbox';
 const md = new MarkdownIt();
 
 /* global M */
@@ -214,13 +215,7 @@ export default {
             return this.expandedQuestions.has(questionId);
         },
         initMaterialbox() {
-            document.addEventListener('DOMContentLoaded', () => {
-                const elems = document.querySelectorAll('.materialboxed');
-                M.Materialbox.init(elems, {
-                    inDuration: 0,
-                    outDuration: 0
-                });
-            });
+            this.$nextTick(() => initMaterialbox(this.$el))
         },
         saveProgress() {
             const progressData = {
@@ -282,13 +277,7 @@ export default {
             this.shuffleQuestions();
         },
         reinitMaterialbox() {
-            this.$nextTick(() => {
-                const elems = document.querySelectorAll('.materialboxed');
-                M.Materialbox.init(elems, {
-                    inDuration: 0,
-                    outDuration: 0
-                });
-            });
+            this.$nextTick(() => initMaterialbox(this.$el))
         },
         getPerformanceMessage(percentage) {
             // Find the appropriate threshold for the given percentage

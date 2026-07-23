@@ -26,6 +26,8 @@ export default {
       verifyUrl: '',
       playUrlDisplay: '',
       verifyUrlDisplay: '',
+      playCode: '',
+      verifyCode: '',
       error: null,
       printing: false,
       stampUrl,
@@ -51,6 +53,8 @@ export default {
       this.verifyUrl = ''
       this.playUrlDisplay = ''
       this.verifyUrlDisplay = ''
+      this.playCode = ''
+      this.verifyCode = ''
       try {
         const bundle = await buildQuestQrBundle({
           acceptToken: this.acceptToken,
@@ -65,6 +69,8 @@ export default {
         this.verifyUrl = bundle.verifyUrl
         this.playUrlDisplay = bundle.playUrlDisplay
         this.verifyUrlDisplay = bundle.verifyUrlDisplay
+        this.playCode = bundle.playCode
+        this.verifyCode = bundle.verifyCode
       } catch (err) {
         this.error = (err && err.message) || 'Nie udało się wygenerować QR.'
       }
@@ -123,12 +129,14 @@ export default {
           <div class="gra-qr__preview-cell">
             <img v-if="playSrc" :src="playSrc" alt="QR przyjmij" width="160" height="160">
             <p><strong>Przyjmij</strong></p>
+            <p v-if="playCode" class="gra-qr__code">{{ playCode }}</p>
             <a v-if="playUrl" class="gra-qr__link" :href="playUrl" target="_blank" rel="noopener">{{ playUrlDisplay
               }}</a>
           </div>
           <div class="gra-qr__preview-cell">
             <img v-if="verifySrc" :src="verifySrc" alt="QR Sprawdź status" width="160" height="160">
             <p><strong>Sprawdź status</strong></p>
+            <p v-if="verifyCode" class="gra-qr__code">{{ verifyCode }}</p>
             <a v-if="verifyUrl" class="gra-qr__link" :href="verifyUrl" target="_blank" rel="noopener">{{
               verifyUrlDisplay }}</a>
           </div>
@@ -173,6 +181,16 @@ export default {
 .gra-qr__preview-cell img {
   display: block;
   margin: 0 auto 0.5rem;
+}
+
+.gra-qr__code {
+  margin: 0.35rem 0 0;
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
+  word-break: break-word;
+  color: #2e7d32;
 }
 
 .gra-qr__link {

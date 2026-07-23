@@ -65,6 +65,20 @@ export default {
     },
     showPreviewBody() {
       return this.task && !isTaskBodyRedundant(this.task.summary, this.task.bodyMarkdown)
+    },
+    bodyRevealMode() {
+      const raw = this.task && this.task.logicConfig && this.task.logicConfig.bodyReveal
+      if (raw === 'onAccept' || raw === 'whenFull' || raw === 'always') return raw
+      if (this.task && this.task.logicType === 'gated') return 'onAccept'
+      return 'always'
+    },
+    bodyIsGated() {
+      return this.showPreviewBody && this.bodyRevealMode !== 'always'
+    },
+    bodyRevealLabel() {
+      if (this.bodyRevealMode === 'whenFull') return 'gdy drużyna pełna'
+      if (this.bodyRevealMode === 'onAccept') return 'po przyjęciu'
+      return null
     }
   },
   created() {
@@ -237,8 +251,21 @@ export default {
         <div class="card" style="margin-top: 1.25rem">
           <div class="card-content">
             <span class="card-title">Treść zadania</span>
-            <p class="gra-host-preview__lead">{{ task.summary }}</p>
-            <GraMarkdown v-if="showPreviewBody" :source="task.bodyMarkdown" />
+            <template v-if="bodyIsGated">
+              <p class="gra-host-preview__section-label">Opis publiczny</p>
+              <p class="gra-host-preview__lead">{{ task.summary }}</p>
+              <div class="gra-host-preview__gate">
+                <p class="gra-host-preview__section-label">
+                  Ukryta treść
+                  <span class="chip grey lighten-3" style="margin-left: 0.35rem">{{ bodyRevealLabel }}</span>
+                </p>
+                <GraMarkdown :source="task.bodyMarkdown" />
+              </div>
+            </template>
+            <template v-else>
+              <p class="gra-host-preview__lead">{{ task.summary }}</p>
+              <GraMarkdown v-if="showPreviewBody" :source="task.bodyMarkdown" />
+            </template>
           </div>
         </div>
 
@@ -340,5 +367,20 @@ export default {
   line-height: 1.55;
   color: #263238;
   font-size: 1.05rem;
+}
+
+.gra-host-preview__section-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #546e7a;
+}
+
+.gra-host-preview__gate {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(0, 0, 0, 0.18);
 }
 </style>

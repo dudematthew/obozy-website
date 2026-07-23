@@ -69,17 +69,11 @@ export default {
       return ''
     },
     /**
-     * Show Accept when the API says so, or when logged out and the task still looks open.
-     * (API historically sets canAccept=false without a player token — identity comes after click.)
+     * Trust API canAccept (includes accept window). Do not bypass for logged-out users —
+     * that made time-gated tasks look accept-able before the window opened.
      */
     showAccept() {
-      if (!this.task) return false
-      if (this.task.canAccept === true) return true
-      if (this.hasToken) return false
-      if (this.task.status === 'completed') return false
-      const slotsFree = this.task.assigneeCount < this.task.maxAssignees
-      const openStatus = this.task.status === 'available' || this.task.status === 'active'
-      return slotsFree && openStatus
+      return Boolean(this.task && this.task.canAccept === true)
     },
     showTimer() {
       return (
@@ -99,10 +93,31 @@ export default {
         ? 'Czas wystartował od przyjęcia zadania.'
         : 'Czas wystartowuje od rozpoczęcia przez organizatora.'
     },
+    acceptWindowHint() {
+      if (!this.task || this.task.playerAssignmentStatus || this.task.canAccept) return null
+      if (this.task.status === 'completed') return null
+
+      const opens = this.formatWarsawClock(this.task.acceptOpensAt)
+      const closes = this.formatWarsawClock(this.task.acceptClosesAt)
+      const now = Date.now()
+      const opensMs = this.parseUtcMs(this.task.acceptOpensAt)
+      const closesMs = this.parseUtcMs(this.task.acceptClosesAt)
+
+      if (opensMs != null && now < opensMs) {
+        if (opens && closes) return `Przyjmowanie od ${opens} do ${closes}.`
+        if (opens) return `Przyjmowanie od ${opens}.`
+      }
+      if (closesMs != null && now >= closesMs) {
+        if (closes) return `Przyjmowanie zakończone (do ${closes}).`
+        return 'Przyjmowanie zakończone.'
+      }
+      return null
+    },
     takenHint() {
       if (!this.task || this.task.playerAssignmentStatus) return null
       if (this.task.status === 'completed') return 'Zadanie zamknięte.'
-      if (!this.task.canAccept && this.hasToken) {
+      if (this.acceptWindowHint) return this.acceptWindowHint
+      if (!this.task.canAccept) {
         return 'Niedostępne (zajęte, zapełnione lub poza oknem czasowym).'
       }
       return null
@@ -118,11 +133,13 @@ export default {
     },
     bodyPendingHint() {
       if (!this.task || this.bodyRevealed) return null
-      const type = this.task.logicType
-      if (type === 'gated') {
+      if (this.task.bodyReveal === 'whenFull') {
+        return 'Pełna treść pojawi się gdy zbierze się drużyna.'
+      }
+      if (this.task.bodyReveal === 'onAccept' || this.task.logicType === 'gated') {
         return 'Pełna treść pojawi się po przyjęciu zadania.'
       }
-      if (type === 'coop' || type === 'versus') {
+      if (this.task.logicType === 'coop' || this.task.logicType === 'versus') {
         return 'Pełna treść pojawi się gdy zbierze się drużyna (albo po przyjęciu), zależnie od zadania.'
       }
       return 'Pełna treść jeszcze ukryta.'
@@ -138,6 +155,31 @@ export default {
     }
   },
   methods: {
+    parseUtcMs(iso) {
+      if (!iso) return null
+      const s = String(iso).trim()
+      if (!s) return null
+      // Stored as "Y-m-d H:i:s" UTC without Z — force UTC parse.
+      const normalized = /Z$|[+-]\d{2}:?\d{2}$/.test(s)
+        ? s
+        : s.replace(' ', 'T') + 'Z'
+      const ms = Date.parse(normalized)
+      return Number.isFinite(ms) ? ms : null
+    },
+    formatWarsawClock(iso) {
+      const ms = this.parseUtcMs(iso)
+      if (ms == null) return null
+      try {
+        return new Intl.DateTimeFormat('pl-PL', {
+          timeZone: 'Europe/Warsaw',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        }).format(new Date(ms))
+      } catch (e) {
+        return null
+      }
+    },
     syncAuth() {
       this.playerToken = getActiveToken()
       this.account = getActiveAccount()
@@ -237,6 +279,9 @@ export default {
                 <p class="gra-quest__eyebrow">OBOZY Festiwal · zadanie</p>
                 <h1 class="gra-quest__brand">{{ questHeadline }}</h1>
                 <p class="gra-quest__lead">{{ task.summary }}</p>
+                <p class="gra-quest__secrecy">
+                  Pamiętaj by utrzymywać grę w tajemnicy - nikt nie może wiedzieć że wykonujesz zadanie oprócz innych graczy
+                </p>
 
                 <ul class="gra-quest__meta">
                   <li>

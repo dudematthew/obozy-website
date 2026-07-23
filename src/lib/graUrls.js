@@ -25,4 +25,10 @@ export function displayTaskUrl (url) {
   return String(url || '').replace(/^https?:\/\//i, '')
 }
 
+/** Human-typeable code shown under QR (phrase tokens or legacy opaque tokens). */
+export function displayTaskCode (token) {
+  if (!isUsableToken(token)) return ''
+  return String(token).trim().toLowerCase()
+}
+
 export { isUsableToken }

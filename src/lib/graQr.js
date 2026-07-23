@@ -1,5 +1,5 @@
 import QRCode from 'qrcode'
-import { displayTaskUrl, isUsableToken, playTaskUrl, verifyTaskUrl } from '@/lib/graUrls'
+import { displayTaskCode, displayTaskUrl, isUsableToken, playTaskUrl, verifyTaskUrl } from '@/lib/graUrls'
 import { graIconName } from '@/lib/graIcons'
 
 /**
@@ -103,6 +103,8 @@ export async function buildQuestQrBundle ({ acceptToken, verifyToken, icon }) {
     verifyUrl,
     playUrlDisplay: displayTaskUrl(playUrl),
     verifyUrlDisplay: displayTaskUrl(verifyUrl),
+    playCode: displayTaskCode(acceptToken),
+    verifyCode: displayTaskCode(verifyToken),
     playSrc,
     verifySrc,
     playPrintSrc,
